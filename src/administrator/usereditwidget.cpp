@@ -35,12 +35,12 @@ void UserEditWidget::init()
 		m_checkboxToTextid[checkbox] = textid;
 		m_textidToCheckbox[textid] = checkbox;
 
-		verticalLayout->insertWidget(0, checkbox, 0, Qt::AlignTop);
+		verticalLayout->insertWidget(verticalLayout->count()-1, checkbox, 0, Qt::AlignTop);
 	}
 
 
 	query.prepare(" SELECT login, is_admin "
-				  " FROM Users "
+				  " FROM MUser "
 				  " WHERE id = :userid ");
 	query.bindValue(":userid", m_userId);
 	query.exec();
@@ -123,7 +123,7 @@ void UserEditWidget::save()
 	QSqlQuery query;
 	if(m_password->text().isNull())
 	{
-		query.prepare(" UPDATE Users SET "
+		query.prepare(" UPDATE MUser SET "
 					  " login = :login, "
 					  " is_admin = :is_admin "
 					  " WHERE id = :userid ");
@@ -131,7 +131,7 @@ void UserEditWidget::save()
 	else
 	{
 		const QByteArray& salt = Passwords::salt();
-		query.prepare(" UPDATE Users SET "
+		query.prepare(" UPDATE MUser SET "
 					  " login = :login, "
 					  " password = :password, "
 					  " salt = :salt, "
@@ -224,7 +224,7 @@ void UserEditWidget::isAdminToggled(bool checked)
 bool UserEditWidget::userIsAdmin(int userid)
 {
 	QSqlQuery q;
-	q.prepare("SELECT is_admin FROM Users WHERE id = :userid");
+	q.prepare("SELECT is_admin FROM MUser WHERE id = :userid");
 	q.bindValue(":userid", userid);
 	q.exec();
 	checkQuery(q);
@@ -239,7 +239,7 @@ bool UserEditWidget::userIsAdmin(int userid)
 
 int UserEditWidget::numberOfAdminUsers()
 {
-	QSqlQuery q("SELECT COUNT(*) FROM Users WHERE is_admin = TRUE");
+	QSqlQuery q("SELECT COUNT(*) FROM MUser WHERE is_admin = TRUE");
 	checkQuery(q);
 
 	int result = 0;

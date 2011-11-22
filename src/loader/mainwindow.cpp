@@ -178,7 +178,7 @@ bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 	bool result = false;
 	QSqlQuery q;
 
-	q.prepare("SELECT is_admin FROM Users WHERE id = :userid");
+	q.prepare("SELECT is_admin FROM MUser WHERE id = :userid");
 	q.addBindValue(m_userId);
 	q.exec();
 	checkQuery(q);
@@ -188,7 +188,7 @@ bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 		result = true;
 	else
 	{
-		q.prepare(" SELECT u.id FROM Users u "
+		q.prepare(" SELECT u.id FROM MUser u "
 				  " LEFT JOIN UserPluginAccess upl ON u.id = upl.userid "
 				  " LEFT JOIN Plugins p ON p.id = upl.pluginid "
 				  " WHERE p.textid = :textid AND u.id = :userid ");

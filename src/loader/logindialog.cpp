@@ -3,11 +3,13 @@
 #include "logindialog.h"
 
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QTimer>
 
 #include "passwords.h"
+#include "macros.h"
 
 
 const int LoginDialog::NO_USER_ID = -1;
@@ -78,11 +80,12 @@ void LoginDialog::tryToLogin()
 	const QString& hash = Passwords::hash(m_password->text(), salt(m_login->text()));
 
 	QSqlQuery query;
-	query.prepare(" SELECT id FROM Users "
+	query.prepare(" SELECT id FROM MUser "
 				  " WHERE login = :login AND password = :password");
 	query.bindValue(":login", m_login->text());
 	query.bindValue(":password", hash);
 	query.exec();
+	checkQuery(query);
 
 	if(query.first())
 	{
@@ -108,9 +111,10 @@ void LoginDialog::enableOkButton()
 QByteArray LoginDialog::salt(const QString& login) const
 {
 	QSqlQuery query;
-	query.prepare("SELECT salt FROM Users WHERE login = :login");
+	query.prepare("SELECT salt FROM MUser WHERE login = :login");
 	query.bindValue(":login", login);
 	query.exec();
+	checkQuery(query);
 
 	QByteArray result;
 	if(query.first())

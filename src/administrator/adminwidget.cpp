@@ -13,7 +13,7 @@
 
 
 static const QString userListQuery =
-		QString::fromUtf8("SELECT id, login AS Логин FROM Users ORDER BY id");
+		QString::fromUtf8("SELECT id, login AS Логин FROM MUser ORDER BY id");
 
 
 AdminWidget::AdminWidget(QWidget *parent) :
@@ -95,7 +95,7 @@ void AdminWidget::userSelectionChanged()
 void AdminWidget::createUser()
 {
 	QSqlQuery q;
-	q.prepare(" INSERT INTO Users (login, is_admin) "
+	q.prepare(" INSERT INTO MUser (login, is_admin) "
 			  " VALUES (:login, FALSE) ");
 	q.bindValue(":login", generateLogin());
 	q.exec();
@@ -139,7 +139,7 @@ void AdminWidget::deleteUser()
 		q.exec();
 		checkQuery(q);
 
-		q.prepare("DELETE FROM Users WHERE id = :userid");
+		q.prepare("DELETE FROM MUser WHERE id = :userid");
 		q.addBindValue(userid);
 		q.exec();
 		checkQuery(q);
@@ -160,7 +160,7 @@ QString AdminWidget::generateLogin() const
 	*/
 	QSqlQuery q;
 	q.prepare(QString(" SELECT SUBSTRING(login, E'%1 \\\\((\\\\d+)\\\\)$') AS Number "
-					  " FROM Users ORDER BY Number").arg(basename));
+					  " FROM MUser ORDER BY Number").arg(basename));
 	q.exec();
 	checkQuery(q);
 

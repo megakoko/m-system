@@ -84,6 +84,7 @@ void DatabaseSettingsPage::resetDatabase()
 	query.exec(ts.readAll());
 	checkQuery(query);
 
+	/*
 	QMap<QString, QString> map = MainWindow::pluginTextidToDescription();
 	QMap<QString, QString>::const_iterator i = map.constBegin();
 
@@ -97,6 +98,7 @@ void DatabaseSettingsPage::resetDatabase()
 		query.exec();
 		++i;
 	}
+	*/
 
 
 	qApp->exit(0);
