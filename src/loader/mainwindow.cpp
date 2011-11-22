@@ -30,6 +30,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	setupUi(this);
 
+#ifndef QT_NO_DEBUG
+	setWindowTitle(windowTitle() + QString::fromUtf8(" [Отладочная версия]"));
+#endif
+
 	initToolBar();
 	initConnections();
 
