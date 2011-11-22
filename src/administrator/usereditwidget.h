@@ -7,7 +7,7 @@
 
 class UserEditWidget : public PluginWidget, private Ui::UserEditWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
 	explicit UserEditWidget(const int userId, QWidget *parent = 0);
