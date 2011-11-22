@@ -39,4 +39,4 @@ FORMS		+=	mainwindow.ui \
 				databasesettingspage.ui
 
 RESOURCES += \
-    ../resources/resources.qrc
+				../resources/resources.qrc

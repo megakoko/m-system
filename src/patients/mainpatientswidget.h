@@ -19,11 +19,16 @@ private:
 
 	void updatePatientsList();
 
+	bool onePatientSelected() const;
+	int selectedPatientId() const;
+
 	QSqlQueryModel* m_model;
 
 private slots:
 	void addPatient();
 	void editPatient();
 	void deletePatient();
+
+	void selectionChanged();
 
 };

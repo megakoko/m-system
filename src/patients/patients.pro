@@ -5,13 +5,21 @@ QT		+= sql
 
 include( ../m-system-config.pri )
 
-HEADERS += ../loader/pluginwidget.h \
-	patients.h \
-	mainpatientswidget.h
+HEADERS +=	../loader/pluginwidget.h \
+			patients.h \
+			mainpatientswidget.h \
+			patienteditwidget.h \
+			address.h \
+			addressdialog.h
 
 SOURCES += \
-	patients.cpp \
-	mainpatientswidget.cpp
+			patients.cpp \
+			mainpatientswidget.cpp \
+			patienteditwidget.cpp \
+			address.cpp \
+			addressdialog.cpp
 
 FORMS += \
-	mainpatientswidget.ui
+			mainpatientswidget.ui \
+			patienteditwidget.ui \
+			addressdialog.ui
