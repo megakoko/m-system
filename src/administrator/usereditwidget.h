@@ -30,6 +30,8 @@ private:
 
 private slots:
 	void save();
+
+	void loginEdited();
 	void isAdminToggled(bool);
 
 };

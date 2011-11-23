@@ -1,6 +1,8 @@
 #pragma once
 
-#include <QSqlRecord>
+#include <QString>
+
+class QSqlRecord;
 
 class Address
 {

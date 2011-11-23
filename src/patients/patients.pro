@@ -10,16 +10,21 @@ HEADERS +=	../loader/pluginwidget.h \
 			mainpatientswidget.h \
 			patienteditwidget.h \
 			address.h \
-			addressdialog.h
+			addressdialog.h \
+			document.h \
+			documenteditdialog.h
 
 SOURCES += \
 			patients.cpp \
 			mainpatientswidget.cpp \
 			patienteditwidget.cpp \
 			address.cpp \
-			addressdialog.cpp
+			addressdialog.cpp \
+			document.cpp \
+			documenteditdialog.cpp
 
 FORMS += \
 			mainpatientswidget.ui \
 			patienteditwidget.ui \
-			addressdialog.ui
+			addressdialog.ui \
+			documenteditdialog.ui

@@ -21,6 +21,8 @@ public slots:
 	void closeTab(int index);
 	void closeTab();
 
+	void setTabLabel(const QString& text);
+
 	void addWidget(PluginWidget* widget, const QString& caption);
 
 };

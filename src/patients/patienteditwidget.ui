@@ -153,7 +153,23 @@
        <number>9</number>
       </property>
       <item>
-       <widget class="QTableWidget" name="m_documentTable"/>
+       <widget class="QTableWidget" name="m_documentTable">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="horizontalHeaderHighlightSections">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderHighlightSections">
+         <bool>false</bool>
+        </attribute>
+       </widget>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -165,7 +181,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="m_editDucoument">
+         <widget class="QPushButton" name="m_editDocument">
           <property name="text">
            <string>Редактировать</string>
           </property>
@@ -211,7 +227,7 @@
   <tabstop>m_patronymic</tabstop>
   <tabstop>m_documentTable</tabstop>
   <tabstop>m_addDocument</tabstop>
-  <tabstop>m_editDucoument</tabstop>
+  <tabstop>m_editDocument</tabstop>
   <tabstop>m_deleteDocument</tabstop>
  </tabstops>
  <resources/>
