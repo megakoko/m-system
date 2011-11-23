@@ -87,6 +87,8 @@ void UserEditWidget::initConnections()
 {
 	connect(m_isAdmin, SIGNAL(toggled(bool)), SLOT(isAdminToggled(bool)));
 	connect(m_save, SIGNAL(clicked()), SLOT(save()));
+
+	connect(m_login, SIGNAL(editingFinished()), SLOT(loginEdited()));
 }
 
 
@@ -247,4 +249,10 @@ int UserEditWidget::numberOfAdminUsers()
 		result = q.value(0).toInt();
 
 	return result;
+}
+
+
+void UserEditWidget::loginEdited()
+{
+	emit setTabLabel(QString::fromUtf8("Пользователь %1").arg(m_login->text()));
 }

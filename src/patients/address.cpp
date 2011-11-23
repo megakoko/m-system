@@ -2,6 +2,7 @@
 
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QSqlRecord>
 #include <QVariant>
 #include <QStringList>
 #include <QDebug>

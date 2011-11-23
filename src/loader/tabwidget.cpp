@@ -50,12 +50,26 @@ void TabWidget::closeTab()
 }
 
 
+void TabWidget::setTabLabel(const QString &text)
+{
+	if(sender() != NULL)
+	{
+		QWidget* w = qobject_cast<QWidget*>(sender());
+		if(w != NULL)
+		{
+			setTabText(indexOf(w), text);
+		}
+	}
+}
+
+
 void TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 {
 	const int index = addTab(widget, caption);
 	setCurrentIndex(index);
 
 	connect(widget, SIGNAL(closeMe()), SLOT(closeTab()));
+	connect(widget, SIGNAL(setTabLabel(QString)), SLOT(setTabLabel(QString)));
 	connect(widget,
 			SIGNAL(addNewWidget(PluginWidget*, QString)),
 			SLOT(addWidget(PluginWidget*,QString)));
