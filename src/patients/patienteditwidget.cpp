@@ -74,7 +74,7 @@ void PatientEditWidget::init()
 
 
 	m_mailingAddressIsActual->setChecked(true);
-	m_editActualAddress->setEnabled(false);
+	toggleMailingAddressIsActual(true);
 	if(q.first())
 	{
 		m_mailingAddress = Address(q.record());
@@ -87,7 +87,7 @@ void PatientEditWidget::init()
 		if(q.next())
 		{
 			m_mailingAddressIsActual->setChecked(false);
-			m_editActualAddress->setEnabled(true);
+			toggleMailingAddressIsActual(false);
 
 			m_actualAddress = Address(q.record());
 			m_actualAddressLabel->setText(m_actualAddress.toString());

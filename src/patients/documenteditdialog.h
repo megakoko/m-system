@@ -15,5 +15,8 @@ public:
 private:
 	Document m_document;
 
+private slots:
+	void checkFields();
+
 };
 
