@@ -1,8 +1,6 @@
-
-
 QT			+=	core gui sql
-TARGET		=	loader
-TEMPLATE	=	app
+TARGET		 =	loader
+TEMPLATE	 =	app
 
 
 include( ../m-system-config.pri )
@@ -26,11 +24,8 @@ HEADERS		+=	mainwindow.h \
 				abstractsettingspage.h \
 				databasesettingspage.h \
 				test.h \
-				plugininterface.h \
 				tabwidget.h \
 				homepage.h \
-				pluginwidget.h \
-				macros.h \
 				aboutdialog.h
 
 FORMS		+=	mainwindow.ui \
@@ -38,5 +33,4 @@ FORMS		+=	mainwindow.ui \
 				settingsdialog.ui \
 				databasesettingspage.ui
 
-RESOURCES += \
-				../resources/resources.qrc
+RESOURCES	+= ../resources/resources.qrc

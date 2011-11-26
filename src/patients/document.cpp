@@ -5,7 +5,7 @@
 #include <QSqlRecord>
 #include <QVariant>
 #include <QDebug>
-#include "../loader/macros.h"
+#include "macros.h"
 
 
 const QMap<int, QString> Document::m_documentTypeToDocumentName =

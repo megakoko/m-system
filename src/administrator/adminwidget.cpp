@@ -9,7 +9,7 @@
 #include "usereditwidget.h"
 
 #include "../loader/passwords.h"
-#include "../loader/macros.h"
+#include "macros.h"
 
 
 static const QString userListQuery =

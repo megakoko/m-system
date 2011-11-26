@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ui_adminwidget.h"
-#include "../loader/pluginwidget.h"
+#include "pluginwidget.h"
 
 
 class QSqlQueryModel;

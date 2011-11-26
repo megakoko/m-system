@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "../loader/pluginwidget.h"
+#include "pluginwidget.h"
 #include "ui_patienteditwidget.h"
 
 #include "address.h"

@@ -6,7 +6,7 @@
 #include <QSqlRecord>
 #include <QDebug>
 #include <QMessageBox>
-#include "../loader/macros.h"
+#include "macros.h"
 
 #include "addressdialog.h"
 #include "documenteditdialog.h"

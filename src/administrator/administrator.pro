@@ -1,4 +1,4 @@
-TARGET = administrator
+TARGET	 = administrator
 TEMPLATE = lib
 CONFIG	+= plugin
 QT		+= sql
@@ -11,13 +11,10 @@ SOURCES +=	administrator.cpp \
 			../loader/passwords.cpp \		# FIXIT
 			usereditwidget.cpp
 
-HEADERS +=	../loader/plugininterface.h \
-			../loader/pluginwidget.h \
-			administrator.h \
+HEADERS +=	administrator.h \
 			adminwidget.h \
 			../loader/passwords.h \		# FIXIT
 			usereditwidget.h
 
-FORMS += \
-			adminwidget.ui \
+FORMS	+= 	adminwidget.ui \
 			usereditwidget.ui

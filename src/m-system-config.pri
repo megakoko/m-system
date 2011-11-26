@@ -12,4 +12,6 @@ MOC_DIR		=	$${BASEPATH}/bin/moc
 UI_DIR		=	$${BASEPATH}/bin/ui
 RCC_DIR		=	$${BASEPATH}/bin/rcc
 
-HEADERS		+= ../loader/macros.h
+INCLUDEPATH	+= ../common
+
+HEADERS		+= ../common/macros.h ../common/pluginwidget.h ../common/plugininterface.h

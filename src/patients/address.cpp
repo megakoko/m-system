@@ -6,7 +6,7 @@
 #include <QVariant>
 #include <QStringList>
 #include <QDebug>
-#include "../loader/macros.h"
+#include "macros.h"
 
 
 
