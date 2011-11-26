@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QObject>
-#include "../loader/plugininterface.h"
+#include "plugininterface.h"
 
 class Administrator : public QObject, public PluginInterface
 {

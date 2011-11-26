@@ -1,7 +1,6 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS += \
-			loader \
+SUBDIRS	+= 	loader \
 			administrator \
 			patients

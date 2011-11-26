@@ -9,7 +9,7 @@
 #include <QDebug>
 
 
-#include "../loader/macros.h"
+#include "macros.h"
 #include "patienteditwidget.h"
 
 

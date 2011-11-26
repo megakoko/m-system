@@ -1,5 +1,5 @@
 #include "addressdialog.h"
-#include "../loader/macros.h"
+#include "macros.h"
 
 
 AddressDialog::AddressDialog(const Address& address, QWidget *parent)

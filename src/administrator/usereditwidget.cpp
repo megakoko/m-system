@@ -6,7 +6,7 @@
 #include <QMap>
 #include <QDebug>
 
-#include "../loader/macros.h"
+#include "macros.h"
 #include "../loader/passwords.h"
 
 
