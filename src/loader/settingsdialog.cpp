@@ -3,7 +3,6 @@
 
 #include "abstractsettingspage.h"
 #include "databasesettingspage.h"
-#include "test.h"
 
 
 SettingsDialog::SettingsDialog(QWidget *parent)
@@ -11,7 +10,7 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 {
 	setupUi(this);
 
-	m_pages << new DatabaseSettingsPage(this) << new TestSettings(this);
+	m_pages << new DatabaseSettingsPage(this);
 
 
 	foreach(AbstractSettingsPage* page, m_pages)

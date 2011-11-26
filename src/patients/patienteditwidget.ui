@@ -82,7 +82,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>&lt;b&gt;Адрес проживания:&lt;/b&gt;</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -98,7 +98,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>&lt;b&gt;Адрес прописки:&lt;/b&gt;</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

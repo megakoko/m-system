@@ -61,7 +61,7 @@ CREATE TABLE Document (
 CREATE TABLE Address (
 	id 					SERIAL PRIMARY KEY,
 	patientId 			INTEGER REFERENCES Patient (id),
-	isMailingAddress 	BOOL,		-- Является адресом по прописке.
+	isMailingAddress 	BOOL NOT NULL,		-- Является адресом по прописке.
 	city 				VARCHAR,
 	street 				VARCHAR,
 	house 				VARCHAR, 
