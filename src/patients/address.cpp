@@ -56,7 +56,7 @@ void Address::save(const int patientId) const
 {
 	QSqlQuery q;
 
-	if(dataIsNull())
+	if(isNull())
 	{
 		deleteAddress();
 	}
@@ -115,7 +115,7 @@ void Address::deleteAddress() const
 }
 
 
-bool Address::dataIsNull() const
+bool Address::isNull() const
 {
 	return city.isNull() && street.isNull() && house.isNull() && apartment.isNull();
 }
