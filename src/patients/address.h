@@ -13,6 +13,7 @@ public:
 	QString toString() const;
 
 	void save(const int patientId) const;
+	void deleteAddress() const;
 
 	QString city;
 	QString street;

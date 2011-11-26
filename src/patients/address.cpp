@@ -58,14 +58,7 @@ void Address::save(const int patientId) const
 
 	if(dataIsNull())
 	{
-		if(m_id > 0)
-		{
-			q.prepare("DELETE FROM Address WHERE id = :id");
-			q.bindValue(":id", m_id);
-
-			q.exec();
-			checkQuery(q);
-		}
+		deleteAddress();
 	}
 	else
 	{
@@ -104,6 +97,20 @@ void Address::save(const int patientId) const
 			q.first();
 			m_id = q.value(0).toInt();
 		}
+	}
+}
+
+
+void Address::deleteAddress() const
+{
+	if(m_id > 0)
+	{
+		QSqlQuery q;
+		q.prepare("DELETE FROM Address WHERE id = :id");
+		q.bindValue(":id", m_id);
+
+		q.exec();
+		checkQuery(q);
 	}
 }
 

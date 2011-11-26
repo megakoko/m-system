@@ -23,7 +23,6 @@ HEADERS		+=	mainwindow.h \
 				settingsdialog.h \
 				abstractsettingspage.h \
 				databasesettingspage.h \
-				test.h \
 				tabwidget.h \
 				homepage.h \
 				aboutdialog.h

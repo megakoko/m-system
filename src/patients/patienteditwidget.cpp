@@ -73,15 +73,25 @@ void PatientEditWidget::init()
 	checkQuery(q);
 
 
+	m_mailingAddressIsActual->setChecked(true);
 	if(q.first())
 	{
 		m_mailingAddress = Address(q.record());
+		m_mailingAddressLabel->setText(m_mailingAddress.toString());
+
+		// There must be at least mailing address.
+		Q_ASSERT(q.record().value("isMailingAddress").toBool() == true);
+
+
 		if(q.next())
+		{
+			m_mailingAddressIsActual->setChecked(false);
+
 			m_actualAddress = Address(q.record());
+			m_actualAddressLabel->setText(m_actualAddress.toString());
+		}
 	}
 
-	m_mailingAddressLabel->setText(m_mailingAddress.toString());
-	m_actualAddressLabel->setText(m_actualAddress.toString());
 
 
 	q.prepare(" SELECT id, documentTypeId, serialNumber, number, date, givenBy "
@@ -279,7 +289,11 @@ void PatientEditWidget::save()
 
 
 	m_mailingAddress.save(m_patientId);
-	m_actualAddress.save(m_patientId);
+	if(m_mailingAddressIsActual->isChecked())
+		m_actualAddress.deleteAddress();
+	else
+		m_actualAddress.save(m_patientId);
+
 
 	foreach(const Document& doc, m_documents)
 		doc.save(m_patientId);
