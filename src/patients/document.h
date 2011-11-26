@@ -19,7 +19,6 @@ public:
 
 	int documentTypeId;
 	QString serialNumber;
-	QString number;
 	QDate date;
 	QString givenBy;
 

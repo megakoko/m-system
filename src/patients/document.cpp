@@ -36,7 +36,6 @@ Document::Document()
 Document::Document(const QSqlRecord &rec)
 	: documentTypeId(rec.value("documentTypeId").toInt())
 	, serialNumber(rec.value("serialNumber").toString())
-	, number(rec.value("number").toString())
 	, date(rec.value("date").toDate())
 	, givenBy(rec.value("givenBy").toString())
 	, m_id(rec.value("id").toInt())
@@ -60,7 +59,6 @@ void Document::save(const int patientId) const
 		q.prepare(" UPDATE Document SET "
 				  " documentTypeId = :documentTypeId, "
 				  " serialNumber = :serialNumber, "
-				  " number = :number, "
 				  " date = :date, "
 				  " givenBy = :givenBy "
 				  " WHERE id = :id ");
@@ -69,13 +67,12 @@ void Document::save(const int patientId) const
 	else
 	{
 		q.prepare(" INSERT INTO Document "
-				  " (patientId,  documentTypeId,  serialNumber,  number,  date,  givenBy)"
-		   " VALUES(:patientId, :documentTypeId, :serialNumber, :number, :date, :givenBy)");
+				  " (patientId,  documentTypeId,  serialNumber,  date,  givenBy)"
+		   " VALUES(:patientId, :documentTypeId, :serialNumber, :date, :givenBy)");
 		q.bindValue(":patientId", patientId);
 	}
 	q.bindValue(":documentTypeId", documentTypeId);
 	q.bindValue(":serialNumber", serialNumber);
-	q.bindValue(":number", number);
 	q.bindValue(":date", date);
 	q.bindValue(":givenBy", givenBy);
 
