@@ -15,4 +15,7 @@ public:
 private:
 	Address m_address;
 
+private slots:
+	void checkFields();
+
 };

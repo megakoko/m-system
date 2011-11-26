@@ -52,18 +52,18 @@ CREATE TABLE Document (
 	id 					SERIAL PRIMARY KEY,
 	documentTypeId 		INTEGER REFERENCES DocumentType (id),
 	patientId 			INTEGER REFERENCES Patient (id),
-	serialNumber 		VARCHAR,
-	date 				TIMESTAMP,
-	givenBy 			VARCHAR
+	serialNumber 		VARCHAR NOT NULL,
+	date 				TIMESTAMP NOT NULL,
+	givenBy 			VARCHAR NOT NULL
 );
 
 CREATE TABLE Address (
 	id 					SERIAL PRIMARY KEY,
 	patientId 			INTEGER REFERENCES Patient (id),
 	isMailingAddress 	BOOL NOT NULL,		-- Является адресом по прописке.
-	city 				VARCHAR,
-	street 				VARCHAR,
-	house 				VARCHAR, 
+	city 				VARCHAR NOT NULL,
+	street 				VARCHAR NOT NULL,
+	house 				VARCHAR NOT NULL, 
 	apartment 			VARCHAR
 );
 
