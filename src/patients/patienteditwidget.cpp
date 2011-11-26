@@ -74,6 +74,7 @@ void PatientEditWidget::init()
 
 
 	m_mailingAddressIsActual->setChecked(true);
+	m_editActualAddress->setEnabled(false);
 	if(q.first())
 	{
 		m_mailingAddress = Address(q.record());
@@ -86,6 +87,7 @@ void PatientEditWidget::init()
 		if(q.next())
 		{
 			m_mailingAddressIsActual->setChecked(false);
+			m_editActualAddress->setEnabled(true);
 
 			m_actualAddress = Address(q.record());
 			m_actualAddressLabel->setText(m_actualAddress.toString());
@@ -94,7 +96,7 @@ void PatientEditWidget::init()
 
 
 
-	q.prepare(" SELECT id, documentTypeId, serialNumber, number, date, givenBy "
+	q.prepare(" SELECT id, documentTypeId, serialNumber, date, givenBy "
 			  " FROM Document "
 			  " WHERE patientId = :patientId "
 			  " ORDER BY documentTypeId, date ");
@@ -244,8 +246,7 @@ void PatientEditWidget::addDocumentToTable(const Document& doc)
 	item = new QTableWidgetItem(doc.date.toString());
 	m_documentTable->setItem(row, DocumentTableColumns::Date, item);
 
-	item = new QTableWidgetItem(QString::fromUtf8("Серия %1, номер %2").
-								arg(doc.serialNumber).arg(doc.number));
+	item = new QTableWidgetItem(doc.serialNumber);
 	m_documentTable->setItem(row, DocumentTableColumns::Number, item);
 }
 
@@ -261,8 +262,7 @@ void PatientEditWidget::editDocumentInTable(const int row, const Document& newDo
 	item->setText(newDoc.date.toString());
 
 	item = m_documentTable->item(row, DocumentTableColumns::Number);
-	item->setText(QString::fromUtf8("Серия %1, номер %2").
-				  arg(newDoc.serialNumber).arg(newDoc.number));
+	item->setText(newDoc.serialNumber);
 }
 
 

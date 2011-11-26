@@ -19,7 +19,6 @@ DocumentEditDialog::DocumentEditDialog(const Document& doc, QWidget *parent)
 	m_documentType->setCurrentIndex(m_documentType->findData(doc.documentTypeId));
 
 	m_serialNumber->setText(doc.serialNumber);
-	m_number->setText(doc.number);
 	m_date->setDate(doc.date);
 	m_givenBy->setText(doc.givenBy);
 
@@ -33,7 +32,6 @@ Document DocumentEditDialog::document()
 	m_document.documentTypeId =
 			m_documentType->itemData(m_documentType->currentIndex()).toInt();
 	m_document.serialNumber = m_serialNumber->text();
-	m_document.number = m_number->text();
 	m_document.date = m_date->date();
 	m_document.givenBy = m_givenBy->text();
 

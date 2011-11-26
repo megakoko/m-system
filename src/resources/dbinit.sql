@@ -53,7 +53,6 @@ CREATE TABLE Document (
 	documentTypeId 		INTEGER REFERENCES DocumentType (id),
 	patientId 			INTEGER REFERENCES Patient (id),
 	serialNumber 		VARCHAR,
-	number 				VARCHAR,
 	date 				TIMESTAMP,
 	givenBy 			VARCHAR
 );
