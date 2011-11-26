@@ -11,6 +11,7 @@ public:
 	Address(const QSqlRecord& record);
 
 	QString toString() const;
+	bool isNull() const;
 
 	void save(const int patientId) const;
 	void deleteAddress() const;
@@ -21,7 +22,6 @@ public:
 	QString apartment;
 
 private:
-	bool dataIsNull() const;
 
 	bool m_isMailingAddress;
 	mutable int m_id;
