@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>dbinit.sql</file>
+        <file>mkb10.csv</file>
     </qresource>
 </RCC>
