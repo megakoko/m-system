@@ -17,6 +17,10 @@ DatabaseSettingsPage::DatabaseSettingsPage(QWidget *parent)
 {
 	setupUi(this);
 
+#ifdef QT_NO_DEBUG
+	m_resetDatabase->setVisible(false);
+#endif
+
 	AbstractSettingsPage::connect(m_resetDatabase, SIGNAL(clicked()), this, SLOT(resetDatabase()));
 }
 
@@ -84,21 +88,16 @@ void DatabaseSettingsPage::resetDatabase()
 	query.exec(ts.readAll());
 	checkQuery(query);
 
-	/*
-	QMap<QString, QString> map = MainWindow::pluginTextidToDescription();
-	QMap<QString, QString>::const_iterator i = map.constBegin();
 
-
-	query.prepare(" INSERT INTO Plugins (textid, name) "
-				  " VALUES (:textid, :name) ");
-	while(i != map.constEnd())
+	file.close();
+	file.setFileName(":/mkb10.csv");
+	if(!file.open(QIODevice::ReadOnly))
 	{
-		query.bindValue(":textid", i.key());
-		query.bindValue(":name", i.value());
-		query.exec();
-		++i;
+		qWarning() << "Cant open mkb10.csv file";
+		return;
 	}
-	*/
+	query.exec(ts.readAll());
+	checkQuery(query);
 
 
 	qApp->exit(0);

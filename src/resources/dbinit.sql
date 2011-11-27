@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------
 ----------------------- Dropping tables -----------------------------
 
+
+DROP TABLE IF EXISTS MKB10;
 DROP TABLE IF EXISTS Address;
 DROP TABLE IF EXISTS Document;
 DROP TABLE IF EXISTS DocumentType; 
@@ -67,6 +69,14 @@ CREATE TABLE Address (
 	apartment 			VARCHAR
 );
 
+
+
+CREATE TABLE MKB10 (
+	id					INTEGER NOT NULL UNIQUE,
+	description			VARCHAR,
+	parentId			INTEGER REFERENCES MKB10(id)
+);
+ 
 
 ---------------------------------------------------------------------
 ----------------------------- Data ----------------------------------
