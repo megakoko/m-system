@@ -2,6 +2,7 @@
 
 #include "passwords.h"
 #include <QCryptographicHash>
+#include <QDateTime>
 
 
 QString Passwords::hash(const QString &password, const QByteArray &salt)
@@ -36,11 +37,20 @@ QString Passwords::decodePassword(const QString& pw)
 
 QByteArray Passwords::salt()
 {
+	qsrand(QDateTime::currentMSecsSinceEpoch());
+
 	const int length = 10;
 	QByteArray result;
 	for(int i = 0; i < length; ++i)
 	{
-		result.append('s');
+		// 0x0030 = unicode "0".
+		// "1", ..., "9", ":", ..., "@", "A", ...,"z"
+		// 0x007A = unicode "z".
+		const int start = 0x0030;
+		const int end   = 0x007A;
+		const int code = start + qrand() % (end - start);
+
+		result.append(QChar(code));
 	}
 
 	return result;
