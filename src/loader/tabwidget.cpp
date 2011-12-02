@@ -46,7 +46,7 @@ void TabWidget::closeTab()
 {
 	const int index = indexOf(qobject_cast<QWidget*>(sender()));
 	if(index >= 0)
-		removeTab(index);
+		closeTab(index);
 }
 
 
