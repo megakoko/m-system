@@ -65,12 +65,15 @@ void TabWidget::setTabLabel(const QString &text)
 
 void TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 {
-	const int index = addTab(widget, caption);
-	setCurrentIndex(index);
+	if(widget != NULL)
+	{
+		const int index = addTab(widget, caption);
+		setCurrentIndex(index);
 
-	connect(widget, SIGNAL(closeMe()), SLOT(closeTab()));
-	connect(widget, SIGNAL(setTabLabel(QString)), SLOT(setTabLabel(QString)));
-	connect(widget,
-			SIGNAL(addNewWidget(PluginWidget*, QString)),
-			SLOT(addWidget(PluginWidget*,QString)));
+		connect(widget, SIGNAL(closeMe()), SLOT(closeTab()));
+		connect(widget, SIGNAL(setTabLabel(QString)), SLOT(setTabLabel(QString)));
+		connect(widget,
+				SIGNAL(addNewWidget(PluginWidget*, QString)),
+				SLOT(addWidget(PluginWidget*,QString)));
+	}
 }
