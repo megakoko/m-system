@@ -1,6 +1,6 @@
 #include "mkb10.h"
 #include <QtPlugin>
-//#include "mainmkb10widget.h"
+#include "mainmkb10widget.h"
 
 
 Mkb10::~Mkb10()
@@ -23,8 +23,7 @@ QString Mkb10::textid() const
 
 PluginWidget* Mkb10::widget() const
 {
-	return NULL;
-//	return new MainMkb10Widget();
+	return new MainMkb10Widget();
 }
 
 
