@@ -34,6 +34,10 @@ private:
 	/// \returns salt stored in the database for the user with given \a login.
 	QByteArray salt(const QString& login) const;
 
+
+	bool databaseIsInitialized() const;
+	void initializeDatabase();
+
 private slots:
 	/// Tries to log in into the system.
 	/// Calls accepted() on success.

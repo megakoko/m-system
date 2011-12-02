@@ -7,6 +7,9 @@
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QTimer>
+#include <QFile>
+#include <QTextStream>
+#include <QProgressDialog>
 
 #include "passwords.h"
 #include "macros.h"
@@ -25,6 +28,10 @@ LoginDialog::LoginDialog(QWidget *parent)
 
 	initConnections();
 	resize(width(), 0);
+
+
+	if(connectToDatabase() && !databaseIsInitialized())
+		initializeDatabase();
 }
 
 
@@ -77,6 +84,7 @@ void LoginDialog::tryToLogin()
 		return;
 	}
 
+
 	const QString& hash = Passwords::hash(m_password->text(), salt(m_login->text()));
 
 	QSqlQuery query;
@@ -121,4 +129,58 @@ QByteArray LoginDialog::salt(const QString& login) const
 		result = query.value(0).toByteArray();
 
 	return result;
+}
+
+
+bool LoginDialog::databaseIsInitialized() const
+{
+	QSqlQuery q;
+	return q.exec("SELECT COUNT(1) FROM MUser");
+}
+
+
+void LoginDialog::initializeDatabase()
+{
+	const QString& title = QString::fromUtf8("Настройка базы данных");
+	const QString& msg =
+			QString::fromUtf8("Пожалуйста, подождите. "
+							  "Выполняется настройка базы данных");
+	QProgressDialog d(title, msg, 0, 2, this);
+	d.setWindowModality(Qt::WindowModal);
+
+	d.setCancelButton(NULL);
+	d.show();
+
+
+	int progress = 0;
+
+
+	QFile file;
+	QTextStream ts(&file);
+	QSqlQuery query;
+
+
+	file.setFileName(":/dbinit.sql");
+	if(!file.open(QIODevice::ReadOnly))
+	{
+		qWarning() << "Cant open dbinit.sql file";
+		return;
+	}
+	query.exec(ts.readAll());
+	checkQuery(query);
+
+	d.setValue(++progress);
+
+
+	file.close();
+	file.setFileName(":/mkb10.csv");
+	if(!file.open(QIODevice::ReadOnly))
+	{
+		qWarning() << "Cant open mkb10.csv file";
+		return;
+	}
+	query.exec(ts.readAll());
+	checkQuery(query);
+
+	d.setValue(++progress);
 }
