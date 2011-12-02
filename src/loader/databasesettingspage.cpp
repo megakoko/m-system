@@ -3,10 +3,8 @@
 #include "passwords.h"
 
 #include <QSqlQuery>
-#include <QDebug>
 #include <QSqlError>
-#include <QFile>
-#include <QMessageBox>
+#include <QDebug>
 
 #include "mainwindow.h"
 #include "macros.h"
@@ -16,12 +14,6 @@ DatabaseSettingsPage::DatabaseSettingsPage(QWidget *parent)
 	: AbstractSettingsPage(parent)
 {
 	setupUi(this);
-
-#ifdef QT_NO_DEBUG
-	m_resetDatabase->setVisible(false);
-#endif
-
-	AbstractSettingsPage::connect(m_resetDatabase, SIGNAL(clicked()), this, SLOT(resetDatabase()));
 }
 
 
@@ -51,54 +43,3 @@ void DatabaseSettingsPage::saveSettings()
 	m_settings.setValue("password", Passwords::encodePassword(m_password->text()));
 }
 
-
-void DatabaseSettingsPage::resetDatabase()
-{
-	// TODO: check if user is admin.
-
-
-	const QString& title = QString::fromUtf8("Сброс базы данных");
-	const QString& description =
-			QString::fromUtf8("После сброса базы данных программа закроется. "
-							  "Вы хотите продолжить?");
-
-	const int rc = QMessageBox::question(this, title,
-										 description, QMessageBox::Yes | QMessageBox::No);
-
-	if(rc == QMessageBox::No)
-		return;
-
-
-	if(!QSqlDatabase::database().isOpen())
-	{
-		// QMessageBox TODO
-		return;
-	}
-
-	QFile file(":/dbinit.sql");
-	if(!file.open(QIODevice::ReadOnly))
-	{
-		qWarning() << "Cant open dbinit.sql file";
-		return;
-	}
-
-	QTextStream ts(&file);
-
-	QSqlQuery query;
-	query.exec(ts.readAll());
-	checkQuery(query);
-
-
-	file.close();
-	file.setFileName(":/mkb10.csv");
-	if(!file.open(QIODevice::ReadOnly))
-	{
-		qWarning() << "Cant open mkb10.csv file";
-		return;
-	}
-	query.exec(ts.readAll());
-	checkQuery(query);
-
-
-	qApp->exit(0);
-}

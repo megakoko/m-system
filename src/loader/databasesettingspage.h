@@ -19,7 +19,4 @@ public:
 	void readSettings();
 	void saveSettings();
 
-private slots:
-	void resetDatabase();
-
 };
