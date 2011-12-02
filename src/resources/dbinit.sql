@@ -87,7 +87,8 @@ INSERT INTO MUser(login, password, salt, is_admin) VALUES
 
 INSERT INTO Plugins(textid, name) VALUES
 ('admin', 'Администратор'), 
-('patients', 'Пациенты');
+('patients', 'Пациенты'),
+('mkb10', 'Справочная система МКБ-10');
 
 
 INSERT INTO DocumentType(textid, name) VALUES
