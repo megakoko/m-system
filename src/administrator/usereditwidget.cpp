@@ -122,8 +122,9 @@ void UserEditWidget::save()
 	}
 
 
+
 	QSqlQuery query;
-	if(m_password->text().isNull())
+	if(m_password->text().simplified().isEmpty())
 	{
 		query.prepare(" UPDATE MUser SET "
 					  " login = :login, "
