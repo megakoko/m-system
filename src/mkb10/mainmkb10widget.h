@@ -14,14 +14,8 @@ public:
 	explicit MainMkb10Widget(QWidget *parent = 0);
 
 private:
-	static QTreeWidgetItem* createTreeWidgetItem(const QSqlRecord& rec);
-
-	static void addDummyChildItem(QTreeWidgetItem* item);
-	static void removeDummyChildItem(QTreeWidgetItem* item);
-	static bool itemHasDummyChildItem(const QTreeWidgetItem* item);
-
-	static bool itemHasChildren(const int id);
-
+	static QTreeWidgetItem* createItem(const QSqlRecord& rec);
+	static QList<QTreeWidgetItem*> createItems(const int parentId = -1);
 
 private slots:
 	void initTreeWidget();
