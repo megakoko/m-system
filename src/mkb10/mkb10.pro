@@ -6,7 +6,11 @@ QT		+= sql
 include( ../m-system-config.pri )
 
 
-HEADERS +=	mkb10.h
+HEADERS +=	mkb10.h \
+    mainmkb10widget.h
 
-SOURCES +=	mkb10.cpp
+SOURCES +=	mkb10.cpp \
+    mainmkb10widget.cpp
 
+FORMS += \
+    mainmkb10widget.ui
