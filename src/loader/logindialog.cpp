@@ -173,10 +173,10 @@ void LoginDialog::initializeDatabase()
 
 
 	file.close();
-	file.setFileName(":/mkb10.csv");
+	file.setFileName(":/mkb10.sql");
 	if(!file.open(QIODevice::ReadOnly))
 	{
-		qWarning() << "Cant open mkb10.csv file";
+		qWarning() << "Cant open mkb10.sql file";
 		return;
 	}
 	query.exec(ts.readAll());
