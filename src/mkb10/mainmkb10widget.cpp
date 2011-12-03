@@ -4,9 +4,18 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlError>
+#include <QSqlQueryModel>
 #include <QDebug>
 
 #include "macros.h"
+
+
+static const int PAGE_TREE = 0;
+static const int PAGE_FILTER = 1;
+
+
+const QString MainMkb10Widget::filterText =
+	" SELECT description FROM mkb10 WHERE description ILIKE '%%1%' ";
 
 
 MainMkb10Widget::MainMkb10Widget(QWidget *parent)
@@ -16,8 +25,17 @@ MainMkb10Widget::MainMkb10Widget(QWidget *parent)
 
 	initTreeWidget();
 
+	m_stackedWidget->setCurrentIndex(PAGE_TREE);
+
+	m_filterModel = new QSqlQueryModel(this);
+	m_listView->setModel(m_filterModel);
+
 	connect(m_treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
 			SLOT(treeWidgetItemExpanded(QTreeWidgetItem*)));
+
+	connect(m_search, SIGNAL(clicked()), SLOT(filterDeseases()));
+	connect(m_filter, SIGNAL(returnPressed()), SLOT(filterDeseases()));
+	connect(m_clear, SIGNAL(clicked()), m_filter, SLOT(clear()));
 }
 
 
@@ -34,29 +52,44 @@ void MainMkb10Widget::initTreeWidget()
 }
 
 
+void MainMkb10Widget::filterDeseases()
+{
+	// Средство против SQL-инъекции.
+	const QString& filter = m_filter->text().simplified().remove("'");
+
+	if(filter.isEmpty())
+		m_stackedWidget->setCurrentIndex(PAGE_TREE);
+	else
+	{
+		m_stackedWidget->setCurrentIndex(PAGE_FILTER);
+		m_filterModel->setQuery(filterText.arg(filter));
+	}
+}
+
+
+
 QTreeWidgetItem* MainMkb10Widget::createItem(const QSqlRecord& rec)
 {
 	QTreeWidgetItem* item = new QTreeWidgetItem;
 
-	const int id = rec.value("id").toInt();
-	item->setData(0, Qt::UserRole, id);
+	item->setData(0, Qt::UserRole, rec.value("id"));
 	item->setText(0, rec.value("description").toString());
 
 	return item;
 }
 
 
-QList<QTreeWidgetItem*> MainMkb10Widget::createItems(const int parentId)
+QList<QTreeWidgetItem*> MainMkb10Widget::createItems(const QVariant& parentId)
 {
 	QSqlQuery q;
-	if(parentId > 0)
+	if(parentId.isNull())
 	{
-		q.prepare("SELECT id, description FROM mkb10 WHERE parentId = :id");
-		q.addBindValue(parentId);
+		q.prepare("SELECT id, description FROM mkb10 WHERE parentId IS NULL");
 	}
 	else
 	{
-		q.prepare("SELECT id, description FROM mkb10 WHERE parentId IS NULL");
+		q.prepare("SELECT id, description FROM mkb10 WHERE parentId = :id");
+		q.addBindValue(parentId);
 	}
 
 	q.exec();
@@ -77,7 +110,7 @@ void MainMkb10Widget::treeWidgetItemExpanded(QTreeWidgetItem *item)
 		QTreeWidgetItem* child = item->child(i);
 		if(child->childCount() == 0)
 		{
-			const int& id = child->data(0, Qt::UserRole).toInt();
+			const QVariant& id = child->data(0, Qt::UserRole);
 			child->addChildren(createItems(id));
 		}
 	}

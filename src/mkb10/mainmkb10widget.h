@@ -5,6 +5,7 @@
 
 
 class QSqlRecord;
+class QSqlQueryModel;
 
 class MainMkb10Widget : public PluginWidget, private Ui::MainMkb10Widget
 {
@@ -15,9 +16,16 @@ public:
 
 private:
 	static QTreeWidgetItem* createItem(const QSqlRecord& rec);
-	static QList<QTreeWidgetItem*> createItems(const int parentId = -1);
+	static QList<QTreeWidgetItem*> createItems(const QVariant& parentId = QVariant());
+
+	void initTreeWidget();
+
+	static const QString filterText;
+	QSqlQueryModel* m_filterModel;
+
 
 private slots:
-	void initTreeWidget();
 	void treeWidgetItemExpanded(QTreeWidgetItem* item);
+
+	void filterDeseases();
 };
