@@ -17,7 +17,7 @@ void TabWidget::tabInserted(int index)
 {
 	if(index == 0)
 	{
-		// Empty close [x] button for first tab.
+		// Убираем кнопку закрытия [x] для первой вкладки.
 		QWidget* button = new QWidget(this);
 		button->resize(0, 0);
 		tabBar()->setTabButton(index, QTabBar::RightSide, button);

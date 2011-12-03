@@ -91,7 +91,7 @@ void Address::save(const int patientId) const
 		checkQuery(q);
 
 
-		// Updating id.
+		// обновляем ID.
 		if(m_id <= 0)
 		{
 			q.first();
