@@ -67,7 +67,7 @@ void PatientEditWidget::init()
 	q.prepare(" SELECT id, isMailingAddress, city, street, house, apartment "
 			  " FROM Address "
 			  " WHERE patientId = :patientId "
-			  " ORDER BY isMailingAddress DESC "); // TRUE, then FALSE
+			  " ORDER BY isMailingAddress DESC "); // Сначала TRUE, потом FALSE
 	q.bindValue(":patientId", m_patientId);
 	q.exec();
 	checkQuery(q);
@@ -80,7 +80,7 @@ void PatientEditWidget::init()
 		m_mailingAddress = Address(q.record());
 		m_mailingAddressLabel->setText(m_mailingAddress.toString());
 
-		// There must be at least mailing address.
+		// Адрес по прописке должен существовать.
 		Q_ASSERT(q.record().value("isMailingAddress").toBool() == true);
 
 

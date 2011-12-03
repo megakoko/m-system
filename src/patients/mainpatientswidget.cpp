@@ -79,7 +79,7 @@ void MainPatientsWidget::addPatient()
 	QList<int> numbers;
 	while(q.next())
 	{
-		if(q.isNull(0))	// Although null values will appear last, we can use 'break' here.
+		if(q.isNull(0))
 			continue;
 		numbers << q.value(0).toInt();
 	}

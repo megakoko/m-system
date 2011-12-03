@@ -121,7 +121,7 @@ void AdminWidget::deleteUser()
 	Q_ASSERT(userid >= 0);
 
 
-	// An attempt to delete last admin user. Not good!
+	// Попытка удаления последнего пользователя с правами админа.
 	if(UserEditWidget::userIsAdmin(userid) && UserEditWidget::numberOfAdminUsers() == 1)
 	{
 		static const QString& desc =
@@ -168,7 +168,7 @@ QString AdminWidget::generateLogin() const
 	QList<int> numbers;
 	while(q.next())
 	{
-		if(q.isNull(0))	// Although null values will appear last, we can use 'break' here.
+		if(q.isNull(0))	// NULL-значения появятся последними, мона использовать break здесь.
 			continue;
 		numbers << q.value(0).toInt();
 	}

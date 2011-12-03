@@ -17,7 +17,6 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
 	Q_OBJECT
 
 public:
-	/// Constructs the widget with \a parent as parent.
 	explicit MainWindow(QWidget *parent = 0);
 
 	static QMap<QString, QString> pluginTextidToDescription();
@@ -31,10 +30,10 @@ private:
 
 	void loadPlugins();
 	void unloadPlugins();
-	/// \returns true if plugin was loaded successfully.
+	/// \returns	true если плагин был успешно загружен, иначе false.
 	bool processPlugin(QPluginLoader* obj);
 
-	/// Holds ID of the user.
+	/// Хранит ID вошедшего в систему пользователя.
 	int m_userId;
 
 	SettingsDialog* m_settingsDialog;

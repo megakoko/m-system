@@ -19,7 +19,8 @@ private:
 
 	bool singleUserSelected() const;
 
-	/// \returns id of selected user or -1 if there	are more than 1 or no user selected.
+	/// \returns	ID выбранного пользователя или -1 если выбрано более 1 пользователей
+	///				или 0 пользователей.
 	int selectedUserId() const;
 
 	QString selectedUserName() const;

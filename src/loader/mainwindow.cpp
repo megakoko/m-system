@@ -49,7 +49,7 @@ void MainWindow::initToolBar()
 	m_toolbar->addAction(QString::fromUtf8("Настройки"),
 						 m_settingsDialog, SLOT(exec()));
 
-	// Hack to add a space to the QToolBar.
+	// Небольшой хак для того, чтоб пункт "О программе" был выровнян по правому краю.
 	QWidget* spacer = new QWidget(m_toolbar);
 	spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
 	m_toolbar->addWidget(spacer);
@@ -158,7 +158,7 @@ bool MainWindow::processPlugin(QPluginLoader *obj)
 {
 	bool loadedOkay = false;
 
-	obj->load();	// Explicit call.
+	obj->load();	// Явный вызов метода.
 	PluginInterface* plugin = qobject_cast<PluginInterface*>(obj->instance());
 	if(plugin != NULL && userHaveAccessToPlugin(plugin->textid()))
 	{

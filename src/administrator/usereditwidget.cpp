@@ -65,7 +65,7 @@ void UserEditWidget::init()
 		checkQuery(query);
 
 
-		// First, disable all combo boxes.
+		// Снимаем галки со всех QCheckBox.
 		QMap<QString, QCheckBox*>::iterator i = m_textidToCheckbox.begin();
 		while(i != m_textidToCheckbox.end())
 		{

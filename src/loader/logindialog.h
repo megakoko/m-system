@@ -21,8 +21,8 @@ private:
 	void showMessage(const QString& message);
 
 
-	/// Connects to the database.
-	/// \returns true on success, otherwise false.
+	/// Устанавливает соединение с БД.
+	/// \returns	true после удачного соединения, в противном случае false.
 	bool connectToDatabase();
 
 	static const int NO_USER_ID;
@@ -31,7 +31,7 @@ private:
 
 	QSettings m_settings;
 
-	/// \returns salt stored in the database for the user with given \a login.
+	/// \returns соль, хранящаяся в БД для пользователя с логином \a login.
 	QByteArray salt(const QString& login) const;
 
 
@@ -39,8 +39,8 @@ private:
 	void initializeDatabase();
 
 private slots:
-	/// Tries to log in into the system.
-	/// Calls accepted() on success.
+	/// Пытается войти в систему.
+	/// Вызывает accepted() в случае успеха.
 	void tryToLogin();
 
 
