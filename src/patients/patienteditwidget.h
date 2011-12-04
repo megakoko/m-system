@@ -1,18 +1,21 @@
 #pragma once
 
 
-#include "pluginwidget.h"
+#include "saveablepluginwidget.h"
 #include "ui_patienteditwidget.h"
 
 #include "address.h"
 #include "document.h"
 
-class PatientEditWidget : public PluginWidget, private Ui::PatientEditWidget
+class PatientEditWidget : public SaveablePluginWidget, private Ui::PatientEditWidget
 {
 	Q_OBJECT
 
 public:
 	explicit PatientEditWidget(const int patientId, QWidget *parent = 0);
+
+	bool canSave(QString &errorDescription) const;
+	void save();
 
 private:
 	void init();
@@ -43,5 +46,4 @@ private slots:
 	void editDocument();
 	void deleteDocument();
 
-	void save();
 };
