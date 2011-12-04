@@ -10,8 +10,7 @@ class Patients : public QObject, public PluginInterface
 public:
 	~Patients();
 
-	QString name() const;
 	QString textid() const;
 	PluginWidget* widget() const;
-	QWidget* settingsPage() const;
+
 };

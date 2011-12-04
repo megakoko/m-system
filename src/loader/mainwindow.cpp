@@ -65,20 +65,6 @@ void MainWindow::initConnections()
 }
 
 
-
-QMap<QString, QString> MainWindow::pluginTextidToDescription()
-{
-	QMap<QString, QString> result;
-	foreach(QPluginLoader* loader, m_plugins)
-	{
-		PluginInterface* plugin = qobject_cast<PluginInterface*>(loader->instance());
-		if(plugin != NULL)
-			result[plugin->textid()] = plugin->name();
-	}
-	return result;
-}
-
-
 void MainWindow::addHomeTab()
 {
 	m_tabWidget->addTab(m_homePage, QString::fromUtf8("Домашняя страница"));
@@ -122,7 +108,7 @@ void MainWindow::launchPlugin(const QString &textid)
 	{
 		PluginInterface* plugin = qobject_cast<PluginInterface*>(loader->instance());
 		if(plugin != NULL && plugin->textid() == textid)
-			m_tabWidget->addWidget(plugin->widget(), plugin->name());
+			m_tabWidget->addWidget(plugin->widget(), pluginName(textid));
 	}
 }
 
@@ -165,7 +151,7 @@ bool MainWindow::processPlugin(QPluginLoader *obj)
 		loadedOkay = true;
 
 		m_plugins << obj;
-		m_homePage->addButton(plugin->name(), plugin->textid());
+		m_homePage->addButton(pluginName(plugin->textid()), plugin->textid());
 	}
 
 	if(!loadedOkay)
@@ -205,4 +191,17 @@ bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 	}
 
 	return result;
+}
+
+
+QString MainWindow::pluginName(const QString &textid) const
+{
+	QSqlQuery q;
+	q.prepare("SELECT name FROM Plugins WHERE textid = :textid");
+	q.bindValue(":textid", textid);
+	q.exec();
+	checkQuery(q);
+
+
+	return q.first() ? q.value(0).toString() : QString::null;
 }

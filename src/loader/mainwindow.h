@@ -19,8 +19,6 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
 public:
 	explicit MainWindow(QWidget *parent = 0);
 
-	static QMap<QString, QString> pluginTextidToDescription();
-
 private:
 
 	void initToolBar();
@@ -42,9 +40,7 @@ private:
 
 	bool userHaveAccessToPlugin(const QString& textid) const;
 
-
-//	QMap<QString, PluginInterface*> m_textidToInterface;
-//	static QMap<QString, QString> m_textidToDescription;
+	QString pluginName(const QString& textid) const;
 
 	QAction* m_connectionAction;
 
