@@ -53,7 +53,8 @@ CREATE TABLE Patient (
 	id 					SERIAL PRIMARY KEY,
 	familyName 			VARCHAR,
 	name 				VARCHAR,
-	patronymic 			VARCHAR
+	patronymic 			VARCHAR,
+	birthDay			TIMESTAMP
 );
 
 CREATE TABLE DocumentType (
@@ -103,7 +104,7 @@ CREATE TABLE Staff (
 	familyName 			VARCHAR,
 	name 				VARCHAR,
 	patronymic 			VARCHAR,
-	birthDate			TIMESTAMP,
+	birthDay			TIMESTAMP,
 	specialization		VARCHAR
 );
 
