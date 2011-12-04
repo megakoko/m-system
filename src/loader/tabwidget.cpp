@@ -3,6 +3,7 @@
 #include "tabwidget.h"
 #include <QTabBar>
 #include <QMessageBox>
+#include <QVariant>
 #include <QDebug>
 #include "saveablepluginwidget.h"
 
@@ -39,30 +40,53 @@ void TabWidget::closeTab(int index)
 {
 	QWidget* w = widget(index);
 
-	SaveablePluginWidget* saveableWidget = dynamic_cast<SaveablePluginWidget*>(w);
-	if(saveableWidget != NULL)
+	if(tabIsMain(index))
 	{
-		QString errorDescription;
+		bool hasChildTabs = false;
+		for(int i = 0; i < count(); ++i)
+			if(tabsHaveSameTextid(index, i))
+			{
+				hasChildTabs = true;
+				break;
+			}
 
-		if(saveableWidget->canSave(errorDescription))
+
+		if(hasChildTabs)
 		{
-			// Убеждаемся, что по-ошибке переменная не была использована.
-			Q_ASSERT(errorDescription.isNull());
-
-			if(userWantsToSave())
-				saveableWidget->save();
-		}
-		else
-		{
-			const QString& title = QString::fromUtf8("Сохранение невозможно");
-			const QString& description = errorDescription + "\n\n" +
-										QString::fromUtf8("Все-равно закрыть?");
-
-			const int rc = QMessageBox::question(this, title, description,
-												 QMessageBox::Yes | QMessageBox::No);
-
-			if(rc == QMessageBox::No)
+			if(!userWantsToCloseMainPluginTab())
 				return;
+			else
+			{
+				for(int i = count()-1; i >= 0; --i)
+					if(tabsHaveSameTextid(index, i))
+					{
+						QWidget* ww = widget(i);
+						removeTab(i);
+						delete ww;
+					}
+			}
+		}
+	}
+	else
+	{
+		SaveablePluginWidget* saveableWidget = dynamic_cast<SaveablePluginWidget*>(w);
+		if(saveableWidget != NULL)
+		{
+			QString errorDescription;
+
+			if(saveableWidget->canSave(errorDescription))
+			{
+				// Убеждаемся, что по-ошибке переменная не была использована.
+				Q_ASSERT(errorDescription.isNull());
+
+				if(userWantsToSaveWidget())
+					saveableWidget->save();
+			}
+			else
+			{
+				if(!userWantsToCloseWidgetThatCannotBeSaved(errorDescription))
+					return;
+			}
 		}
 	}
 
@@ -92,12 +116,25 @@ void TabWidget::setTabLabel(const QString &text)
 }
 
 
-void TabWidget::addWidget(PluginWidget *widget, const QString& caption)
+int TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 {
+	int index = -1;
+
 	if(widget != NULL)
 	{
-		const int index = addTab(widget, caption);
+		index = addTab(widget, caption);
 		setCurrentIndex(index);
+
+		const int parentIndex = indexOf(qobject_cast<QWidget*>(sender()));
+		if(parentIndex >= 0)
+		{
+			const QStringList& data = tabBar()->tabData(parentIndex).toStringList();
+
+			if(data.size() == 2)
+				tabBar()->setTabData(index, data.last());
+		}
+
+
 
 		connect(widget, SIGNAL(closeMe()), SLOT(closeTab()));
 		connect(widget, SIGNAL(setTabLabel(QString)), SLOT(setTabLabel(QString)));
@@ -105,10 +142,57 @@ void TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 				SIGNAL(addNewWidget(PluginWidget*, QString)),
 				SLOT(addWidget(PluginWidget*,QString)));
 	}
+	return index;
 }
 
 
-bool TabWidget::userWantsToSave()
+void TabWidget::addWidget(PluginWidget *widget, const QString &caption,
+						 const QString &textid)
+{
+	const int index = addWidget(widget, caption);
+	const QVariant& data = QStringList() << "main" << textid;
+	tabBar()->setTabData(index, data);
+}
+
+
+bool TabWidget::tabIsMain(const int index) const
+{
+	const QStringList& tabData = tabBar()->tabData(index).toStringList();
+
+	return !tabData.isEmpty() && tabData.first() == "main";
+}
+
+
+bool TabWidget::tabsHaveSameTextid(const int index1, const int index2) const
+{
+	bool textidsAreSame = false;
+
+	if(index1 != index2)
+	{
+		const QStringList& data1 = tabBar()->tabData(index1).toStringList();
+		const QStringList& data2 = tabBar()->tabData(index2).toStringList();
+
+		textidsAreSame =!data1.isEmpty() &&
+						!data2.isEmpty() &&
+						(data1.last() == data2.last());
+	}
+
+	return textidsAreSame;
+}
+
+
+bool TabWidget::userWantsToCloseMainPluginTab()
+{
+	const QString& title = QString::fromUtf8("Закрытие модуля");
+	const QString& descr = QString::fromUtf8("Хотите закрыть модуль и все его вкладки?");
+	const int rc = QMessageBox::question(this, title, descr,
+										 QMessageBox::Yes | QMessageBox::No);
+
+	return rc == QMessageBox::Yes;
+}
+
+
+bool TabWidget::userWantsToSaveWidget()
 {
 	const QString& title = QString::fromUtf8("Сохранение");
 	const QString& descr = QString::fromUtf8("Хотите сохранить?");
@@ -117,4 +201,17 @@ bool TabWidget::userWantsToSave()
 										 QMessageBox::Yes | QMessageBox::No);
 
 	return (rc == QMessageBox::Yes);
+}
+
+
+bool TabWidget::userWantsToCloseWidgetThatCannotBeSaved(const QString& errorDescription)
+{
+	const QString& title = QString::fromUtf8("Сохранение невозможно");
+	const QString& description = errorDescription + "\n\n" +
+								QString::fromUtf8("Все-равно закрыть?");
+
+	const int rc = QMessageBox::question(this, title, description,
+										 QMessageBox::Yes | QMessageBox::No);
+
+	return rc == QMessageBox::Yes;
 }
