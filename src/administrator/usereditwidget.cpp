@@ -24,7 +24,7 @@ UserEditWidget::UserEditWidget(const int userId, QWidget *parent)
 void UserEditWidget::init()
 {
 	QSqlQuery query;
-	query.exec("SELECT textid, name FROM Plugins");
+	query.exec("SELECT textid, name FROM Plugin");
 	checkQuery(query);
 	while(query.next())
 	{
@@ -58,7 +58,7 @@ void UserEditWidget::init()
 	{
 		query.prepare(" SELECT p.textid "
 					  " FROM UserPluginAccess upa "
-					  " LEFT JOIN Plugins p ON upa.pluginid = p.id "
+					  " LEFT JOIN Plugin p ON upa.pluginid = p.id "
 					  " WHERE upa.userid = :userid ");
 		query.bindValue(":userid", m_userId);
 		query.exec();
@@ -156,7 +156,7 @@ void UserEditWidget::save()
 
 	query.prepare(" DELETE FROM UserPluginAccess "
 				  " WHERE userid = :userid "
-				  " AND pluginid = (SELECT id FROM Plugins WHERE textid = :textid) ");
+				  " AND pluginid = (SELECT id FROM Plugin WHERE textid = :textid) ");
 	foreach(const QString& textid, remove)
 	{
 		query.bindValue(":userid", m_userId);
@@ -166,7 +166,7 @@ void UserEditWidget::save()
 	}
 
 	query.prepare(" INSERT INTO UserPluginAccess (userid, pluginid) "
-				  " VALUES (:userid, (SELECT id FROM Plugins WHERE textid = :textid) )");
+				  " VALUES (:userid, (SELECT id FROM Plugin WHERE textid = :textid) )");
 	foreach(const QString& textid, add)
 	{
 		query.bindValue(":userid", m_userId);
@@ -186,7 +186,7 @@ QSet<QString> UserEditWidget::databaseTextids() const
 	QSqlQuery query;
 	query.prepare(" SELECT p.textid "
 				  " FROM UserPluginAccess upa "
-				  " LEFT JOIN Plugins p ON upa.pluginid = p.id "
+				  " LEFT JOIN Plugin p ON upa.pluginid = p.id "
 				  " WHERE upa.userid = :userid ");
 	query.bindValue(":userid", m_userId);
 	query.exec();
