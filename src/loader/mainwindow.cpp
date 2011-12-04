@@ -108,7 +108,7 @@ void MainWindow::launchPlugin(const QString &textid)
 	{
 		PluginInterface* plugin = qobject_cast<PluginInterface*>(loader->instance());
 		if(plugin != NULL && plugin->textid() == textid)
-			m_tabWidget->addWidget(plugin->widget(), pluginName(textid));
+			m_tabWidget->addWidget(plugin->widget(), pluginName(textid), textid);
 	}
 }
 

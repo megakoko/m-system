@@ -20,12 +20,20 @@ public slots:
 
 	void setTabLabel(const QString& text);
 
-	void addWidget(PluginWidget* widget, const QString& caption);
+	/// \returns номер добавленной вкладки или -1, если вкладка не была добавлена.
+	int addWidget(PluginWidget* widget, const QString& caption);
+	void addWidget(PluginWidget* widget, const QString& caption, const QString& textid);
 
 protected:
 	void tabInserted(int index);
 
 private:
-	bool userWantsToSave();
+	bool tabIsMain(const int index) const;
+	bool tabsHaveSameTextid(const int index1, const int index2) const;
+
+	bool userWantsToCloseMainPluginTab();
+
+	bool userWantsToSaveWidget();
+	bool userWantsToCloseWidgetThatCannotBeSaved(const QString& errorDescription);
 
 };
