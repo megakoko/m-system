@@ -10,10 +10,7 @@ class Administrator : public QObject, public PluginInterface
 public:
 	~Administrator();
 
-	QString name() const;
 	QString textid() const;
 	PluginWidget* widget() const;
-	QWidget* settingsPage() const;
-
 
 };

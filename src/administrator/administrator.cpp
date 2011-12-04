@@ -13,12 +13,6 @@ Administrator::~Administrator()
 }
 
 
-QString Administrator::name() const
-{
-	return QString::fromUtf8("Администратор");
-}
-
-
 QString Administrator::textid() const
 {
 	return "admin";
@@ -27,11 +21,6 @@ QString Administrator::textid() const
 PluginWidget* Administrator::widget() const
 {
 	return new AdminWidget();
-}
-
-QWidget* Administrator::settingsPage() const
-{
-	return NULL;
 }
 
 Q_EXPORT_PLUGIN2(PluginInterface, Administrator)

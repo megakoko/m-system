@@ -13,8 +13,7 @@ class Mkb10 : public QObject, public PluginInterface
 public:
 	~Mkb10();
 
-	QString name() const;
 	QString textid() const;
 	PluginWidget* widget() const;
-	QWidget* settingsPage() const;
+
 };
