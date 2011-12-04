@@ -12,6 +12,9 @@ MOC_DIR		=	$${BASEPATH}/bin/moc
 UI_DIR		=	$${BASEPATH}/bin/ui
 RCC_DIR		=	$${BASEPATH}/bin/rcc
 
-INCLUDEPATH	+= ../common
+INCLUDEPATH	+=	../common
 
-HEADERS		+= ../common/macros.h ../common/pluginwidget.h ../common/plugininterface.h
+HEADERS		+=	../common/macros.h \
+				../common/pluginwidget.h \
+				../common/plugininterface.h \
+				../common/saveablepluginwidget.h

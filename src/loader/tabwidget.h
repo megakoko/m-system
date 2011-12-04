@@ -14,9 +14,6 @@ public:
 	explicit TabWidget(QWidget *parent = 0);
 	void closeAllTabs();
 
-protected:
-	void tabInserted(int index);
-
 public slots:
 	void closeTab(int index);
 	void closeTab();
@@ -24,5 +21,11 @@ public slots:
 	void setTabLabel(const QString& text);
 
 	void addWidget(PluginWidget* widget, const QString& caption);
+
+protected:
+	void tabInserted(int index);
+
+private:
+	bool userWantsToSave();
 
 };
