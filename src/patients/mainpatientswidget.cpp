@@ -5,7 +5,7 @@
 #include <QSqlRecord>
 #include <QSqlError>
 #include <QSqlQueryModel>
-
+#include <QMessageBox>
 #include <QDebug>
 
 
@@ -111,14 +111,46 @@ void MainPatientsWidget::addPatient()
 void MainPatientsWidget::editPatient()
 {
 	const int patientId = selectedPatientId();
-	if(patientId > 0)
-		addNewWidget(new PatientEditWidget(patientId, this), QString::fromUtf8("TODO"));
+	Q_ASSERT(patientId > 0);
+
+	addNewWidget(new PatientEditWidget(patientId, this), QString::fromUtf8("TODO"));
 }
 
 
 void MainPatientsWidget::deletePatient()
 {
+	const int patientId = selectedPatientId();
+	Q_ASSERT(patientId > 0);
 
+	const QString& title = QString::fromUtf8("Удаление пациента");
+	const QString& descr = QString::fromUtf8("Вы действительно хотите удалить пациента?");
+	const int rc = QMessageBox::question(this, title, descr,
+										 QMessageBox::Yes | QMessageBox::No);
+	if(rc == QMessageBox::Yes)
+	{
+		QSqlQuery q;
+
+		q.exec("BEGIN");
+
+		q.prepare("DELETE FROM Address WHERE patientId = :id");
+		q.addBindValue(patientId);
+		q.exec();
+		checkQuery(q);
+
+		q.prepare("DELETE FROM Document WHERE patientId = :id");
+		q.addBindValue(patientId);
+		q.exec();
+		checkQuery(q);
+
+		q.prepare("DELETE FROM Patient WHERE id = :id");
+		q.addBindValue(patientId);
+		q.exec();
+		checkQuery(q);
+
+		q.exec("COMMIT");
+
+		updatePatientsList();
+	}
 }
 
 
