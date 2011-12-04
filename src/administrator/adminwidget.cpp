@@ -134,7 +134,7 @@ void AdminWidget::deleteUser()
 	{
 		QSqlQuery q;
 
-		q.prepare("DELETE FROM UserPluginAccess WHERE id = :userid");
+		q.prepare("DELETE FROM UserPluginAccess WHERE userid = :userid");
 		q.addBindValue(userid);
 		q.exec();
 		checkQuery(q);
