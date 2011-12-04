@@ -50,7 +50,7 @@ void PatientEditWidget::init()
 
 
 	QSqlQuery q;
-	q.prepare(" SELECT familyName, name, patronymic "
+	q.prepare(" SELECT familyName, name, patronymic, birthDay "
 			  " FROM Patient "
 			  " WHERE id = :patientId");
 	q.bindValue(":patientId", m_patientId);
@@ -63,6 +63,7 @@ void PatientEditWidget::init()
 	m_familyName->setText(q.value(0).toString());
 	m_name->setText(q.value(1).toString());
 	m_patronymic->setText(q.value(2).toString());
+	m_birthDay->setDate(q.value(3).toDate());
 
 	q.prepare(" SELECT id, isMailingAddress, city, street, house, apartment "
 			  " FROM Address "
@@ -278,11 +279,13 @@ void PatientEditWidget::save()
 	q.prepare(" UPDATE Patient SET "
 			  " familyName = :familyName, "
 			  " name = :name, "
-			  " patronymic = :patronymic "
+			  " patronymic = :patronymic, "
+			  " birthDay = :birthDay "
 			  " WHERE id = :patientId ");
 	q.bindValue(":familyName", m_familyName->text());
 	q.bindValue(":name", m_name->text());
 	q.bindValue(":patronymic", m_patronymic->text());
+	q.bindValue(":birthDay", m_birthDay->date());
 	q.bindValue(":patientId", m_patientId);
 	q.exec();
 	checkQuery(q);
