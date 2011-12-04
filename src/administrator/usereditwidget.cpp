@@ -30,7 +30,6 @@ void UserEditWidget::init()
 	{
 		const QString& textid = query.value(0).toString();
 
-		qDebug() << textid;
 		QCheckBox* checkbox = new QCheckBox(query.value(1).toString(), this);
 		m_checkboxToTextid[checkbox] = textid;
 		m_textidToCheckbox[textid] = checkbox;
@@ -217,7 +216,6 @@ QSet<QString> UserEditWidget::checkedTextids() const
 
 void UserEditWidget::isAdminToggled(bool checked)
 {
-	qDebug() << __FUNCTION__ << checked;
 	scrollAreaWidgetContents->setHidden(checked);
 }
 
