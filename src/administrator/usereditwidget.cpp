@@ -11,7 +11,7 @@
 
 
 UserEditWidget::UserEditWidget(const int userId, QWidget *parent)
-	: PluginWidget(parent)
+	: SaveablePluginWidget(parent)
 	, m_userId(userId)
 {
 	setupUi(this);
@@ -86,43 +86,41 @@ void UserEditWidget::init()
 void UserEditWidget::initConnections()
 {
 	connect(m_isAdmin, SIGNAL(toggled(bool)), SLOT(isAdminToggled(bool)));
-	connect(m_save, SIGNAL(clicked()), SLOT(save()));
+	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
 
 	connect(m_login, SIGNAL(editingFinished()), SLOT(loginEdited()));
 }
 
 
-void UserEditWidget::save()
+bool UserEditWidget::canSave(QString& errorDescription) const
 {
 	if (userIsAdmin(m_userId) &&
 		numberOfAdminUsers() == 1 &&
 		m_isAdmin->isChecked() == false)
 	{
-		const QString& desc = QString::fromUtf8("Попытка удалить права администратора "
-						"у последнего администратора. Сохранение изменений невозможно.");
-		QMessageBox::information(this,
-								 QString::fromUtf8("Сохранение изменений"),
-								 desc);
-		return;
+		errorDescription = QString::fromUtf8("Попытка удалить права администратора "
+						"у последнего администратора.");
+		return false;
 	}
 	else if (m_login->text().simplified().isEmpty())
 	{
-		const QString& desc = QString::fromUtf8("Для сохранения изменений имя "
-												"пользователя должно быть заполнено.");
-		QMessageBox::information(this,
-								 QString::fromUtf8("Сохранение изменений"),
-								 desc);
-		return;
+		errorDescription  = QString::fromUtf8("Для сохранения изменений имя "
+								   "пользователя должно быть заполнено.");
+		return false;
 	}
 	else if (m_password->text() != m_password2->text())
 	{
-		QMessageBox::information(this, QString::fromUtf8("Пароли не совпадают"),
-								 QString::fromUtf8("TODO: Более развернутое пояснение"));
-		return;
+		errorDescription = QString::fromUtf8("Пароли не совпадают");
+		return false;
 	}
 
 
+	return true;
+}
 
+
+void UserEditWidget::save()
+{
 	QSqlQuery query;
 	if(m_password->text().simplified().isEmpty())
 	{
@@ -176,8 +174,6 @@ void UserEditWidget::save()
 		query.exec();
 		checkQuery(query);
 	}
-
-	closeMe();
 }
 
 

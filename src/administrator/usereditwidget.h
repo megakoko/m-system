@@ -1,11 +1,11 @@
 #pragma once
 
 
-#include "pluginwidget.h"
+#include "saveablepluginwidget.h"
 #include "ui_usereditwidget.h"
 
 
-class UserEditWidget : public PluginWidget, private Ui::UserEditWidget
+class UserEditWidget : public SaveablePluginWidget, private Ui::UserEditWidget
 {
 	Q_OBJECT
 
@@ -14,6 +14,9 @@ public:
 
 	static bool userIsAdmin(int userid);
 	static int numberOfAdminUsers();
+
+	bool canSave(QString& errorDescription) const;
+	void save();
 
 private:
 	void init();
@@ -29,7 +32,6 @@ private:
 	const int m_userId;
 
 private slots:
-	void save();
 
 	void loginEdited();
 	void isAdminToggled(bool);
