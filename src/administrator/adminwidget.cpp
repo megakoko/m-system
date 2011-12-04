@@ -110,8 +110,9 @@ void AdminWidget::editUser()
 	const int userid = selectedUserId();
 	Q_ASSERT(userid >= 0);
 
-	addNewWidget(new UserEditWidget(userid, this),
-				 QString::fromUtf8("Пользователь %1").arg(selectedUserName()));
+	UserEditWidget* widget = new UserEditWidget(userid, this);
+	connect(widget, SIGNAL(saved()), SLOT(updateUserList()));
+	addNewWidget(widget, QString::fromUtf8("Пользователь %1").arg(selectedUserName()));
 }
 
 

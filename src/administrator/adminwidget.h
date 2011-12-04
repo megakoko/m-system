@@ -27,13 +27,14 @@ private:
 
 	QString generateLogin() const;
 
-	void updateUserList();
 
 
 	QSqlQueryModel* m_model;
 
 private slots:
 	void userSelectionChanged();
+
+	void updateUserList();
 
 	void createUser();
 	void editUser();

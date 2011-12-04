@@ -17,7 +17,6 @@ private:
 	void init();
 	void initConnections();
 
-	void updatePatientsList();
 
 	bool onePatientSelected() const;
 	int selectedPatientId() const;
@@ -25,6 +24,8 @@ private:
 	QSqlQueryModel* m_model;
 
 private slots:
+	void updatePatientsList();
+
 	void addPatient();
 	void editPatient();
 	void deletePatient();
