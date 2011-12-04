@@ -116,6 +116,11 @@ void PatientEditWidget::init()
 
 void PatientEditWidget::initConnections()
 {
+	connect(m_familyName, SIGNAL(editingFinished()), SLOT(patientNameEdited()));
+	connect(m_name, SIGNAL(editingFinished()), SLOT(patientNameEdited()));
+	connect(m_patronymic, SIGNAL(editingFinished()), SLOT(patientNameEdited()));
+
+
 	connect(m_mailingAddressIsActual,
 			SIGNAL(toggled(bool)),
 			SLOT(toggleMailingAddressIsActual(bool)));
@@ -326,3 +331,16 @@ void PatientEditWidget::save()
 }
 
 
+void PatientEditWidget::patientNameEdited()
+{
+	emit setTabLabel(fullPatientName());
+}
+
+
+QString PatientEditWidget::fullPatientName() const
+{
+	return QString::fromUtf8("Пациент %1 %2.%3.").
+				arg(m_familyName->text()).
+				arg(m_name->text().left(1)).
+				arg(m_patronymic->text().left(1));
+}
