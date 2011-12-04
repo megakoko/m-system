@@ -24,7 +24,7 @@ namespace DocumentTableColumns
 
 
 PatientEditWidget::PatientEditWidget(const int patientId, QWidget *parent)
-	: PluginWidget(parent)
+	: SaveablePluginWidget(parent)
 	, m_patientId(patientId)
 	, m_mailingAddress(Address(true))
 	, m_actualAddress(Address(false))
@@ -123,7 +123,7 @@ void PatientEditWidget::initConnections()
 	connect(m_editMailingAddress, SIGNAL(clicked()), SLOT(launchMailingAddressEditing()));
 	connect(m_editActualAddress, SIGNAL(clicked()), SLOT(launchActualAddressEditing()));
 
-	connect(m_save, SIGNAL(clicked()), SLOT(save()));
+	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
 
 	connect(m_documentTable->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
@@ -270,6 +270,25 @@ void PatientEditWidget::editDocumentInTable(const int row, const Document& newDo
 void PatientEditWidget::deleteDocumentFromTable(const int row)
 {
 	m_documentTable->removeRow(row);
+}
+
+
+bool PatientEditWidget::canSave(QString &errorDescription) const
+{
+	if (m_familyName->text().simplified().isEmpty() ||
+		m_name->text().simplified().isEmpty() ||
+		m_patronymic->text().simplified().isEmpty())
+	{
+		errorDescription = QString::fromUtf8("Имя пациента не заполнено");
+		return false;
+	}
+	else if(m_mailingAddress.isNull())
+	{
+		errorDescription = QString::fromUtf8("Адрес прописки не заполнен");
+		return false;
+	}
+
+	return true;
 }
 
 
