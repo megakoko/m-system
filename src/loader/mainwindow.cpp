@@ -180,7 +180,7 @@ bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 	{
 		q.prepare(" SELECT u.id FROM MUser u "
 				  " LEFT JOIN UserPluginAccess upl ON u.id = upl.userid "
-				  " LEFT JOIN Plugins p ON p.id = upl.pluginid "
+				  " LEFT JOIN Plugin p ON p.id = upl.pluginid "
 				  " WHERE p.textid = :textid AND u.id = :userid ");
 		q.bindValue(":textid", textid);
 		q.bindValue(":userid", m_userId);
@@ -197,7 +197,7 @@ bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 QString MainWindow::pluginName(const QString &textid) const
 {
 	QSqlQuery q;
-	q.prepare("SELECT name FROM Plugins WHERE textid = :textid");
+	q.prepare("SELECT name FROM Plugin WHERE textid = :textid");
 	q.bindValue(":textid", textid);
 	q.exec();
 	checkQuery(q);
