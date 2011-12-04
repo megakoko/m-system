@@ -115,7 +115,7 @@ void MainPatientsWidget::editPatient()
 
 	PatientEditWidget* widget = new PatientEditWidget(patientId, this);
 	connect(widget, SIGNAL(saved()), SLOT(updatePatientsList()));
-	addNewWidget(widget, QString::fromUtf8("TODO"));
+	addNewWidget(widget, widget->fullPatientName());
 }
 
 

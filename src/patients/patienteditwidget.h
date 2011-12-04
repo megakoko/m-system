@@ -17,6 +17,8 @@ public:
 	bool canSave(QString &errorDescription) const;
 	void save();
 
+	QString fullPatientName() const;
+
 private:
 	void init();
 	void initConnections();
@@ -45,5 +47,7 @@ private slots:
 	void addDocument();
 	void editDocument();
 	void deleteDocument();
+
+	void patientNameEdited();
 
 };

@@ -18,6 +18,8 @@ public:
 	bool canSave(QString& errorDescription) const;
 	void save();
 
+	QString fullUserName() const;
+
 private:
 	void init();
 	void initConnections();

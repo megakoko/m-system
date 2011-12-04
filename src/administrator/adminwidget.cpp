@@ -112,7 +112,7 @@ void AdminWidget::editUser()
 
 	UserEditWidget* widget = new UserEditWidget(userid, this);
 	connect(widget, SIGNAL(saved()), SLOT(updateUserList()));
-	addNewWidget(widget, QString::fromUtf8("Пользователь %1").arg(selectedUserName()));
+	addNewWidget(widget, widget->fullUserName());
 }
 
 

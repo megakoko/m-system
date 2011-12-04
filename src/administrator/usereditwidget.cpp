@@ -18,6 +18,8 @@ UserEditWidget::UserEditWidget(const int userId, QWidget *parent)
 
 	initConnections();
 	init();
+
+	loginEdited();
 }
 
 
@@ -249,7 +251,13 @@ int UserEditWidget::numberOfAdminUsers()
 }
 
 
+QString UserEditWidget::fullUserName() const
+{
+	return QString::fromUtf8("Пользователь %1").arg(m_login->text());
+}
+
+
 void UserEditWidget::loginEdited()
 {
-	emit setTabLabel(QString::fromUtf8("Пользователь %1").arg(m_login->text()));
+	emit setTabLabel(fullUserName());
 }
