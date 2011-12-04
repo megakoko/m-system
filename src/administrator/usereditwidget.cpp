@@ -174,6 +174,8 @@ void UserEditWidget::save()
 		query.exec();
 		checkQuery(query);
 	}
+
+	emit saved();
 }
 
 

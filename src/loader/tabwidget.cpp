@@ -122,6 +122,7 @@ int TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 
 	if(widget != NULL)
 	{
+
 		index = addTab(widget, caption);
 		setCurrentIndex(index);
 

@@ -322,8 +322,7 @@ void PatientEditWidget::save()
 	foreach(const Document& doc, m_documentsMarkedForDeletion)
 		doc.deleteDocument();
 
-
-	closeMe();
+	emit saved();
 }
 
 

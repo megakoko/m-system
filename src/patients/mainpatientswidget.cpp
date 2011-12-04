@@ -113,7 +113,9 @@ void MainPatientsWidget::editPatient()
 	const int patientId = selectedPatientId();
 	Q_ASSERT(patientId > 0);
 
-	addNewWidget(new PatientEditWidget(patientId, this), QString::fromUtf8("TODO"));
+	PatientEditWidget* widget = new PatientEditWidget(patientId, this);
+	connect(widget, SIGNAL(saved()), SLOT(updatePatientsList()));
+	addNewWidget(widget, QString::fromUtf8("TODO"));
 }
 
 
