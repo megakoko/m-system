@@ -4,4 +4,5 @@ TEMPLATE = subdirs
 SUBDIRS	+= 	loader \
 			administrator \
 			patients \
-			mkb10
+			mkb10 \
+			departments

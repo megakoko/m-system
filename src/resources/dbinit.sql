@@ -111,6 +111,7 @@ CREATE TABLE Staff (
 
 CREATE TABLE DepartmentType (
 	id					SERIAL PRIMARY KEY,
+	textid				VARCHAR,
 	name				VARCHAR
 );
 
@@ -148,12 +149,18 @@ INSERT INTO MUser(login, password, salt, is_admin) VALUES
 INSERT INTO Plugin(textid, name) VALUES
 ('admin', 'Администратор'),
 ('patients', 'Пациенты'),
-('mkb10', E'Справочная система\nМКБ-10');
+('mkb10', E'Справочная система\nМКБ-10'),
+('departments', E'Информация о\nмедицинском учреждении');
 
 
 INSERT INTO DocumentType(textid, name) VALUES
 ('passport', 'Паспорт'),
 ('taxpayerId', 'ИНН');
+
+
+INSERT INTO DepartmentType(textid, name) VALUES
+('clinic', 'Амбулатория'),
+('hospital', 'Стационар');
 
 
 ---------------------------------------------------------------------

@@ -90,7 +90,6 @@ void MainPatientsWidget::addPatient()
 			break;
 
 	Q_ASSERT(possibleNumber > 0);
-	QString("%1 (%2)").arg(basename).arg(possibleNumber);
 
 	q.prepare(" INSERT INTO Patient (name, familyname, patronymic) "
 			  " VALUES(:name, :familyname, :patronymic)");
