@@ -15,7 +15,8 @@ SOURCES		+=	main.cpp\
 				databasesettingspage.cpp \
 				tabwidget.cpp \
 				homepage.cpp \
-				aboutdialog.cpp
+				aboutdialog.cpp \
+				encoding.cpp
 
 HEADERS		+=	mainwindow.h \
 				logindialog.h \
@@ -25,7 +26,8 @@ HEADERS		+=	mainwindow.h \
 				databasesettingspage.h \
 				tabwidget.h \
 				homepage.h \
-				aboutdialog.h
+				aboutdialog.h \
+				encoding.h
 
 FORMS		+=	mainwindow.ui \
 				logindialog.ui \

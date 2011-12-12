@@ -21,19 +21,6 @@ QString Passwords::hash(const QString &password, const QByteArray &salt)
 	return hash2.toHex();
 }
 
-QString Passwords::encodePassword(const QString& pw)
-{
-	// TODO
-	return pw;
-}
-
-
-QString Passwords::decodePassword(const QString& pw)
-{
-	// TODO
-	return pw;
-}
-
 
 QByteArray Passwords::salt()
 {

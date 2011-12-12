@@ -12,6 +12,7 @@
 #include <QProgressDialog>
 
 #include "passwords.h"
+#include "encoding.h"
 #include "macros.h"
 
 
@@ -79,8 +80,9 @@ bool LoginDialog::connectToDatabase()
 	db.setPort(m_settings.value("port").toInt());
 	db.setDatabaseName(m_settings.value("dbname").toString());
 
+
 	return db.open(m_settings.value("login").toString(),
-				   Passwords::decodePassword(m_settings.value("password").toString()));
+				   Encoding::decodePassword(m_settings.value("password").toString()));
 }
 
 
