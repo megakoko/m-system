@@ -1,6 +1,6 @@
 
 #include "databasesettingspage.h"
-#include "passwords.h"
+#include "encoding.h"
 
 #include <QSqlQuery>
 #include <QSqlError>
@@ -30,7 +30,7 @@ void DatabaseSettingsPage::readSettings()
 	m_port->setText(m_settings.value("port").toString());
 	m_databasename->setText(m_settings.value("dbname").toString());
 	m_login->setText(m_settings.value("login").toString());
-	m_password->setText(Passwords::decodePassword(m_settings.value("password").toString()));
+	m_password->setText(Encoding::decodePassword(m_settings.value("password").toString()));
 }
 
 
@@ -40,6 +40,6 @@ void DatabaseSettingsPage::saveSettings()
 	m_settings.setValue("port", m_port->text());
 	m_settings.setValue("dbname", m_databasename->text());
 	m_settings.setValue("login", m_login->text());
-	m_settings.setValue("password", Passwords::encodePassword(m_password->text()));
+	m_settings.setValue("password", Encoding::encodePassword(m_password->text()));
 }
 
