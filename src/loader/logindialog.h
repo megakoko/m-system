@@ -36,9 +36,10 @@ private:
 
 
 	bool databaseIsInitialized() const;
-	void initializeDatabase();
 
 private slots:
+	void initializeDatabase();
+
 	/// Пытается войти в систему.
 	/// Вызывает accepted() в случае успеха.
 	void tryToLogin();
