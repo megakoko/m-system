@@ -124,7 +124,7 @@ void MainDepartmentsWidget::addStaff()
 void MainDepartmentsWidget::editStaff()
 {
 	StaffEditWidget* w = new StaffEditWidget(selectedStaffId(), this);
-	addNewWidget(w, "TODO");
+	addNewWidget(w, w->staffName());
 	connect(w, SIGNAL(saved()), SLOT(updateStaffList()));
 }
 
@@ -210,7 +210,7 @@ void MainDepartmentsWidget::addDepartment()
 void MainDepartmentsWidget::editDepartment()
 {
 	DepartmenEditWidget* w = new DepartmenEditWidget(selectedDepartmentId(), this);
-	addNewWidget(w, "TODO");
+	addNewWidget(w, w->departmentName());
 	connect(w, SIGNAL(saved()), SLOT(updateDepartmentList()));
 }
 

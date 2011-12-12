@@ -17,8 +17,15 @@ DepartmenEditWidget::DepartmenEditWidget(const int departmentId, QWidget *parent
 }
 
 
+QString DepartmenEditWidget::departmentName() const
+{
+	return QString::fromUtf8("Отделение ") + m_name->text();
+}
+
+
 void DepartmenEditWidget::init()
 {
+	connect(m_name, SIGNAL(editingFinished()), SLOT(nameChanged()));
 	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
 
 	Q_ASSERT(m_departmentId > 0);
@@ -98,4 +105,10 @@ void DepartmenEditWidget::save()
 	checkQuery(q);
 
 	emit saved();
+}
+
+
+void DepartmenEditWidget::nameChanged()
+{
+	emit setTabLabel(departmentName());
 }

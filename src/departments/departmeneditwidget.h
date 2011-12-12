@@ -10,6 +10,8 @@ class DepartmenEditWidget : public SaveablePluginWidget, private Ui::DepartmenEd
 public:
 	explicit DepartmenEditWidget(const int departmentId, QWidget *parent = 0);
 
+	QString departmentName() const;
+
 	bool canSave(QString &errorDescription) const;
 	void save();
 
@@ -17,5 +19,8 @@ private:
 	const int m_departmentId;
 
 	void init();
+
+private slots:
+	void nameChanged();
 
 };

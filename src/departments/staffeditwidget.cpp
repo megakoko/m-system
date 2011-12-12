@@ -14,14 +14,12 @@ StaffEditWidget::StaffEditWidget(const int staffId, QWidget *parent)
     setupUi(this);
 
 	init();
+	initConnections();
 }
 
 
 void StaffEditWidget::init()
 {
-	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
-
-
 	Q_ASSERT(m_staffId > 0);
 
 	QSqlQuery q;
@@ -40,6 +38,25 @@ void StaffEditWidget::init()
 	m_patronymic->setText(q.value(2).toString());
 	m_birthDay->setDate(q.value(3).toDate());
 	m_specialization->setText(q.value(4).toString());
+}
+
+
+void StaffEditWidget::initConnections()
+{
+	connect(m_familyName, SIGNAL(editingFinished()), SLOT(nameChanged()));
+	connect(m_name, SIGNAL(editingFinished()), SLOT(nameChanged()));
+	connect(m_patronymic, SIGNAL(editingFinished()), SLOT(nameChanged()));
+
+	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
+}
+
+
+QString StaffEditWidget::staffName() const
+{
+	return QString::fromUtf8("Работник %1 %2.%3.").
+				arg(m_familyName->text()).
+				arg(m_name->text().left(1)).
+				arg(m_patronymic->text().left(1));
 }
 
 
@@ -83,4 +100,10 @@ void StaffEditWidget::save()
 
 
 	emit saved();
+}
+
+
+void StaffEditWidget::nameChanged()
+{
+	emit setTabLabel(staffName());
 }
