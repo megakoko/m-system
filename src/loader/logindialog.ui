@@ -63,7 +63,7 @@
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="m_buttonLayout">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">

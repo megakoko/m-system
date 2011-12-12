@@ -30,6 +30,14 @@ LoginDialog::LoginDialog(QWidget *parent)
 	resize(width(), 0);
 
 
+	// Кнопка сброса базы данных (будет доступна только в отладочной версии).
+#ifndef QT_NO_DEBUG
+	QPushButton* resetDatabaseButton =
+					new QPushButton(QString::fromUtf8("Сбросить базу данных"), this);
+	connect(resetDatabaseButton, SIGNAL(clicked()), SLOT(initializeDatabase()));
+	m_buttonLayout->addWidget(resetDatabaseButton);
+#endif
+
 	if(connectToDatabase() && !databaseIsInitialized())
 		initializeDatabase();
 }
