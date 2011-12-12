@@ -35,7 +35,9 @@ MainMkb10Widget::MainMkb10Widget(QWidget *parent)
 
 	connect(m_search, SIGNAL(clicked()), SLOT(filterDeseases()));
 	connect(m_filter, SIGNAL(returnPressed()), SLOT(filterDeseases()));
+
 	connect(m_clear, SIGNAL(clicked()), m_filter, SLOT(clear()));
+	connect(m_clear, SIGNAL(clicked()), SLOT(filterDeseases()));
 }
 
 
