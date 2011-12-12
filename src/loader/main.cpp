@@ -4,9 +4,12 @@
 
 int main(int argc, char *argv[])
 {
-	QApplication a(argc, argv);
+	QApplication app(argc, argv);
+
+	app.setOrganizationName("Andrew_Chukavin");
+	app.setApplicationName("M-System");
 
 	MainWindow w;
 	w.show();
-	return a.exec();
+	return app.exec();
 }
