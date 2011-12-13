@@ -32,14 +32,17 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="m_healthFacilityInformation">
      <property name="text">
-      <string>TextLabel</string>
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="0" column="2">
-    <widget class="QPushButton" name="pushButton_7">
+    <widget class="QPushButton" name="m_editHealthFacility">
      <property name="text">
       <string>Редактировать</string>
      </property>

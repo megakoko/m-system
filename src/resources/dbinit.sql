@@ -93,10 +93,24 @@ CREATE TABLE MKB10 (
 
 
 CREATE TABLE HealthFacility (
-	name				VARCHAR,
-	shortName			VARCHAR
-
+	id 					INTEGER PRIMARY KEY,
+	name				VARCHAR NOT NULL,
+	shortName			VARCHAR,
+	inn					CHAR(12),
+	kpp					CHAR(9),
+	okonh				CHAR(5),
+	okato				CHAR(11), -- TODO: 11 или 8?
+	okpo				CHAR(10),
+	ogrn				CHAR(13)
 );
+-- Следующие два правила не позволяют изменять количество записей, если 
+-- в таблице уже есть одна.
+-- Ничего не делать, если при вставке записи id <> 1.
+CREATE RULE HealthFacilityInsert AS ON INSERT TO HealthFacility 
+WHERE id <> 1 DO INSTEAD NOTHING;
+-- Ничего не делать, если при вставке записи id =  1.
+CREATE RULE HealthFacilityDelete AS ON DELETE TO HealthFacility 
+WHERE id = 1  DO INSTEAD NOTHING;
 
 
 CREATE TABLE Staff (
@@ -155,7 +169,10 @@ INSERT INTO Plugin(textid, name) VALUES
 
 INSERT INTO DocumentType(textid, name) VALUES
 ('passport', 'Паспорт'),
-('taxpayerId', 'ИНН');
+('inn', 'ИНН');
+
+
+INSERT INTO HealthFacility(id, name) VALUES(1, 'Медицинское учреждение');
 
 
 INSERT INTO DepartmentType(textid, name) VALUES
