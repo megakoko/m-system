@@ -86,6 +86,8 @@ QString HealthFacilityEditDialog::toString()
 	QSqlQuery q("SELECT name, shortName, inn, kpp FROM HealthFacility");
 	const bool hasRecord = q.first();
 
+	checkQuery(q);
+
 	Q_ASSERT(hasRecord); Q_UNUSED(hasRecord);
 
 	if(hasRecord)
