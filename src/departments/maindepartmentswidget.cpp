@@ -9,6 +9,7 @@
 #include <QDebug>
 
 #include "macros.h"
+#include "healthfacilityeditdialog.h"
 #include "staffeditwidget.h"
 #include "departmeneditwidget.h"
 
@@ -35,6 +36,9 @@ MainDepartmentsWidget::MainDepartmentsWidget(QWidget *parent)
 
 void MainDepartmentsWidget::init()
 {
+	m_healthFacilityInformation->setText(HealthFacilityEditDialog::toString());
+
+
 	m_staffModel = new QSqlQueryModel(this);
 	m_staffModel->setQuery(staffQuery);
 
@@ -56,6 +60,8 @@ void MainDepartmentsWidget::init()
 
 void MainDepartmentsWidget::initConnections()
 {
+	connect(m_editHealthFacility, SIGNAL(clicked()), SLOT(editHealthFacility()));
+
 	connect(m_staffTable->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(staffSelectionChanged()));
@@ -70,6 +76,16 @@ void MainDepartmentsWidget::initConnections()
 	connect(m_addDepartment, SIGNAL(clicked()), SLOT(addDepartment()));
 	connect(m_editDepartmnet, SIGNAL(clicked()), SLOT(editDepartment()));
 	connect(m_deleteDepartment, SIGNAL(clicked()), SLOT(deleteDepartment()));
+}
+
+
+void MainDepartmentsWidget::editHealthFacility()
+{
+	HealthFacilityEditDialog d(this);
+	if(d.exec() == QDialog::Accepted)
+	{
+		m_healthFacilityInformation->setText(HealthFacilityEditDialog::toString());
+	}
 }
 
 

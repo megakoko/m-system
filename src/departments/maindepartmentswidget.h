@@ -29,6 +29,9 @@ private:
 	int selectedDepartmentId() const;
 
 private slots:
+	void editHealthFacility();
+
+
 	void updateStaffList();
 
 	void staffSelectionChanged();
