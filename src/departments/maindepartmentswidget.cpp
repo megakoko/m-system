@@ -16,13 +16,17 @@
 
 
 const QString staffQuery = QString::fromUtf8(
-	" SELECT id, familyName || ' ' || substring(name, 1, 1) || '. ' "
-	" || substring(patronymic, 1, 1) || '.' AS Имя, specialization AS Специальность "
-	" FROM Staff");
+	" SELECT id, familyName || ' ' || "
+		" substring(name, 1, 1) || '. ' || "
+		" substring(patronymic, 1, 1) || '.' || "
+		" COALESCE (' (' || specialization || ')', '') "
+	" FROM Staff"
+	" ORDER BY id");
 
 const QString departmentQuery = QString::fromUtf8(
 	" SELECT id, name AS \"Имя отделения\""
-	" FROM Department ");
+	" FROM Department "
+	" ORDER BY id");
 
 
 MainDepartmentsWidget::MainDepartmentsWidget(QWidget *parent)
