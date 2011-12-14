@@ -37,7 +37,7 @@ CREATE TABLE MUser (
 
 CREATE TABLE Plugin (
 	id 					SERIAL PRIMARY KEY,
-	textid 				VARCHAR NOT NULL,
+	textid 				VARCHAR NOT NULL UNIQUE,
 	name 				VARCHAR NOT NULL
 );
 
@@ -59,7 +59,7 @@ CREATE TABLE Patient (
 
 CREATE TABLE DocumentType (
 	id 					SERIAL PRIMARY KEY,
-	textid 				VARCHAR NOT NULL,
+	textid 				VARCHAR NOT NULL UNIQUE,
 	name		 		VARCHAR NOT NULL
 );
 
@@ -125,7 +125,7 @@ CREATE TABLE Staff (
 
 CREATE TABLE DepartmentType (
 	id					SERIAL PRIMARY KEY,
-	textid				VARCHAR NOT NULL,
+	textid				VARCHAR NOT NULL UNIQUE,
 	name				VARCHAR NOT NULL
 );
 
