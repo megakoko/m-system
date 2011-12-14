@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>736</width>
-    <height>371</height>
+    <width>764</width>
+    <height>493</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout_6">
      <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
@@ -24,6 +24,12 @@
        <layout class="QFormLayout" name="formLayout">
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
         </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label">
@@ -72,6 +78,12 @@
         <string>Права пользователя</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QCheckBox" name="m_isAdmin">
           <property name="text">
@@ -126,8 +138,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>359</width>
-                <height>209</height>
+                <width>727</width>
+                <height>228</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
