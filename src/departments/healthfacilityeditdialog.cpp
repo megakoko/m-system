@@ -101,11 +101,11 @@ QString HealthFacilityEditDialog::toString()
 					  " (" + rec.value("shortName").toString() + ")";
 
 		if(!rec.value("inn").isNull())
-			result << QString::fromUtf8("ИНН: ") + rec.value("inn").toString();
+			result << QString::fromUtf8("ИНН: ") + rec.value("inn").toString().trimmed();
 
 
 		if(!rec.value("kpp").isNull())
-			result << QString::fromUtf8("КПП: ") + rec.value("kpp").toString();
+			result << QString::fromUtf8("КПП: ") + rec.value("kpp").toString().trimmed();
 	}
 
 	return result.join(", ");
