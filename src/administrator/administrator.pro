@@ -7,14 +7,14 @@ include( ../m-system-config.pri )
 
 
 SOURCES +=	administrator.cpp \
-			adminwidget.cpp \
+			mainadminwidget.cpp \
 			../loader/passwords.cpp \		# FIXIT
 			usereditwidget.cpp
 
 HEADERS +=	administrator.h \
-			adminwidget.h \
+			mainadminwidget.h \
 			../loader/passwords.h \		# FIXIT
 			usereditwidget.h
 
-FORMS	+= 	adminwidget.ui \
+FORMS	+= 	mainadminwidget.ui \
 			usereditwidget.ui

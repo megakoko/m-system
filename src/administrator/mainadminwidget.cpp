@@ -1,4 +1,4 @@
-#include "adminwidget.h"
+#include "mainadminwidget.h"
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 #include <QSqlQuery>
@@ -16,7 +16,7 @@ static const QString userListQuery =
 		QString::fromUtf8("SELECT id, login AS Логин FROM MUser ORDER BY id");
 
 
-AdminWidget::AdminWidget(QWidget *parent) :
+MainAdminWidget::MainAdminWidget(QWidget *parent) :
 	PluginWidget(parent)
 {
 	setupUi(this);
@@ -26,7 +26,7 @@ AdminWidget::AdminWidget(QWidget *parent) :
 }
 
 
-void AdminWidget::init()
+void MainAdminWidget::init()
 {
 	m_model = new QSqlQueryModel(this);
 	m_model->setQuery(userListQuery);
@@ -37,7 +37,7 @@ void AdminWidget::init()
 }
 
 
-void AdminWidget::initConnections()
+void MainAdminWidget::initConnections()
 {
 	connect(m_view->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
@@ -49,21 +49,21 @@ void AdminWidget::initConnections()
 }
 
 
-void AdminWidget::updateUserList()
+void MainAdminWidget::updateUserList()
 {
 	m_model->setQuery(userListQuery);
 }
 
 
 
-bool AdminWidget::singleUserSelected() const
+bool MainAdminWidget::singleUserSelected() const
 {
 	return	m_view->selectionModel()->hasSelection() &&
 			m_view->selectionModel()->selectedRows(0).count() == 1;
 }
 
 
-int AdminWidget::selectedUserId() const
+int MainAdminWidget::selectedUserId() const
 {
 	int id = -1;
 	if (singleUserSelected())
@@ -73,7 +73,7 @@ int AdminWidget::selectedUserId() const
 }
 
 
-QString AdminWidget::selectedUserName() const
+QString MainAdminWidget::selectedUserName() const
 {
 	QString result;
 	if (singleUserSelected())
@@ -83,7 +83,7 @@ QString AdminWidget::selectedUserName() const
 }
 
 
-void AdminWidget::userSelectionChanged()
+void MainAdminWidget::userSelectionChanged()
 {
 	const bool singleUser = singleUserSelected();
 
@@ -92,7 +92,7 @@ void AdminWidget::userSelectionChanged()
 }
 
 
-void AdminWidget::createUser()
+void MainAdminWidget::createUser()
 {
 	QSqlQuery q;
 	q.prepare(" INSERT INTO MUser (login, is_admin) "
@@ -105,7 +105,7 @@ void AdminWidget::createUser()
 }
 
 
-void AdminWidget::editUser()
+void MainAdminWidget::editUser()
 {
 	const int userid = selectedUserId();
 	Q_ASSERT(userid >= 0);
@@ -116,7 +116,7 @@ void AdminWidget::editUser()
 }
 
 
-void AdminWidget::deleteUser()
+void MainAdminWidget::deleteUser()
 {
 	const int userid = selectedUserId();
 	Q_ASSERT(userid >= 0);
@@ -150,7 +150,7 @@ void AdminWidget::deleteUser()
 }
 
 
-QString AdminWidget::generateLogin() const
+QString MainAdminWidget::generateLogin() const
 {
 	const QString& basename = QString::fromUtf8("Пользователь");
 

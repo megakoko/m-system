@@ -4,7 +4,7 @@
 #include <QString>
 #include <QtPlugin>
 
-#include "adminwidget.h"
+#include "mainadminwidget.h"
 
 
 Administrator::~Administrator()
@@ -20,7 +20,7 @@ QString Administrator::textid() const
 
 PluginWidget* Administrator::widget() const
 {
-	return new AdminWidget();
+	return new MainAdminWidget();
 }
 
 Q_EXPORT_PLUGIN2(PluginInterface, Administrator)
