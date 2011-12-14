@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS MUser;
 
 CREATE TABLE MUser (
 	id 					SERIAL PRIMARY KEY,
-	login 				VARCHAR,
+	login 				VARCHAR NOT NULL,
 	password 			VARCHAR,
 	salt 				VARCHAR,
 	is_admin 			BOOL
@@ -37,8 +37,8 @@ CREATE TABLE MUser (
 
 CREATE TABLE Plugin (
 	id 					SERIAL PRIMARY KEY,
-	textid 				VARCHAR,
-	name 				VARCHAR
+	textid 				VARCHAR NOT NULL,
+	name 				VARCHAR NOT NULL
 );
 
 CREATE TABLE UserPluginAccess (
@@ -51,16 +51,16 @@ CREATE TABLE UserPluginAccess (
 
 CREATE TABLE Patient (
 	id 					SERIAL PRIMARY KEY,
-	familyName 			VARCHAR,
-	name 				VARCHAR,
-	patronymic 			VARCHAR,
+	familyName 			VARCHAR NOT NULL,
+	name 				VARCHAR NOT NULL,
+	patronymic 			VARCHAR NOT NULL,
 	birthDay			TIMESTAMP
 );
 
 CREATE TABLE DocumentType (
 	id 					SERIAL PRIMARY KEY,
-	textid 				VARCHAR,
-	name		 		VARCHAR
+	textid 				VARCHAR NOT NULL,
+	name		 		VARCHAR NOT NULL
 );
 
 CREATE TABLE Document (
@@ -85,8 +85,8 @@ CREATE TABLE Address (
 
 
 CREATE TABLE MKB10 (
-	id					INTEGER NOT NULL UNIQUE,
-	description			VARCHAR,
+	id					INTEGER PRIMARY KEY,
+	description			VARCHAR NOT NULL,
 	parentId			INTEGER REFERENCES MKB10(id)
 );
 
@@ -125,14 +125,14 @@ CREATE TABLE Staff (
 
 CREATE TABLE DepartmentType (
 	id					SERIAL PRIMARY KEY,
-	textid				VARCHAR,
-	name				VARCHAR
+	textid				VARCHAR NOT NULL,
+	name				VARCHAR NOT NULL
 );
 
 
 CREATE TABLE Department (
 	id					SERIAL PRIMARY KEY,
-	name				VARCHAR,
+	name				VARCHAR NOT NULL,
 	shortName			VARCHAR,
 	typeId				INTEGER REFERENCES DepartmentType(id),
 	headOfDepartmentId	INTEGER REFERENCES Staff(id)
@@ -141,7 +141,7 @@ CREATE TABLE Department (
 
 CREATE TABLE Position (
 	id					SERIAL PRIMARY KEY,
-	name				VARCHAR
+	name				VARCHAR NOT NULL
 );
 
 
