@@ -30,6 +30,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	setupUi(this);
 
+	QSettings settings;
+	restoreGeometry(settings.value("windowGeometry").toByteArray());
+
 #ifndef QT_NO_DEBUG
 	setWindowTitle(windowTitle() + QString::fromUtf8(" [Отладочная версия]"));
 #endif
@@ -39,6 +42,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 	addHomeTab();
+}
+
+
+MainWindow::~MainWindow()
+{
+	QSettings settings;
+	settings.setValue("windowGeometry", saveGeometry());
 }
 
 
