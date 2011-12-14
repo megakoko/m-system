@@ -16,7 +16,7 @@ HomePage::HomePage(QWidget *parent)
 
 void HomePage::addButton(const QString &text, const QString& textid)
 {
-	static const int buttonMaxWidth = 200;
+	static const int buttonMaxWidth = 250;
 
 	const int cols = 3;
 	const int count = m_pluginGrid->count();
