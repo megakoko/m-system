@@ -115,9 +115,9 @@ WHERE id = 1  DO INSTEAD NOTHING;
 
 CREATE TABLE Staff (
 	id					SERIAL PRIMARY KEY,
-	familyName 			VARCHAR,
-	name 				VARCHAR,
-	patronymic 			VARCHAR,
+	familyName 			VARCHAR NOT NULL,
+	name 				VARCHAR NOT NULL,
+	patronymic 			VARCHAR NOT NULL,
 	birthDay			TIMESTAMP,
 	specialization		VARCHAR
 );
