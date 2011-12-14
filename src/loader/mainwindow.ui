@@ -23,6 +23,9 @@
       <property name="tabPosition">
        <enum>QTabWidget::North</enum>
       </property>
+      <property name="elideMode">
+       <enum>Qt::ElideRight</enum>
+      </property>
       <property name="tabsClosable">
        <bool>true</bool>
       </property>
