@@ -32,19 +32,18 @@ private slots:
 	void editHealthFacility();
 
 
+	void editPositions();
+
+
 	void updateStaffList();
-
 	void staffSelectionChanged();
-
 	void addStaff();
 	void editStaff();
 	void deleteStaff();
 
 
 	void updateDepartmentList();
-
 	void departmentSelectionChanged();
-
 	void addDepartment();
 	void editDepartment();
 	void deleteDepartment();
