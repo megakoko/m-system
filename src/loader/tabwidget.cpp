@@ -103,14 +103,16 @@ void TabWidget::closeTab()
 }
 
 
-void TabWidget::setTabLabel(const QString &text)
+void TabWidget::setTabLabel(const QString &caption)
 {
 	if(sender() != NULL)
 	{
 		QWidget* w = qobject_cast<QWidget*>(sender());
 		if(w != NULL)
 		{
-			setTabText(indexOf(w), text);
+			const int index = indexOf(w);
+			setTabText(index, caption);
+			setTabToolTip(index, caption);
 		}
 	}
 }
@@ -122,8 +124,8 @@ int TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 
 	if(widget != NULL)
 	{
-
 		index = addTab(widget, caption);
+		setTabToolTip(index, caption);
 		setCurrentIndex(index);
 
 		const int parentIndex = indexOf(qobject_cast<QWidget*>(sender()));
