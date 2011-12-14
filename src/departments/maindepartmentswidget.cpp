@@ -10,6 +10,7 @@
 
 #include "macros.h"
 #include "healthfacilityeditdialog.h"
+#include "positionseditdialog.h"
 #include "staffeditwidget.h"
 #include "departmeneditwidget.h"
 
@@ -38,6 +39,8 @@ void MainDepartmentsWidget::init()
 {
 	m_healthFacilityInformation->setText(HealthFacilityEditDialog::toString());
 
+	m_positionsInformation->setText(PositionsEditDialog::positions().join(", "));
+
 
 	m_staffModel = new QSqlQueryModel(this);
 	m_staffModel->setQuery(staffQuery);
@@ -61,6 +64,8 @@ void MainDepartmentsWidget::init()
 void MainDepartmentsWidget::initConnections()
 {
 	connect(m_editHealthFacility, SIGNAL(clicked()), SLOT(editHealthFacility()));
+
+	connect(m_editPositions, SIGNAL(clicked()), SLOT(editPositions()));
 
 	connect(m_staffTable->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
@@ -86,6 +91,14 @@ void MainDepartmentsWidget::editHealthFacility()
 	{
 		m_healthFacilityInformation->setText(HealthFacilityEditDialog::toString());
 	}
+}
+
+
+void MainDepartmentsWidget::editPositions()
+{
+	PositionsEditDialog d(this);
+	if(d.exec() == QDialog::Accepted)
+		m_positionsInformation->setText(PositionsEditDialog::positions().join(", "));
 }
 
 
@@ -153,7 +166,6 @@ void MainDepartmentsWidget::deleteStaff()
 
 void MainDepartmentsWidget::staffSelectionChanged()
 {
-	qDebug() << __FUNCTION__;
 	const bool selectionCount = selectedStaffCount();
 	m_editStaff->setEnabled(selectionCount == 1);
 	m_deleteStaff->setEnabled(selectionCount == 1);
