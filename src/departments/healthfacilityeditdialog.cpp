@@ -79,7 +79,7 @@ void HealthFacilityEditDialog::save()
 }
 
 
-QString HealthFacilityEditDialog::toString()
+QString HealthFacilityEditDialog::shortInformation()
 {
 	QStringList result;
 

@@ -41,7 +41,7 @@ MainDepartmentsWidget::MainDepartmentsWidget(QWidget *parent)
 
 void MainDepartmentsWidget::init()
 {
-	m_healthFacilityInformation->setText(HealthFacilityEditDialog::toString());
+	m_healthFacilityInformation->setText(HealthFacilityEditDialog::shortInformation());
 
 	m_positionsInformation->setText(PositionsEditDialog::positions().join(", "));
 
@@ -93,7 +93,7 @@ void MainDepartmentsWidget::editHealthFacility()
 	HealthFacilityEditDialog d(this);
 	if(d.exec() == QDialog::Accepted)
 	{
-		m_healthFacilityInformation->setText(HealthFacilityEditDialog::toString());
+		m_healthFacilityInformation->setText(HealthFacilityEditDialog::shortInformation());
 	}
 }
 
