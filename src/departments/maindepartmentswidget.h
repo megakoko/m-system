@@ -22,6 +22,8 @@ private:
 	QSqlQueryModel* m_staffModel;
 	QSqlQueryModel* m_departmentModel;
 
+	bool staffIsHeadOfDepartment(const int staffId) const;
+
 	bool selectedStaffCount() const;
 	int selectedStaffId() const;
 

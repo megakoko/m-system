@@ -7,6 +7,7 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QDebug>
+#include <QMessageBox>
 
 #include "macros.h"
 #include "healthfacilityeditdialog.h"
@@ -164,7 +165,72 @@ void MainDepartmentsWidget::editStaff()
 
 void MainDepartmentsWidget::deleteStaff()
 {
+	const int id = selectedStaffId();
+	Q_ASSERT(id > 0);
 
+	if(staffIsHeadOfDepartment(id))
+	{
+		QSqlQuery q;
+		q.prepare(" SELECT name FROM Department WHERE headOfDepartmentId = ? LIMIT 5");
+		q.addBindValue(id);
+		q.exec();
+		checkQuery(q);
+
+		QStringList departments;
+		while(q.next())
+			departments << q.value(0).toString();
+
+		const QString& title = "Удаление работника";
+		const QString& descr =
+					QString("Невозможно удалить работника, т.к. он является главной ") +
+					(departments.size() > 1 ? "отделений" : "отделения")  + ": " +
+					departments.join(", ") + ".";
+
+		QMessageBox::information(this, title, descr);
+	}
+	else
+	{
+		const QString& title = "Удаление работника";
+		const QString& descr = "Вы действительно хотите удалить работника? Если "
+							   "Будет удалена вся информация о нем.";
+
+		const int rc = QMessageBox::question(this, title, descr,
+											 QMessageBox::Ok | QMessageBox::Cancel,
+											 QMessageBox::Cancel);
+
+		if(rc == QMessageBox::Ok)
+		{
+			QSqlQuery q;
+			q.prepare(" DELETE FROM DepartmentStaffPosition "
+					  " WHERE staffId = ? ");
+			q.addBindValue(id);
+			q.exec();
+			checkQuery(q);
+
+
+			q.prepare(" DELETE FROM Staff "
+					  " WHERE id = ? ");
+			q.addBindValue(id);
+			q.exec();
+			checkQuery(q);
+
+			updateStaffList();
+		}
+	}
+}
+
+
+bool MainDepartmentsWidget::staffIsHeadOfDepartment(const int staffId) const
+{
+	Q_ASSERT(staffId > 0);
+	QSqlQuery q;
+	q.prepare("SELECT COUNT(*) FROM Department WHERE headOfDepartmentId = ?");
+	q.addBindValue(staffId);
+	q.exec();
+	checkQuery(q);
+
+	q.first();
+	return q.value(0).toInt();
 }
 
 
