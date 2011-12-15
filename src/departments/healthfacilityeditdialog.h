@@ -9,7 +9,7 @@ class HealthFacilityEditDialog : public QDialog, private Ui::HealthFacilityEditD
 public:
     explicit HealthFacilityEditDialog(QWidget *parent = 0);
 
-	static QString toString();
+	static QString shortInformation();
 
 private:
 	void init();
