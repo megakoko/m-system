@@ -315,7 +315,34 @@ void MainDepartmentsWidget::editDepartment()
 
 void MainDepartmentsWidget::deleteDepartment()
 {
+	const QString& title = "Удаление отделения";
+	const QString& descr = "Вы действительно хотите удалить отделение?";
+	const int rc = QMessageBox::question(this, title, descr,
+										 QMessageBox::Ok | QMessageBox::Cancel,
+										 QMessageBox::Cancel);
 
+
+	if(rc == QMessageBox::Ok)
+	{
+		const int id = selectedDepartmentId();
+		Q_ASSERT(id > 0);
+
+
+		QSqlQuery q;
+		q.prepare("DELETE FROM DepartmentStaffPosition WHERE departmentId = ?");
+		q.addBindValue(id);
+		q.exec();
+		checkQuery(q);
+
+
+		q.prepare("DELETE FROM Department WHERE id = ?");
+		q.addBindValue(id);
+		q.exec();
+		checkQuery(q);
+
+
+		updateDepartmentList();
+	}
 }
 
 
