@@ -129,5 +129,8 @@ QStringList PositionsEditDialog::positions()
 	while(q.next())
 		list << q.value(0).toString();
 
+	if(list.isEmpty())
+		list << "<i>Список должностей пуст</i>";
+
 	return list;
 }
