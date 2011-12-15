@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	QTextCodec::setCodecForCStrings(codec);
 
 	QTranslator translator;
-	if(translator.load(":tr/qt_ru.qm"))
+	if(translator.load(":/qt_ru_4.7.3.qm"))
 		app.installTranslator(&translator);
 	else
 		qCritical() << "Не найдет файл перевода самой библиотеки Qt.";
