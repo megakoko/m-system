@@ -1,4 +1,4 @@
-#include "departmeneditwidget.h"
+#include "departmenteditwidget.h"
 
 #include <QSqlQuery>
 #include <QSqlError>
@@ -7,7 +7,7 @@
 #include "macros.h"
 
 
-DepartmenEditWidget::DepartmenEditWidget(const int departmentId, QWidget *parent)
+DepartmentEditWidget::DepartmentEditWidget(const int departmentId, QWidget *parent)
 	: SaveablePluginWidget(parent)
 	, m_departmentId(departmentId)
 {
@@ -17,13 +17,13 @@ DepartmenEditWidget::DepartmenEditWidget(const int departmentId, QWidget *parent
 }
 
 
-QString DepartmenEditWidget::departmentName() const
+QString DepartmentEditWidget::departmentName() const
 {
 	return QString::fromUtf8("Отделение ") + m_name->text();
 }
 
 
-void DepartmenEditWidget::init()
+void DepartmentEditWidget::init()
 {
 	connect(m_name, SIGNAL(editingFinished()), SLOT(nameChanged()));
 	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
@@ -63,7 +63,7 @@ void DepartmenEditWidget::init()
 }
 
 
-bool DepartmenEditWidget::canSave(QString &errorDescription) const
+bool DepartmentEditWidget::canSave(QString &errorDescription) const
 {
 	if (m_name->text().simplified().isEmpty() ||
 		m_shortName->text().simplified().isEmpty())
@@ -86,7 +86,7 @@ bool DepartmenEditWidget::canSave(QString &errorDescription) const
 }
 
 
-void DepartmenEditWidget::save()
+void DepartmentEditWidget::save()
 {
 	QSqlQuery q;
 	q.prepare(" UPDATE Department SET "
@@ -108,7 +108,7 @@ void DepartmenEditWidget::save()
 }
 
 
-void DepartmenEditWidget::nameChanged()
+void DepartmentEditWidget::nameChanged()
 {
 	emit setTabLabel(departmentName());
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DepartmenEditWidget</class>
- <widget class="QWidget" name="DepartmenEditWidget">
+ <class>DepartmentEditWidget</class>
+ <widget class="QWidget" name="DepartmentEditWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

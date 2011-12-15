@@ -13,7 +13,7 @@
 #include "healthfacilityeditdialog.h"
 #include "positionseditdialog.h"
 #include "staffeditwidget.h"
-#include "departmeneditwidget.h"
+#include "departmenteditwidget.h"
 
 
 const QString staffQuery = QString::fromUtf8(
@@ -307,7 +307,7 @@ void MainDepartmentsWidget::addDepartment()
 
 void MainDepartmentsWidget::editDepartment()
 {
-	DepartmenEditWidget* w = new DepartmenEditWidget(selectedDepartmentId(), this);
+	DepartmentEditWidget* w = new DepartmentEditWidget(selectedDepartmentId(), this);
 	addNewWidget(w, w->departmentName());
 	connect(w, SIGNAL(saved()), SLOT(updateDepartmentList()));
 }
