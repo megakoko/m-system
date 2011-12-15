@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>dbinit.sql</file>
         <file>mkb10.sql</file>
+        <file>qt_ru_4.7.3.qm</file>
     </qresource>
 </RCC>
