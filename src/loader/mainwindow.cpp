@@ -77,7 +77,9 @@ void MainWindow::initConnections()
 
 void MainWindow::addHomeTab()
 {
-	m_tabWidget->addTab(m_homePage, QString::fromUtf8("Домашняя страница"));
+	const QString& homeTabCaption = QString::fromUtf8("Домашняя страница");
+	m_tabWidget->addTab(m_homePage, homeTabCaption);
+	m_tabWidget->setToolTip(homeTabCaption);
 }
 
 
