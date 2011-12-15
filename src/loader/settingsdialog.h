@@ -12,8 +12,11 @@ class SettingsDialog : public QDialog, private Ui::SettingsDialog
 
 public:
 	explicit SettingsDialog(QWidget *parent = 0);
-	~SettingsDialog();
 
 private:
 	QList<AbstractSettingsPage*> m_pages;
+
+private slots:
+	void save();
+
 };

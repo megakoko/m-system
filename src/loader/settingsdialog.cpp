@@ -23,10 +23,14 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	m_stackedWidget->setCurrentIndex(0);
 	connect(m_listWidget, SIGNAL(currentRowChanged(int)),
 			m_stackedWidget, SLOT(setCurrentIndex(int)));
+
+	connect(m_ok, SIGNAL(clicked()), SLOT(save()));
+	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
+	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
 }
 
 
-SettingsDialog::~SettingsDialog()
+void SettingsDialog::save()
 {
 
 	foreach(AbstractSettingsPage* page, m_pages)
