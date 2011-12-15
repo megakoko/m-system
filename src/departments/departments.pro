@@ -8,19 +8,19 @@ include( ../m-system-config.pri )
 HEADERS +=	departments.h \
 			maindepartmentswidget.h \
 			staffeditwidget.h \
-			departmeneditwidget.h \
+			departmenteditwidget.h \
 			healthfacilityeditdialog.h \
 			positionseditdialog.h
 
 SOURCES +=	departments.cpp \
 			maindepartmentswidget.cpp \
 			staffeditwidget.cpp \
-			departmeneditwidget.cpp \
+			departmenteditwidget.cpp \
 			healthfacilityeditdialog.cpp \
 			positionseditdialog.cpp
 
 FORMS	+= 	maindepartmentswidget.ui \
 			staffeditwidget.ui \
-			departmeneditwidget.ui \
+			departmenteditwidget.ui \
 			healthfacilityeditdialog.ui \
 			positionseditdialog.ui

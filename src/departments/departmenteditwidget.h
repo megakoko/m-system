@@ -1,14 +1,14 @@
 #pragma once
 
 #include "saveablepluginwidget.h"
-#include "ui_departmeneditwidget.h"
+#include "ui_departmenteditwidget.h"
 
-class DepartmenEditWidget : public SaveablePluginWidget, private Ui::DepartmenEditWidget
+class DepartmentEditWidget : public SaveablePluginWidget, private Ui::DepartmentEditWidget
 {
     Q_OBJECT
 
 public:
-	explicit DepartmenEditWidget(const int departmentId, QWidget *parent = 0);
+	explicit DepartmentEditWidget(const int departmentId, QWidget *parent = 0);
 
 	QString departmentName() const;
 
