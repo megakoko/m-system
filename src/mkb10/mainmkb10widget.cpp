@@ -74,8 +74,12 @@ QTreeWidgetItem* MainMkb10Widget::createItem(const QSqlRecord& rec)
 {
 	QTreeWidgetItem* item = new QTreeWidgetItem;
 
-	item->setData(0, Qt::UserRole, rec.value("id"));
-	item->setText(0, rec.value("description").toString());
+	const QVariant& id = rec.value("id");
+	const QString& description = rec.value("description").toString();
+
+	item->setData(0, Qt::UserRole, id);
+	item->setText(0, description);
+	item->setToolTip(0, description);
 
 	return item;
 }
