@@ -1,3 +1,4 @@
+-- Выключаем уведомления PostgreSQL.
 SET client_min_messages = 'warning';
 
 
@@ -27,6 +28,7 @@ DROP TABLE IF EXISTS MUser;
 ---------------------------------------------------------------------
 ----------------------- Создание табьиц -----------------------------
 
+-- Таблица с пользователями.
 CREATE TABLE MUser (
 	id 					SERIAL PRIMARY KEY,
 	login 				VARCHAR NOT NULL,
@@ -35,12 +37,14 @@ CREATE TABLE MUser (
 	is_admin 			BOOL
 );
 
+-- Таблица, содержащая информацию о модулях.
 CREATE TABLE Plugin (
 	id 					SERIAL PRIMARY KEY,
 	textid 				VARCHAR NOT NULL UNIQUE,
 	name 				VARCHAR NOT NULL
 );
 
+-- Таблица, определяющая доступ пользователей к модулям.
 CREATE TABLE UserPluginAccess (
 	id 					SERIAL PRIMARY KEY,
 	userid 				INTEGER REFERENCES MUser (id),
@@ -49,6 +53,7 @@ CREATE TABLE UserPluginAccess (
 
 
 
+-- Пациенты.
 CREATE TABLE Patient (
 	id 					SERIAL PRIMARY KEY,
 	familyName 			VARCHAR NOT NULL,
@@ -57,12 +62,14 @@ CREATE TABLE Patient (
 	birthDay			TIMESTAMP
 );
 
+-- Типы документа.
 CREATE TABLE DocumentType (
 	id 					SERIAL PRIMARY KEY,
 	textid 				VARCHAR NOT NULL UNIQUE,
 	name		 		VARCHAR NOT NULL
 );
 
+-- Документы.
 CREATE TABLE Document (
 	id 					SERIAL PRIMARY KEY,
 	documentTypeId 		INTEGER REFERENCES DocumentType (id),
@@ -72,6 +79,7 @@ CREATE TABLE Document (
 	givenBy 			VARCHAR NOT NULL
 );
 
+-- Адреса.
 CREATE TABLE Address (
 	id 					SERIAL PRIMARY KEY,
 	patientId 			INTEGER REFERENCES Patient (id),
@@ -84,6 +92,7 @@ CREATE TABLE Address (
 
 
 
+-- Таблица для справочной системы МКБ-10.
 CREATE TABLE MKB10 (
 	id					INTEGER PRIMARY KEY,
 	description			VARCHAR NOT NULL,
@@ -92,6 +101,7 @@ CREATE TABLE MKB10 (
 
 
 
+-- Таблица с информацией о мед. учреждении.
 CREATE TABLE HealthFacility (
 	id 					INTEGER PRIMARY KEY,
 	name				VARCHAR NOT NULL,
@@ -113,6 +123,7 @@ CREATE RULE HealthFacilityDelete AS ON DELETE TO HealthFacility
 WHERE id = 1  DO INSTEAD NOTHING;
 
 
+-- Персонал/работники мед. учреждения.
 CREATE TABLE Staff (
 	id					SERIAL PRIMARY KEY,
 	familyName 			VARCHAR NOT NULL,
@@ -123,6 +134,7 @@ CREATE TABLE Staff (
 );
 
 
+-- Типы отделений (стационар/амбулатория).
 CREATE TABLE DepartmentType (
 	id					SERIAL PRIMARY KEY,
 	textid				VARCHAR NOT NULL UNIQUE,
@@ -130,6 +142,7 @@ CREATE TABLE DepartmentType (
 );
 
 
+-- Отделения мед. учреждения.
 CREATE TABLE Department (
 	id					SERIAL PRIMARY KEY,
 	name				VARCHAR NOT NULL,
@@ -139,12 +152,15 @@ CREATE TABLE Department (
 );
 
 
+-- Должности.
 CREATE TABLE Position (
 	id					SERIAL PRIMARY KEY,
 	name				VARCHAR NOT NULL
 );
 
 
+-- Таблица, связывающая отделения, персонал и должности. Определяет, 
+-- кто где работает на какой должности.
 CREATE TABLE DepartmentStaffPosition (
 	departmentId		INTEGER REFERENCES Department(id),
 	staffId				INTEGER REFERENCES Staff(id),
@@ -160,6 +176,7 @@ INSERT INTO MUser(login, password, salt, is_admin) VALUES
 ('admin', '38b311d8c359e5975c5a3f454d3f4294', 'salt', true);
 
 
+-- При добавлении модуля надо добавлять сюда строку с его textid и названием.
 INSERT INTO Plugin(textid, name) VALUES
 ('admin', 'Администратор'),
 ('patients', 'Пациенты'),
@@ -169,7 +186,9 @@ INSERT INTO Plugin(textid, name) VALUES
 
 INSERT INTO DocumentType(textid, name) VALUES
 ('passport', 'Паспорт'),
-('inn', 'ИНН');
+('inn', 'ИНН'),
+('insuranceVoluntary', 'Полис добровольного страхования'),
+('insuranceMandatory', 'Полис обязательного страхования');
 
 
 INSERT INTO HealthFacility(id, name) VALUES(1, 'Медицинское учреждение');
@@ -181,4 +200,5 @@ INSERT INTO DepartmentType(textid, name) VALUES
 
 
 ---------------------------------------------------------------------
+-- Включаем уведомления PostgreSQL обратно.
 SET client_min_messages = 'notice';
