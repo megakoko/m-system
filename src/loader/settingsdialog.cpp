@@ -26,15 +26,20 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 
 	connect(m_ok, SIGNAL(clicked()), SLOT(save()));
 	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
+	connect(m_cancel, SIGNAL(clicked()), SLOT(restore()));
 	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+}
+
+
+void SettingsDialog::restore()
+{
+	foreach(AbstractSettingsPage* page, m_pages)
+		page->readSettings();
 }
 
 
 void SettingsDialog::save()
 {
-
 	foreach(AbstractSettingsPage* page, m_pages)
-	{
 		page->saveSettings();
-	}
 }
