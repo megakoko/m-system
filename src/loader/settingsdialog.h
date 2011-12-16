@@ -17,6 +17,7 @@ private:
 	QList<AbstractSettingsPage*> m_pages;
 
 private slots:
+	void restore();
 	void save();
 
 };
