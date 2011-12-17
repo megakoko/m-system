@@ -28,8 +28,9 @@ private:
 	// Вставка в различные таблицы.
 
 	// Возвращает ID пациента.
-	int createPatient() const;
-	void createDocument(const int patientId, const QString& documentTextid) const;
+	int createPatientRecord() const;
+	void createDocumentRecord(const int patientId, const QString& documentTextid) const;
+	void createAddressRecord(const int patientId, const bool isMailingAddress) const;
 
 
 	// Random-функции.
@@ -41,6 +42,7 @@ private:
 							   QString& patronymic) const;
 	inline void randomFemaleName(QString& surname, QString& firstname,
 								 QString& patronymic) const;
+	inline QString randomStreetname() const;
 
 
 	// Dummy данные.
