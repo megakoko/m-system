@@ -114,7 +114,8 @@ void MainWindow::reconnectToDb()
 {
 	const QString& pw = QInputDialog::getText(this, "Пароль к БД",
 											  "Введите пароль к базе данных",
-											  QLineEdit::Password);
+											  QLineEdit::Password,
+											  "mspassword");
 
 	if(!pw.isNull())
 	{
@@ -172,25 +173,14 @@ void MainWindow::createPatients()
 			qApp->processEvents();
 		}
 
+		const int patientId = createPatient();
 
-		QString surname;
-		QString firstname;
-		QString patronymic;
-
+		createDocument(patientId, "passport");
+		createDocument(patientId, "insuranceMandatory");
 		if(randomInt(2))
-			randomMaleName(surname, firstname, patronymic);
-		else
-			randomFemaleName(surname, firstname, patronymic);
+			createDocument(patientId, "insuranceVoluntary");
 
-		q.prepare("INSERT INTO Patient(familyname, name, patronymic) VALUES"
-				  "(:familyname, :name, :patronymic) RETURNING id");
-		q.bindValue(":familyname", surname);
-		q.bindValue(":name", firstname);
-		q.bindValue(":patronymic", patronymic);
-		q.exec();
-		checkQuery(q);
-		if(!q.isActive())
-			break;
+
 
 	}
 	progress.setValue(patientsCount);
@@ -199,6 +189,54 @@ void MainWindow::createPatients()
 	updatePatientsCount();
 }
 
+
+int MainWindow::createPatient() const
+{
+	QString surname;
+	QString firstname;
+	QString patronymic;
+
+	if(randomInt(2))
+		randomMaleName(surname, firstname, patronymic);
+	else
+		randomFemaleName(surname, firstname, patronymic);
+
+
+	QSqlQuery q;
+	q.prepare("INSERT INTO Patient(familyname, name, patronymic, birthday) VALUES"
+			  "(:familyname, :name, :patronymic, :birthday) RETURNING id");
+	q.bindValue(":familyname", surname);
+	q.bindValue(":name", firstname);
+	q.bindValue(":patronymic", patronymic);
+	q.bindValue(":birthday", randomDate());
+	q.exec();
+	checkQuery(q);
+
+
+	q.first();
+	return q.value(0).toInt();
+}
+
+
+void MainWindow::createDocument(const int patientId, const QString& documentTextid) const
+{
+	QSqlQuery q;
+	q.prepare(" INSERT INTO Document "
+			  " (documentTypeId, patientId, serialNumber, date, givenBy) VALUES "
+			  " ((SELECT id FROM DocumentType WHERE textid = :docTextid), "
+			  " :patientId, :serialNumber, :date, :givenBy)");
+	q.bindValue(":docTextid", documentTextid);
+	q.bindValue(":patientId", patientId);
+	q.bindValue(":serialNumber", QString::number(randomInt(1E4)) + ' ' +
+								 QString::number(randomInt(1E6)));
+	q.bindValue(":date", randomDate());
+	if(documentTextid == "passport")
+		q.bindValue(":givenBy", "РОВД");
+	else
+		q.bindValue(":givenBy", "Страховая компания");
+	q.exec();
+	checkQuery(q);
+}
 
 
 
@@ -222,9 +260,7 @@ int MainWindow::randomInt(const int max) const
 
 QDate MainWindow::randomDate() const
 {
-	static const int currentTimestamp = QDateTime::currentMSecsSinceEpoch();
-
-	return QDateTime::fromMSecsSinceEpoch(randomInt(currentTimestamp)).date();
+	return QDate(1970 + randomInt(30), randomInt(12)+1, randomInt(28)+1);
 }
 
 

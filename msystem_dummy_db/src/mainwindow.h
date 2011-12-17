@@ -25,6 +25,12 @@ private:
 	void showMessageInStatusBar(const QString& msg);
 
 
+	// Вставка в различные таблицы.
+
+	// Возвращает ID пациента.
+	int createPatient() const;
+	void createDocument(const int patientId, const QString& documentTextid) const;
+
 
 	// Random-функции.
 	void initializeRandom() const;
