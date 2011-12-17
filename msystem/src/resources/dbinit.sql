@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS Address;
 DROP TABLE IF EXISTS Document;
 DROP TABLE IF EXISTS DocumentType;
 DROP TABLE IF EXISTS Patient;
+DROP TABLE IF EXISTS Sex;
 DROP TABLE IF EXISTS UserPluginAccess;
 DROP TABLE IF EXISTS Plugin;
 DROP TABLE IF EXISTS MUser;
@@ -52,6 +53,13 @@ CREATE TABLE UserPluginAccess (
 );
 
 
+-- Пол пациентов.
+CREATE TABLE Sex (
+	id 					SERIAL PRIMARY KEY,
+	textid				VARCHAR NOT NULL UNIQUE,
+	name				VARCHAR
+);
+
 
 -- Пациенты.
 CREATE TABLE Patient (
@@ -59,7 +67,8 @@ CREATE TABLE Patient (
 	familyName 			VARCHAR NOT NULL,
 	name 				VARCHAR NOT NULL,
 	patronymic 			VARCHAR NOT NULL,
-	birthDay			TIMESTAMP
+	birthDay			TIMESTAMP,
+	sexId				INTEGER REFERENCES Sex(id)
 );
 
 -- Типы документа.
@@ -183,6 +192,11 @@ INSERT INTO Plugin(textid, name) VALUES
 ('patients', 'Пациенты'),
 ('mkb10', 'Справочная система МКБ-10'),
 ('departments', 'Медицинское учреждение');
+
+
+INSERT INTO Sex(textid, name) VALUES
+('male', 'Мужчина'), 
+('female', 'Женщина');
 
 
 INSERT INTO DocumentType(textid, name) VALUES
