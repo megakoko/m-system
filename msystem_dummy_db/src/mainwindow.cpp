@@ -196,19 +196,29 @@ int MainWindow::createPatient() const
 	QString firstname;
 	QString patronymic;
 
+	QString sextextid;
 	if(randomInt(2))
+	{
 		randomMaleName(surname, firstname, patronymic);
+		sextextid = "male";
+	}
 	else
+	{
 		randomFemaleName(surname, firstname, patronymic);
+		sextextid = "female";
+	}
 
 
 	QSqlQuery q;
-	q.prepare("INSERT INTO Patient(familyname, name, patronymic, birthday) VALUES"
-			  "(:familyname, :name, :patronymic, :birthday) RETURNING id");
+	q.prepare("INSERT INTO Patient(familyname, name, patronymic, birthday, sexid) VALUES"
+			  "(:familyname, :name, :patronymic, :birthday, "
+				" (SELECT id FROM Sex WHERE textid = :sextextid)) "
+			  " RETURNING id");
 	q.bindValue(":familyname", surname);
 	q.bindValue(":name", firstname);
 	q.bindValue(":patronymic", patronymic);
 	q.bindValue(":birthday", randomDate());
+	q.bindValue(":sextextid", sextextid);
 	q.exec();
 	checkQuery(q);
 
