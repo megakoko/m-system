@@ -166,7 +166,6 @@ void MainWindow::createPatients()
 		if(progress.wasCanceled())
 			break;
 
-
 		if(i % 100 == 0)
 		{
 			progress.setValue(i);
@@ -178,7 +177,10 @@ void MainWindow::createPatients()
 		QString firstname;
 		QString patronymic;
 
-		randomMaleName(surname, firstname, patronymic);
+		if(randomInt(2))
+			randomMaleName(surname, firstname, patronymic);
+		else
+			randomFemaleName(surname, firstname, patronymic);
 
 		q.prepare("INSERT INTO Patient(familyname, name, patronymic) VALUES"
 				  "(:familyname, :name, :patronymic) RETURNING id");
