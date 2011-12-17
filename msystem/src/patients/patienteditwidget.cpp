@@ -50,9 +50,9 @@ void PatientEditWidget::init()
 
 
 	QSqlQuery q;
-	q.prepare(" SELECT familyName, name, patronymic, birthDay "
-			  " FROM Patient "
-			  " WHERE id = :patientId");
+	q.prepare(" SELECT familyName, p.name, patronymic, birthDay, s.textid "
+			  " FROM Patient p LEFT JOIN Sex s ON p.sexId = s.id "
+			  " WHERE p.id = :patientId");
 	q.bindValue(":patientId", m_patientId);
 	q.exec();
 	checkQuery(q);
@@ -64,6 +64,14 @@ void PatientEditWidget::init()
 	m_name->setText(q.value(1).toString());
 	m_patronymic->setText(q.value(2).toString());
 	m_birthDay->setDate(q.value(3).toDate());
+
+	if(q.value(4).toString() == "male")
+		m_male->setChecked(true);
+	else if(q.value(4).toString() == "female")
+		m_female->setChecked(true);
+	else
+		Q_ASSERT(!"Unknown option");
+
 
 	q.prepare(" SELECT id, isMailingAddress, city, street, house, apartment "
 			  " FROM Address "
@@ -292,6 +300,11 @@ bool PatientEditWidget::canSave(QString &errorDescription) const
 		errorDescription = QString::fromUtf8("Адрес прописки не заполнен");
 		return false;
 	}
+	else if(!m_male->isChecked() && !m_female->isChecked())
+	{
+		errorDescription = "Пол пациента не выбран";
+		return false;
+	}
 
 	return true;
 }
@@ -304,13 +317,23 @@ void PatientEditWidget::save()
 			  " familyName = :familyName, "
 			  " name = :name, "
 			  " patronymic = :patronymic, "
-			  " birthDay = :birthDay "
+			  " birthDay = :birthDay, "
+			  " sexid = (SELECT id FROM Sex WHERE textid = :sextextid) "
 			  " WHERE id = :patientId ");
 	q.bindValue(":familyName", m_familyName->text());
 	q.bindValue(":name", m_name->text());
 	q.bindValue(":patronymic", m_patronymic->text());
 	q.bindValue(":birthDay", m_birthDay->date());
 	q.bindValue(":patientId", m_patientId);
+
+	if(m_male->isChecked())
+		q.bindValue(":sextextid", "male");
+	else if(m_female->isChecked())
+		q.bindValue(":sextextid", "female");
+	else
+		Q_ASSERT(!"Unknown option");
+
+
 	q.exec();
 	checkQuery(q);
 

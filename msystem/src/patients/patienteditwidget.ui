@@ -81,6 +81,20 @@
           </property>
          </widget>
         </item>
+        <item row="5" column="1">
+         <widget class="QRadioButton" name="m_female">
+          <property name="text">
+           <string>Женщина</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QRadioButton" name="m_male">
+          <property name="text">
+           <string>Мужчина</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
