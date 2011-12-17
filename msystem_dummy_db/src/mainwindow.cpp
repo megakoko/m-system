@@ -173,13 +173,17 @@ void MainWindow::createPatients()
 			qApp->processEvents();
 		}
 
-		const int patientId = createPatient();
+		const int patientId = createPatientRecord();
 
-		createDocument(patientId, "passport");
-		createDocument(patientId, "insuranceMandatory");
+		createDocumentRecord(patientId, "passport");
+		createDocumentRecord(patientId, "insuranceMandatory");
 		if(randomInt(2))
-			createDocument(patientId, "insuranceVoluntary");
+			createDocumentRecord(patientId, "insuranceVoluntary");
 
+
+		createAddressRecord(patientId, true);
+		if(randomInt(5) == 0)
+			createAddressRecord(patientId, false);
 
 
 	}
@@ -190,7 +194,7 @@ void MainWindow::createPatients()
 }
 
 
-int MainWindow::createPatient() const
+int MainWindow::createPatientRecord() const
 {
 	QString surname;
 	QString firstname;
@@ -228,7 +232,7 @@ int MainWindow::createPatient() const
 }
 
 
-void MainWindow::createDocument(const int patientId, const QString& documentTextid) const
+void MainWindow::createDocumentRecord(const int patientId, const QString& documentTextid) const
 {
 	QSqlQuery q;
 	q.prepare(" INSERT INTO Document "
@@ -249,7 +253,22 @@ void MainWindow::createDocument(const int patientId, const QString& documentText
 }
 
 
-
+void MainWindow::createAddressRecord(const int patientId,
+									 const bool isMailingAddress) const
+{
+	QSqlQuery q;
+	q.prepare(" INSERT INTO Address "
+			  " (patientId, isMailingAddress, city, street, house, apartment) VALUES"
+			  " (:patientId, :isMailingAddress, :city, :street, :house, :apartment)");
+	q.bindValue(":patientId", patientId);
+	q.bindValue(":isMailingAddress", isMailingAddress);
+	q.bindValue(":city", "Ижевск");
+	q.bindValue(":street", randomStreetname());
+	q.bindValue(":house", randomInt(250));
+	q.bindValue(":apartment", randomInt(200));
+	q.exec();
+	checkQuery(q);
+}
 
 
 
@@ -290,4 +309,10 @@ void MainWindow::randomFemaleName(QString &surname, QString &firstname,
 	surname = m_femaleSurname.at(randomInt(m_femaleSurname.size()));
 	firstname = m_femaleFirstName.at(randomInt(m_femaleFirstName.size()));
 	patronymic = m_femalePatronymic.at(randomInt(m_femalePatronymic.size()));
+}
+
+
+QString MainWindow::randomStreetname() const
+{
+	return m_streetName.at(randomInt(m_streetName.size()));
 }
