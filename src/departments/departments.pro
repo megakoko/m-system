@@ -10,17 +10,22 @@ HEADERS +=	departments.h \
 			staffeditwidget.h \
 			departmenteditwidget.h \
 			healthfacilityeditdialog.h \
-			positionseditdialog.h
+			positionseditdialog.h \
+			staffpositioneditdialog.h \
+			staffposition.h
 
 SOURCES +=	departments.cpp \
 			maindepartmentswidget.cpp \
 			staffeditwidget.cpp \
 			departmenteditwidget.cpp \
 			healthfacilityeditdialog.cpp \
-			positionseditdialog.cpp
+			positionseditdialog.cpp \
+			staffpositioneditdialog.cpp \
+			staffposition.cpp
 
 FORMS	+= 	maindepartmentswidget.ui \
 			staffeditwidget.ui \
 			departmenteditwidget.ui \
 			healthfacilityeditdialog.ui \
-			positionseditdialog.ui
+			positionseditdialog.ui \
+			staffpositioneditdialog.ui

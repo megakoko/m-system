@@ -1,10 +1,13 @@
 #include "departmenteditwidget.h"
 
 #include <QSqlQuery>
+#include <QSqlRecord>
 #include <QSqlError>
 #include <QDebug>
+#include <QMessageBox>
 
 #include "macros.h"
+#include "staffpositioneditdialog.h"
 
 
 DepartmentEditWidget::DepartmentEditWidget(const int departmentId, QWidget *parent)
@@ -27,6 +30,14 @@ void DepartmentEditWidget::init()
 {
 	connect(m_name, SIGNAL(editingFinished()), SLOT(nameChanged()));
 	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
+
+	connect(m_departmentStaff, SIGNAL(itemSelectionChanged()),
+			SLOT(staffPositionSelectionChanged()));
+
+	connect(m_addStaffToDepartment, SIGNAL(clicked()), SLOT(addStaffPosition()));
+	connect(m_editStaffInDepartment, SIGNAL(clicked()), SLOT(editStaffPosition()));
+	connect(m_deleteStaffFromDepartment, SIGNAL(clicked()), SLOT(deleteStaffPosition()));
+
 
 	Q_ASSERT(m_departmentId > 0);
 
@@ -60,6 +71,23 @@ void DepartmentEditWidget::init()
 	m_type->setCurrentIndex(m_type->findData(q.value(2).toInt()));
 	m_headOfDepartment->setCurrentIndex(
 				m_headOfDepartment->findData(q.value(3).toInt()));
+
+
+	q.prepare(" SELECT id, departmentId, staffId, positionId "
+			  " FROM DepartmentStaffPosition "
+			  " WHERE departmentId = ? ");
+	q.addBindValue(m_departmentId);
+	q.exec();
+	checkQuery(q);
+
+	while(q.next())
+	{
+		m_staffPosition << StaffPosition(q.record());
+		m_departmentStaff->addItem(m_staffPosition.last().toString());
+	}
+
+
+	staffPositionSelectionChanged();
 }
 
 
@@ -104,6 +132,11 @@ void DepartmentEditWidget::save()
 	q.exec();
 	checkQuery(q);
 
+	foreach(const StaffPosition& sp, m_staffPosition)
+		sp.save();
+	foreach(const StaffPosition& sp, m_staffPositionMarkedForDeletion)
+		sp.save();
+
 	emit saved();
 }
 
@@ -111,4 +144,57 @@ void DepartmentEditWidget::save()
 void DepartmentEditWidget::nameChanged()
 {
 	emit setTabLabel(departmentName());
+}
+
+
+void DepartmentEditWidget::staffPositionSelectionChanged()
+{
+	const bool disableButtons = m_departmentStaff->selectedItems().isEmpty();
+
+	m_editStaffInDepartment->setDisabled(disableButtons);
+	m_deleteStaffFromDepartment->setDisabled(disableButtons);
+}
+
+
+void DepartmentEditWidget::addStaffPosition()
+{
+	StaffPositionEditDialog d(StaffPosition(m_departmentId), this);
+	if(d.exec() == QDialog::Accepted)
+	{
+		m_staffPosition << d.currentStaffPosition();
+		m_departmentStaff->addItem(m_staffPosition.last().toString());
+	}
+}
+
+
+void DepartmentEditWidget::editStaffPosition()
+{
+	const int index = m_departmentStaff->currentRow();
+
+
+	StaffPositionEditDialog d(m_staffPosition.at(index), this);
+	if(d.exec() == QDialog::Accepted)
+	{
+		m_staffPosition[index] = d.currentStaffPosition();
+		m_departmentStaff->item(index)->setText(m_staffPosition.at(index).toString());
+	}
+}
+
+
+void DepartmentEditWidget::deleteStaffPosition()
+{
+	const QString& title = "Удаление сотрудника из отделения";
+	const QString& descr = "Вы действительно хотите удалить сотрудника из отделения?";
+
+	const int rc = QMessageBox::question(this, title, descr,
+										 QMessageBox::Yes | QMessageBox::No,
+										 QMessageBox::No);
+	if(rc == QMessageBox::Yes)
+	{
+		const int index = m_departmentStaff->currentRow();
+		m_staffPositionMarkedForDeletion << m_staffPosition.takeAt(index);
+		m_staffPositionMarkedForDeletion.last().markForDeletion();
+
+		delete m_departmentStaff->takeItem(index);
+	}
 }

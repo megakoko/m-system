@@ -162,6 +162,7 @@ CREATE TABLE Position (
 -- Таблица, связывающая отделения, персонал и должности. Определяет, 
 -- кто где работает на какой должности.
 CREATE TABLE DepartmentStaffPosition (
+	id					SERIAL PRIMARY KEY,
 	departmentId		INTEGER REFERENCES Department(id),
 	staffId				INTEGER REFERENCES Staff(id),
 	positionId			INTEGER REFERENCES Position(id)
