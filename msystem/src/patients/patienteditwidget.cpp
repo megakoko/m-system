@@ -58,7 +58,7 @@ void PatientEditWidget::init()
 	checkQuery(q);
 
 	const bool idIsValid = q.first();
-	Q_ASSERT(idIsValid);
+	Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
 
 	m_familyName->setText(q.value(0).toString());
 	m_name->setText(q.value(1).toString());
