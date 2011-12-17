@@ -257,7 +257,7 @@ void PatientEditWidget::addDocumentToTable(const Document& doc)
 	item = new QTableWidgetItem(doc.documentName());
 	m_documentTable->setItem(row, DocumentTableColumns::DocumentName, item);
 
-	item = new QTableWidgetItem(doc.date.toString());
+	item = new QTableWidgetItem(doc.date.toString("dd.MM.yyyy"));
 	m_documentTable->setItem(row, DocumentTableColumns::Date, item);
 
 	item = new QTableWidgetItem(doc.serialNumber);
@@ -273,7 +273,7 @@ void PatientEditWidget::editDocumentInTable(const int row, const Document& newDo
 	item->setText(newDoc.documentName());
 
 	item = m_documentTable->item(row, DocumentTableColumns::Date);
-	item->setText(newDoc.date.toString());
+	item->setText(newDoc.date.toString("dd.MM.yyyy"));
 
 	item = m_documentTable->item(row, DocumentTableColumns::Number);
 	item->setText(newDoc.serialNumber);
