@@ -87,7 +87,6 @@ void PatientEditWidget::init()
 	if(q.first())
 	{
 		m_mailingAddress = Address(q.record());
-		m_mailingAddressLabel->setText(m_mailingAddress.toString());
 
 		// Адрес по прописке должен существовать.
 		Q_ASSERT(q.record().value("isMailingAddress").toBool() == true);
@@ -99,10 +98,11 @@ void PatientEditWidget::init()
 			toggleMailingAddressIsActual(false);
 
 			m_actualAddress = Address(q.record());
-			m_actualAddressLabel->setText(m_actualAddress.toString());
 		}
 	}
 
+	m_mailingAddressLabel->setText(m_mailingAddress.toString());
+	m_actualAddressLabel->setText(m_actualAddress.toString());
 
 
 	q.prepare(" SELECT id, documentTypeId, serialNumber, date, givenBy "

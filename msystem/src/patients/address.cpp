@@ -47,8 +47,8 @@ QString Address::toString() const
 	if(!apartment.isNull())
 		result << apartment;
 
-
-	return result.join(", ");
+	return (m_isMailingAddress ? "Адрес прописки: " : "Адрес проживания: ") +
+			result.join(", ");
 }
 
 
