@@ -191,7 +191,8 @@ INSERT INTO Plugin(textid, name) VALUES
 ('admin', 'Администратор'),
 ('patients', 'Пациенты'),
 ('mkb10', 'Справочная система МКБ-10'),
-('departments', 'Медицинское учреждение');
+('departments', 'Медицинское учреждение'),
+('test', 'Пример модуля');
 
 
 INSERT INTO Sex(textid, name) VALUES

@@ -5,4 +5,5 @@ SUBDIRS	+= 	loader \
 			administrator \
 			patients \
 			mkb10 \
-			departments
+			departments \
+			test
