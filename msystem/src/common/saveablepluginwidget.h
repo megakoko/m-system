@@ -19,4 +19,7 @@ public:
 	virtual bool canSave(QString& errorDescription) const = 0;
 	virtual void save() = 0;
 
+signals:
+	void saved();
+
 };
