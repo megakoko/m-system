@@ -177,6 +177,11 @@ bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 {
 	Q_ASSERT(m_userId >= 0);
 
+#ifdef QT_NO_DEBUG
+	if(textid == "test")
+		return false;
+#endif
+
 	bool result = false;
 	QSqlQuery q;
 
