@@ -16,6 +16,5 @@ signals:
 	void addNewWidget(PluginWidget* widget, const QString& caption);
 	void setTabLabel(const QString& text);
 	void closeMe();
-	void saved();
 
 };
