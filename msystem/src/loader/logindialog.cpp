@@ -97,6 +97,9 @@ void LoginDialog::tryToLogin()
 
 	const QString& hash = Passwords::hash(m_password->text(), salt(m_login->text()));
 
+
+	// TODO: select count(*) from muser
+	//        where login='admin' and md5(md5('pw') || salt) = password;
 	QSqlQuery query;
 	query.prepare(" SELECT id FROM MUser "
 				  " WHERE login = :login AND password = :password");
