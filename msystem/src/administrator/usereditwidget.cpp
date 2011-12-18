@@ -132,6 +132,9 @@ void UserEditWidget::save()
 	}
 	else
 	{
+	
+		// TODO: 
+		// password = md5(md5(:password) || :salt)
 		const QByteArray& salt = Passwords::salt();
 		query.prepare(" UPDATE MUser SET "
 					  " login = :login, "

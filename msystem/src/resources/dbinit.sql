@@ -184,6 +184,7 @@ CREATE TABLE DepartmentStaffPosition (
 -- Пользователь с правами админа с логином 'admin' и паролем 'pw'.
 INSERT INTO MUser(login, password, salt, is_admin) VALUES
 ('admin', '38b311d8c359e5975c5a3f454d3f4294', 'salt', true);
+-- TODO:  md5(md5('pw') || 'salt')
 
 
 -- При добавлении модуля надо добавлять сюда строку с его textid и названием.
