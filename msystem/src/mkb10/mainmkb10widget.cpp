@@ -85,7 +85,8 @@ QTreeWidgetItem* MainMkb10Widget::createItem(const QSqlRecord& rec)
 }
 
 
-QList<QTreeWidgetItem*> MainMkb10Widget::createItems(const QVariant& parentId)
+QList<QTreeWidgetItem*> MainMkb10Widget::createItems(const QVariant& parentId
+													 /* = QVariant() */)
 {
 	QSqlQuery q;
 	if(parentId.isNull())
