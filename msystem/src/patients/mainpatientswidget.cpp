@@ -13,11 +13,6 @@
 #include "patienteditwidget.h"
 
 
-static const QString patientListQuery = QString::fromUtf8(
-	" SELECT id, familyName AS Фамилия, name AS Имя, patronymic AS Отчество "
-	" FROM Patient "
-	" ORDER BY familyName, name, patronymic ");
-
 MainPatientsWidget::MainPatientsWidget(QWidget *parent)
 	: PluginWidget(parent)
 {
@@ -31,7 +26,7 @@ MainPatientsWidget::MainPatientsWidget(QWidget *parent)
 void MainPatientsWidget::init()
 {
 	m_model = new QSqlQueryModel(this);
-	m_model->setQuery(patientListQuery);
+	m_model->setQuery(patientListQuery());
 
 
 	m_view->setModel(m_model);
@@ -52,12 +47,34 @@ void MainPatientsWidget::initConnections()
 	connect(m_view->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(selectionChanged()));
+
+	connect(m_searchline, SIGNAL(returnPressed()), SLOT(updatePatientsList()));
+	connect(m_find, SIGNAL(clicked()), SLOT(updatePatientsList()));
+	connect(m_clear, SIGNAL(clicked()), m_searchline, SLOT(clear()));
+	connect(m_clear, SIGNAL(clicked()), SLOT(updatePatientsList()));
+}
+
+
+QString MainPatientsWidget::patientListQuery() const
+{
+	static const QString select =	" SELECT id, familyName AS Фамилия, "
+									" name AS Имя, patronymic AS Отчество ";
+	static const QString from =		" FROM Patient ";
+	static const QString where =	" WHERE familyName ILIKE '%%1%' ";
+	static const QString orderby =	" ORDER BY familyName, name, patronymic ";
+
+
+	const QString& filter = m_searchline->text().simplified().remove('\'');
+
+
+	return filter.isEmpty() ? (select + from + orderby)
+							: (select + from + where.arg(filter) + orderby);
 }
 
 
 void MainPatientsWidget::updatePatientsList()
 {
-	m_model->setQuery(patientListQuery);
+	m_model->setQuery(patientListQuery());
 }
 
 
