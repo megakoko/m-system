@@ -17,6 +17,7 @@ private:
 	void init();
 	void initConnections();
 
+	QString patientListQuery() const;
 
 	bool onePatientSelected() const;
 	int selectedPatientId() const;
