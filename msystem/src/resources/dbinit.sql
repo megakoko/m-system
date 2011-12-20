@@ -88,6 +88,9 @@ CREATE TABLE Document (
 	givenBy 			VARCHAR NOT NULL
 );
 
+
+-- TODO: AddressType
+
 -- Адреса.
 CREATE TABLE Address (
 	id 					SERIAL PRIMARY KEY,
