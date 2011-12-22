@@ -40,45 +40,48 @@ void UserEditWidget::init()
 	}
 
 
-	query.prepare(" SELECT login, is_admin "
-				  " FROM MUser "
-				  " WHERE id = :userid ");
-	query.bindValue(":userid", m_userId);
-	query.exec();
-	checkQuery(query);
-
-	query.first();
-	m_login->setText(query.value(0).toString());
-
-	const bool isAdmin = query.value(1).toBool();
-
-	m_isAdmin->setChecked(isAdmin);
-
-
-	if(!isAdmin)
+	if(m_userId != InvalidId)
 	{
-		query.prepare(" SELECT p.textid "
-					  " FROM UserPluginAccess upa "
-					  " LEFT JOIN Plugin p ON upa.pluginid = p.id "
-					  " WHERE upa.userid = :userid ");
+		query.prepare(" SELECT login, is_admin "
+					  " FROM MUser "
+					  " WHERE id = :userid ");
 		query.bindValue(":userid", m_userId);
 		query.exec();
 		checkQuery(query);
 
+		query.first();
+		m_login->setText(query.value(0).toString());
 
-		// Снимаем галки со всех QCheckBox.
-		QMap<QString, QCheckBox*>::iterator i = m_textidToCheckbox.begin();
-		while(i != m_textidToCheckbox.end())
-		{
-			i.value()->setChecked(false);
-			++i;
-		}
+		const bool isAdmin = query.value(1).toBool();
 
-		while(query.next())
+		m_isAdmin->setChecked(isAdmin);
+
+
+		if(!isAdmin)
 		{
-			const QString& textid = query.value(0).toString();
-			if(m_textidToCheckbox.contains(textid))
-				m_textidToCheckbox[textid]->setChecked(true);
+			query.prepare(" SELECT p.textid "
+						  " FROM UserPluginAccess upa "
+						  " LEFT JOIN Plugin p ON upa.pluginid = p.id "
+						  " WHERE upa.userid = :userid ");
+			query.bindValue(":userid", m_userId);
+			query.exec();
+			checkQuery(query);
+
+
+			// Снимаем галки со всех QCheckBox.
+			QMap<QString, QCheckBox*>::iterator i = m_textidToCheckbox.begin();
+			while(i != m_textidToCheckbox.end())
+			{
+				i.value()->setChecked(false);
+				++i;
+			}
+
+			while(query.next())
+			{
+				const QString& textid = query.value(0).toString();
+				if(m_textidToCheckbox.contains(textid))
+					m_textidToCheckbox[textid]->setChecked(true);
+			}
 		}
 	}
 }
@@ -90,6 +93,27 @@ void UserEditWidget::initConnections()
 	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
 
 	connect(m_login, SIGNAL(editingFinished()), SLOT(loginEdited()));
+}
+
+
+bool UserEditWidget::loginIsUnique() const
+{
+	QSqlQuery q;
+
+	if(m_userId == InvalidId)
+		q.prepare("SELECT COUNT(*) FROM MUser WHERE login = :login");
+	else
+	{
+		q.prepare("SELECT COUNT(*) FROM MUser WHERE login = :login AND id <> :id");
+		q.bindValue(":id", m_userId);
+	}
+	q.bindValue(":login", m_login->text());
+
+	q.exec();
+	checkQuery(q);
+
+	q.first();
+	return q.value(0).toInt();
 }
 
 
@@ -109,6 +133,11 @@ bool UserEditWidget::canSave(QString& errorDescription) const
 								   "пользователя должно быть заполнено.");
 		return false;
 	}
+	else if (loginIsUnique())
+	{
+		errorDescription = "Имя пользователя должно быть уникально.";
+		return false;
+	}
 	else if (m_password->text() != m_password2->text())
 	{
 		errorDescription = QString::fromUtf8("Пароли не совпадают");
@@ -125,31 +154,57 @@ void UserEditWidget::save()
 	QSqlQuery query;
 	if(m_password->text().simplified().isEmpty())
 	{
-		query.prepare(" UPDATE MUser SET "
-					  " login = :login, "
-					  " is_admin = :is_admin "
-					  " WHERE id = :userid ");
+		if(m_userId == InvalidId)
+		{
+			query.prepare(" INSERT INTO MUser "
+						  " ( login,  is_admin) VALUES "
+						  " (:login, :is_admin) RETURNING id ");
+		}
+		else
+		{
+			query.prepare(" UPDATE MUser SET "
+						  " login = :login, "
+						  " is_admin = :is_admin "
+						  " WHERE id = :userid ");
+			query.bindValue(":userid", m_userId);
+		}
 	}
 	else
 	{
-	
 		// TODO: 
 		// password = md5(md5(:password) || :salt)
 		const QByteArray& salt = Passwords::salt();
-		query.prepare(" UPDATE MUser SET "
-					  " login = :login, "
-					  " password = :password, "
-					  " salt = :salt, "
-					  " is_admin = :is_admin "
-					  " WHERE id = :userid ");
+		if(m_userId == InvalidId)
+		{
+			query.prepare(" INSERT INTO MUser "
+						  " ( login,  password,  salt,  is_admin) VALUES "
+						  " (:login, :password, :salt, :is_admin) RETURNING id");
+		}
+		else
+		{
+			query.prepare(" UPDATE MUser SET "
+						  " login = :login, "
+						  " password = :password, "
+						  " salt = :salt, "
+						  " is_admin = :is_admin "
+						  " WHERE id = :userid ");
+			query.bindValue(":userid", m_userId);
+		}
 		query.bindValue(":password", Passwords::hash(m_password->text(), salt));
 		query.bindValue(":salt", QString(salt));
 	}
 	query.bindValue(":login", m_login->text());
 	query.bindValue(":is_admin", m_isAdmin->isChecked());
-	query.bindValue(":userid", m_userId);
 	query.exec();
 	checkQuery(query);
+
+
+	if(m_userId == InvalidId)
+	{
+		query.first();
+		m_userId = query.value(0).toInt();
+	}
+
 
 	const QSet<QString>& textidsBefore = databaseTextids();
 	const QSet<QString>& textidsAfter  = checkedTextids();

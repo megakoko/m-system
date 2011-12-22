@@ -94,14 +94,9 @@ void MainAdminWidget::userSelectionChanged()
 
 void MainAdminWidget::createUser()
 {
-	QSqlQuery q;
-	q.prepare(" INSERT INTO MUser (login, is_admin) "
-			  " VALUES (:login, FALSE) ");
-	q.bindValue(":login", generateLogin());
-	q.exec();
-	checkQuery(q);
-
-	updateUserList();
+	UserEditWidget* widget = new UserEditWidget(SaveablePluginWidget::InvalidId, this);
+	connect(widget, SIGNAL(saved()), SLOT(updateUserList()));
+	addNewWidget(widget, widget->fullUserName());
 }
 
 
