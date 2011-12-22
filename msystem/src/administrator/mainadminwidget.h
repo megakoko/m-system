@@ -25,9 +25,6 @@ private:
 
 	QString selectedUserName() const;
 
-	QString generateLogin() const;
-
-
 
 	QSqlQueryModel* m_model;
 

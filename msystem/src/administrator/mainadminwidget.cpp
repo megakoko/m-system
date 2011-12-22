@@ -128,52 +128,26 @@ void MainAdminWidget::deleteUser()
 	}
 	else
 	{
-		QSqlQuery q;
+		const int rc = QMessageBox::question(this, "Удаление пользователя",
+											 "Вы действительно хотите удалить пользователя?",
+											 QMessageBox::Ok | QMessageBox::Cancel,
+											 QMessageBox::Cancel);
 
-		q.prepare("DELETE FROM UserPluginAccess WHERE userid = :userid");
-		q.addBindValue(userid);
-		q.exec();
-		checkQuery(q);
+		if(rc == QMessageBox::Ok)
+		{
+			QSqlQuery q;
 
-		q.prepare("DELETE FROM MUser WHERE id = :userid");
-		q.addBindValue(userid);
-		q.exec();
-		checkQuery(q);
+			q.prepare("DELETE FROM UserPluginAccess WHERE userid = :userid");
+			q.addBindValue(userid);
+			q.exec();
+			checkQuery(q);
 
-		updateUserList();
+			q.prepare("DELETE FROM MUser WHERE id = :userid");
+			q.addBindValue(userid);
+			q.exec();
+			checkQuery(q);
+
+			updateUserList();
+		}
 	}
-}
-
-
-QString MainAdminWidget::generateLogin() const
-{
-	const QString& basename = QString::fromUtf8("Пользователь");
-
-
-	/*
-		Regexp explanation 'basename \\((\\d+)\\)$':
-		basename => ( => \d+ => ) => $.
-	*/
-	QSqlQuery q;
-	q.prepare(QString(" SELECT SUBSTRING(login, E'%1 \\\\((\\\\d+)\\\\)$') AS Number "
-					  " FROM MUser ORDER BY Number").arg(basename));
-	q.exec();
-	checkQuery(q);
-
-
-	QList<int> numbers;
-	while(q.next())
-	{
-		if(q.isNull(0))	// NULL-значения появятся последними, мона использовать break здесь.
-			continue;
-		numbers << q.value(0).toInt();
-	}
-
-	int possibleNumber = 0;
-	while(++possibleNumber > 0)
-		if(!numbers.contains(possibleNumber))
-			break;
-
-	Q_ASSERT(possibleNumber > 0);
-	return QString("%1 (%2)").arg(basename).arg(possibleNumber);
 }
