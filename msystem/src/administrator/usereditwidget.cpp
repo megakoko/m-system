@@ -276,7 +276,8 @@ QSet<QString> UserEditWidget::checkedTextids() const
 
 void UserEditWidget::isAdminToggled(bool checked)
 {
-	scrollAreaWidgetContents->setHidden(checked);
+	m_scrollAreaWidgetContents->setHidden(checked);
+	m_pluginAccessLabel->setHidden(checked);
 }
 
 
