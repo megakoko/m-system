@@ -6,6 +6,7 @@
 #include <QVariant>
 #include <QDebug>
 #include "saveablepluginwidget.h"
+#include "homepage.h"
 
 
 TabWidget::TabWidget(QWidget *parent)
@@ -118,6 +119,21 @@ void TabWidget::setTabLabel(const QString &caption)
 }
 
 
+void TabWidget::addHomeTab(HomePage *homePage)
+{
+	Q_ASSERT(count() == 0);
+
+	if(homePage != NULL)
+	{
+		const QString& caption = "Домашняя страница";
+		const int index = addTab(homePage, caption);
+		setTabToolTip(index, caption);
+		setCurrentIndex(index);
+
+	}
+}
+
+
 int TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 {
 	int index = -1;
@@ -137,8 +153,6 @@ int TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 				tabBar()->setTabData(index, data.last());
 		}
 
-
-
 		connect(widget, SIGNAL(closeMe()), SLOT(closeTab()));
 		connect(widget, SIGNAL(setTabLabel(QString)), SLOT(setTabLabel(QString)));
 		connect(widget,
@@ -149,12 +163,17 @@ int TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 }
 
 
-void TabWidget::addWidget(PluginWidget *widget, const QString &caption,
+int TabWidget::addWidget(PluginWidget *widget, const QString &caption,
 						 const QString &textid)
 {
 	const int index = addWidget(widget, caption);
-	const QVariant& data = QStringList() << "main" << textid;
-	tabBar()->setTabData(index, data);
+
+	if(index >= 0)
+	{
+		const QVariant& data = QStringList() << "main" << textid;
+		tabBar()->setTabData(index, data);
+	}
+	return index;
 }
 
 
