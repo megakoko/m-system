@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_6">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
@@ -104,7 +104,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_2">
+            <widget class="QLabel" name="m_pluginAccessLabel">
              <property name="text">
               <string>Учетная запись будет иметь доступ к следующим модулям:</string>
              </property>
@@ -119,10 +119,7 @@
            <item>
             <widget class="QScrollArea" name="scrollArea">
              <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
+              <enum>QFrame::Panel</enum>
              </property>
              <property name="lineWidth">
               <number>0</number>
@@ -133,13 +130,13 @@
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
-             <widget class="QWidget" name="scrollAreaWidgetContents">
+             <widget class="QWidget" name="m_scrollAreaWidgetContents">
               <property name="geometry">
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>727</width>
-                <height>228</height>
+                <width>359</width>
+                <height>340</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
