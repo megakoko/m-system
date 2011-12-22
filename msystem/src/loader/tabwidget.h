@@ -5,6 +5,7 @@
 #include <QTabWidget>
 
 class PluginWidget;
+class HomePage;
 
 
 class TabWidget : public QTabWidget
@@ -20,9 +21,11 @@ public slots:
 
 	void setTabLabel(const QString& text);
 
+	void addHomeTab(HomePage* homePage);
+
 	/// \returns номер добавленной вкладки или -1, если вкладка не была добавлена.
 	int addWidget(PluginWidget* widget, const QString& caption);
-	void addWidget(PluginWidget* widget, const QString& caption, const QString& textid);
+	int addWidget(PluginWidget* widget, const QString& caption, const QString& textid);
 
 protected:
 	void tabInserted(int index);
