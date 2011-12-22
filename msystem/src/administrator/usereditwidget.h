@@ -24,6 +24,8 @@ private:
 	void init();
 	void initConnections();
 
+	bool loginIsUnique() const;
+
 	QSet<QString> databaseTextids() const;
 	QSet<QString> checkedTextids() const;
 
@@ -31,7 +33,7 @@ private:
 	QMap<QString, QCheckBox*> m_textidToCheckbox;
 	QMap<QCheckBox*, QString> m_checkboxToTextid;
 
-	const int m_userId;
+	int m_userId;
 
 private slots:
 
