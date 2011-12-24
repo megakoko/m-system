@@ -29,7 +29,7 @@ private:
 	void editDocumentInTable(const int row, const Document& newDoc);
 	void deleteDocumentFromTable(const int row);
 
-	const int m_patientId;
+	int m_patientId;
 
 	Address m_mailingAddress;
 	Address m_actualAddress;
