@@ -39,8 +39,50 @@ void DepartmentEditWidget::init()
 	connect(m_deleteStaffFromDepartment, SIGNAL(clicked()), SLOT(deleteStaffPosition()));
 
 
-	Q_ASSERT(m_departmentId > 0);
+	initComboboxes();
 
+	if(m_departmentId != InvalidId)
+	{
+		QSqlQuery q;
+
+		q.prepare(" SELECT name, shortName, typeId, headOfDepartmentId "
+				  " FROM Department "
+				  " WHERE id = :id ");
+		q.addBindValue(m_departmentId);
+		q.exec();
+		checkQuery(q);
+
+		const bool idIsValid = q.first();
+		Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
+
+		m_name->setText(q.value(0).toString());
+		m_shortName->setText(q.value(1).toString());
+		m_type->setCurrentIndex(m_type->findData(q.value(2).toInt()));
+		m_headOfDepartment->setCurrentIndex(
+					m_headOfDepartment->findData(q.value(3).toInt()));
+
+
+		q.prepare(" SELECT id, departmentId, staffId, positionId "
+				  " FROM DepartmentStaffPosition "
+				  " WHERE departmentId = ? ");
+		q.addBindValue(m_departmentId);
+		q.exec();
+		checkQuery(q);
+
+		while(q.next())
+		{
+			m_staffPosition << StaffPosition(q.record());
+			m_departmentStaff->addItem(m_staffPosition.last().toString());
+		}
+
+
+		staffPositionSelectionChanged();
+	}
+}
+
+
+void DepartmentEditWidget::initComboboxes()
+{
 	QSqlQuery q;
 	q.exec(" SELECT id, familyName || ' ' || substring(name, 1, 1) || '. ' "
 		   " || substring(patronymic, 1, 1) || '.' AS Имя "
@@ -48,46 +90,14 @@ void DepartmentEditWidget::init()
 	checkQuery(q);
 	while(q.next())
 		m_headOfDepartment->addItem(q.value(1).toString(), q.value(0));
+	m_headOfDepartment->setCurrentIndex(-1);
 
 
 	q.exec("SELECT id, name FROM DepartmentType");
 	checkQuery(q);
 	while(q.next())
 		m_type->addItem(q.value(1).toString(), q.value(0));
-
-
-	q.prepare(" SELECT name, shortName, typeId, headOfDepartmentId "
-			  " FROM Department "
-			  " WHERE id = :id ");
-	q.addBindValue(m_departmentId);
-	q.exec();
-	checkQuery(q);
-
-	const bool idIsValid = q.first();
-	Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
-
-	m_name->setText(q.value(0).toString());
-	m_shortName->setText(q.value(1).toString());
-	m_type->setCurrentIndex(m_type->findData(q.value(2).toInt()));
-	m_headOfDepartment->setCurrentIndex(
-				m_headOfDepartment->findData(q.value(3).toInt()));
-
-
-	q.prepare(" SELECT id, departmentId, staffId, positionId "
-			  " FROM DepartmentStaffPosition "
-			  " WHERE departmentId = ? ");
-	q.addBindValue(m_departmentId);
-	q.exec();
-	checkQuery(q);
-
-	while(q.next())
-	{
-		m_staffPosition << StaffPosition(q.record());
-		m_departmentStaff->addItem(m_staffPosition.last().toString());
-	}
-
-
-	staffPositionSelectionChanged();
+	m_type->setCurrentIndex(-1);
 }
 
 
@@ -117,18 +127,28 @@ bool DepartmentEditWidget::canSave(QString &errorDescription) const
 void DepartmentEditWidget::save()
 {
 	QSqlQuery q;
-	q.prepare(" UPDATE Department SET "
-			  " name = :name, "
-			  " shortName = :shortName, "
-			  " typeid = :typeid, "
-			  " headOfDepartmentId = :headId "
-			  " WHERE id = :id ");
+	if(m_departmentId == InvalidId)
+	{
+		q.prepare(" INSERT INTO Department "
+				  " ( name,  shortName,  typeid,  headOfDepartmentId) VALUES "
+				  " (:name, :shortName, :typeid, :headOfDepartmentId) "
+				  " RETURNING id ");
+	}
+	else
+	{
+		q.prepare(" UPDATE Department SET "
+				  " name = :name, "
+				  " shortName = :shortName, "
+				  " typeid = :typeid, "
+				  " headOfDepartmentId = :headId "
+				  " WHERE id = :id ");
+		q.bindValue(":id", m_departmentId);
+	}
 	q.bindValue(":name", nullIfEmpty(m_name->text().simplified()));
 	q.bindValue(":shortName", nullIfEmpty(m_shortName->text().simplified()));
 	q.bindValue(":typeid", m_type->itemData(m_type->currentIndex()));
 	q.bindValue(":headId",
 				m_headOfDepartment->itemData(m_headOfDepartment->currentIndex()));
-	q.bindValue(":id", m_departmentId);
 	q.exec();
 	checkQuery(q);
 
