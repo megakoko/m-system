@@ -13,6 +13,7 @@ public:
 
 private:
 	void init();
+	QString generatePositionName() const;
 
 	QSet<int> m_markedForDeletionPositions;
 
