@@ -24,6 +24,7 @@ private:
 	QList<StaffPosition> m_staffPositionMarkedForDeletion;
 
 	void init();
+	void initComboboxes();
 
 private slots:
 	void nameChanged();

@@ -236,38 +236,10 @@ void MainDepartmentsWidget::updateDepartmentList()
 
 void MainDepartmentsWidget::addDepartment()
 {
-	const QString& basename = QString::fromUtf8("Отделение");
-
-	QSqlQuery q;
-	q.prepare(QString(" SELECT SUBSTRING(name, E'%1 \\\\((\\\\d+)\\\\)$') AS Number "
-					  " FROM Department ORDER BY Number").arg(basename));
-	q.exec();
-	checkQuery(q);
-
-
-	QList<int> numbers;
-	while(q.next())
-	{
-		if(q.isNull(0))
-			continue;
-		numbers << q.value(0).toInt();
-	}
-
-	int possibleNumber = 0;
-	while(++possibleNumber > 0)
-		if(!numbers.contains(possibleNumber))
-			break;
-
-	Q_ASSERT(possibleNumber > 0);
-
-	q.prepare(" INSERT INTO Department (name) "
-			  " VALUES(:name)");
-	q.bindValue(":name", QString("%1 (%2)").arg(basename).arg(possibleNumber));
-	q.exec();
-	checkQuery(q);
-
-
-	updateDepartmentList();
+	DepartmentEditWidget* w = new DepartmentEditWidget(DepartmentEditWidget::InvalidId,
+													   this);
+	addNewWidget(w, w->departmentName());
+	connect(w, SIGNAL(saved()), SLOT(updateDepartmentList()));
 }
 
 
