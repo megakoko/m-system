@@ -49,76 +49,78 @@ void PatientEditWidget::init()
 					<< QString::fromUtf8("Серия, номер"));
 
 
-	QSqlQuery q;
-	q.prepare(" SELECT familyName, p.name, patronymic, birthDay, s.textid "
-			  " FROM Patient p LEFT JOIN Sex s ON p.sexId = s.id "
-			  " WHERE p.id = :patientId");
-	q.bindValue(":patientId", m_patientId);
-	q.exec();
-	checkQuery(q);
-
-	const bool idIsValid = q.first();
-	Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
-
-	m_familyName->setText(q.value(0).toString());
-	m_name->setText(q.value(1).toString());
-	m_patronymic->setText(q.value(2).toString());
-	m_birthDay->setDate(q.value(3).toDate());
-
-	if(q.value(4).toString() == "male")
-		m_male->setChecked(true);
-	else if(q.value(4).toString() == "female")
-		m_female->setChecked(true);
-	else
-		Q_ASSERT(!"Unknown option");
-
-
-	q.prepare(" SELECT id, isMailingAddress, city, street, house, apartment "
-			  " FROM Address "
-			  " WHERE patientId = :patientId "
-			  " ORDER BY isMailingAddress DESC "); // Сначала TRUE, потом FALSE
-	q.bindValue(":patientId", m_patientId);
-	q.exec();
-	checkQuery(q);
-
-
-	m_mailingAddressIsActual->setChecked(true);
-	toggleMailingAddressIsActual(true);
-	if(q.first())
+	if(m_patientId != InvalidId)
 	{
-		m_mailingAddress = Address(q.record());
+		QSqlQuery q;
+		q.prepare(" SELECT familyName, p.name, patronymic, birthDay, s.textid "
+				  " FROM Patient p LEFT JOIN Sex s ON p.sexId = s.id "
+				  " WHERE p.id = :patientId");
+		q.bindValue(":patientId", m_patientId);
+		q.exec();
+		checkQuery(q);
 
-		// Адрес по прописке должен существовать.
-		Q_ASSERT(q.record().value("isMailingAddress").toBool() == true);
+		const bool idIsValid = q.first();
+		Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
+
+		m_familyName->setText(q.value(0).toString());
+		m_name->setText(q.value(1).toString());
+		m_patronymic->setText(q.value(2).toString());
+		m_birthDay->setDate(q.value(3).toDate());
+
+		if(q.value(4).toString() == "male")
+			m_male->setChecked(true);
+		else if(q.value(4).toString() == "female")
+			m_female->setChecked(true);
+		else
+			Q_ASSERT(!"Unknown option");
 
 
-		if(q.next())
+		q.prepare(" SELECT id, isMailingAddress, city, street, house, apartment "
+				  " FROM Address "
+				  " WHERE patientId = :patientId "
+				  " ORDER BY isMailingAddress DESC "); // Сначала TRUE, потом FALSE
+		q.bindValue(":patientId", m_patientId);
+		q.exec();
+		checkQuery(q);
+
+
+		m_mailingAddressIsActual->setChecked(true);
+		toggleMailingAddressIsActual(true);
+		if(q.first())
 		{
-			m_mailingAddressIsActual->setChecked(false);
-			toggleMailingAddressIsActual(false);
+			m_mailingAddress = Address(q.record());
 
-			m_actualAddress = Address(q.record());
+			// Адрес по прописке должен существовать.
+			Q_ASSERT(q.record().value("isMailingAddress").toBool() == true);
+
+
+			if(q.next())
+			{
+				m_mailingAddressIsActual->setChecked(false);
+				toggleMailingAddressIsActual(false);
+
+				m_actualAddress = Address(q.record());
+			}
+		}
+
+		m_mailingAddressLabel->setText(m_mailingAddress.toString());
+		m_actualAddressLabel->setText(m_actualAddress.toString());
+
+
+		q.prepare(" SELECT id, documentTypeId, serialNumber, date, givenBy "
+				  " FROM Document "
+				  " WHERE patientId = :patientId "
+				  " ORDER BY documentTypeId, date ");
+		q.bindValue(":patientId", m_patientId);
+		q.exec();
+		checkQuery(q);
+
+		while(q.next())
+		{
+			m_documents << Document(q.record());
+			addDocumentToTable(m_documents.last());
 		}
 	}
-
-	m_mailingAddressLabel->setText(m_mailingAddress.toString());
-	m_actualAddressLabel->setText(m_actualAddress.toString());
-
-
-	q.prepare(" SELECT id, documentTypeId, serialNumber, date, givenBy "
-			  " FROM Document "
-			  " WHERE patientId = :patientId "
-			  " ORDER BY documentTypeId, date ");
-	q.bindValue(":patientId", m_patientId);
-	q.exec();
-	checkQuery(q);
-
-	while(q.next())
-	{
-		m_documents << Document(q.record());
-		addDocumentToTable(m_documents.last());
-	}
-
 }
 
 
@@ -313,18 +315,30 @@ bool PatientEditWidget::canSave(QString &errorDescription) const
 void PatientEditWidget::save()
 {
 	QSqlQuery q;
-	q.prepare(" UPDATE Patient SET "
-			  " familyName = :familyName, "
-			  " name = :name, "
-			  " patronymic = :patronymic, "
-			  " birthDay = :birthDay, "
-			  " sexid = (SELECT id FROM Sex WHERE textid = :sextextid) "
-			  " WHERE id = :patientId ");
+
+	if(m_patientId == InvalidId)
+	{
+		q.prepare(" INSERT INTO Patient "
+				  " ( familyName,  name,  patronymic,  birthDay,  sexid) VALUES "
+				  " (:familyName, :name, :patronymic, :birthDay, "
+						" (SELECT id FROM Sex WHERE textid = :settextid)) "
+				  " RETURNING id ");
+	}
+	else
+	{
+		q.prepare(" UPDATE Patient SET "
+				  " familyName = :familyName, "
+				  " name = :name, "
+				  " patronymic = :patronymic, "
+				  " birthDay = :birthDay, "
+				  " sexid = (SELECT id FROM Sex WHERE textid = :sextextid) "
+				  " WHERE id = :patientId ");
+		q.bindValue(":patientId", m_patientId);
+	}
 	q.bindValue(":familyName", m_familyName->text());
 	q.bindValue(":name", m_name->text());
 	q.bindValue(":patronymic", m_patronymic->text());
 	q.bindValue(":birthDay", m_birthDay->date());
-	q.bindValue(":patientId", m_patientId);
 
 	if(m_male->isChecked())
 		q.bindValue(":sextextid", "male");
@@ -336,6 +350,9 @@ void PatientEditWidget::save()
 
 	q.exec();
 	checkQuery(q);
+
+	if(m_patientId == InvalidId && q.first())
+		m_patientId = q.value(0).toInt();
 
 
 	m_mailingAddress.save(m_patientId);
