@@ -3,5 +3,8 @@
         <file>dbinit.sql</file>
         <file>mkb10.sql</file>
         <file>qt_ru_4.7.3.qm</file>
+        <file alias="add.png">icons/plus_16x16.png</file>
+        <file alias="edit.png">icons/pen_16x16.png</file>
+        <file alias="remove.png">icons/minus_16x4.png</file>
     </qresource>
 </RCC>
