@@ -115,43 +115,9 @@ void MainDepartmentsWidget::updateStaffList()
 
 void MainDepartmentsWidget::addStaff()
 {
-	const QString& basename = QString::fromUtf8("Фамилия");
-
-	QSqlQuery q;
-	q.prepare(QString(" SELECT SUBSTRING(familyName, E'%1 \\\\((\\\\d+)\\\\)$') AS Number "
-					  " FROM Staff ORDER BY Number").arg(basename));
-	q.exec();
-	checkQuery(q);
-
-
-	QList<int> numbers;
-	while(q.next())
-	{
-		if(q.isNull(0))
-			continue;
-		numbers << q.value(0).toInt();
-	}
-
-	int possibleNumber = 0;
-	while(++possibleNumber > 0)
-		if(!numbers.contains(possibleNumber))
-			break;
-
-	Q_ASSERT(possibleNumber > 0);
-
-	q.prepare(" INSERT INTO Staff (name, familyname, patronymic) "
-			  " VALUES(:name, :familyname, :patronymic)");
-	q.bindValue(":name", QString("%1 (%2)").arg(QString::fromUtf8("Имя"))
-										   .arg(possibleNumber));
-	q.bindValue(":familyname", QString("%1 (%2)").arg(basename).arg(possibleNumber));
-	q.bindValue(":patronymic", QString("%1 (%2)").arg(QString::fromUtf8("Отчество"))
-												 .arg(possibleNumber));
-	q.exec();
-	checkQuery(q);
-
-
-
-	updateStaffList();
+	StaffEditWidget* w = new StaffEditWidget(StaffEditWidget::InvalidId, this);
+	addNewWidget(w, w->staffName());
+	connect(w, SIGNAL(saved()), SLOT(updateStaffList()));
 }
 
 
