@@ -83,7 +83,7 @@ void MainWindow::addHomeTab()
 
 void MainWindow::logIn()
 {
-	LoginDialog d;
+	LoginDialog d(this);
 	if(d.exec() == QDialog::Accepted)
 	{
 		m_userId = d.loggedUserId();
