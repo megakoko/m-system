@@ -2,6 +2,7 @@
 #include "aboutdialog.h"
 
 #include <QBoxLayout>
+#include <QPushButton>
 #include <QTabWidget>
 #include <QLabel>
 #include <QTextEdit>
@@ -14,7 +15,7 @@ AboutDialog::AboutDialog(QWidget *parent)
 {
 	setWindowTitle(QString::fromUtf8("О программе"));
 
-	QBoxLayout* layout = new QBoxLayout(QBoxLayout::LeftToRight);
+	QVBoxLayout* layout = new QVBoxLayout;
 	QTabWidget* tabwidget = new QTabWidget();
 
 	QLabel* about = new QLabel(aboutText(), tabwidget);
@@ -28,6 +29,20 @@ AboutDialog::AboutDialog(QWidget *parent)
 	tabwidget->addTab(licence, QString::fromUtf8("Лицензия"));
 
 	layout->addWidget(tabwidget);
+
+
+	QPushButton* closeBtn = new QPushButton("OK");
+	connect(closeBtn, SIGNAL(clicked()), SLOT(accept()));
+
+	QHBoxLayout* buttonLayout = new QHBoxLayout;
+	buttonLayout->addSpacerItem(new QSpacerItem(10, 10,
+												QSizePolicy::Expanding,
+												QSizePolicy::Minimum));
+	buttonLayout->addWidget(closeBtn);
+
+
+	layout->addLayout(buttonLayout);
+
 	setLayout(layout);
 }
 
