@@ -2,6 +2,7 @@
 
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QRegExp>
 #include <QDebug>
 
 #include "macros.h"
@@ -97,7 +98,7 @@ void PositionsEditDialog::save()
 
 void PositionsEditDialog::addPosition()
 {
-	QListWidgetItem* item = new QListWidgetItem(QString::fromUtf8("Новая должность"));
+	QListWidgetItem* item = new QListWidgetItem(generatePositionName());
 	item->setFlags(item->flags() | Qt::ItemIsEditable);
 	m_positionList->addItem(item);
 }
@@ -133,4 +134,30 @@ QStringList PositionsEditDialog::positions()
 		list << "<i>Список должностей пуст</i>";
 
 	return list;
+}
+
+
+QString PositionsEditDialog::generatePositionName() const
+{
+	static const QString basename = "Новая должность";
+	static const QString rxString = QString("^%1 \\(([0-9]+)\\)$").arg(basename);
+	QList<QListWidgetItem*> items = m_positionList->findItems(rxString, Qt::MatchRegExp);
+
+
+	QRegExp rx(rxString);
+	QList<int> numbers;
+	foreach(const QListWidgetItem* item, items)
+	{
+		if(rx.indexIn(item->text()) >= 0)
+			numbers << rx.cap(1).toInt();
+	}
+
+
+	int possibleNumber = 0;
+	while(++possibleNumber > 0)
+		if(!numbers.contains(possibleNumber))
+			break;
+
+
+	return QString("%1 (%2)").arg(basename).arg(possibleNumber);
 }
