@@ -20,9 +20,6 @@ StaffEditWidget::StaffEditWidget(const int staffId, QWidget *parent)
 
 void StaffEditWidget::init()
 {
-	Q_ASSERT(m_staffId > 0);
-
-
 	if(m_staffId != InvalidId)
 	{
 		QSqlQuery q;
