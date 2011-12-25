@@ -130,10 +130,10 @@ void MainAdminWidget::deleteUser()
 	{
 		const int rc = QMessageBox::question(this, "Удаление пользователя",
 											 "Вы действительно хотите удалить пользователя?",
-											 QMessageBox::Ok | QMessageBox::Cancel,
-											 QMessageBox::Cancel);
+											 QMessageBox::Yes | QMessageBox::No,
+											 QMessageBox::No);
 
-		if(rc == QMessageBox::Ok)
+		if(rc == QMessageBox::Yes)
 		{
 			QSqlQuery q;
 
