@@ -7,7 +7,7 @@ class QSqlRecord;
 class Address
 {
 public:
-	Address(bool isMailingAddress);
+	Address(const QString& type);
 	Address(const QSqlRecord& record);
 
 	QString toString() const;
@@ -23,7 +23,7 @@ public:
 
 private:
 
-	bool m_isMailingAddress;
+	QString m_adressTypeTextid;
 	mutable int m_id;
 
 };

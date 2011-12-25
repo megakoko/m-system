@@ -30,7 +30,7 @@ private:
 	// Возвращает ID пациента.
 	int createPatientRecord() const;
 	void createDocumentRecord(const int patientId, const QString& documentTextid) const;
-	void createAddressRecord(const int patientId, const bool isMailingAddress) const;
+	void createAddressRecord(const int patientId, const QString& addressType) const;
 
 
 	// Random-функции.

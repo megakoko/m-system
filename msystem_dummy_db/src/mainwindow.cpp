@@ -181,9 +181,9 @@ void MainWindow::createPatients()
 			createDocumentRecord(patientId, "insuranceVoluntary");
 
 
-		createAddressRecord(patientId, true);
+		createAddressRecord(patientId, "mailing");
 		if(randomInt(5) == 0)
-			createAddressRecord(patientId, false);
+			createAddressRecord(patientId, "actual");
 
 
 	}
@@ -254,14 +254,15 @@ void MainWindow::createDocumentRecord(const int patientId, const QString& docume
 
 
 void MainWindow::createAddressRecord(const int patientId,
-									 const bool isMailingAddress) const
+									 const QString& addressType) const
 {
 	QSqlQuery q;
 	q.prepare(" INSERT INTO Address "
-			  " (patientId, isMailingAddress, city, street, house, apartment) VALUES"
-			  " (:patientId, :isMailingAddress, :city, :street, :house, :apartment)");
+			  " (patientId, city, street, house, apartment, typeId) VALUES"
+			  " (:patientId, :city, :street, :house, :apartment, "
+				" (SELECT id FROM AddressType WHERE textid = :textid))");
 	q.bindValue(":patientId", patientId);
-	q.bindValue(":isMailingAddress", isMailingAddress);
+	q.bindValue(":textid", addressType);
 	q.bindValue(":city", "Ижевск");
 	q.bindValue(":street", randomStreetname());
 	q.bindValue(":house", randomInt(250));

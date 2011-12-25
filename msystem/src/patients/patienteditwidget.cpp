@@ -26,8 +26,8 @@ namespace DocumentTableColumns
 PatientEditWidget::PatientEditWidget(const int patientId, QWidget *parent)
 	: SaveablePluginWidget(parent)
 	, m_patientId(patientId)
-	, m_mailingAddress(Address(true))
-	, m_actualAddress(Address(false))
+	, m_mailingAddress(Address("mailing"))
+	, m_actualAddress(Address("actual"))
 {
 	setupUi(this);
 
@@ -75,33 +75,38 @@ void PatientEditWidget::init()
 			Q_ASSERT(!"Unknown option");
 
 
-		q.prepare(" SELECT id, isMailingAddress, city, street, house, apartment "
-				  " FROM Address "
-				  " WHERE patientId = :patientId "
-				  " ORDER BY isMailingAddress DESC "); // Сначала TRUE, потом FALSE
+		q.prepare(" SELECT a.id, at.textid, city, street, house, apartment "
+				  " FROM Address a "
+				  " LEFT JOIN AddressType at ON a.typeId = at.id"
+				  " WHERE patientId = :patientId ");
 		q.bindValue(":patientId", m_patientId);
 		q.exec();
 		checkQuery(q);
 
 
-		m_mailingAddressIsActual->setChecked(true);
-		toggleMailingAddressIsActual(true);
-		if(q.first())
+		bool hasMailingAddress = false;
+		bool hasActualAddress = false;
+		while(q.next())
 		{
-			m_mailingAddress = Address(q.record());
-
-			// Адрес по прописке должен существовать.
-			Q_ASSERT(q.record().value("isMailingAddress").toBool() == true);
-
-
-			if(q.next())
+			const QSqlRecord& rec = q.record();
+			if(rec.value("textid").toString() == "mailing")
 			{
-				m_mailingAddressIsActual->setChecked(false);
-				toggleMailingAddressIsActual(false);
-
-				m_actualAddress = Address(q.record());
+				m_mailingAddress = Address(rec);
+				hasMailingAddress = true;
 			}
+			else if(rec.value("textid").toString() == "actual")
+			{
+				m_actualAddress = Address(rec);
+				hasActualAddress = true;
+			}
+			else
+				qWarning() << "Unknown address type at" << __FILE__ << __LINE__;
 		}
+
+		// Должен существовать хотя бы адрес по прописке.
+		Q_ASSERT(hasMailingAddress);
+		m_mailingAddressIsActual->setChecked(!hasActualAddress);
+		toggleMailingAddressIsActual(!hasActualAddress);
 
 		m_mailingAddressLabel->setText(m_mailingAddress.toString());
 		m_actualAddressLabel->setText(m_actualAddress.toString());
@@ -205,8 +210,6 @@ void PatientEditWidget::addDocument()
 		m_documents.append(d.document());
 		addDocumentToTable(m_documents.last());
 	}
-
-
 }
 
 
@@ -300,6 +303,11 @@ bool PatientEditWidget::canSave(QString &errorDescription) const
 	else if(m_mailingAddress.isNull())
 	{
 		errorDescription = QString::fromUtf8("Адрес прописки не заполнен");
+		return false;
+	}
+	else if(!m_mailingAddressIsActual->isChecked() && m_actualAddress.isNull())
+	{
+		errorDescription = "Адрес проживания не заполнен";
 		return false;
 	}
 	else if(!m_male->isChecked() && !m_female->isChecked())

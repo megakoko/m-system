@@ -18,9 +18,14 @@ DocumentEditDialog::DocumentEditDialog(const Document& doc, QWidget *parent)
 		m_documentType->addItem(q.value(0).toString(), q.value(1));
 	m_documentType->setCurrentIndex(m_documentType->findData(doc.documentTypeId));
 
-	m_serialNumber->setText(doc.serialNumber);
-	m_date->setDate(doc.date);
-	m_givenBy->setText(doc.givenBy);
+	if(doc.givenBy.isNull() && doc.serialNumber.isNull() && doc.date.isNull())
+		setWindowTitle("Добавление адреса");
+	else
+	{
+		m_serialNumber->setText(doc.serialNumber);
+		m_date->setDate(doc.date);
+		m_givenBy->setText(doc.givenBy);
+	}
 	checkFields();
 
 
