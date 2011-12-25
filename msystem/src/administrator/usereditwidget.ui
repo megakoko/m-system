@@ -19,7 +19,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>Данные входа в систему</string>
+        <string>Данные для входа в систему</string>
        </property>
        <layout class="QFormLayout" name="formLayout">
         <property name="fieldGrowthPolicy">
@@ -135,8 +135,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>359</width>
-                <height>340</height>
+                <width>375</width>
+                <height>335</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">

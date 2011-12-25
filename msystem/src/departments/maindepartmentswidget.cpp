@@ -157,14 +157,14 @@ void MainDepartmentsWidget::deleteStaff()
 	else
 	{
 		const QString& title = "Удаление работника";
-		const QString& descr = "Вы действительно хотите удалить работника? Если "
+		const QString& descr = "Вы действительно хотите удалить работника? "
 							   "Будет удалена вся информация о нем.";
 
 		const int rc = QMessageBox::question(this, title, descr,
-											 QMessageBox::Ok | QMessageBox::Cancel,
-											 QMessageBox::Cancel);
+											 QMessageBox::Yes | QMessageBox::No,
+											 QMessageBox::No);
 
-		if(rc == QMessageBox::Ok)
+		if(rc == QMessageBox::Yes)
 		{
 			QSqlQuery q;
 			q.prepare(" DELETE FROM DepartmentStaffPosition "
@@ -256,11 +256,11 @@ void MainDepartmentsWidget::deleteDepartment()
 	const QString& title = "Удаление отделения";
 	const QString& descr = "Вы действительно хотите удалить отделение?";
 	const int rc = QMessageBox::question(this, title, descr,
-										 QMessageBox::Ok | QMessageBox::Cancel,
-										 QMessageBox::Cancel);
+										 QMessageBox::Yes | QMessageBox::No,
+										 QMessageBox::Yes);
 
 
-	if(rc == QMessageBox::Ok)
+	if(rc == QMessageBox::Yes)
 	{
 		const int id = selectedDepartmentId();
 		Q_ASSERT(id > 0);

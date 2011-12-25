@@ -129,8 +129,7 @@ bool UserEditWidget::canSave(QString& errorDescription) const
 	}
 	else if (m_login->text().simplified().isEmpty())
 	{
-		errorDescription  = QString::fromUtf8("Для сохранения изменений имя "
-								   "пользователя должно быть заполнено.");
+		errorDescription  = QString::fromUtf8("Имя пользователя не заполнено.");
 		return false;
 	}
 	else if (loginIsUnique())
@@ -140,7 +139,7 @@ bool UserEditWidget::canSave(QString& errorDescription) const
 	}
 	else if (m_password->text() != m_password2->text())
 	{
-		errorDescription = QString::fromUtf8("Пароли не совпадают");
+		errorDescription = QString::fromUtf8("Подтверждение пароля не совпадает с паролем.");
 		return false;
 	}
 
