@@ -25,34 +25,25 @@ void StaffPositionEditDialog::init()
 	connect(m_position, SIGNAL(currentIndexChanged(int)), SLOT(checkCombos()));
 
 
+	if(m_staffPosition.m_staffId <= 0 && m_staffPosition.m_positionId <= 0)
+		setWindowTitle("Добавление должности сотрудника");
+
 
 	QSqlQuery q(" SELECT id, familyName || ' ' || name || ' ' || patronymic "
 				" FROM Staff ORDER BY familyName, name, patronymic");
 	checkQuery(q);
 
-
-	m_staff->setCurrentIndex(-1);
 	while(q.next())
-	{
-		const QVariant& id = q.value(0);
-		m_staff->addItem(q.value(1).toString(), id);
+		m_staff->addItem(q.value(1).toString(), q.value(0));
+	m_staff->setCurrentIndex(m_staff->findData(m_staffPosition.m_staffId));
 
-		if(!id.isNull() && id == m_staffPosition.m_staffId)
-			m_staff->setCurrentIndex(m_staff->count() - 1);
-	}
 
 	q.exec("SELECT id, name FROM Position ORDER BY name");
 	checkQuery(q);
 
-	m_position->setCurrentIndex(-1);
 	while(q.next())
-	{
-		const QVariant& id = q.value(0);
-		m_position->addItem(q.value(1).toString(), id);
-
-		if(!id.isNull() && id == m_staffPosition.m_positionId)
-			m_position->setCurrentIndex(m_position->count() - 1);
-	}
+		m_position->addItem(q.value(1).toString(), q.value(0));
+	m_position->setCurrentIndex(m_position->findData(m_staffPosition.m_positionId));
 
 
 	checkCombos();

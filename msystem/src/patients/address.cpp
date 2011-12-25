@@ -10,8 +10,8 @@
 
 
 
-Address::Address(bool isMailingAddress)
-	: m_isMailingAddress(isMailingAddress)
+Address::Address(const QString& type)
+	: m_adressTypeTextid(type)
 	, m_id(-1)
 {
 
@@ -23,7 +23,7 @@ Address::Address(const QSqlRecord &rec)
 	, street(rec.value("street").toString())
 	, house(rec.value("house").toString())
 	, apartment(rec.value("apartment").toString())
-	, m_isMailingAddress(rec.value("isMailingAddress").toBool())
+	, m_adressTypeTextid(rec.value("textid").toBool())
 	, m_id(rec.value("id").toInt())
 {
 
@@ -47,7 +47,7 @@ QString Address::toString() const
 	if(!apartment.isNull())
 		result << apartment;
 
-	return (m_isMailingAddress ? "Адрес прописки: " : "Адрес проживания: ") +
+	return (m_adressTypeTextid == "mailing" ? "Адрес прописки: " : "Адрес проживания: ") +
 			result.join(", ");
 }
 
@@ -75,11 +75,14 @@ void Address::save(const int patientId) const
 		else
 		{
 			q.prepare(" INSERT INTO Address "
-					  " (patientId,  isMailingAddress,  city,  street,  house,  apartment) "
-				"VALUES(:patientId, :isMailingAddress, :city, :street, :house, :apartment) "
+					  " (patientId,  typeId,  city,  street,  house,  apartment) "
+					  " VALUES "
+					  " (:patientId, "
+						" (SELECT id FROM AddressType WHERE textid = :textid), "
+						" :city, :street, :house, :apartment) "
 					  " RETURNING id ");
 			q.bindValue(":patientId", patientId);
-			q.bindValue(":isMailingAddress", m_isMailingAddress);
+			q.bindValue(":textid", m_adressTypeTextid);
 		}
 
 		q.bindValue(":city", nullIfEmpty(city));

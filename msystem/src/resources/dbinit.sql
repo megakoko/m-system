@@ -16,6 +16,7 @@ DROP TABLE IF EXISTS Staff;
 DROP TABLE IF EXISTS HealthFacility;
 DROP TABLE IF EXISTS MKB10;
 DROP TABLE IF EXISTS Address;
+DROP TABLE IF EXISTS AddressType;
 DROP TABLE IF EXISTS Document;
 DROP TABLE IF EXISTS DocumentType;
 DROP TABLE IF EXISTS Patient;
@@ -35,7 +36,7 @@ CREATE TABLE MUser (
 	login 				VARCHAR NOT NULL,
 	password 			VARCHAR,
 	salt 				VARCHAR,
-	is_admin 			BOOL
+	is_admin 			BOOL NOT NULL DEFAULT false
 );
 
 -- Таблица, содержащая информацию о модулях.
@@ -57,7 +58,7 @@ CREATE TABLE UserPluginAccess (
 CREATE TABLE Sex (
 	id 					SERIAL PRIMARY KEY,
 	textid				VARCHAR NOT NULL UNIQUE,
-	name				VARCHAR
+	name				VARCHAR NOT NULL
 );
 
 
@@ -67,7 +68,7 @@ CREATE TABLE Patient (
 	familyName 			VARCHAR NOT NULL,
 	name 				VARCHAR NOT NULL,
 	patronymic 			VARCHAR NOT NULL,
-	birthDay			TIMESTAMP,
+	birthDay			TIMESTAMP NOT NULL,
 	sexId				INTEGER REFERENCES Sex(id)
 );
 
@@ -90,12 +91,18 @@ CREATE TABLE Document (
 
 
 -- TODO: AddressType
+CREATE TABLE AddressType (
+	id					SERIAL PRIMARY KEY,
+	textid				VARCHAR NOT NULL UNIQUE,
+	name				VARCHAR NOT NULL
+);
+
 
 -- Адреса.
 CREATE TABLE Address (
 	id 					SERIAL PRIMARY KEY,
 	patientId 			INTEGER REFERENCES Patient (id),
-	isMailingAddress 	BOOL NOT NULL,		-- Является адресом по прописке.
+	typeId				INTEGER REFERENCES AddressType (id),
 	city 				VARCHAR NOT NULL,
 	street 				VARCHAR NOT NULL,
 	house 				VARCHAR NOT NULL,
@@ -118,6 +125,9 @@ CREATE TABLE HealthFacility (
 	id 					INTEGER PRIMARY KEY,
 	name				VARCHAR NOT NULL,
 	shortName			VARCHAR,
+	city				VARCHAR,
+	street				VARCHAR,
+	house				VARCHAR,
 	inn					CHAR(12),
 	kpp					CHAR(9),
 	okonh				CHAR(5),
@@ -141,7 +151,7 @@ CREATE TABLE Staff (
 	familyName 			VARCHAR NOT NULL,
 	name 				VARCHAR NOT NULL,
 	patronymic 			VARCHAR NOT NULL,
-	birthDay			TIMESTAMP,
+	birthDay			TIMESTAMP NOT NULL,
 	specialization		VARCHAR
 );
 
@@ -158,7 +168,7 @@ CREATE TABLE DepartmentType (
 CREATE TABLE Department (
 	id					SERIAL PRIMARY KEY,
 	name				VARCHAR NOT NULL,
-	shortName			VARCHAR,
+	shortName			VARCHAR NOT NULL,
 	typeId				INTEGER REFERENCES DepartmentType(id),
 	headOfDepartmentId	INTEGER REFERENCES Staff(id)
 );
@@ -209,6 +219,11 @@ INSERT INTO DocumentType(textid, name) VALUES
 ('inn', 'ИНН'),
 ('insuranceVoluntary', 'Полис добровольного страхования'),
 ('insuranceMandatory', 'Полис обязательного страхования');
+
+
+INSERT INTO AddressType(textid, name) VALUES 
+('mailing', 'Адрес прописки'),
+('actual', 'Адрес проживания');
 
 
 INSERT INTO HealthFacility(id, name) VALUES(1, 'Медицинское учреждение');
