@@ -8,8 +8,8 @@
 #include <QMessageBox>
 #include <QDebug>
 
-
 #include "macros.h"
+#include "patients.h"
 #include "patienteditwidget.h"
 
 
@@ -20,6 +20,8 @@ MainPatientsWidget::MainPatientsWidget(QWidget *parent)
 
 	init();
 	initConnections();
+
+	qDebug() << Patients::interfaces->enc->encode("asd");
 }
 
 

@@ -5,15 +5,12 @@
 #include <QDebug>
 
 
-QVector<QChar> generateVector();
-QVector< QVector<QChar> > generateTable();
+const QVector<QChar> Encoding::availableChars = Encoding::generateVector();
+
+const QVector< QVector<QChar> > Encoding::vigenereTable = Encoding::generateTable();
 
 
-static const QVector<QChar> availableChars = generateVector();
-static const QVector< QVector<QChar> > vigenereTable = generateTable();
-
-
-QVector<QChar> charactersBetween(const QString& from, const QString& to)
+QVector<QChar> Encoding::charactersBetween(const QString& from, const QString& to)
 {
 	Q_ASSERT(!from.isEmpty());
 	Q_ASSERT(!to.isEmpty());
@@ -29,7 +26,7 @@ QVector<QChar> charactersBetween(const QString& from, const QString& to)
 }
 
 
-QVector<QChar> generateVector()
+QVector<QChar> Encoding::generateVector()
 {
 	QVector<QChar> vector;
 
@@ -47,7 +44,7 @@ QVector<QChar> generateVector()
 }
 
 
-QVector< QVector<QChar> > generateTable()
+QVector< QVector<QChar> > Encoding::generateTable()
 {
 	QVector< QVector<QChar> > table;
 
@@ -77,7 +74,7 @@ QVector< QVector<QChar> > generateTable()
 
 
 
-QString encode(const QString& input, const QString& code)
+QString Encoding::encode(const QString& input, const QString& code)
 {
 	Q_ASSERT(input.size() == code.size());
 
@@ -96,7 +93,7 @@ QString encode(const QString& input, const QString& code)
 }
 
 
-QString decode(const QString& input, const QString& code)
+QString Encoding::decode(const QString& input, const QString& code)
 {
 	Q_ASSERT(input.size() == code.size());
 
@@ -172,7 +169,7 @@ for(int length = 10; length < 100; ++length)
 
 */
 
-QString generateKeyword(const int length)
+QString Encoding::generateKeyword(const int length)
 {
 	// Случайный ключ.
 	static const QString base = QString::fromUtf8("Ad4дqJ2ы");
@@ -181,13 +178,30 @@ QString generateKeyword(const int length)
 }
 
 
-QString Encoding::encodePassword(const QString& pw)
+QString Encoding::encode(const QString& input) const
 {
-	return encode(pw, generateKeyword(pw.length()));
+	Q_ASSERT(canUseEncoding(input));
+	return encode(input, generateKeyword(input.length()));
 }
 
 
-QString Encoding::decodePassword(const QString& pw)
+QString Encoding::decode(const QString& input) const
 {
-	return decode(pw, generateKeyword(pw.length()));
+	Q_ASSERT(canUseEncoding(input));
+	return decode(input, generateKeyword(input.length()));
+}
+
+
+bool Encoding::canUseEncoding(const QString &input) const
+{
+	bool result = true;
+
+	foreach(const QChar& ch, input)
+		if(!availableChars.contains(ch))
+		{
+			result = false;
+			break;
+		}
+
+	return result;
 }

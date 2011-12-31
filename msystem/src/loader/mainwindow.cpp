@@ -1,13 +1,11 @@
 
 #include "mainwindow.h"
 
-#include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
 #include <QDir>
 #include <QPluginLoader>
-#include <QLabel>
 
 
 #include "pluginwidget.h"
@@ -17,9 +15,11 @@
 #include "aboutdialog.h"
 #include "plugininterface.h"
 #include "macros.h"
+#include "encoding.h"
 
 
 QList<QPluginLoader*> MainWindow::m_plugins = QList<QPluginLoader*>();
+InterfacesPtr MainWindow::interfaces = InterfacesPtr(new Interfaces(new Encoding));
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -158,6 +158,8 @@ bool MainWindow::processPlugin(QPluginLoader *obj)
 	PluginInterface* plugin = qobject_cast<PluginInterface*>(obj->instance());
 	if(plugin != NULL && userHaveAccessToPlugin(plugin->textid()))
 	{
+		plugin->setInterfaces(interfaces);
+
 		loadedOkay = true;
 
 		m_plugins << obj;
