@@ -11,8 +11,8 @@
 #include <QTextStream>
 #include <QProgressDialog>
 
+#include "mainwindow.h"
 #include "passwords.h"
-#include "encoding.h"
 #include "macros.h"
 
 
@@ -81,8 +81,8 @@ bool LoginDialog::connectToDatabase()
 	db.setDatabaseName(m_settings.value("dbname").toString());
 
 
-	return db.open(m_settings.value("login").toString(),
-				   Encoding::decodePassword(m_settings.value("password").toString()));
+	return db.open(m_settings.value("login").toString(), MainWindow::interfaces->enc->
+				   decode(m_settings.value("password").toString()));
 }
 
 

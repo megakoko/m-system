@@ -3,6 +3,8 @@
 #pragma once
 #include "ui_mainwindow.h"
 
+#include "interfaces.h"
+
 class QPluginLoader;
 class QPushButton;
 class PluginInterface;
@@ -19,6 +21,8 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
+
+	static InterfacesPtr interfaces;
 
 private:
 

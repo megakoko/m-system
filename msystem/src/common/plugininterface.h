@@ -1,6 +1,6 @@
 
 #pragma once
-
+#include "interfaces.h"
 
 class QString;
 class QStringList;
@@ -14,8 +14,10 @@ public:
 	virtual QString textid() const = 0;
 	virtual PluginWidget* widget() const = 0;
 
+	virtual void setInterfaces(const InterfacesPtr& interfaces) {
+		Q_UNUSED(interfaces);
+	}
+
 };
 
-Q_DECLARE_INTERFACE(PluginInterface,
-					"com.msystem.Application.PluginInterface/1.0"
-				   )
+Q_DECLARE_INTERFACE(PluginInterface, "com.msystem.Application.PluginInterface/1.0")
