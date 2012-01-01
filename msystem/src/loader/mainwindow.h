@@ -6,12 +6,8 @@
 #include "interfaces.h"
 
 class QPluginLoader;
-class QPushButton;
-class PluginInterface;
-class LoginDialog;
 class SettingsDialog;
 class HomePage;
-class AboutDialog;
 
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
@@ -41,7 +37,6 @@ private:
 
 	SettingsDialog* m_settingsDialog;
 	HomePage* m_homePage;
-	AboutDialog* m_aboutDialog;
 
 	bool userHaveAccessToPlugin(const QString& textid) const;
 
@@ -55,5 +50,6 @@ private slots:
 	void logIn();
 	void logOut();
 	void launchPlugin(const QString& textid);
+	void showAboutDialog();
 
 };

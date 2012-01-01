@@ -12,7 +12,6 @@
 #include <QProgressDialog>
 
 #include "mainwindow.h"
-#include "passwords.h"
 #include "macros.h"
 
 
@@ -95,16 +94,12 @@ void LoginDialog::tryToLogin()
 	}
 
 
-	const QString& hash = Passwords::hash(m_password->text(), salt(m_login->text()));
-
-
-	// TODO: select count(*) from muser
-	//        where login='admin' and md5(md5('pw') || salt) = password;
 	QSqlQuery query;
 	query.prepare(" SELECT id FROM MUser "
-				  " WHERE login = :login AND password = :password");
+				  " WHERE login = :login AND password = md5(md5(:password) || :salt)");
 	query.bindValue(":login", m_login->text());
-	query.bindValue(":password", hash);
+	query.bindValue(":password", m_password->text());
+	query.bindValue(":salt", salt(m_login->text()));
 	query.exec();
 	checkQuery(query);
 
@@ -129,7 +124,7 @@ void LoginDialog::enableOkButton()
 }
 
 
-QByteArray LoginDialog::salt(const QString& login) const
+QString LoginDialog::salt(const QString& login) const
 {
 	QSqlQuery query;
 	query.prepare("SELECT salt FROM MUser WHERE login = :login");
@@ -137,9 +132,9 @@ QByteArray LoginDialog::salt(const QString& login) const
 	query.exec();
 	checkQuery(query);
 
-	QByteArray result;
+	QString result;
 	if(query.first())
-		result = query.value(0).toByteArray();
+		result = query.value(0).toString();
 
 	return result;
 }

@@ -16,19 +16,24 @@
 #include "plugininterface.h"
 #include "macros.h"
 #include "encoding.h"
+#include "database.h"
 
 
 QList<QPluginLoader*> MainWindow::m_plugins = QList<QPluginLoader*>();
-InterfacesPtr MainWindow::interfaces = InterfacesPtr(new Interfaces(new Encoding));
+InterfacesPtr MainWindow::interfaces = InterfacesPtr(new Interfaces(new Encoding,
+																	new Database));
 
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, m_settingsDialog(new SettingsDialog(this))
 	, m_homePage(new HomePage(this))
-	, m_aboutDialog(new AboutDialog(this))
 {
 	setupUi(this);
+
+	InterfacesPtr p = InterfacesPtr(new Interfaces(new Encoding,
+												   new Database));
+	qDebug() << p->db->fieldMaximumLength("patient", "familyname");
 
 	QSettings settings;
 	restoreGeometry(settings.value("windowGeometry").toByteArray());
@@ -65,7 +70,7 @@ void MainWindow::initToolBar()
 	m_toolbar->addWidget(spacer);
 
 
-	m_toolbar->addAction(QString::fromUtf8("О программе"), m_aboutDialog, SLOT(exec()));
+	m_toolbar->addAction(QString::fromUtf8("О программе"), this, SLOT(showAboutDialog()));
 }
 
 
@@ -176,13 +181,10 @@ bool MainWindow::processPlugin(QPluginLoader *obj)
 bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 {
 	Q_ASSERT(m_userId >= 0);
-
-#ifdef QT_NO_DEBUG
-	if(textid == "test")
-		return false;
-#endif
-
 	bool result = false;
+
+// В релизе модуль test не должен загружаться.
+#ifndef QT_NO_DEBUG
 	QSqlQuery q;
 
 	q.prepare("SELECT is_admin FROM MUser WHERE id = :userid");
@@ -206,6 +208,7 @@ bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 
 		result = q.first();
 	}
+#endif
 
 	return result;
 }
@@ -221,4 +224,11 @@ QString MainWindow::pluginName(const QString &textid) const
 
 
 	return q.first() ? q.value(0).toString() : QString::null;
+}
+
+
+void MainWindow::showAboutDialog()
+{
+	AboutDialog d;
+	d.exec();
 }

@@ -4,10 +4,10 @@
 #include <QSqlError>
 #include <QMessageBox>
 #include <QMap>
+#include <QDateTime>
 #include <QDebug>
 
 #include "macros.h"
-#include "../loader/passwords.h"
 
 
 UserEditWidget::UserEditWidget(const int userId, QWidget *parent)
@@ -170,27 +170,29 @@ void UserEditWidget::save()
 	}
 	else
 	{
-		// TODO: 
-		// password = md5(md5(:password) || :salt)
-		const QByteArray& salt = Passwords::salt();
 		if(m_userId == InvalidId)
 		{
 			query.prepare(" INSERT INTO MUser "
 						  " ( login,  password,  salt,  is_admin) VALUES "
-						  " (:login, :password, :salt, :is_admin) RETURNING id");
+						  " (:login, md5(md5(:password) || :salt), :salt, :is_admin) "
+						  " RETURNING id");
 		}
 		else
 		{
 			query.prepare(" UPDATE MUser SET "
 						  " login = :login, "
-						  " password = :password, "
+						  " password = md5(md5(:password) || :salt), "
 						  " salt = :salt, "
 						  " is_admin = :is_admin "
 						  " WHERE id = :userid ");
 			query.bindValue(":userid", m_userId);
 		}
-		query.bindValue(":password", Passwords::hash(m_password->text(), salt));
-		query.bindValue(":salt", QString(salt));
+
+		const QString& salt = generateSalt();
+
+		query.bindValue(1, m_password->text());
+		query.bindValue(2, salt);
+		query.bindValue(3, salt);
 	}
 	query.bindValue(":login", m_login->text());
 	query.bindValue(":is_admin", m_isAdmin->isChecked());
@@ -234,6 +236,28 @@ void UserEditWidget::save()
 	}
 
 	emit saved();
+}
+
+
+QString UserEditWidget::generateSalt() const
+{
+	qsrand(QDateTime::currentMSecsSinceEpoch());
+
+	const int length = 20;
+	QString result;
+	for(int i = 0; i < length; ++i)
+	{
+		// 0x0030 = unicode "0".
+		// "1", ..., "9", ":", ..., "@", "A", ...,"z"
+		// 0x007A = unicode "z".
+		const int start = 0x0030;
+		const int end   = 0x007A;
+		const int code = start + qrand() % (end - start);
+
+		result.append(QChar(code));
+	}
+
+	return result;
 }
 
 

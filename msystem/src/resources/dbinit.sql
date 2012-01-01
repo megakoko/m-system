@@ -33,17 +33,17 @@ DROP TABLE IF EXISTS MUser;
 -- Таблица с пользователями.
 CREATE TABLE MUser (
 	id 					SERIAL PRIMARY KEY,
-	login 				VARCHAR NOT NULL,
-	password 			VARCHAR,
-	salt 				VARCHAR,
+	login 				VARCHAR (20) NOT NULL,
+	password 			VARCHAR (32),	-- Достаточно для MD5.
+	salt 				VARCHAR (20),
 	is_admin 			BOOL NOT NULL DEFAULT false
 );
 
 -- Таблица, содержащая информацию о модулях.
 CREATE TABLE Plugin (
 	id 					SERIAL PRIMARY KEY,
-	textid 				VARCHAR NOT NULL UNIQUE,
-	name 				VARCHAR NOT NULL
+	textid 				VARCHAR (30) NOT NULL UNIQUE,
+	name 				VARCHAR (100) NOT NULL
 );
 
 -- Таблица, определяющая доступ пользователей к модулям.
@@ -57,17 +57,17 @@ CREATE TABLE UserPluginAccess (
 -- Пол пациентов.
 CREATE TABLE Sex (
 	id 					SERIAL PRIMARY KEY,
-	textid				VARCHAR NOT NULL UNIQUE,
-	name				VARCHAR NOT NULL
+	textid				VARCHAR (30) NOT NULL UNIQUE,
+	name				VARCHAR (40) NOT NULL
 );
 
 
 -- Пациенты.
 CREATE TABLE Patient (
 	id 					SERIAL PRIMARY KEY,
-	familyName 			VARCHAR NOT NULL,
-	name 				VARCHAR NOT NULL,
-	patronymic 			VARCHAR NOT NULL,
+	familyName 			VARCHAR (40) NOT NULL,
+	name 				VARCHAR (40) NOT NULL,
+	patronymic 			VARCHAR (40) NOT NULL,
 	birthDay			TIMESTAMP NOT NULL,
 	sexId				INTEGER REFERENCES Sex(id)
 );
@@ -75,8 +75,8 @@ CREATE TABLE Patient (
 -- Типы документа.
 CREATE TABLE DocumentType (
 	id 					SERIAL PRIMARY KEY,
-	textid 				VARCHAR NOT NULL UNIQUE,
-	name		 		VARCHAR NOT NULL
+	textid 				VARCHAR (30) NOT NULL UNIQUE,
+	name		 		VARCHAR (40) NOT NULL
 );
 
 -- Документы.
@@ -84,17 +84,16 @@ CREATE TABLE Document (
 	id 					SERIAL PRIMARY KEY,
 	documentTypeId 		INTEGER REFERENCES DocumentType (id),
 	patientId 			INTEGER REFERENCES Patient (id),
-	serialNumber 		VARCHAR NOT NULL,
+	serialNumber 		VARCHAR (30) NOT NULL,
 	date 				TIMESTAMP NOT NULL,
-	givenBy 			VARCHAR NOT NULL
+	givenBy 			VARCHAR (100) NOT NULL
 );
 
 
--- TODO: AddressType
 CREATE TABLE AddressType (
 	id					SERIAL PRIMARY KEY,
-	textid				VARCHAR NOT NULL UNIQUE,
-	name				VARCHAR NOT NULL
+	textid				VARCHAR (30) NOT NULL UNIQUE,
+	name				VARCHAR (40) NOT NULL
 );
 
 
@@ -103,10 +102,10 @@ CREATE TABLE Address (
 	id 					SERIAL PRIMARY KEY,
 	patientId 			INTEGER REFERENCES Patient (id),
 	typeId				INTEGER REFERENCES AddressType (id),
-	city 				VARCHAR NOT NULL,
-	street 				VARCHAR NOT NULL,
-	house 				VARCHAR NOT NULL,
-	apartment 			VARCHAR
+	city 				VARCHAR (40) NOT NULL,
+	street 				VARCHAR (100) NOT NULL,
+	house 				VARCHAR (30) NOT NULL,
+	apartment 			VARCHAR (30)
 );
 
 
@@ -123,11 +122,11 @@ CREATE TABLE MKB10 (
 -- Таблица с информацией о мед. учреждении.
 CREATE TABLE HealthFacility (
 	id 					INTEGER PRIMARY KEY,
-	name				VARCHAR NOT NULL,
-	shortName			VARCHAR,
-	city				VARCHAR,
-	street				VARCHAR,
-	house				VARCHAR,
+	name				VARCHAR (100) NOT NULL,
+	shortName			VARCHAR (30),
+	city				VARCHAR (40),
+	street				VARCHAR (100),
+	house				VARCHAR (30),
 	inn					CHAR(12),
 	kpp					CHAR(9),
 	okonh				CHAR(5),
@@ -148,27 +147,27 @@ WHERE id = 1  DO INSTEAD NOTHING;
 -- Персонал/работники мед. учреждения.
 CREATE TABLE Staff (
 	id					SERIAL PRIMARY KEY,
-	familyName 			VARCHAR NOT NULL,
-	name 				VARCHAR NOT NULL,
-	patronymic 			VARCHAR NOT NULL,
+	familyName 			VARCHAR (40) NOT NULL,
+	name 				VARCHAR (40) NOT NULL,
+	patronymic 			VARCHAR (40) NOT NULL,
 	birthDay			TIMESTAMP NOT NULL,
-	specialization		VARCHAR
+	specialization		VARCHAR (100)
 );
 
 
 -- Типы отделений (стационар/амбулатория).
 CREATE TABLE DepartmentType (
 	id					SERIAL PRIMARY KEY,
-	textid				VARCHAR NOT NULL UNIQUE,
-	name				VARCHAR NOT NULL
+	textid				VARCHAR (30) NOT NULL UNIQUE,
+	name				VARCHAR (40) NOT NULL
 );
 
 
 -- Отделения мед. учреждения.
 CREATE TABLE Department (
 	id					SERIAL PRIMARY KEY,
-	name				VARCHAR NOT NULL,
-	shortName			VARCHAR NOT NULL,
+	name				VARCHAR (100) NOT NULL,
+	shortName			VARCHAR (30) NOT NULL,
 	typeId				INTEGER REFERENCES DepartmentType(id),
 	headOfDepartmentId	INTEGER REFERENCES Staff(id)
 );
@@ -177,7 +176,7 @@ CREATE TABLE Department (
 -- Должности.
 CREATE TABLE Position (
 	id					SERIAL PRIMARY KEY,
-	name				VARCHAR NOT NULL
+	name				VARCHAR (40) NOT NULL
 );
 
 
@@ -196,8 +195,7 @@ CREATE TABLE DepartmentStaffPosition (
 
 -- Пользователь с правами админа с логином 'admin' и паролем 'pw'.
 INSERT INTO MUser(login, password, salt, is_admin) VALUES
-('admin', '38b311d8c359e5975c5a3f454d3f4294', 'salt', true);
--- TODO:  md5(md5('pw') || 'salt')
+('admin', md5(md5('pw') || 'salt'), 'salt', true);
 
 
 -- При добавлении модуля надо добавлять сюда строку с его textid и названием.

@@ -11,10 +11,6 @@ class DatabaseSettingsPage : public AbstractSettingsPage, private Ui::DatabaseSe
 public:
 	DatabaseSettingsPage(QWidget* parent);
 
-	~DatabaseSettingsPage()
-	{
-	}
-
 	QString pageName() const;
 	void readSettings();
 	void saveSettings();

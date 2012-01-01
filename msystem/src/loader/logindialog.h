@@ -32,7 +32,7 @@ private:
 	QSettings m_settings;
 
 	/// \returns соль, хранящаяся в БД для пользователя с логином \a login.
-	QByteArray salt(const QString& login) const;
+	QString salt(const QString& login) const;
 
 
 	bool databaseIsInitialized() const;

@@ -1,7 +1,6 @@
 #pragma once
 
-#include <QString>
-
+class QString;
 
 
 /// Интерфейс для использования шифрования в программе.

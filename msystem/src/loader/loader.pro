@@ -9,25 +9,24 @@ include( ../m-system-config.pri )
 SOURCES		+=	main.cpp\
 				mainwindow.cpp \
 				logindialog.cpp \
-				passwords.cpp \
 				settingsdialog.cpp \
-				abstractsettingspage.cpp \
 				databasesettingspage.cpp \
 				tabwidget.cpp \
 				homepage.cpp \
 				aboutdialog.cpp \
-				encoding.cpp
+				encoding.cpp \
+    database.cpp
 
 HEADERS		+=	mainwindow.h \
 				logindialog.h \
-				passwords.h \
 				settingsdialog.h \
 				abstractsettingspage.h \
 				databasesettingspage.h \
 				tabwidget.h \
 				homepage.h \
 				aboutdialog.h \
-				encoding.h
+				encoding.h \
+    database.h
 
 FORMS		+=	mainwindow.ui \
 				logindialog.ui \
