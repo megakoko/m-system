@@ -31,10 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	setupUi(this);
 
-	InterfacesPtr p = InterfacesPtr(new Interfaces(new Encoding,
-												   new Database));
-	qDebug() << p->db->fieldMaximumLength("patient", "familyname");
-
 	QSettings settings;
 	restoreGeometry(settings.value("windowGeometry").toByteArray());
 
