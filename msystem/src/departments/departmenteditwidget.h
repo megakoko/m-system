@@ -7,7 +7,7 @@
 
 class DepartmentEditWidget : public SaveablePluginWidget, private Ui::DepartmentEditWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
 	explicit DepartmentEditWidget(const int departmentId, QWidget *parent = 0);

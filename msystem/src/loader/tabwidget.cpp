@@ -1,10 +1,12 @@
 
 
 #include "tabwidget.h"
+
 #include <QTabBar>
 #include <QMessageBox>
 #include <QVariant>
 #include <QDebug>
+
 #include "saveablepluginwidget.h"
 #include "homepage.h"
 

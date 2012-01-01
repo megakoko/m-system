@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include "macros.h"
 
+#include "patients.h"
 #include "addressdialog.h"
 #include "documenteditdialog.h"
 
@@ -38,6 +39,9 @@ PatientEditWidget::PatientEditWidget(const int patientId, QWidget *parent)
 
 void PatientEditWidget::init()
 {
+	m_familyName->setMaxLength(
+				Patients::interfaces->db->fieldMaximumLength("Patient", "familyName"));
+
 	m_editDocument->setEnabled(false);
 	m_deleteDocument->setEnabled(false);
 

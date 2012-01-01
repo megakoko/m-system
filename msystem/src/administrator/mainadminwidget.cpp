@@ -8,7 +8,6 @@
 
 #include "usereditwidget.h"
 
-#include "../loader/passwords.h"
 #include "macros.h"
 
 
