@@ -80,9 +80,38 @@ void MainPatientsWidget::updatePatientsList()
 
 void MainPatientsWidget::addPatient()
 {
-	PatientEditWidget* widget = new PatientEditWidget(PatientEditWidget::InvalidId, this);
-	connect(widget, SIGNAL(saved()), SLOT(updatePatientsList()));
-	addNewWidget(widget, widget->fullPatientName());
+	const QString& searchText = m_searchline->text();
+
+	// То, что пользователь ввел в строку, разделенное пробельными символами.
+	// Содержит возможное имя будущего пациента.
+	QStringList patientName;
+	if(!searchText.isEmpty() && m_model->rowCount() == 0)
+		patientName = searchText.split(QRegExp("\\s+"));
+
+
+	PatientEditWidget* widget = NULL;
+
+	// Не в интервале от 1 до 3 строк.
+	if(patientName.count() < 1 || 3 < patientName.count())
+		widget = new PatientEditWidget(PatientEditWidget::InvalidId, this);
+	else
+	{
+		// Добавляем в конец элементы до нужного количества (3).
+		if(patientName.count() == 1)
+			patientName << QString::null << QString::null;
+		else if(patientName.count() == 2)
+			patientName << QString::null;
+
+		widget = new PatientEditWidget(patientName[0], patientName[1],
+									   patientName[2], this);
+	}
+
+
+	if(widget != NULL)
+	{
+		connect(widget, SIGNAL(saved()), SLOT(updatePatientsList()));
+		addNewWidget(widget, widget->fullPatientName());
+	}
 }
 
 

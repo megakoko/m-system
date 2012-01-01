@@ -12,6 +12,9 @@ class PatientEditWidget : public SaveablePluginWidget, private Ui::PatientEditWi
 	Q_OBJECT
 
 public:
+	explicit PatientEditWidget(const QString& familyName, const QString& name,
+							   const QString& patronymic, QWidget* parent = 0);
+
 	explicit PatientEditWidget(const int patientId, QWidget *parent = 0);
 
 	bool canSave(QString &errorDescription) const;

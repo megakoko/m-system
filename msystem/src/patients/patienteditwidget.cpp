@@ -24,6 +24,26 @@ namespace DocumentTableColumns
 }
 
 
+PatientEditWidget::PatientEditWidget(const QString &familyName,
+									 const QString &name,
+									 const QString &patronymic,
+									 QWidget *parent)
+	: SaveablePluginWidget(parent)
+	, m_patientId(InvalidId)
+	, m_mailingAddress(Address("mailing"))
+	, m_actualAddress(Address("actual"))
+{
+	setupUi(this);
+
+	init();
+	initConnections();
+
+	m_familyName->setText(familyName);
+	m_name->setText(name);
+	m_patronymic->setText(patronymic);
+}
+
+
 PatientEditWidget::PatientEditWidget(const int patientId, QWidget *parent)
 	: SaveablePluginWidget(parent)
 	, m_patientId(patientId)
