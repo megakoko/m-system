@@ -1,5 +1,6 @@
 #include "addressdialog.h"
 #include "macros.h"
+#include "patients.h"
 
 
 AddressDialog::AddressDialog(const Address& address, QWidget *parent)
@@ -7,6 +8,20 @@ AddressDialog::AddressDialog(const Address& address, QWidget *parent)
 	, m_address(address)
 {
 	setupUi(this);
+
+
+	m_city->setMaxLength(Patients::interfaces->db->
+						 fieldMaximumLength("Address", "city"));
+
+	m_street->setMaxLength(Patients::interfaces->db->
+						   fieldMaximumLength("Address", "street"));
+
+	m_house->setMaxLength(Patients::interfaces->db->
+						  fieldMaximumLength("Address", "house"));
+
+	m_apartment->setMaxLength(Patients::interfaces->db->
+							  fieldMaximumLength("Address", "apartment"));
+
 
 	m_city->setText(m_address.city);
 	m_street->setText(m_address.street);

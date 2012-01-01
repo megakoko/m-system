@@ -20,8 +20,6 @@ MainPatientsWidget::MainPatientsWidget(QWidget *parent)
 
 	init();
 	initConnections();
-
-	qDebug() << Patients::interfaces->enc->encode("asd");
 }
 
 
