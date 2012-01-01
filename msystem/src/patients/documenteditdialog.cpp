@@ -3,6 +3,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include "macros.h"
+#include "patients.h"
 
 
 
@@ -11,6 +12,13 @@ DocumentEditDialog::DocumentEditDialog(const Document& doc, QWidget *parent)
 	, m_document(doc)
 {
     setupUi(this);
+
+
+	m_serialNumber->setMaxLength(Patients::interfaces->db->
+								 fieldMaximumLength("Document", "serialnumber"));
+
+	m_givenBy->setMaxLength(Patients::interfaces->db->
+							fieldMaximumLength("Document", "givenBy"));
 
 
 	QSqlQuery q("SELECT name, id FROM DocumentType ORDER BY id");
