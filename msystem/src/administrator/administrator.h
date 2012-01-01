@@ -13,4 +13,7 @@ public:
 	QString textid() const;
 	PluginWidget* widget() const;
 
+	void setInterfaces(const InterfacesPtr &interfaces);
+	static InterfacesPtr interfaces;
+
 };

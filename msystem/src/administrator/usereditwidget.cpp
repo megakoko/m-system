@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QDebug>
 
+#include "administrator.h"
 #include "macros.h"
 
 
@@ -25,6 +26,15 @@ UserEditWidget::UserEditWidget(const int userId, QWidget *parent)
 
 void UserEditWidget::init()
 {
+	m_login->setMaxLength(Administrator::interfaces->
+						  db->fieldMaximumLength("MUser", "login"));
+
+	const int pwLength = Administrator::interfaces->
+						 db->fieldMaximumLength("MUser", "password");
+	m_password->setMaxLength(pwLength);
+	m_password2->setMaxLength(pwLength);
+
+
 	QSqlQuery query;
 	query.exec("SELECT textid, name FROM Plugin");
 	checkQuery(query);
