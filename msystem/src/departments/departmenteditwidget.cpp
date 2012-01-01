@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include "departments.h"
 #include "macros.h"
 #include "staffpositioneditdialog.h"
 
@@ -28,6 +29,13 @@ QString DepartmentEditWidget::departmentName() const
 
 void DepartmentEditWidget::init()
 {
+	m_name->setMaxLength(Departments::interfaces->db->
+						 fieldMaximumLength("Department", "name"));
+	
+	m_shortName->setMaxLength(Departments::interfaces->db->
+							  fieldMaximumLength("Department", "shortName"));
+
+
 	connect(m_name, SIGNAL(editingFinished()), SLOT(nameChanged()));
 	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
 
@@ -76,8 +84,8 @@ void DepartmentEditWidget::init()
 		}
 
 
-		staffPositionSelectionChanged();
 	}
+	staffPositionSelectionChanged();
 }
 
 

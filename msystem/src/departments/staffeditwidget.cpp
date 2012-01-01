@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "macros.h"
+#include "departments.h"
 
 
 StaffEditWidget::StaffEditWidget(const int staffId, QWidget *parent)
@@ -20,6 +21,19 @@ StaffEditWidget::StaffEditWidget(const int staffId, QWidget *parent)
 
 void StaffEditWidget::init()
 {
+	m_familyName->setMaxLength(Departments::interfaces->db->
+							   fieldMaximumLength("Staff", "familyName"));
+
+	m_name->setMaxLength(Departments::interfaces->db->
+						 fieldMaximumLength("Staff", "name"));
+
+	m_patronymic->setMaxLength(Departments::interfaces->db->
+							   fieldMaximumLength("Staff", "patronymic"));
+
+	m_specialization->setMaxLength(Departments::interfaces->db->
+								   fieldMaximumLength("Staff", "specialization"));
+
+
 	if(m_staffId != InvalidId)
 	{
 		QSqlQuery q;
