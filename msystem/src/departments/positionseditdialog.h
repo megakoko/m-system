@@ -25,4 +25,6 @@ private slots:
 
 	void selectionChanged();
 
+	void itemChanged(QListWidgetItem* item);
+
 };

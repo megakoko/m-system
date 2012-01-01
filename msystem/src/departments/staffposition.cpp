@@ -72,8 +72,6 @@ QString StaffPosition::toString() const
 
 void StaffPosition::save() const
 {
-	Q_ASSERT(m_departmentId > 0);
-
 	QSqlQuery q;
 
 	if(m_markedForDeletion)

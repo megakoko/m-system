@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>523</width>
-    <height>399</height>
+    <width>532</width>
+    <height>497</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
      <item row="1" column="1">
       <widget class="QLineEdit" name="m_shortName"/>
      </item>
-     <item row="2" column="0">
+     <item row="5" column="0">
       <widget class="QLabel" name="label_3">
        <property name="toolTip">
         <string>Идентификационный номер налогоплательщика</string>
@@ -46,7 +46,7 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="6" column="0">
       <widget class="QLabel" name="label_4">
        <property name="toolTip">
         <string>Код причины постановки на учёт</string>
@@ -56,7 +56,7 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="7" column="0">
       <widget class="QLabel" name="label_5">
        <property name="toolTip">
         <string>Общесоюзный классификатор отраслей народного хозяйства</string>
@@ -66,7 +66,7 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
+     <item row="8" column="0">
       <widget class="QLabel" name="label_6">
        <property name="toolTip">
         <string>Общероссийский классификатор объектов административно-территориального деления</string>
@@ -76,7 +76,7 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
+     <item row="9" column="0">
       <widget class="QLabel" name="label_7">
        <property name="toolTip">
         <string>Общероссийский классификатор предприятий и организаций</string>
@@ -86,7 +86,7 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="0">
+     <item row="10" column="0">
       <widget class="QLabel" name="label_8">
        <property name="toolTip">
         <string>Основной государственный регистрационный номер</string>
@@ -96,23 +96,53 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="5" column="1">
       <widget class="QLineEdit" name="m_inn"/>
      </item>
-     <item row="3" column="1">
+     <item row="6" column="1">
       <widget class="QLineEdit" name="m_kpp"/>
      </item>
-     <item row="4" column="1">
+     <item row="7" column="1">
       <widget class="QLineEdit" name="m_okonh"/>
      </item>
-     <item row="5" column="1">
+     <item row="8" column="1">
       <widget class="QLineEdit" name="m_okato"/>
      </item>
-     <item row="6" column="1">
+     <item row="9" column="1">
       <widget class="QLineEdit" name="m_okpo"/>
      </item>
-     <item row="7" column="1">
+     <item row="10" column="1">
       <widget class="QLineEdit" name="m_ogrn"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Город</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Улица</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Номер дома</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="m_city"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="m_street"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="m_house"/>
      </item>
     </layout>
    </item>
@@ -162,6 +192,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_name</tabstop>
+  <tabstop>m_shortName</tabstop>
+  <tabstop>m_city</tabstop>
+  <tabstop>m_street</tabstop>
+  <tabstop>m_house</tabstop>
+  <tabstop>m_inn</tabstop>
+  <tabstop>m_kpp</tabstop>
+  <tabstop>m_okonh</tabstop>
+  <tabstop>m_okato</tabstop>
+  <tabstop>m_okpo</tabstop>
+  <tabstop>m_ogrn</tabstop>
+  <tabstop>m_ok</tabstop>
+  <tabstop>m_cancel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

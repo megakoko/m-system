@@ -6,6 +6,7 @@
 #include <QSqlError>
 #include <QDebug>
 
+#include "departments.h"
 #include "macros.h"
 
 HealthFacilityEditDialog::HealthFacilityEditDialog(QWidget *parent)
@@ -23,15 +24,42 @@ void HealthFacilityEditDialog::init()
 	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
 
 
-	m_inn->setMaxLength(12);
-	m_kpp->setMaxLength(9);
-	m_okonh->setMaxLength(5);
-	m_okato->setMaxLength(11);
-	m_okpo->setMaxLength(10);
-	m_ogrn->setMaxLength(13);
+	m_name->setMaxLength(Departments::interfaces->db->
+						 fieldMaximumLength("HealthFacility", "name"));
+
+	m_shortName->setMaxLength(Departments::interfaces->db->
+							  fieldMaximumLength("HealthFacility", "shortname"));
+
+	m_city->setMaxLength(Departments::interfaces->db->
+						 fieldMaximumLength("HealthFacility", "city"));
+
+	m_street->setMaxLength(Departments::interfaces->db->
+						   fieldMaximumLength("HealthFacility", "street"));
+
+	m_house->setMaxLength(Departments::interfaces->db->
+						  fieldMaximumLength("HealthFacility", "house"));
+
+	m_inn->setMaxLength(Departments::interfaces->db->
+						fieldMaximumLength("HealthFacility", "inn"));
+
+	m_kpp->setMaxLength(Departments::interfaces->db->
+						fieldMaximumLength("HealthFacility", "kpp"));
+
+	m_okonh->setMaxLength(Departments::interfaces->db->
+						  fieldMaximumLength("HealthFacility", "okonh"));
+
+	m_okato->setMaxLength(Departments::interfaces->db->
+						  fieldMaximumLength("HealthFacility", "okato"));
+
+	m_okpo->setMaxLength(Departments::interfaces->db->
+						 fieldMaximumLength("HealthFacility", "okpo"));
+
+	m_ogrn->setMaxLength(Departments::interfaces->db->
+						 fieldMaximumLength("HealthFacility", "ogrn"));
 
 
-	QSqlQuery q(" SELECT name, shortName, inn, kpp, okonh, okato, okpo, ogrn "
+	QSqlQuery q(" SELECT name, shortName, city, street, house, "
+					" inn, kpp, okonh, okato, okpo, ogrn "
 				" FROM HealthFacility ");
 	checkQuery(q);
 
@@ -44,6 +72,9 @@ void HealthFacilityEditDialog::init()
 
 		m_name->setText(rec.value("name").toString());
 		m_shortName->setText(rec.value("shortName").toString());
+		m_city->setText(rec.value("city").toString());
+		m_street->setText(rec.value("street").toString());
+		m_house->setText(rec.value("house").toString());
 		m_inn->setText(rec.value("inn").toString().trimmed());
 		m_kpp->setText(rec.value("kpp").toString().trimmed());
 		m_okonh->setText(rec.value("okonh").toString().trimmed());
@@ -59,6 +90,9 @@ void HealthFacilityEditDialog::save()
 	q.prepare(" UPDATE HealthFacility SET "
 			  " name = :name, "
 			  " shortName = :shortName, "
+			  " city = :city, "
+			  " street = :street, "
+			  " house = :house, "
 			  " inn = :inn, "
 			  " kpp = :kpp, "
 			  " okonh = :okonh, "
@@ -67,6 +101,9 @@ void HealthFacilityEditDialog::save()
 			  " ogrn = :ogrn ");
 	q.bindValue(":name", nullIfEmpty(m_name->text().simplified()));
 	q.bindValue(":shortName", nullIfEmpty(m_shortName->text().simplified()));
+	q.bindValue(":city", nullIfEmpty(m_city->text().simplified()));
+	q.bindValue(":street", nullIfEmpty(m_street->text().simplified()));
+	q.bindValue(":house", nullIfEmpty(m_house->text().simplified()));
 	q.bindValue(":inn", nullIfEmpty(m_inn->text().simplified()));
 	q.bindValue(":kpp", nullIfEmpty(m_kpp->text().simplified()));
 	q.bindValue(":okonh", nullIfEmpty(m_okonh->text().simplified()));

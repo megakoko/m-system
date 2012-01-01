@@ -5,6 +5,7 @@
 #include <QRegExp>
 #include <QDebug>
 
+#include "departments.h"
 #include "macros.h"
 
 PositionsEditDialog::PositionsEditDialog(QWidget *parent) :
@@ -26,6 +27,8 @@ void PositionsEditDialog::init()
 	connect(m_deletePosition, SIGNAL(clicked()), SLOT(deletePosition()));
 
 	connect(m_positionList, SIGNAL(itemSelectionChanged()), SLOT(selectionChanged()));
+	connect(m_positionList, SIGNAL(itemChanged(QListWidgetItem*)),
+			SLOT(itemChanged(QListWidgetItem*)));
 
 
 	QSqlQuery q("SELECT id, name FROM Position ORDER BY id");
@@ -160,4 +163,18 @@ QString PositionsEditDialog::generatePositionName() const
 
 
 	return QString("%1 (%2)").arg(basename).arg(possibleNumber);
+}
+
+
+void PositionsEditDialog::itemChanged(QListWidgetItem* item)
+{
+	static const int maxLength = Departments::interfaces->db->
+			fieldMaximumLength("Position", "name");
+
+	if(maxLength >= 0 && item != NULL)
+	{
+		const QString& itemText = item->text();
+		if(itemText.length() > maxLength)
+			item->setText(itemText.left(maxLength));
+	}
 }
