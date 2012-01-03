@@ -31,7 +31,7 @@ QVector<QChar> Encoding::generateVector()
 	QVector<QChar> vector;
 
 	// Специальные символы и цифры.
-	vector << charactersBetween(QString::fromUtf8("!"), QString::fromUtf8("@"));
+	vector << charactersBetween(QString::fromUtf8(" "), QString::fromUtf8("@"));
 
 	// Между A-Z и a-z в Юникоде находятся ненужные нам символы.
 	vector << charactersBetween(QString::fromUtf8("A"), QString::fromUtf8("Z"));

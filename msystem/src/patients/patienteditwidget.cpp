@@ -93,9 +93,9 @@ void PatientEditWidget::init()
 		const bool idIsValid = q.first();
 		Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
 
-		m_familyName->setText(q.value(0).toString());
-		m_name->setText(q.value(1).toString());
-		m_patronymic->setText(q.value(2).toString());
+		m_familyName->setText(Patients::interfaces->enc->decode(q.value(0).toString()));
+		m_name->setText(Patients::interfaces->enc->decode(q.value(1).toString()));
+		m_patronymic->setText(Patients::interfaces->enc->decode(q.value(2).toString()));
 		m_birthDay->setDate(q.value(3).toDate());
 
 		if(q.value(4).toString() == "male")
@@ -331,6 +331,21 @@ bool PatientEditWidget::canSave(QString &errorDescription) const
 		errorDescription = QString::fromUtf8("Имя пациента не заполнено");
 		return false;
 	}
+	else if(!Patients::interfaces->enc->canUseEncoding(m_familyName->text()))
+	{
+		errorDescription = "Фамилия содержит недопустимые символы";
+		return false;
+	}
+	else if(!Patients::interfaces->enc->canUseEncoding(m_name->text()))
+	{
+		errorDescription = "Имя содержит недопустимые символы";
+		return false;
+	}
+	else if(!Patients::interfaces->enc->canUseEncoding(m_patronymic->text()))
+	{
+		errorDescription = "Отчество содержит недопустимые символы";
+		return false;
+	}
 	else if(m_mailingAddress.isNull())
 	{
 		errorDescription = QString::fromUtf8("Адрес прописки не заполнен");
@@ -374,9 +389,9 @@ void PatientEditWidget::save()
 				  " WHERE id = :patientId ");
 		q.bindValue(":patientId", m_patientId);
 	}
-	q.bindValue(":familyName", m_familyName->text());
-	q.bindValue(":name", m_name->text());
-	q.bindValue(":patronymic", m_patronymic->text());
+	q.bindValue(":familyName", Patients::interfaces->enc->encode(m_familyName->text()));
+	q.bindValue(":name", Patients::interfaces->enc->encode(m_name->text()));
+	q.bindValue(":patronymic", Patients::interfaces->enc->encode(m_patronymic->text()));
 	q.bindValue(":birthDay", m_birthDay->date());
 
 	if(m_male->isChecked())
