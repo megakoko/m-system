@@ -11,6 +11,7 @@
 #include "macros.h"
 #include "patients.h"
 #include "patienteditwidget.h"
+#include "decodedpatientlistquery.h"
 
 
 MainPatientsWidget::MainPatientsWidget(QWidget *parent)
@@ -27,9 +28,18 @@ void MainPatientsWidget::init()
 {
 	m_model = new QSqlQueryModel(this);
 	m_model->setQuery(patientListQuery());
+	if(!m_model->query().isActive())
+		qDebug() << m_model->lastError();
+
+	DecodedPatientListQuery* proxy = new DecodedPatientListQuery(this);
+	proxy->addColumnToDecode(1);
+	proxy->addColumnToDecode(2);
+	proxy->addColumnToDecode(3);
+	proxy->setModel(m_model);
 
 
-	m_view->setModel(m_model);
+
+	m_view->setModel(proxy);
 	m_view->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 	m_view->setColumnHidden(0, true);
 
@@ -57,18 +67,19 @@ void MainPatientsWidget::initConnections()
 
 QString MainPatientsWidget::patientListQuery() const
 {
-	static const QString select =	" SELECT id, familyName AS Фамилия, "
-									" name AS Имя, patronymic AS Отчество ";
-	static const QString from =		" FROM Patient ";
-	static const QString where =	" WHERE familyName ILIKE '%%1%' ";
-	static const QString orderby =	" ORDER BY familyName, name, patronymic ";
+	static const QString select=" SELECT id, familyName AS Фамилия, "
+								" name AS Имя, patronymic AS Отчество, "
+								" to_char(birthday, 'dd.mm.yyyy') AS \"Дата рождения\" ";
+	static const QString from =	" FROM Patient ";
+	static const QString where =" WHERE familyName ILIKE '%%1%' ";
+	static const QString order =" ORDER BY familyName, name, patronymic ";
 
 
 	const QString& filter = m_searchline->text().simplified().remove('\'');
 
 
-	return filter.isEmpty() ? (select + from + orderby)
-							: (select + from + where.arg(filter) + orderby);
+	return filter.isEmpty() ? (select + from + order)
+							: (select + from + where.arg(filter) + order);
 }
 
 

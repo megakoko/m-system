@@ -11,7 +11,8 @@ HEADERS +=	patients.h \
 			address.h \
 			addressdialog.h \
 			document.h \
-			documenteditdialog.h
+			documenteditdialog.h \
+			decodedpatientlistquery.h
 
 SOURCES +=	patients.cpp \
 			mainpatientswidget.cpp \
@@ -19,7 +20,8 @@ SOURCES +=	patients.cpp \
 			address.cpp \
 			addressdialog.cpp \
 			document.cpp \
-			documenteditdialog.cpp
+			documenteditdialog.cpp \
+			decodedpatientlistquery.cpp
 
 FORMS += 	mainpatientswidget.ui \
 			patienteditwidget.ui \
