@@ -71,15 +71,22 @@ QString MainPatientsWidget::patientListQuery() const
 								" name AS Имя, patronymic AS Отчество, "
 								" to_char(birthday, 'dd.mm.yyyy') AS \"Дата рождения\" ";
 	static const QString from =	" FROM Patient ";
-	static const QString where =" WHERE familyName ILIKE '%%1%' ";
+	static const QString where =" WHERE familyName ILIKE '%1%' ";
 	static const QString order =" ORDER BY familyName, name, patronymic ";
 
 
 	const QString& filter = m_searchline->text().simplified().remove('\'');
 
+	QString query;
+	if(filter.isEmpty())
+		query = select + from + order;
+	else
+	{
+		query = select + from +
+				 where.arg(Patients::interfaces->enc->encode(filter)) + order;
+	}
 
-	return filter.isEmpty() ? (select + from + order)
-							: (select + from + where.arg(filter) + order);
+	return query;
 }
 
 
