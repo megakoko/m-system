@@ -135,7 +135,7 @@ void PatientEditWidget::init()
 		}
 
 		// Должен существовать хотя бы адрес по прописке.
-		Q_ASSERT(hasMailingAddress);
+		Q_ASSERT(hasMailingAddress); Q_UNUSED(hasMailingAddress);
 		m_mailingAddressIsActual->setChecked(!hasActualAddress);
 		toggleMailingAddressIsActual(!hasActualAddress);
 

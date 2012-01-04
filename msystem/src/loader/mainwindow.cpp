@@ -177,12 +177,17 @@ bool MainWindow::processPlugin(QPluginLoader *obj)
 bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 {
 	Q_ASSERT(m_userId >= 0);
-	bool result = false;
+
 
 // В релизе модуль test не должен загружаться.
-#ifndef QT_NO_DEBUG
-	QSqlQuery q;
+#ifdef QT_NO_DEBUG
+    if(textid == "test")
+        return false;
+#endif
 
+    bool result = false;
+
+    QSqlQuery q;
 	q.prepare("SELECT is_admin FROM MUser WHERE id = :userid");
 	q.addBindValue(m_userId);
 	q.exec();
@@ -204,7 +209,6 @@ bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 
 		result = q.first();
 	}
-#endif
 
 	return result;
 }
