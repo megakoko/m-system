@@ -65,6 +65,7 @@ void MainMkb10Widget::filterDeseases()
 	{
 		m_stackedWidget->setCurrentIndex(PAGE_FILTER);
 		m_filterModel->setQuery(filterText.arg(filter));
+		checkQuery(m_filterModel->query());
 	}
 }
 

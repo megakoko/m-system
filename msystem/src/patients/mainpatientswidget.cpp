@@ -27,9 +27,7 @@ MainPatientsWidget::MainPatientsWidget(QWidget *parent)
 void MainPatientsWidget::init()
 {
 	m_model = new QSqlQueryModel(this);
-	m_model->setQuery(patientListQuery());
-	if(!m_model->query().isActive())
-		qDebug() << m_model->lastError();
+	updatePatientsList();
 
 	DecodedPatientListQuery* proxy = new DecodedPatientListQuery(this);
 	proxy->addColumnToDecode(1);
@@ -93,6 +91,7 @@ QString MainPatientsWidget::patientListQuery() const
 void MainPatientsWidget::updatePatientsList()
 {
 	m_model->setQuery(patientListQuery());
+	checkQuery(m_model->query());
 }
 
 
