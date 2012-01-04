@@ -28,7 +28,7 @@ MainAdminWidget::MainAdminWidget(QWidget *parent) :
 void MainAdminWidget::init()
 {
 	m_model = new QSqlQueryModel(this);
-	m_model->setQuery(userListQuery);
+	updateUserList();
 
 	m_view->setModel(m_model);
 	m_view->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
@@ -51,6 +51,7 @@ void MainAdminWidget::initConnections()
 void MainAdminWidget::updateUserList()
 {
 	m_model->setQuery(userListQuery);
+	checkQuery(m_model->query());
 }
 
 

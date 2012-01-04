@@ -48,7 +48,7 @@ void MainDepartmentsWidget::init()
 
 
 	m_staffModel = new QSqlQueryModel(this);
-	m_staffModel->setQuery(staffQuery);
+	updateStaffList();
 
 	m_staffTable->setModel(m_staffModel);
 	m_staffTable->setColumnHidden(0, true);
@@ -57,7 +57,7 @@ void MainDepartmentsWidget::init()
 
 
 	m_departmentModel = new QSqlQueryModel(this);
-	m_departmentModel->setQuery(departmentQuery);
+	updateDepartmentList();
 
 	m_departmentTable->setModel(m_departmentModel);
 	m_departmentTable->setColumnHidden(0, true);
@@ -110,6 +110,7 @@ void MainDepartmentsWidget::editPositions()
 void MainDepartmentsWidget::updateStaffList()
 {
 	m_staffModel->setQuery(staffQuery);
+	checkQuery(m_staffModel->query());
 }
 
 
@@ -231,6 +232,7 @@ int MainDepartmentsWidget::selectedStaffId() const
 void MainDepartmentsWidget::updateDepartmentList()
 {
 	m_departmentModel->setQuery(departmentQuery);
+	checkQuery(m_departmentModel->query());
 }
 
 

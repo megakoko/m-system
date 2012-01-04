@@ -229,6 +229,6 @@ QString MainWindow::pluginName(const QString &textid) const
 
 void MainWindow::showAboutDialog()
 {
-	AboutDialog d;
+	AboutDialog d(this);
 	d.exec();
 }
