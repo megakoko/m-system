@@ -65,9 +65,8 @@ void MainPatientsWidget::initConnections()
 
 QString MainPatientsWidget::patientListQuery() const
 {
-	static const QString select=" SELECT id, familyName AS Фамилия, "
-								" name AS Имя, patronymic AS Отчество, "
-								" to_char(birthday, 'dd.mm.yyyy') AS \"Дата рождения\" ";
+	static const QString select=" SELECT id, familyName, name, patronymic, "
+								" to_char(birthday, 'dd.mm.yyyy')";
 	static const QString from =	" FROM Patient ";
 	static const QString where =" WHERE familyName ILIKE '%1%' ";
 	static const QString order =" ORDER BY familyName, name, patronymic ";
