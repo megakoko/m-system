@@ -165,6 +165,7 @@ void LoginDialog::initializeDatabase()
 
 	QFile file;
 	QTextStream ts(&file);
+	ts.setCodec("UTF-8");
 	QSqlQuery query;
 
 
