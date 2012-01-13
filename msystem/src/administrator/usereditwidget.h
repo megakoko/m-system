@@ -29,8 +29,6 @@ private:
 	QSet<QString> databaseTextids() const;
 	QSet<QString> checkedTextids() const;
 
-	QString generateSalt() const;
-
 
 	QMap<QString, QCheckBox*> m_textidToCheckbox;
 	QMap<QCheckBox*, QString> m_checkboxToTextid;

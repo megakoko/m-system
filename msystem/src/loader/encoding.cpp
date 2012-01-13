@@ -2,6 +2,7 @@
 
 
 #include <QDateTime>
+#include <QCryptographicHash>
 #include <QDebug>
 
 
@@ -202,6 +203,43 @@ bool Encoding::canUseEncoding(const QString &input) const
 			result = false;
 			break;
 		}
+
+	return result;
+}
+
+
+QString Encoding::password(const QString &plainText, const QString &salt) const
+{
+	QCryptographicHash crypt(QCryptographicHash::Md5);
+	crypt.addData(plainText.toLatin1(), plainText.length());
+	const QByteArray& hash1 = crypt.result();
+
+	crypt.reset();
+
+	crypt.addData(hash1.toHex());
+	crypt.addData(salt.toUtf8());
+	const QByteArray& hash2 = crypt.result();
+
+	return QString(hash2.toHex());
+}
+
+
+QString Encoding::salt(const int length) const
+{
+	qsrand(QDateTime::currentMSecsSinceEpoch());
+
+	QString result;
+	for(int i = 0; i < length; ++i)
+	{
+		// 0x0030 = unicode "0".
+		// "1", ..., "9", ":", ..., "@", "A", ...,"z"
+		// 0x007A = unicode "z".
+		const int start = 0x0030;
+		const int end   = 0x007A;
+		const int code = start + qrand() % (end - start);
+
+		result.append(QChar(code));
+	}
 
 	return result;
 }
