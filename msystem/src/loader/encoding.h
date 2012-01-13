@@ -16,6 +16,10 @@ public:
 
 	bool canUseEncoding(const QString &input) const;
 
+	QString password(const QString &plainText, const QString &salt) const;
+
+	QString salt(const int length) const;
+
 private:
 	static const QVector<QChar> availableChars;
 	static const QVector< QVector<QChar> > vigenereTable;

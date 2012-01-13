@@ -184,25 +184,26 @@ void UserEditWidget::save()
 		{
 			query.prepare(" INSERT INTO MUser "
 						  " ( login,  password,  salt,  is_admin) VALUES "
-						  " (:login, md5(md5(:password) || :salt), :salt, :is_admin) "
+						  " (:login, :password, :salt, :is_admin) "
 						  " RETURNING id");
 		}
 		else
 		{
 			query.prepare(" UPDATE MUser SET "
 						  " login = :login, "
-						  " password = md5(md5(:password) || :salt), "
+						  " password = :password, "
 						  " salt = :salt, "
 						  " is_admin = :is_admin "
 						  " WHERE id = :userid ");
 			query.bindValue(":userid", m_userId);
 		}
 
-		const QString& salt = generateSalt();
+		const QString& salt = Administrator::interfaces->enc->salt(15);
+		const QString& pw	= Administrator::interfaces->
+							  enc->password(m_password->text(), salt);
 
-		query.bindValue(1, m_password->text());
-		query.bindValue(2, salt);
-		query.bindValue(3, salt);
+		query.bindValue(":password", pw);
+		query.bindValue(":salt", salt);
 	}
 	query.bindValue(":login", m_login->text());
 	query.bindValue(":is_admin", m_isAdmin->isChecked());
@@ -246,28 +247,6 @@ void UserEditWidget::save()
 	}
 
 	emit saved();
-}
-
-
-QString UserEditWidget::generateSalt() const
-{
-	qsrand(QDateTime::currentMSecsSinceEpoch());
-
-	const int length = 20;
-	QString result;
-	for(int i = 0; i < length; ++i)
-	{
-		// 0x0030 = unicode "0".
-		// "1", ..., "9", ":", ..., "@", "A", ...,"z"
-		// 0x007A = unicode "z".
-		const int start = 0x0030;
-		const int end   = 0x007A;
-		const int code = start + qrand() % (end - start);
-
-		result.append(QChar(code));
-	}
-
-	return result;
 }
 
 

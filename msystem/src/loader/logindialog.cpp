@@ -94,12 +94,14 @@ void LoginDialog::tryToLogin()
 	}
 
 
+	const QString& hash = MainWindow::interfaces->enc->
+						  password(m_password->text(), salt(m_login->text()));
+
 	QSqlQuery query;
 	query.prepare(" SELECT id FROM MUser "
-				  " WHERE login = :login AND password = md5(md5(:password) || :salt)");
+				  " WHERE login = :login AND password = :password");
 	query.bindValue(":login", m_login->text());
-	query.bindValue(":password", m_password->text());
-	query.bindValue(":salt", salt(m_login->text()));
+	query.bindValue(":password", hash);
 	query.exec();
 	checkQuery(query);
 
