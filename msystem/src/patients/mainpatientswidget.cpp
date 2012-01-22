@@ -65,23 +65,37 @@ void MainPatientsWidget::initConnections()
 
 QString MainPatientsWidget::patientListQuery() const
 {
-	static const QString select=" SELECT id, familyName, name, patronymic, "
-								" to_char(birthday, 'dd.mm.yyyy')";
-	static const QString from =	" FROM Patient ";
-	static const QString where =" WHERE familyName ILIKE '%1%' ";
+	static const QString psqlSelect = /* Предложение SELECT для PostgreSQL */
+								" SELECT id, familyName, name, patronymic, "
+								" to_char(birthday, 'dd.mm.yyyy') ";
+	static const QString sqliteSelect = /* Предложение SELECT для SQLite */
+								" SELECT id, familyName, name, patronymic, "
+								" strftime('%d.%m.%Y', birthday) ";
+	static const QString from  =" FROM Patient ";
+	static const QString where =" WHERE familyName LIKE '%1%' ";
 	static const QString order =" ORDER BY familyName, name, patronymic ";
 
 
 	const QString& filter = m_searchline->text().simplified().remove('\'');
 
 	QString query;
-	if(filter.isEmpty())
-		query = select + from + order;
-	else
+
+	switch(Patients::interfaces->db->currentSqlDriver())
 	{
-		query = select + from +
-				 where.arg(Patients::interfaces->enc->encode(filter)) + order;
+	case DatabaseInterface::PSQL:
+		query = psqlSelect;
+		break;
+	case DatabaseInterface::SQLITE:
+		query = sqliteSelect;
+		break;
+	default:
+		qFatal("Unknown sql driver");
 	}
+
+	query += from;
+	if(!filter.isEmpty())
+		query += where.arg(Patients::interfaces->enc->encode(filter));
+	query += order;
 
 	return query;
 }

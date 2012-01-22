@@ -1,6 +1,7 @@
-
 #include "databasesettingspage.h"
 
+
+#include <QSqlDatabase>
 #include "mainwindow.h"
 #include "macros.h"
 
@@ -9,6 +10,11 @@ DatabaseSettingsPage::DatabaseSettingsPage(QWidget *parent)
 	: AbstractSettingsPage(parent)
 {
 	setupUi(this);
+
+
+	m_databaseType->addItem("SQLite", "QSQLITE");
+	if(QSqlDatabase::drivers().contains("QPSQL"))
+		m_databaseType->addItem("PostgreSQL", "QPSQL");
 }
 
 
@@ -21,6 +27,7 @@ QString DatabaseSettingsPage::pageName() const
 
 void DatabaseSettingsPage::readSettings()
 {
+	m_databaseType->setCurrentIndex(m_databaseType->findData(m_settings.value("dbdriver")));
 	m_hostname->setText(m_settings.value("hostname").toString());
 	m_port->setText(m_settings.value("port").toString());
 	m_databasename->setText(m_settings.value("dbname").toString());
@@ -32,6 +39,8 @@ void DatabaseSettingsPage::readSettings()
 
 void DatabaseSettingsPage::saveSettings()
 {
+	m_settings.setValue("dbdriver",
+						m_databaseType->itemData(m_databaseType->currentIndex()));
 	m_settings.setValue("hostname", m_hostname->text());
 	m_settings.setValue("port", m_port->text());
 	m_settings.setValue("dbname", m_databasename->text());

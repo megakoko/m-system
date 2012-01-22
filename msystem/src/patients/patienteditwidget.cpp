@@ -375,8 +375,8 @@ void PatientEditWidget::save()
 		q.prepare(" INSERT INTO Patient "
 				  " ( familyName,  name,  patronymic,  birthDay,  sexid) VALUES "
 				  " (:familyName, :name, :patronymic, :birthDay, "
-						" (SELECT id FROM Sex WHERE textid = :settextid)) "
-				  " RETURNING id ");
+						" (SELECT id FROM Sex WHERE textid = :settextid)) " +
+				  Patients::interfaces->db->returningSentence("id"));
 	}
 	else
 	{
@@ -405,8 +405,8 @@ void PatientEditWidget::save()
 	q.exec();
 	checkQuery(q);
 
-	if(m_patientId == InvalidId && q.first())
-		m_patientId = q.value(0).toInt();
+	if(m_patientId == InvalidId)
+		m_patientId = Patients::interfaces->db->lastInsertedId(&q).toInt();
 
 
 	m_mailingAddress.save(m_patientId);

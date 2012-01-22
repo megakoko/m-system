@@ -160,14 +160,15 @@ bool UserEditWidget::canSave(QString& errorDescription) const
 
 void UserEditWidget::save()
 {
-	QSqlQuery query;
+	QSqlQuery query("BEGIN");
 	if(m_password->text().simplified().isEmpty())
 	{
 		if(m_userId == InvalidId)
 		{
 			query.prepare(" INSERT INTO MUser "
 						  " ( login,  is_admin) VALUES "
-						  " (:login, :is_admin) RETURNING id ");
+						  " (:login, :is_admin) " +
+						  Administrator::interfaces->db->returningSentence("id"));
 		}
 		else
 		{
@@ -184,8 +185,8 @@ void UserEditWidget::save()
 		{
 			query.prepare(" INSERT INTO MUser "
 						  " ( login,  password,  salt,  is_admin) VALUES "
-						  " (:login, :password, :salt, :is_admin) "
-						  " RETURNING id");
+						  " (:login, :password, :salt, :is_admin) " +
+						  Administrator::interfaces->db->returningSentence("id"));
 		}
 		else
 		{
@@ -212,10 +213,9 @@ void UserEditWidget::save()
 
 
 	if(m_userId == InvalidId)
-	{
-		query.first();
-		m_userId = query.value(0).toInt();
-	}
+		m_userId = Administrator::interfaces->db->lastInsertedId(&query).toInt();
+
+	Q_ASSERT(m_userId != InvalidId);
 
 
 	const QSet<QString>& textidsBefore = databaseTextids();
@@ -225,28 +225,35 @@ void UserEditWidget::save()
 	const QSet<QString>& add = QSet<QString>(textidsAfter).subtract(textidsBefore);
 
 
-	query.prepare(" DELETE FROM UserPluginAccess "
-				  " WHERE userid = :userid "
-				  " AND pluginid = (SELECT id FROM Plugin WHERE textid = :textid) ");
-	foreach(const QString& textid, remove)
+	if (!remove.isEmpty())
 	{
-		query.bindValue(":userid", m_userId);
-		query.bindValue(":textid", textid);
-		query.exec();
-		checkQuery(query);
+		query.prepare(" DELETE FROM UserPluginAccess "
+					  " WHERE userid = :userid "
+					  " AND pluginid = (SELECT id FROM Plugin WHERE textid = :textid) ");
+		foreach(const QString& textid, remove)
+		{
+			query.bindValue(":userid", m_userId);
+			query.bindValue(":textid", textid);
+			query.exec();
+			checkQuery(query);
+		}
 	}
 
-	query.prepare(" INSERT INTO UserPluginAccess (userid, pluginid) "
-				  " VALUES (:userid, (SELECT id FROM Plugin WHERE textid = :textid) )");
-	foreach(const QString& textid, add)
+	if (!add.isEmpty())
 	{
-		query.bindValue(":userid", m_userId);
-		query.bindValue(":textid", textid);
-		query.exec();
-		checkQuery(query);
+		query.prepare(" INSERT INTO UserPluginAccess (userid, pluginid) "
+					  " VALUES (:userid, (SELECT id FROM Plugin WHERE textid = :textid) )");
+		foreach(const QString& textid, add)
+		{
+			query.bindValue(":userid", m_userId);
+			query.bindValue(":textid", textid);
+			query.exec();
+			checkQuery(query);
+		}
 	}
 
 	emit saved();
+	query.exec("COMMIT");
 }
 
 
@@ -311,7 +318,7 @@ bool UserEditWidget::userIsAdmin(int userid)
 
 int UserEditWidget::numberOfAdminUsers()
 {
-	QSqlQuery q("SELECT COUNT(*) FROM MUser WHERE is_admin = TRUE");
+	QSqlQuery q("SELECT COUNT(*) FROM MUser WHERE is_admin = 'true'");
 	checkQuery(q);
 
 	int result = 0;

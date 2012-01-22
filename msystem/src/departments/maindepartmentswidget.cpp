@@ -10,19 +10,17 @@
 #include <QMessageBox>
 
 #include "macros.h"
+#include "departments.h"
 #include "healthfacilityeditdialog.h"
 #include "positionseditdialog.h"
 #include "staffeditwidget.h"
 #include "departmenteditwidget.h"
 
 
-const QString staffQuery = QString::fromUtf8(
-	" SELECT id, familyName || ' ' || "
-		" substring(name, 1, 1) || '. ' || "
-		" substring(patronymic, 1, 1) || '.' || "
-		" COALESCE (' (' || specialization || ')', '') "
+const QString staffQuery =
+	" SELECT id, familyName || ' ' || name || ' ' || patronymic "
 	" FROM Staff"
-	" ORDER BY id");
+	" ORDER BY id";
 
 const QString departmentQuery = QString::fromUtf8(
 	" SELECT id, name AS \"Имя отделения\""

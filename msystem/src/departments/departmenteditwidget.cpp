@@ -92,8 +92,7 @@ void DepartmentEditWidget::init()
 void DepartmentEditWidget::initComboboxes()
 {
 	QSqlQuery q;
-	q.exec(" SELECT id, familyName || ' ' || substring(name, 1, 1) || '. ' "
-		   " || substring(patronymic, 1, 1) || '.' AS Имя "
+	q.exec(" SELECT id, familyName || ' ' || name || ' ' || patronymic AS Имя "
 		   " FROM Staff");
 	checkQuery(q);
 	while(q.next())
@@ -139,8 +138,8 @@ void DepartmentEditWidget::save()
 	{
 		q.prepare(" INSERT INTO Department "
 				  " ( name,  shortName,  typeid,  headOfDepartmentId) VALUES "
-				  " (:name, :shortName, :typeid, :headOfDepartmentId) "
-				  " RETURNING id ");
+				  " (:name, :shortName, :typeid, :headOfDepartmentId) " +
+				  Departments::interfaces->db->returningSentence("id"));
 	}
 	else
 	{
@@ -159,6 +158,13 @@ void DepartmentEditWidget::save()
 				m_headOfDepartment->itemData(m_headOfDepartment->currentIndex()));
 	q.exec();
 	checkQuery(q);
+
+
+	if(m_departmentId == InvalidId)
+		m_departmentId = Departments::interfaces->db->lastInsertedId(&q).toInt();
+
+	Q_ASSERT(m_departmentId != InvalidId);
+
 
 	foreach(const StaffPosition& sp, m_staffPosition)
 		sp.save();
