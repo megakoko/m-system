@@ -167,9 +167,9 @@ void DepartmentEditWidget::save()
 
 
 	foreach(const StaffPosition& sp, m_staffPosition)
-		sp.save();
+		sp.save(m_departmentId);
 	foreach(const StaffPosition& sp, m_staffPositionMarkedForDeletion)
-		sp.save();
+		sp.save(m_departmentId);
 
 	emit saved();
 }
@@ -192,7 +192,7 @@ void DepartmentEditWidget::staffPositionSelectionChanged()
 
 void DepartmentEditWidget::addStaffPosition()
 {
-	StaffPositionEditDialog d(StaffPosition(m_departmentId), this);
+	StaffPositionEditDialog d(StaffPosition(), this);
 	if(d.exec() == QDialog::Accepted)
 	{
 		m_staffPosition << d.currentStaffPosition();

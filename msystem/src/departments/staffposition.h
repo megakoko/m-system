@@ -9,19 +9,18 @@ class StaffPosition
 {
 	friend class StaffPositionEditDialog;
 public:
-	StaffPosition(const int departmentId);
+	StaffPosition();
 	StaffPosition(const QSqlRecord& rec);
 
 	void markForDeletion();
 
-	void save() const;
+	void save(const int departmentId) const;
 
 	QString toString() const;
 
 private:
 	int m_id;
 
-	int m_departmentId;
 	int m_staffId;
 	int m_positionId;
 

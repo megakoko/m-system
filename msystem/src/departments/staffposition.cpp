@@ -11,9 +11,8 @@
 #include "macros.h"
 
 
-StaffPosition::StaffPosition(const int departmentId = -1)
+StaffPosition::StaffPosition()
 	: m_id(-1)
-	, m_departmentId(departmentId)
 	, m_staffId(-1)
 	, m_positionId(-1)
 	, m_markedForDeletion(false)
@@ -23,7 +22,6 @@ StaffPosition::StaffPosition(const int departmentId = -1)
 
 StaffPosition::StaffPosition(const QSqlRecord &rec)
 	: m_id(rec.value("id").toInt())
-	, m_departmentId(rec.value("departmentId").toInt())
 	, m_staffId(rec.value("staffId").toInt())
 	, m_positionId(rec.value("positionId").toInt())
 	, m_markedForDeletion(false)
@@ -70,7 +68,7 @@ QString StaffPosition::toString() const
 }
 
 
-void StaffPosition::save() const
+void StaffPosition::save(const int departmentId) const
 {
 	QSqlQuery q;
 
@@ -102,7 +100,7 @@ void StaffPosition::save() const
 					  " VALUES(:departmentId, :staffId, :positionId)");
 		}
 
-		q.bindValue(":departmentId", m_departmentId);
+		q.bindValue(":departmentId", departmentId);
 		q.bindValue(":staffId", m_staffId);
 		q.bindValue(":positionId", m_positionId);
 

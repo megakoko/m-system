@@ -78,6 +78,7 @@ void HealthFacilityEditDialog::init()
 		m_inn->setText(rec.value("inn").toString().trimmed());
 		m_kpp->setText(rec.value("kpp").toString().trimmed());
 		m_okonh->setText(rec.value("okonh").toString().trimmed());
+		m_okato->setText(rec.value("okato").toString().trimmed());
 		m_okpo->setText(rec.value("okpo").toString().trimmed());
 		m_ogrn->setText(rec.value("ogrn").toString().trimmed());
 	}

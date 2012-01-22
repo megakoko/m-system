@@ -216,7 +216,7 @@ bool MainDepartmentsWidget::selectedStaffCount() const
 
 int MainDepartmentsWidget::selectedStaffId() const
 {
-	int id = -1;
+	int id = StaffEditWidget::InvalidId;
 
 	if(selectedStaffCount() == 1)
 		id = m_staffModel->record(m_staffTable->currentIndex().row()).value(0).toInt();
@@ -301,7 +301,7 @@ bool MainDepartmentsWidget::selectedDepartmentCount() const
 
 int MainDepartmentsWidget::selectedDepartmentId() const
 {
-	int id = -1;
+	int id = DepartmentEditWidget::InvalidId;
 
 	if(selectedDepartmentCount() == 1)
 		id = m_departmentModel->record(m_departmentTable->currentIndex().row()).value(0).toInt();
