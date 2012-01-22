@@ -27,6 +27,9 @@ private:
 
 	static const int NO_USER_ID;
 
+	static QString convertToSqliteSyntax(const QString& postgresqlSyntax);
+	static void executeSqlFile(const QString& filename);
+
 	int m_userId;
 
 	QSettings m_settings;

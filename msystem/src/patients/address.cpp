@@ -6,6 +6,9 @@
 #include <QVariant>
 #include <QStringList>
 #include <QDebug>
+
+
+#include "patients.h"
 #include "macros.h"
 
 
@@ -79,8 +82,8 @@ void Address::save(const int patientId) const
 					  " VALUES "
 					  " (:patientId, "
 						" (SELECT id FROM AddressType WHERE textid = :textid), "
-						" :city, :street, :house, :apartment) "
-					  " RETURNING id ");
+						" :city, :street, :house, :apartment) " +
+					  Patients::interfaces->db->returningSentence("id"));
 			q.bindValue(":patientId", patientId);
 			q.bindValue(":textid", m_adressTypeTextid);
 		}
@@ -96,10 +99,7 @@ void Address::save(const int patientId) const
 
 		// обновляем ID.
 		if(m_id <= 0)
-		{
-			q.first();
-			m_id = q.value(0).toInt();
-		}
+			m_id = Patients::interfaces->db->lastInsertedId(&q).toInt();
 	}
 }
 

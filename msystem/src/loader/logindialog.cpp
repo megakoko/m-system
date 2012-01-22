@@ -12,6 +12,7 @@
 #include <QProgressDialog>
 
 #include "mainwindow.h"
+#include "database.h"
 #include "macros.h"
 
 
@@ -38,8 +39,18 @@ LoginDialog::LoginDialog(QWidget *parent)
 	m_buttonLayout->addWidget(resetDatabaseButton);
 #endif
 
-	if(connectToDatabase() && !databaseIsInitialized())
-		initializeDatabase();
+	if(connectToDatabase())
+	{
+		if(!databaseIsInitialized())
+			initializeDatabase();
+	}
+	else
+	{
+		showMessage("Подключение к базе не было установлено. \n"
+					"Проверьте настройки соединения.");
+		m_ok->setEnabled(false);
+	}
+
 }
 
 
@@ -68,32 +79,41 @@ int LoginDialog::loggedUserId() const
 
 bool LoginDialog::connectToDatabase()
 {
-	QSqlDatabase db =	QSqlDatabase::contains() ?
-						QSqlDatabase::database() :
-						QSqlDatabase::addDatabase("QPSQL");
+	if(QSqlDatabase::contains())
+	{
+		QSqlDatabase db = QSqlDatabase::database();
 
-	if(db.isOpen())
 		db.close();
+		QSqlDatabase::removeDatabase(db.connectionName());
+	}
+
+
+	const QString& dbdriver = QSettings().value("dbdriver").toString();
+
+	QSqlDatabase db = QSqlDatabase::addDatabase(dbdriver);
 
 	db.setHostName(m_settings.value("hostname").toString());
 	db.setPort(m_settings.value("port").toInt());
 	db.setDatabaseName(m_settings.value("dbname").toString());
 
+	const bool opened = db.open(
+		m_settings.value("login").toString(),
+		MainWindow::interfaces->enc->decode(m_settings.value("password").toString()));
 
-	return db.open(m_settings.value("login").toString(), MainWindow::interfaces->enc->
-				   decode(m_settings.value("password").toString()));
+	if(opened)
+		Database::setSqlDriver(dbdriver);
+	else
+	{
+		Database::setSqlDriver(QString::null);
+		QSqlDatabase::removeDatabase(db.connectionName());
+	}
+
+	return opened;
 }
 
 
 void LoginDialog::tryToLogin()
 {
-	if(connectToDatabase() == false)
-	{
-		showMessage(QString::fromUtf8("Подключение к базе не было установлено"));
-		return;
-	}
-
-
 	const QString& hash = MainWindow::interfaces->enc->
 						  password(m_password->text(), salt(m_login->text()));
 
@@ -151,47 +171,77 @@ bool LoginDialog::databaseIsInitialized() const
 
 void LoginDialog::initializeDatabase()
 {
-	const QString& title = QString::fromUtf8("Настройка базы данных");
-	const QString& msg =
-			QString::fromUtf8("Пожалуйста, подождите. "
-							  "Выполняется настройка базы данных");
-	QProgressDialog d(title, msg, 0, 2, this);
-	d.setWindowModality(Qt::WindowModal);
+	const int progressStart = 0;
+	const int numberOfactions = 3;
 
+
+	QProgressDialog d("Настройка базы данных",
+					  "Пожалуйста, подождите. Выполняется настройка базы данных",
+					  progressStart, progressStart + numberOfactions, this);
+	d.setWindowModality(Qt::WindowModal);
 	d.setCancelButton(NULL);
 	d.show();
 
 
-	int progress = 0;
+	int progress = progressStart;
+
+	d.setValue(++progress);
+	executeSqlFile(":/dbinit.sql");
+	d.setValue(++progress);
+	executeSqlFile(":/mkb10.sql");
+	d.setValue(++progress);
+
+	Q_ASSERT(progress == (progressStart + numberOfactions));
+}
 
 
-	QFile file;
+void LoginDialog::executeSqlFile(const QString &filename)
+{
+	QFile file(filename);
 	QTextStream ts(&file);
 	ts.setCodec("UTF-8");
 	QSqlQuery query;
 
 
-	file.setFileName(":/dbinit.sql");
 	if(!file.open(QIODevice::ReadOnly))
+		qWarning() << "Cannot open file" << filename;
+	else
 	{
-		qWarning() << "Cant open dbinit.sql file";
-		return;
+		// SQLite не переваривает несколько запросов при работе с ним через библиотеку.
+		// Через консоль -- пожалуйста, а так -- нет. Поэтому весь файл разделяется на
+		// отдельные SQL-команды точкой с запятой ";".ы
+		QStringList statements;
+		switch (MainWindow::interfaces->db->currentSqlDriver())
+		{
+		case DatabaseInterface::SQLITE:
+			statements = convertToSqliteSyntax(ts.readAll()).split(";");
+			break;
+		case DatabaseInterface::PSQL:
+			statements = QStringList(ts.readAll());
+			break;
+		default:
+			qFatal("Unknown db driver");
+		}
+
+		query.exec("BEGIN");
+		foreach(const QString& statement, statements)
+		{
+			if(!statement.simplified().isEmpty())
+			{
+				query.exec(statement);
+				checkQuery(query);
+			}
+		}
+		query.exec("COMMIT");
 	}
-	query.exec(ts.readAll());
-	checkQuery(query);
-
-	d.setValue(++progress);
+}
 
 
-	file.close();
-	file.setFileName(":/mkb10.sql");
-	if(!file.open(QIODevice::ReadOnly))
-	{
-		qWarning() << "Cant open mkb10.sql file";
-		return;
-	}
-	query.exec(ts.readAll());
-	checkQuery(query);
+QString LoginDialog::convertToSqliteSyntax(const QString &postgresqlSyntax)
+{
+	QString result(postgresqlSyntax);
+	result = result.replace(QRegExp("SERIAL PRIMARY KEY", Qt::CaseInsensitive),
+									"INTEGER PRIMARY KEY AUTOINCREMENT");
 
-	d.setValue(++progress);
+	return result;
 }

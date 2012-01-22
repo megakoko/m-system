@@ -18,7 +18,7 @@ public:
 	void save();
 
 private:
-	const int m_departmentId;
+	int m_departmentId;
 
 	QList<StaffPosition> m_staffPosition;
 	QList<StaffPosition> m_staffPositionMarkedForDeletion;
