@@ -42,6 +42,8 @@ void MainAdminWidget::initConnections()
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(userSelectionChanged()));
 
+	connect(m_view, SIGNAL(doubleClicked(QModelIndex)), SLOT(editUser()));
+
 	connect(m_createUser, SIGNAL(clicked()), SLOT(createUser()));
 	connect(m_editUser, SIGNAL(clicked()), SLOT(editUser()));
 	connect(m_deleteUser, SIGNAL(clicked()), SLOT(deleteUser()));

@@ -52,6 +52,8 @@ void MainPatientsWidget::initConnections()
 	connect(m_editPatient, SIGNAL(clicked()), SLOT(editPatient()));
 	connect(m_deletePatient, SIGNAL(clicked()), SLOT(deletePatient()));
 
+	connect(m_view, SIGNAL(doubleClicked(QModelIndex)), SLOT(editPatient()));
+
 	connect(m_view->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(selectionChanged()));

@@ -70,6 +70,8 @@ void MainDepartmentsWidget::initConnections()
 
 	connect(m_editPositions, SIGNAL(clicked()), SLOT(editPositions()));
 
+
+	connect(m_staffTable, SIGNAL(doubleClicked(QModelIndex)), SLOT(editStaff()));
 	connect(m_staffTable->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(staffSelectionChanged()));
@@ -78,6 +80,8 @@ void MainDepartmentsWidget::initConnections()
 	connect(m_deleteStaff, SIGNAL(clicked()), SLOT(deleteStaff()));
 
 
+	connect(m_departmentTable, SIGNAL(doubleClicked(QModelIndex)),
+			SLOT(editDepartment()));
 	connect(m_departmentTable->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(departmentSelectionChanged()));
