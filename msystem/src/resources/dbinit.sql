@@ -61,9 +61,9 @@ CREATE TABLE Sex (
 -- Пациенты.
 CREATE TABLE Patient (
 	id 					SERIAL PRIMARY KEY,
-	familyName 			VARCHAR (40) NOT NULL,
-	name 				VARCHAR (40) NOT NULL,
-	patronymic 			VARCHAR (40) NOT NULL,
+	familyName 			VARCHAR NOT NULL, -- TODO
+	name 				VARCHAR NOT NULL,
+	patronymic 			VARCHAR NOT NULL,
 	birthDay			TIMESTAMP NOT NULL,
 	sexId				INTEGER REFERENCES Sex(id)
 );

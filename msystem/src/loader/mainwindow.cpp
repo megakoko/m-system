@@ -15,12 +15,12 @@
 #include "aboutdialog.h"
 #include "plugininterface.h"
 #include "macros.h"
-#include "encoding.h"
+#include "cryptopp/wrapper.h"
 #include "database.h"
 
 
 QList<QPluginLoader*> MainWindow::m_plugins = QList<QPluginLoader*>();
-InterfacesPtr MainWindow::interfaces = InterfacesPtr(new Interfaces(new Encoding,
+InterfacesPtr MainWindow::interfaces = InterfacesPtr(new Interfaces(new CryptoppWrapper,
 																	new Database));
 
 

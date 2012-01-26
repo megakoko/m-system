@@ -330,23 +330,7 @@ bool PatientEditWidget::canSave(QString &errorDescription) const
 	{
 		errorDescription = QString::fromUtf8("Имя пациента не заполнено");
 		return false;
-	}
-	else if(!Patients::interfaces->enc->canUseEncoding(m_familyName->text()))
-	{
-		errorDescription = "Фамилия содержит недопустимые символы";
-		return false;
-	}
-	else if(!Patients::interfaces->enc->canUseEncoding(m_name->text()))
-	{
-		errorDescription = "Имя содержит недопустимые символы";
-		return false;
-	}
-	else if(!Patients::interfaces->enc->canUseEncoding(m_patronymic->text()))
-	{
-		errorDescription = "Отчество содержит недопустимые символы";
-		return false;
-	}
-	else if(m_mailingAddress.isNull())
+	}else if(m_mailingAddress.isNull())
 	{
 		errorDescription = QString::fromUtf8("Адрес прописки не заполнен");
 		return false;
