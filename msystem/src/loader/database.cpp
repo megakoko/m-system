@@ -38,6 +38,12 @@ int Database::fieldMaximumLength(const QString &table, const QString &field) con
 		break;
 	case SQLITE:
 		{
+			/*
+				В поле sql таблицы sqlite_master хранятся определения таблиц
+				(для type='table'), то есть SQL-команда CREATE TABLE, из которой затем
+				с помощью регулярного выражения будет "выдернуто" определение колонки
+				нужной таблицы.
+			*/
 			q.prepare(" SELECT sql FROM sqlite_master "
 					  " WHERE type = 'table' AND name like :table ");
 			q.bindValue(":table", table);
@@ -46,8 +52,14 @@ int Database::fieldMaximumLength(const QString &table, const QString &field) con
 
 			if(q.first())
 			{
-				QRegExp rx(field + "\\s+(var)?char ?\\((\\d+)\\)", Qt::CaseInsensitive);
-				if(rx.indexIn(q.value(0).toString()) && rx.captureCount() >= 1)
+				/*
+					Пробельный символ, затем имя поля, затем несколько пробельных символов,
+					затем "varchar" или "char", затем пробел, затем открывающая скобка "(",
+					затем несколько цифр, затем закрывающая скобка ")".
+				*/
+				QRegExp rx("\\s" + field + "\\s+(?:var)?char\\s?\\((\\d+)\\)",
+						   Qt::CaseInsensitive);
+				if(rx.indexIn(q.value(0).toString()) > -1 && rx.captureCount() > 0)
 					length = rx.cap(rx.captureCount()).toInt();
 			}
 		}

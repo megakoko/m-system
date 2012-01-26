@@ -2,8 +2,17 @@ QT			+=	core gui sql
 TARGET		 =	loader
 TEMPLATE	 =	app
 
+LIBS		=  -lcryptopp -L../../bin/
+
 
 include( ../m-system-config.pri )
+INCLUDEPATH	+=	../
+
+
+# Передаем линковщику опцию -R.
+unix {
+	QMAKE_CXXFLAGS += -Wl,-R../../bin/
+}
 
 
 SOURCES		+=	main.cpp\
