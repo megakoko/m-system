@@ -1,17 +1,17 @@
 #pragma once
 
-#include "ui_mainadminwidget.h"
+#include "ui_mainuserswidget.h"
 #include "pluginwidget.h"
 
 
 class QSqlQueryModel;
 
-class MainAdminWidget : public PluginWidget, private Ui::MainAdminWidget
+class MainUsersWidget : public PluginWidget, private Ui::MainUsersWidget
 {
 	Q_OBJECT
 
 public:
-	explicit MainAdminWidget(QWidget *parent = 0);
+	explicit MainUsersWidget(QWidget *parent = 0);
 
 private:
 	void init();

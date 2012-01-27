@@ -1,4 +1,4 @@
-#include "mainadminwidget.h"
+#include "mainuserswidget.h"
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 #include <QSqlQuery>
@@ -15,7 +15,7 @@ static const QString userListQuery =
 		QString::fromUtf8("SELECT id, login AS Логин FROM MUser ORDER BY id");
 
 
-MainAdminWidget::MainAdminWidget(QWidget *parent) :
+MainUsersWidget::MainUsersWidget(QWidget *parent) :
 	PluginWidget(parent)
 {
 	setupUi(this);
@@ -25,7 +25,7 @@ MainAdminWidget::MainAdminWidget(QWidget *parent) :
 }
 
 
-void MainAdminWidget::init()
+void MainUsersWidget::init()
 {
 	m_model = new QSqlQueryModel(this);
 	updateUserList();
@@ -36,7 +36,7 @@ void MainAdminWidget::init()
 }
 
 
-void MainAdminWidget::initConnections()
+void MainUsersWidget::initConnections()
 {
 	connect(m_view->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
@@ -50,7 +50,7 @@ void MainAdminWidget::initConnections()
 }
 
 
-void MainAdminWidget::updateUserList()
+void MainUsersWidget::updateUserList()
 {
 	m_model->setQuery(userListQuery);
 	checkQuery(m_model->query());
@@ -58,14 +58,14 @@ void MainAdminWidget::updateUserList()
 
 
 
-bool MainAdminWidget::singleUserSelected() const
+bool MainUsersWidget::singleUserSelected() const
 {
 	return	m_view->selectionModel()->hasSelection() &&
 			m_view->selectionModel()->selectedRows(0).count() == 1;
 }
 
 
-int MainAdminWidget::selectedUserId() const
+int MainUsersWidget::selectedUserId() const
 {
 	int id = -1;
 	if (singleUserSelected())
@@ -75,7 +75,7 @@ int MainAdminWidget::selectedUserId() const
 }
 
 
-QString MainAdminWidget::selectedUserName() const
+QString MainUsersWidget::selectedUserName() const
 {
 	QString result;
 	if (singleUserSelected())
@@ -85,7 +85,7 @@ QString MainAdminWidget::selectedUserName() const
 }
 
 
-void MainAdminWidget::userSelectionChanged()
+void MainUsersWidget::userSelectionChanged()
 {
 	const bool singleUser = singleUserSelected();
 
@@ -94,7 +94,7 @@ void MainAdminWidget::userSelectionChanged()
 }
 
 
-void MainAdminWidget::createUser()
+void MainUsersWidget::createUser()
 {
 	UserEditWidget* widget = new UserEditWidget(SaveablePluginWidget::InvalidId, this);
 	connect(widget, SIGNAL(saved()), SLOT(updateUserList()));
@@ -102,7 +102,7 @@ void MainAdminWidget::createUser()
 }
 
 
-void MainAdminWidget::editUser()
+void MainUsersWidget::editUser()
 {
 	const int userid = selectedUserId();
 	Q_ASSERT(userid >= 0);
@@ -113,7 +113,7 @@ void MainAdminWidget::editUser()
 }
 
 
-void MainAdminWidget::deleteUser()
+void MainUsersWidget::deleteUser()
 {
 	const int userid = selectedUserId();
 	Q_ASSERT(userid >= 0);

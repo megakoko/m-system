@@ -3,7 +3,7 @@ TEMPLATE = subdirs
 
 SUBDIRS	+= 	cryptopp \
 			loader \
-			administrator \
+			users \
 			patients \
 			mkb10 \
 			departments \
