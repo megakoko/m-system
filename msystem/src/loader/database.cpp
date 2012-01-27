@@ -15,8 +15,12 @@ DatabaseInterface::SqlDriver Database::m_currentDriver = DatabaseInterface::Unkn
 bool Database::m_currentDriverValueWasInitialized = false;
 
 
-int Database::fieldMaximumLength(const QString &table, const QString &field) const
+int Database::fieldMaximumLength(QString table, QString field) const
 {
+	table = table.toLower();
+	field = field.toLower();
+
+
 	int length = -1;
 
 	QSqlQuery q;
@@ -27,8 +31,8 @@ int Database::fieldMaximumLength(const QString &table, const QString &field) con
 			q.prepare(" SELECT character_maximum_length "
 					  " FROM information_schema.columns "
 					  " WHERE table_name = :table AND column_name = :field ");
-			q.bindValue(":table", table.toLower());
-			q.bindValue(":field", field.toLower());
+			q.bindValue(":table", table);
+			q.bindValue(":field", field);
 			q.exec();
 			checkQuery(q);
 
@@ -69,6 +73,19 @@ int Database::fieldMaximumLength(const QString &table, const QString &field) con
 	}
 
 
+	if(fieldIsCiphered(table, field))
+	{
+		/*
+		408 -- это максимальный размер зашифрованной строки из ста (100) UTF-8 символов.
+		Если поле хранит зашифрованную строку, то оно должно иметь такую длину.
+		*/
+		static const int lengthOf100LengthCipheredString = 408;
+		Q_ASSERT(length == lengthOf100LengthCipheredString);
+
+		length = 100;
+	}
+
+
 	return length;
 }
 
@@ -101,6 +118,29 @@ bool Database::fieldIsNullable(const QString &table, const QString &field) const
 	}
 
 	return isNullable;
+}
+
+
+QMap<QString, QStringList> Database::initializeCipheredTablesMap() const
+{
+	// key -- название таблицы;
+	// value -- QStringList из названий зашифрованных полей в таблице.
+	QMap<QString, QStringList> map;
+
+	map.insert("patient", QStringList() << "familyname" << "name" << "patronymic");
+	map.insert("document", QStringList() << "serialnumber" << "givenby");
+	map.insert("address", QStringList() << "city" << "street" << "house" << "apartment");
+
+	return map;
+}
+
+
+bool Database::fieldIsCiphered(const QString& table, const QString& field) const
+{
+	static const QMap<QString, QStringList> cipheredTables = initializeCipheredTablesMap();
+
+	return	cipheredTables.contains(table) &&
+			cipheredTables.value(table).contains(field);
 }
 
 
