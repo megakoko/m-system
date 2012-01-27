@@ -176,6 +176,7 @@ void PatientEditWidget::initConnections()
 
 	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
 
+	connect(m_documentTable, SIGNAL(doubleClicked(QModelIndex)), SLOT(editDocument()));
 	connect(m_documentTable->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(documentSelectionChanged()));
