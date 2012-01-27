@@ -18,3 +18,8 @@ HEADERS		+=	../common/macros.h \
 				../common/pluginwidget.h \
 				../common/plugininterface.h \
 				../common/saveablepluginwidget.h
+
+# Интерфейсы:
+HEADERS		+=	$${BASEPATH}/src/common/interfaces/interfaces.h \
+				$${BASEPATH}/src/common/interfaces/databaseinterface.h \
+				$${BASEPATH}/src/common/interfaces/encodinginterface.h

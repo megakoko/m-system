@@ -61,9 +61,9 @@ CREATE TABLE Sex (
 -- Пациенты.
 CREATE TABLE Patient (
 	id 					SERIAL PRIMARY KEY,
-	familyName 			VARCHAR NOT NULL, -- TODO
-	name 				VARCHAR NOT NULL,
-	patronymic 			VARCHAR NOT NULL,
+	familyName 			VARCHAR (408) NOT NULL,
+	name 				VARCHAR (408) NOT NULL,
+	patronymic 			VARCHAR (408) NOT NULL,
 	birthDay			TIMESTAMP NOT NULL,
 	sexId				INTEGER REFERENCES Sex(id)
 );
@@ -80,9 +80,9 @@ CREATE TABLE Document (
 	id 					SERIAL PRIMARY KEY,
 	documentTypeId 		INTEGER REFERENCES DocumentType (id),
 	patientId 			INTEGER REFERENCES Patient (id),
-	serialNumber 		VARCHAR (30) NOT NULL,
+	serialNumber 		VARCHAR (408) NOT NULL,
 	date 				TIMESTAMP NOT NULL,
-	givenBy 			VARCHAR (100) NOT NULL
+	givenBy 			VARCHAR (408) NOT NULL
 );
 
 
@@ -98,10 +98,10 @@ CREATE TABLE Address (
 	id 					SERIAL PRIMARY KEY,
 	patientId 			INTEGER REFERENCES Patient (id),
 	typeId				INTEGER REFERENCES AddressType (id),
-	city 				VARCHAR (40) NOT NULL,
-	street 				VARCHAR (100) NOT NULL,
-	house 				VARCHAR (30) NOT NULL,
-	apartment 			VARCHAR (30)
+	city 				VARCHAR (408) NOT NULL,
+	street 				VARCHAR (408) NOT NULL,
+	house 				VARCHAR (408) NOT NULL,
+	apartment 			VARCHAR (408)
 );
 
 

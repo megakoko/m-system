@@ -2,12 +2,13 @@
 
 #include "databaseinterface.h"
 #include <QString>
+#include <QMap>
 
 
 class Database : public DatabaseInterface
 {
 public:
-	int fieldMaximumLength(const QString& table, const QString& field) const;
+	int fieldMaximumLength(QString table, QString field) const;
 	bool fieldIsNullable(const QString &table, const QString &field) const;
 
 	SqlDriver currentSqlDriver() const;
@@ -18,6 +19,11 @@ public:
 
 
 private:
+	/// Возвращает true, если поле хранит зашифрованные значения.
+	bool fieldIsCiphered(const QString& table, const QString& field) const;
+
+	QMap<QString, QStringList> initializeCipheredTablesMap() const;
+
 	/// Возвращает элемент перечисления SqlDriver, соответствующий имени драйвера
 	/// \a driverName.
 	static SqlDriver sqlDriver(const QString& driverName);

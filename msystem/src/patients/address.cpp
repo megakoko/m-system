@@ -22,10 +22,10 @@ Address::Address(const QString& type)
 
 
 Address::Address(const QSqlRecord &rec)
-	: city(rec.value("city").toString())
-	, street(rec.value("street").toString())
-	, house(rec.value("house").toString())
-	, apartment(rec.value("apartment").toString())
+	: city(Patients::interfaces->enc->decode(rec.value("city").toString()))
+	, street(Patients::interfaces->enc->decode(rec.value("street").toString()))
+	, house(Patients::interfaces->enc->decode(rec.value("house").toString()))
+	, apartment(Patients::interfaces->enc->decode(rec.value("apartment").toString()))
 	, m_adressTypeTextid(rec.value("textid").toBool())
 	, m_id(rec.value("id").toInt())
 {
@@ -88,10 +88,10 @@ void Address::save(const int patientId) const
 			q.bindValue(":textid", m_adressTypeTextid);
 		}
 
-		q.bindValue(":city", nullIfEmpty(city));
-		q.bindValue(":street", nullIfEmpty(street));
-		q.bindValue(":house", nullIfEmpty(house));
-		q.bindValue(":apartment", nullIfEmpty(apartment));
+		q.bindValue(":city", nullIfEmpty(Patients::interfaces->enc->encode(city)));
+		q.bindValue(":street", nullIfEmpty(Patients::interfaces->enc->encode(street)));
+		q.bindValue(":house", nullIfEmpty(Patients::interfaces->enc->encode(house)));
+		q.bindValue(":apartment", nullIfEmpty(Patients::interfaces->enc->encode(apartment)));
 
 		q.exec();
 		checkQuery(q);
