@@ -7,4 +7,5 @@ SUBDIRS	+= 	loader \
 			patients \
 			mkb10 \
 			departments \
+			dummy_db \
 #			test

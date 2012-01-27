@@ -7,10 +7,10 @@ CONFIG( plugin ) {
 ROOTPATH = ../../
 
 DESTDIR		=	$${ROOTPATH}/bin/$${PLUGINDIR}
-OBJECTS_DIR =	$${ROOTPATH}/bin/objects
-MOC_DIR		=	$${ROOTPATH}/bin/moc
-UI_DIR		=	$${ROOTPATH}/bin/ui
-RCC_DIR		=	$${ROOTPATH}/bin/rcc
+OBJECTS_DIR =	$${ROOTPATH}/bin/objects/$${TARGET}
+MOC_DIR		=	$${ROOTPATH}/bin/moc/$${TARGET}
+UI_DIR		=	$${ROOTPATH}/bin/ui/$${TARGET}
+RCC_DIR		=	$${ROOTPATH}/bin/rcc/$${TARGET}
 
 INCLUDEPATH	+=	$${ROOTPATH}/src/common \
 				$${ROOTPATH}/src/common/interfaces
