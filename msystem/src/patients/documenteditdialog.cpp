@@ -27,7 +27,7 @@ DocumentEditDialog::DocumentEditDialog(const Document& doc, QWidget *parent)
 	m_documentType->setCurrentIndex(m_documentType->findData(doc.documentTypeId));
 
 	if(doc.givenBy.isNull() && doc.serialNumber.isNull() && doc.date.isNull())
-		setWindowTitle("Добавление адреса");
+		setWindowTitle("Добавление документа");
 	else
 	{
 		m_serialNumber->setText(doc.serialNumber);

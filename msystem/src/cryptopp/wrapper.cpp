@@ -1,17 +1,16 @@
 #include "wrapper.h"
 
-
 #include <QDateTime>
 #include <QCryptographicHash>
 #include <QDebug>
 
-#include "cryptlib.h"
 #include "modes.h"
 #include "aes.h"
 #include "base64.h"
-#include "filters.h"
 
 
+
+// Ключ длинной в 16 байт. Сгенерирован случайно.
 byte key[CryptoPP::AES::DEFAULT_KEYLENGTH] = {
 	0x23, 0x22, 0xD4, 0xA3,
 	0x37, 0xE9, 0xD8, 0xB9,
@@ -19,6 +18,8 @@ byte key[CryptoPP::AES::DEFAULT_KEYLENGTH] = {
 	0x4A, 0x54, 0x93, 0x7A
 };
 
+
+// Вектор инициализации длинной в 16 байт. Сгенерирован случайно.
 byte iv[CryptoPP::AES::BLOCKSIZE] = {
 	0xCA, 0x7E, 0x86, 0x38,
 	0xA4, 0x45, 0xDD, 0xA7,
