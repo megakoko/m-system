@@ -2,16 +2,14 @@ QT			+=	core gui sql
 TARGET		 =	loader
 TEMPLATE	 =	app
 
-LIBS		=  -lcryptopp -L../../bin/
-
-
 include( ../m-system-config.pri )
-INCLUDEPATH	+=	../
 
+LIBS		=  -lcryptopp -L$${ROOTPATH}/bin/
+INCLUDEPATH	+=	$${ROOTPATH}/src/
 
-# Передаем линковщику опцию -R.
+# Передаем линковщику опцию -R$${ROOTPATH}/bin/
 unix {
-	QMAKE_CXXFLAGS += -Wl,-R../../bin/
+	QMAKE_CXXFLAGS += -Wl,-R$${ROOTPATH}/bin/
 }
 
 
@@ -24,7 +22,7 @@ SOURCES		+=	main.cpp\
 				homepage.cpp \
 				aboutdialog.cpp \
 				encoding.cpp \
-    database.cpp
+				database.cpp
 
 HEADERS		+=	mainwindow.h \
 				logindialog.h \
@@ -35,11 +33,11 @@ HEADERS		+=	mainwindow.h \
 				homepage.h \
 				aboutdialog.h \
 				encoding.h \
-    database.h
+				database.h
 
 FORMS		+=	mainwindow.ui \
 				logindialog.ui \
 				settingsdialog.ui \
 				databasesettingspage.ui
 
-RESOURCES	+= ../resources/resources.qrc
+RESOURCES	+=	$${ROOTPATH}/src/resources/resources.qrc
