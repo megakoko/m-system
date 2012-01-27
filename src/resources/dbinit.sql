@@ -187,7 +187,7 @@ INSERT INTO MUser(login, password, salt, is_admin) VALUES
 
 
 -- При добавлении модуля надо добавлять сюда строку с его textid и названием.
-INSERT INTO Plugin(textid, name) VALUES ('admin', 'Администратор');
+INSERT INTO Plugin(textid, name) VALUES ('users', 'Пользователи системы');
 INSERT INTO Plugin(textid, name) VALUES ('patients', 'Пациенты');
 INSERT INTO Plugin(textid, name) VALUES ('mkb10', 'Справочная система МКБ-10');
 INSERT INTO Plugin(textid, name) VALUES ('departments', 'Медицинское учреждение');

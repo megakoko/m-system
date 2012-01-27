@@ -7,7 +7,7 @@
 #include <QDateTime>
 #include <QDebug>
 
-#include "administrator.h"
+#include "users.h"
 #include "macros.h"
 
 
@@ -26,10 +26,10 @@ UserEditWidget::UserEditWidget(const int userId, QWidget *parent)
 
 void UserEditWidget::init()
 {
-	m_login->setMaxLength(Administrator::interfaces->
+	m_login->setMaxLength(Users::interfaces->
 						  db->fieldMaximumLength("MUser", "login"));
 
-	const int pwLength = Administrator::interfaces->
+	const int pwLength = Users::interfaces->
 						 db->fieldMaximumLength("MUser", "password");
 	m_password->setMaxLength(pwLength);
 	m_password2->setMaxLength(pwLength);
@@ -168,7 +168,7 @@ void UserEditWidget::save()
 			query.prepare(" INSERT INTO MUser "
 						  " ( login,  is_admin) VALUES "
 						  " (:login, :is_admin) " +
-						  Administrator::interfaces->db->returningSentence("id"));
+						  Users::interfaces->db->returningSentence("id"));
 		}
 		else
 		{
@@ -186,7 +186,7 @@ void UserEditWidget::save()
 			query.prepare(" INSERT INTO MUser "
 						  " ( login,  password,  salt,  is_admin) VALUES "
 						  " (:login, :password, :salt, :is_admin) " +
-						  Administrator::interfaces->db->returningSentence("id"));
+						  Users::interfaces->db->returningSentence("id"));
 		}
 		else
 		{
@@ -199,8 +199,8 @@ void UserEditWidget::save()
 			query.bindValue(":userid", m_userId);
 		}
 
-		const QString& salt = Administrator::interfaces->enc->salt(15);
-		const QString& pw	= Administrator::interfaces->
+		const QString& salt = Users::interfaces->enc->salt(15);
+		const QString& pw	= Users::interfaces->
 							  enc->password(m_password->text(), salt);
 
 		query.bindValue(":password", pw);
@@ -213,7 +213,7 @@ void UserEditWidget::save()
 
 
 	if(m_userId == InvalidId)
-		m_userId = Administrator::interfaces->db->lastInsertedId(&query).toInt();
+		m_userId = Users::interfaces->db->lastInsertedId(&query).toInt();
 
 	Q_ASSERT(m_userId != InvalidId);
 
