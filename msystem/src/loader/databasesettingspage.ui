@@ -19,67 +19,67 @@
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="m_databaseType"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="m_databaseTypeLabel">
        <property name="text">
-        <string>Имя хоста</string>
+        <string>СУБД</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="m_databasename"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="m_databasenameLabel">
+       <property name="text">
+        <string>Имя БД</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
       <widget class="QLineEdit" name="m_hostname"/>
      </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="m_port"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="m_login"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="m_hostnameLabel">
+       <property name="text">
+        <string>Имя хоста</string>
+       </property>
+      </widget>
+     </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="m_portLabel">
        <property name="text">
         <string>Порт</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="m_port"/>
-     </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Имя БД</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="m_databasename"/>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="m_loginLabel">
        <property name="text">
         <string>Имя пользователя БД</string>
        </property>
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QLineEdit" name="m_login"/>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Пароль пользователя БД</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
       <widget class="QLineEdit" name="m_password">
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="m_databaseType"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_6">
+     <item row="5" column="0">
+      <widget class="QLabel" name="m_passwordLabel">
        <property name="text">
-        <string>Тип базы данных</string>
+        <string>Пароль пользователя БД</string>
        </property>
       </widget>
      </item>
