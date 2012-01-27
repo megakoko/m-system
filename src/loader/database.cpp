@@ -81,6 +81,7 @@ int Database::fieldMaximumLength(QString table, QString field) const
 		*/
 		static const int lengthOf100LengthCipheredString = 408;
 		Q_ASSERT(length == lengthOf100LengthCipheredString);
+		Q_UNUSED(lengthOf100LengthCipheredString);
 
 		length = 100;
 	}

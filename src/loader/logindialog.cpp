@@ -49,7 +49,9 @@ LoginDialog::LoginDialog(QWidget *parent)
 		showMessage("Подключение к базе не было установлено. \n"
 					"Проверьте настройки соединения.");
 		m_ok->setEnabled(false);
+#ifndef QT_NO_DEBUG
 		resetDatabaseButton->setEnabled(false);
+#endif
 	}
 
 }
