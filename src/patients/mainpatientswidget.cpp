@@ -7,11 +7,14 @@
 #include <QSqlQueryModel>
 #include <QMessageBox>
 #include <QDebug>
+#include <QSortFilterProxyModel>
 
 #include "macros.h"
 #include "patients.h"
 #include "patienteditwidget.h"
+
 #include "decodedpatientlistquery.h"
+#include "sortfilterproxymodel.h"
 
 
 MainPatientsWidget::MainPatientsWidget(QWidget *parent)
@@ -26,18 +29,23 @@ MainPatientsWidget::MainPatientsWidget(QWidget *parent)
 
 void MainPatientsWidget::init()
 {
-	m_model = new QSqlQueryModel(this);
-	updatePatientsList();
+	m_queryModel = new QSqlQueryModel(this);
 
 	DecodedPatientListQuery* proxy = new DecodedPatientListQuery(this);
 	proxy->addColumnToDecode(1);
 	proxy->addColumnToDecode(2);
 	proxy->addColumnToDecode(3);
-	proxy->setModel(m_model);
+	proxy->setModel(m_queryModel);
 
+	m_sortModel = new SortFilterProxyModel(this);
+	m_sortModel->setSourceModel(proxy);
+	m_sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+	m_sortModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+	m_sortModel->setFilterKeyColumn(1);
 
+	updatePatientsList();
 
-	m_view->setModel(proxy);
+	m_view->setModel(m_sortModel);
 	m_view->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 	m_view->setColumnHidden(0, true);
 
@@ -74,11 +82,8 @@ QString MainPatientsWidget::patientListQuery() const
 								" SELECT id, familyName, name, patronymic, "
 								" strftime('%d.%m.%Y', birthday) ";
 	static const QString from  =" FROM Patient ";
-	static const QString where =" WHERE familyName LIKE '%1%' ";
 	static const QString order =" ORDER BY familyName, name, patronymic ";
 
-
-	const QString& filter = m_searchline->text().simplified().remove('\'');
 
 	QString query;
 
@@ -94,10 +99,7 @@ QString MainPatientsWidget::patientListQuery() const
 		qFatal("Unknown sql driver");
 	}
 
-	query += from;
-	if(!filter.isEmpty())
-		query += where.arg(Patients::interfaces->enc->encode(filter));
-	query += order;
+	query += from + order;
 
 	return query;
 }
@@ -105,8 +107,11 @@ QString MainPatientsWidget::patientListQuery() const
 
 void MainPatientsWidget::updatePatientsList()
 {
-	m_model->setQuery(patientListQuery());
-	checkQuery(m_model->query());
+	m_queryModel->setQuery(patientListQuery());
+	m_sortModel->setFilterWildcard(m_searchline->text());
+	m_sortModel->sort(1);	// Колонка с фамилией.
+
+	checkQuery(m_queryModel->query());
 }
 
 
@@ -117,7 +122,7 @@ void MainPatientsWidget::addPatient()
 	// То, что пользователь ввел в строку, разделенное пробельными символами.
 	// Содержит возможное имя будущего пациента.
 	QStringList patientName;
-	if(!searchText.isEmpty() && m_model->rowCount() == 0)
+	if(!searchText.isEmpty() && m_queryModel->rowCount() == 0)
 		patientName = searchText.split(QRegExp("\\s+"));
 
 
@@ -215,7 +220,10 @@ int MainPatientsWidget::selectedPatientId() const
 	int id = -1;
 
 	if(onePatientSelected())
-		id = m_model->record(m_view->currentIndex().row()).value(0).toInt();
+	{
+		const int row = m_sortModel->mapToSource(m_view->currentIndex()).row();
+		id = m_queryModel->record(row).value(0).toInt();
+	}
 
 	return id;
 }

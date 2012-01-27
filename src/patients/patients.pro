@@ -12,7 +12,8 @@ HEADERS +=	patients.h \
 			addressdialog.h \
 			document.h \
 			documenteditdialog.h \
-			decodedpatientlistquery.h
+			decodedpatientlistquery.h \
+			sortfilterproxymodel.h
 
 SOURCES +=	patients.cpp \
 			mainpatientswidget.cpp \
@@ -21,7 +22,8 @@ SOURCES +=	patients.cpp \
 			addressdialog.cpp \
 			document.cpp \
 			documenteditdialog.cpp \
-			decodedpatientlistquery.cpp
+			decodedpatientlistquery.cpp \
+			sortfilterproxymodel.cpp
 
 FORMS += 	mainpatientswidget.ui \
 			patienteditwidget.ui \
