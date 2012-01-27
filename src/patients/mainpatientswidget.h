@@ -5,6 +5,7 @@
 
 
 class QSqlQueryModel;
+class QSortFilterProxyModel;
 
 class MainPatientsWidget : public PluginWidget, private Ui::PatientsWidget
 {
@@ -22,7 +23,9 @@ private:
 	bool onePatientSelected() const;
 	int selectedPatientId() const;
 
-	QSqlQueryModel* m_model;
+	QSqlQueryModel* m_queryModel;
+	QSortFilterProxyModel* m_sortModel;
+
 
 private slots:
 	void updatePatientsList();
