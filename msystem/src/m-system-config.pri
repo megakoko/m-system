@@ -4,22 +4,23 @@ CONFIG( plugin ) {
 	PLUGINDIR = "plugins"
 }
 
-BASEPATH = ../../
+ROOTPATH = ../../
 
-DESTDIR		=	$${BASEPATH}/bin/$${PLUGINDIR}
-OBJECTS_DIR =	$${BASEPATH}/bin/objects
-MOC_DIR		=	$${BASEPATH}/bin/moc
-UI_DIR		=	$${BASEPATH}/bin/ui
-RCC_DIR		=	$${BASEPATH}/bin/rcc
+DESTDIR		=	$${ROOTPATH}/bin/$${PLUGINDIR}
+OBJECTS_DIR =	$${ROOTPATH}/bin/objects
+MOC_DIR		=	$${ROOTPATH}/bin/moc
+UI_DIR		=	$${ROOTPATH}/bin/ui
+RCC_DIR		=	$${ROOTPATH}/bin/rcc
 
-INCLUDEPATH	+=	../common ../common/interfaces
+INCLUDEPATH	+=	$${ROOTPATH}/src/common \
+				$${ROOTPATH}/src/common/interfaces
 
-HEADERS		+=	../common/macros.h \
-				../common/pluginwidget.h \
-				../common/plugininterface.h \
-				../common/saveablepluginwidget.h
+HEADERS		+=	$${ROOTPATH}/src/common/macros.h \
+				$${ROOTPATH}/src/common/pluginwidget.h \
+				$${ROOTPATH}/src/common/plugininterface.h \
+				$${ROOTPATH}/src/common/saveablepluginwidget.h
 
 # Интерфейсы:
-HEADERS		+=	$${BASEPATH}/src/common/interfaces/interfaces.h \
-				$${BASEPATH}/src/common/interfaces/databaseinterface.h \
-				$${BASEPATH}/src/common/interfaces/encodinginterface.h
+HEADERS		+=	$${ROOTPATH}/src/common/interfaces/interfaces.h \
+				$${ROOTPATH}/src/common/interfaces/databaseinterface.h \
+				$${ROOTPATH}/src/common/interfaces/encodinginterface.h
