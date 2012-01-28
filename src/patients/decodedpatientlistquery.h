@@ -5,7 +5,6 @@
 
 class DecodedPatientListQuery : public QProxyModel
 {
-	Q_OBJECT
 public:
 	explicit DecodedPatientListQuery(QObject *parent = 0);
 
