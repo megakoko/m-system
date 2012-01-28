@@ -86,6 +86,7 @@ bool MainWindow::tryToOpen(QFile &f) const
 void MainWindow::readFile(QFile &f, QStringList &stringList)
 {
 	QTextStream input(&f);
+	input.setCodec("UTF-8");
 
 	QString line;
 	forever
