@@ -9,7 +9,6 @@
 
 class AbstractSettingsPage : public QWidget
 {
-	Q_OBJECT
 public:
 	AbstractSettingsPage(QWidget* parent)
 		: QWidget(parent)
