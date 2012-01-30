@@ -42,6 +42,11 @@ void UserEditWidget::init()
 	{
 		const QString& textid = query.value(0).toString();
 
+#ifdef QT_NO_DEBUG
+		if(textid == "test")
+			continue;
+#endif
+
 		QCheckBox* checkbox = new QCheckBox(query.value(1).toString(), this);
 		m_checkboxToTextid[checkbox] = textid;
 		m_textidToCheckbox[textid] = checkbox;

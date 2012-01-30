@@ -4,7 +4,7 @@ CONFIG( plugin ) {
 	PLUGINDIR = "plugins"
 }
 
-ROOTPATH = ../../
+ROOTPATH = ../..
 
 DESTDIR		=	$${ROOTPATH}/bin/$${PLUGINDIR}
 OBJECTS_DIR =	$${ROOTPATH}/bin/objects/$${TARGET}
