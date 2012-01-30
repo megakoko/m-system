@@ -8,4 +8,5 @@ SUBDIRS	+= 	cryptopp \
 			mkb10 \
 			departments \
 			dummy_db \
+			therapeutist
 #			test
