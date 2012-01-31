@@ -13,6 +13,7 @@
 
 DatabaseInterface::SqlDriver Database::m_currentDriver = DatabaseInterface::Unknown;
 bool Database::m_currentDriverValueWasInitialized = false;
+int Database::m_currentUserId = DatabaseInterface::InvalidId;
 
 
 int Database::fieldMaximumLength(QString table, QString field) const
@@ -91,34 +92,15 @@ int Database::fieldMaximumLength(QString table, QString field) const
 }
 
 
-bool Database::fieldIsNullable(const QString &table, const QString &field) const
+int Database::currentUserId() const
 {
-	bool isNullable = false;
+	return m_currentUserId;
+}
 
-	QSqlQuery q;
-	switch (currentSqlDriver())
-	{
-	case PSQL:
-		{
-			q.prepare(" SELECT CAST(is_nullable AS BOOL) "
-					  " FROM information_schema.columns "
-					  " WHERE table_name = :table AND column_name = :field");
-			q.bindValue(":table", table);
-			q.bindValue(":field", field);
-			q.exec();
-			checkQuery(q);
 
-			if(q.first() && !q.value(0).isNull())
-				isNullable = q.value(0).toBool();
-		}
-		break;
-	case SQLITE:
-		break;
-	default:
-		qFatal("Unhandled sql driver");
-	}
-
-	return isNullable;
+void Database::setCurrentUserId(const int id)
+{
+	m_currentUserId = id;
 }
 
 

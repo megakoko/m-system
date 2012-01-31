@@ -18,6 +18,7 @@ public:
 	~Interfaces()
 	{
 		delete enc;
+		delete db;
 	}
 
 	/// Шифрование.

@@ -16,9 +16,6 @@
 #include "macros.h"
 
 
-const int LoginDialog::NO_USER_ID = -1;
-
-
 LoginDialog::LoginDialog(QWidget *parent)
 	: QDialog(parent)
 {
@@ -135,11 +132,12 @@ void LoginDialog::tryToLogin()
 	}
 	else
 	{
-		m_userId = NO_USER_ID;
+		m_userId = Database::InvalidId;
 		showMessage(QString::fromUtf8("Неправильная пара логин/пароль"));
 		m_ok->setDisabled(true);
 		QTimer::singleShot(1000, this, SLOT(enableOkButton()));
 	}
+	Database::setCurrentUserId(m_userId);
 }
 
 
