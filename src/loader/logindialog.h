@@ -25,8 +25,6 @@ private:
 	/// \returns	true после удачного соединения, в противном случае false.
 	bool connectToDatabase();
 
-	static const int NO_USER_ID;
-
 	static QString convertToSqliteSyntax(const QString& postgresqlSyntax);
 	static void executeSqlFile(const QString& filename);
 
