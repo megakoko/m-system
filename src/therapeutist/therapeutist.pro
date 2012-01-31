@@ -7,9 +7,12 @@ include( ../m-system-config.pri )
 
 
 SOURCES +=	therapeutist.cpp \
-			maintherapeutistwidget.cpp
+			maintherapeutistwidget.cpp \
+			examinationeditwidget.cpp
 
 HEADERS +=	therapeutist.h \
-			maintherapeutistwidget.h
+			maintherapeutistwidget.h \
+			examinationeditwidget.h
 
-FORMS += maintherapeutistwidget.ui
+FORMS += maintherapeutistwidget.ui \
+			examinationeditwidget.ui

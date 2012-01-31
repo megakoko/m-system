@@ -10,4 +10,17 @@ class MainTherapeutistWidget : public PluginWidget, private Ui::MainTherapeutist
 public:
 	explicit MainTherapeutistWidget(QWidget* parent = 0);
 
+private:
+	void init();
+	void initConnections();
+
+	int selectedExamId() const;
+
+private slots:
+	void examSelectionChanged();
+
+	void addExam();
+	void editExam();
+	void deleteExam();
+
 };
