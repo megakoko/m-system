@@ -55,9 +55,19 @@ void UserEditWidget::init()
 	}
 
 
+	// Работники.
+	query.exec(" SELECT id, familyName || ' ' ||  name || ' ' || patronymic "
+			   " FROM Staff "
+			   " ORDER BY familyName, name, patronymic ");
+	m_staffName->addItem("Не связан с работником");
+	while(query.next())
+		m_staffName->addItem(query.value(1).toString(), query.value(0));
+
+
+
 	if(m_userId != InvalidId)
 	{
-		query.prepare(" SELECT login, is_admin "
+		query.prepare(" SELECT login, is_admin, attachedStaffId "
 					  " FROM MUser "
 					  " WHERE id = :userid ");
 		query.bindValue(":userid", m_userId);
@@ -70,6 +80,10 @@ void UserEditWidget::init()
 		const bool isAdmin = query.value(1).toBool();
 
 		m_isAdmin->setChecked(isAdmin);
+
+		const QVariant& attachedStaffId = query.value(2);
+		if(!attachedStaffId.isNull())
+			m_staffName->setCurrentIndex(m_staffName->findData(attachedStaffId));
 
 
 		if(!isAdmin)
@@ -171,15 +185,16 @@ void UserEditWidget::save()
 		if(m_userId == InvalidId)
 		{
 			query.prepare(" INSERT INTO MUser "
-						  " ( login,  is_admin) VALUES "
-						  " (:login, :is_admin) " +
+						  " ( login,  is_admin,  attachedStaffId) VALUES "
+						  " (:login, :is_admin, :attachedStaffId) " +
 						  Users::interfaces->db->returningSentence("id"));
 		}
 		else
 		{
 			query.prepare(" UPDATE MUser SET "
 						  " login = :login, "
-						  " is_admin = :is_admin "
+						  " is_admin = :is_admin, "
+						  " attachedStaffId = :attachedStaffId "
 						  " WHERE id = :userid ");
 			query.bindValue(":userid", m_userId);
 		}
@@ -189,8 +204,8 @@ void UserEditWidget::save()
 		if(m_userId == InvalidId)
 		{
 			query.prepare(" INSERT INTO MUser "
-						  " ( login,  password,  salt,  is_admin) VALUES "
-						  " (:login, :password, :salt, :is_admin) " +
+						  " ( login,  password,  salt,  is_admin,  attachedStaffId) "
+				   " VALUES (:login, :password, :salt, :is_admin, :attachedStaffId) " +
 						  Users::interfaces->db->returningSentence("id"));
 		}
 		else
@@ -199,7 +214,8 @@ void UserEditWidget::save()
 						  " login = :login, "
 						  " password = :password, "
 						  " salt = :salt, "
-						  " is_admin = :is_admin "
+						  " is_admin = :is_admin, "
+						  " attachedStaffId = :attachedStaffId"
 						  " WHERE id = :userid ");
 			query.bindValue(":userid", m_userId);
 		}
@@ -213,6 +229,8 @@ void UserEditWidget::save()
 	}
 	query.bindValue(":login", m_login->text());
 	query.bindValue(":is_admin", m_isAdmin->isChecked());
+	query.bindValue(":attachedStaffId",
+					m_staffName->itemData(m_staffName->currentIndex()));
 	query.exec();
 	checkQuery(query);
 

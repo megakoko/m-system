@@ -4,6 +4,10 @@
 -- Порядок должен быть строго обратным порядку, 
 -- в котором таблицы создаются.
 
+DROP TABLE IF EXISTS Examination;
+DROP TABLE IF EXISTS UserPluginAccess;
+DROP TABLE IF EXISTS Plugin;
+DROP TABLE IF EXISTS MUser;
 DROP TABLE IF EXISTS DepartmentStaffPosition;
 DROP TABLE IF EXISTS Position;
 DROP TABLE IF EXISTS Department;
@@ -17,38 +21,11 @@ DROP TABLE IF EXISTS Document;
 DROP TABLE IF EXISTS DocumentType;
 DROP TABLE IF EXISTS Patient;
 DROP TABLE IF EXISTS Sex;
-DROP TABLE IF EXISTS UserPluginAccess;
-DROP TABLE IF EXISTS Plugin;
-DROP TABLE IF EXISTS MUser;
 
 
 
 ---------------------------------------------------------------------
 ----------------------- Создание табьиц -----------------------------
-
--- Таблица с пользователями.
-CREATE TABLE MUser (
-	id 					SERIAL PRIMARY KEY,
-	login 				VARCHAR (20) NOT NULL,
-	password 			VARCHAR (32),	-- Достаточно для MD5.
-	salt 				VARCHAR (20),
-	is_admin 			BOOL NOT NULL DEFAULT 'false'
-);
-
--- Таблица, содержащая информацию о модулях.
-CREATE TABLE Plugin (
-	id 					SERIAL PRIMARY KEY,
-	textid 				VARCHAR (30) NOT NULL UNIQUE,
-	name 				VARCHAR (100) NOT NULL
-);
-
--- Таблица, определяющая доступ пользователей к модулям.
-CREATE TABLE UserPluginAccess (
-	id 					SERIAL PRIMARY KEY,
-	userid 				INTEGER REFERENCES MUser (id),
-	pluginid 			INTEGER REFERENCES Plugin (id)
-);
-
 
 -- Пол пациентов.
 CREATE TABLE Sex (
@@ -175,6 +152,42 @@ CREATE TABLE DepartmentStaffPosition (
 	departmentId		INTEGER REFERENCES Department(id),
 	staffId				INTEGER REFERENCES Staff(id),
 	positionId			INTEGER REFERENCES Position(id)
+);
+
+
+-- Таблица с пользователями.
+CREATE TABLE MUser (
+	id 					SERIAL PRIMARY KEY,
+	login 				VARCHAR (20) NOT NULL,
+	password 			VARCHAR (32),	-- Достаточно для MD5.
+	salt 				VARCHAR (20),
+	is_admin 			BOOL NOT NULL DEFAULT 'false',
+	-- Связанный с пользователем работник.
+	attachedStaffId		INTEGER REFERENCES Staff(id)
+);
+
+-- Таблица, содержащая информацию о модулях.
+CREATE TABLE Plugin (
+	id 					SERIAL PRIMARY KEY,
+	textid 				VARCHAR (30) NOT NULL UNIQUE,
+	name 				VARCHAR (100) NOT NULL
+);
+
+-- Таблица, определяющая доступ пользователей к модулям.
+CREATE TABLE UserPluginAccess (
+	id 					SERIAL PRIMARY KEY,
+	userid 				INTEGER REFERENCES MUser (id),
+	pluginid 			INTEGER REFERENCES Plugin (id)
+);
+
+
+-- Таблица с осмотрами пациента.
+CREATE TABLE Examination (
+	id					SERIAL PRIMARY KEY,
+	patientId			INTEGER REFERENCES Patient(id),
+	examinedByStaffId	INTEGER REFERENCES Staff(id),
+	examinationDate		TIMESTAMP NOT NULL
+
 );
 
 

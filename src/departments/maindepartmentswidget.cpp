@@ -161,7 +161,8 @@ void MainDepartmentsWidget::deleteStaff()
 	{
 		const QString& title = "Удаление работника";
 		const QString& descr = "Вы действительно хотите удалить работника? "
-							   "Будет удалена вся информация о нем.";
+							   "Будет удалена вся информация о нем, включая "
+							   "проведенные им осмотры пациентов.";
 
 		const int rc = QMessageBox::question(this, title, descr,
 											 QMessageBox::Yes | QMessageBox::No,
@@ -172,6 +173,18 @@ void MainDepartmentsWidget::deleteStaff()
 			QSqlQuery q;
 			q.prepare(" DELETE FROM DepartmentStaffPosition "
 					  " WHERE staffId = ? ");
+			q.addBindValue(id);
+			q.exec();
+			checkQuery(q);
+
+			q.prepare(" DELETE FROM Examination "
+					  " WHERE examinedByStaffId = ?");
+			q.addBindValue(id);
+			q.exec();
+			checkQuery(q);
+
+			q.prepare(" UPDATE MUser SET attachedStaffId = NULL "
+					  " WHERE attachedStaffId = ?");
 			q.addBindValue(id);
 			q.exec();
 			checkQuery(q);
