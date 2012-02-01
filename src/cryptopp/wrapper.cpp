@@ -6,25 +6,42 @@
 
 #include "modes.h"
 #include "aes.h"
+#include "gost.h"
 #include "base64.h"
 
 
 
-// Ключ длинной в 16 байт. Сгенерирован случайно.
-byte key[CryptoPP::AES::DEFAULT_KEYLENGTH] = {
+// Для использования того или иного шифра надо раскомментировать define один из них.
+//#define CIPHER AES
+#define CIPHER GOST
+
+
+/*
+	Далее следуют два массива, необходимые для работы алгоритмов. Эти массивы
+	сгенерированы случайно с помощью скрипта src/resources/randomhexarray.py. Для работы
+	скрипта нужен Python, длину массива надо передавать в качестве параметра скрипта.
+*/
+
+
+// Ключ шифра. Длина для ГОСТа -- 32 байта, для AES -- 16 байт.
+byte key[CryptoPP::CIPHER::DEFAULT_KEYLENGTH] = {
 	0x23, 0x22, 0xD4, 0xA3,
 	0x37, 0xE9, 0xD8, 0xB9,
 	0xB5, 0xEC, 0xFF, 0x17,
-	0x4A, 0x54, 0x93, 0x7A
+	0x4A, 0x54, 0x93, 0x7A,
+	0xDF, 0xE2, 0x09, 0x57,
+	0x6B, 0x0A, 0x0D, 0xAB,
+	0x7E, 0x54, 0x96, 0xDC,
+	0x38, 0x91, 0xA0, 0x17
 };
 
 
-// Вектор инициализации длинной в 16 байт. Сгенерирован случайно.
-byte iv[CryptoPP::AES::BLOCKSIZE] = {
+// Вектор инициализации. Длина для ГОСТа - 8 байт, для AES -- 16 байт.
+byte iv[CryptoPP::CIPHER::BLOCKSIZE] = {
 	0xCA, 0x7E, 0x86, 0x38,
-	0xA4, 0x45, 0xDD, 0xA7,
+	0xA4, 0x45, 0xDD, 0xA7/*,
 	0x50, 0x17, 0xBA, 0x41,
-	0x5D, 0xAE, 0x36, 0xBD
+	0x5D, 0xAE, 0x36, 0xBD*/
 };
 
 
@@ -34,19 +51,23 @@ QString CryptoppWrapper::encode(const QString& plainText) const
 	try
 	{
 		const QByteArray& inputArray(plainText.toUtf8());
-		std::string cipher;
+		std::string cipherText;
 
 
-		CryptoPP::AES::Encryption aesEncryption(key, CryptoPP::AES::DEFAULT_KEYLENGTH);
-		CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption( aesEncryption, iv );
+		CryptoPP::CIPHER::Encryption encryption(key, CryptoPP::CIPHER::DEFAULT_KEYLENGTH);
+		CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption(encryption, iv);
 
 
-		CryptoPP::StreamTransformationFilter stfEncryptor(cbcEncryption, new CryptoPP::StringSink( cipher ) );
-		stfEncryptor.Put(reinterpret_cast<const byte*>(inputArray.data()), inputArray.length() + 1 );
+		CryptoPP::StringSink* sink = new CryptoPP::StringSink(cipherText);
+		CryptoPP::StreamTransformationFilter stfEncryptor(cbcEncryption, sink);
+
+
+		const byte* bytes = reinterpret_cast<const byte*>(inputArray.data());
+		stfEncryptor.Put(bytes, inputArray.length() + 1);
 		stfEncryptor.MessageEnd();
 
 
-		result = QByteArray(cipher.c_str(), cipher.length()).toBase64();
+		result = QByteArray(cipherText.c_str(), cipherText.length()).toBase64();
 	}
 	catch(const CryptoPP::Exception& e)
 	{
@@ -66,12 +87,16 @@ QString CryptoppWrapper::decode(const QString& cipherText) const
 		std::string outputBytes;
 
 
-		CryptoPP::AES::Decryption aesDecryption(key, CryptoPP::AES::DEFAULT_KEYLENGTH);
-		CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption( aesDecryption, iv );
+		CryptoPP::CIPHER::Decryption decryption(key, CryptoPP::CIPHER::DEFAULT_KEYLENGTH);
+		CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(decryption, iv);
 
 
-		CryptoPP::StreamTransformationFilter stfDecryptor(cbcDecryption, new CryptoPP::StringSink( outputBytes ) );
-		stfDecryptor.Put(reinterpret_cast<byte*>(cipherByteArray.data()), cipherByteArray.length());
+		CryptoPP::StringSink* sink = new CryptoPP::StringSink(outputBytes);
+		CryptoPP::StreamTransformationFilter stfDecryptor(cbcDecryption, sink);
+
+
+		byte* bytes = reinterpret_cast<byte*>(cipherByteArray.data());
+		stfDecryptor.Put(bytes, cipherByteArray.length());
 		stfDecryptor.MessageEnd();
 
 
