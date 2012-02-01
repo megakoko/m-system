@@ -4,6 +4,10 @@
 -- Порядок должен быть строго обратным порядку, 
 -- в котором таблицы создаются.
 
+DROP TABLE IF EXISTS ExaminationUiElementItem;
+DROP TABLE IF EXISTS UiElementEnums;
+DROP TABLE IF EXISTS UiElement;
+DROP TABLE IF EXISTS UiElementType;
 DROP TABLE IF EXISTS Examination;
 DROP TABLE IF EXISTS UserPluginAccess;
 DROP TABLE IF EXISTS Plugin;
@@ -188,6 +192,37 @@ CREATE TABLE Examination (
 	examinedByStaffId	INTEGER REFERENCES Staff(id),
 	examinationDate		TIMESTAMP NOT NULL
 
+);
+
+-- Таблица с типами элементов интерфейса первичного осмотра.
+CREATE TABLE UiElementType (
+	textId				VARCHAR(40) PRIMARY KEY
+);
+
+-- Таблица с элементами интерфейса первичного осмотра.
+CREATE TABLE UiElement (
+	id					SERIAL PRIMARY KEY,
+	textId				VARCHAR(40) NOT NULL UNIQUE,
+	parentId			INTEGER REFERENCES UiElement(id),
+	availableForSexId	INTEGER REFERENCES Sex(id),			-- Пол, для которого доступен элемент.
+	typeId				VARCHAR(40) REFERENCES UiElementType(textid),
+	label				VARCHAR(100)
+);
+
+-- Таблица с элементами различных списков (ComboBox, например).
+CREATE TABLE UiElementEnums (
+	id					SERIAL PRIMARY KEY,
+	uiElementTextId		VARCHAR(40) REFERENCES UiElement(textid),
+	value				VARCHAR(100) NOT NULL
+);
+
+-- Таблица, в которой хранятся введенные в форме первичного осмотра значения.
+CREATE TABLE ExaminationUiElementItem (
+	examinationId		INTEGER REFERENCES Examination(id),
+	uiElementId			INTEGER REFERENCES UiElement(id),
+	textValue			VARCHAR(100),
+	integerValue		INTEGER,
+	enumValue			INTEGER REFERENCES UiElementEnums(id)
 );
 
 

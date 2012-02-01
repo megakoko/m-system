@@ -224,6 +224,9 @@ void LoginDialog::executeSqlFile(const QString &filename)
 			qFatal("Unknown db driver");
 		}
 
+		if(MainWindow::interfaces->db->currentSqlDriver() == DatabaseInterface::PSQL)
+			query.exec("SET client_min_messages = WARNING");
+
 		query.exec("BEGIN");
 		foreach(const QString& statement, statements)
 		{
