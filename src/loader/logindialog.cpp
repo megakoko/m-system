@@ -173,12 +173,12 @@ bool LoginDialog::databaseIsInitialized() const
 void LoginDialog::initializeDatabase()
 {
 	const int progressStart = 0;
-	const int numberOfactions = 3;
+	const int numberOfActions = 3;
 
 
 	QProgressDialog d("Настройка базы данных",
 					  "Пожалуйста, подождите. Выполняется настройка базы данных",
-					  progressStart, progressStart + numberOfactions, this);
+					  progressStart, progressStart + numberOfActions, this);
 	d.setWindowModality(Qt::WindowModal);
 	d.setCancelButton(NULL);
 	d.show();
@@ -186,13 +186,14 @@ void LoginDialog::initializeDatabase()
 
 	int progress = progressStart;
 
-	d.setValue(++progress);
 	executeSqlFile(":/dbinit.sql");
+	d.setValue(++progress);
+	executeSqlFile(":/uielements.sql");
 	d.setValue(++progress);
 	executeSqlFile(":/mkb10.sql");
 	d.setValue(++progress);
 
-	Q_ASSERT(progress == (progressStart + numberOfactions));
+	Q_ASSERT(progress == (progressStart + numberOfActions));
 }
 
 
