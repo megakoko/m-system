@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # Script for generating random 2-byte hex numbers.
 # Required length of the array should be passed as the argument
 # to this script.
@@ -24,4 +22,4 @@ if len(argv) > 1:
 		print '0x' + chr(choice(integers)) + chr(choice(integers)) + ',',
 		if i % 4 == 3:
 			print ''
-			
+
