@@ -4,7 +4,7 @@
 -- Порядок должен быть строго обратным порядку, 
 -- в котором таблицы создаются.
 
-DROP TABLE IF EXISTS ExaminationUiElementItem;
+DROP TABLE IF EXISTS ExaminationData;
 DROP TABLE IF EXISTS UiElementEnums;
 DROP TABLE IF EXISTS UiElement;
 DROP TABLE IF EXISTS UiElementType;
@@ -203,7 +203,7 @@ CREATE TABLE UiElementType (
 CREATE TABLE UiElement (
 	id					SERIAL PRIMARY KEY,
 	textId				VARCHAR(40) NOT NULL UNIQUE,
-	parentId			INTEGER REFERENCES UiElement(id),
+	parentId			VARCHAR(40) REFERENCES UiElement(textId),
 	availableForSexId	INTEGER REFERENCES Sex(id),			-- Пол, для которого доступен элемент.
 	typeId				VARCHAR(40) REFERENCES UiElementType(textid),
 	label				VARCHAR(100)
@@ -217,7 +217,7 @@ CREATE TABLE UiElementEnums (
 );
 
 -- Таблица, в которой хранятся введенные в форме первичного осмотра значения.
-CREATE TABLE ExaminationUiElementItem (
+CREATE TABLE ExaminationData (
 	examinationId		INTEGER REFERENCES Examination(id),
 	uiElementId			INTEGER REFERENCES UiElement(id),
 	textValue			VARCHAR(100),
