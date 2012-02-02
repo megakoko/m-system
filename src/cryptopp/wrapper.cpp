@@ -5,25 +5,49 @@
 #include <QDebug>
 
 #include "modes.h"
-#include "aes.h"
-#include "gost.h"
 #include "base64.h"
 
 
-
-// Для использования того или иного шифра надо раскомментировать define один из них.
-//#define CIPHER AES
-#define CIPHER GOST
+/*
+	Для использования того или иного шифра надо раскомментировать define один из них.
+*/
+//#define CIPHER_AES
+#define CIPHER_GOST
 
 
 /*
 	Далее следуют два массива, необходимые для работы алгоритмов. Эти массивы
 	сгенерированы случайно с помощью скрипта src/resources/randomhexarray.py. Для работы
 	скрипта нужен Python, длину массива надо передавать в качестве параметра скрипта.
+
+	key -- ключ шифра. Длина для ГОСТа -- 32 байта, для AES -- 16 байт.
+	iv -- вектор инициализации. Длина для ГОСТа - 8 байт, для AES -- 16 байт.
 */
 
 
-// Ключ шифра. Длина для ГОСТа -- 32 байта, для AES -- 16 байт.
+#ifdef CIPHER_AES
+#include "aes.h"
+#define CIPHER AES
+byte key[CryptoPP::CIPHER::DEFAULT_KEYLENGTH] = {
+		0x23, 0x22, 0xD4, 0xA3,
+		0x37, 0xE9, 0xD8, 0xB9,
+		0xB5, 0xEC, 0xFF, 0x17,
+		0x4A, 0x54, 0x93, 0x7A
+};
+
+byte iv[CryptoPP::CIPHER::BLOCKSIZE] = {
+		0xCA, 0x7E, 0x86, 0x38,
+		0xA4, 0x45, 0xDD, 0xA7,
+		0x50, 0x17, 0xBA, 0x41,
+		0x5D, 0xAE, 0x36, 0xBD
+};
+#endif
+
+
+#ifdef CIPHER_GOST
+#include "gost.h"
+#define CIPHER GOST
+
 byte key[CryptoPP::CIPHER::DEFAULT_KEYLENGTH] = {
 	0x23, 0x22, 0xD4, 0xA3,
 	0x37, 0xE9, 0xD8, 0xB9,
@@ -35,14 +59,11 @@ byte key[CryptoPP::CIPHER::DEFAULT_KEYLENGTH] = {
 	0x38, 0x91, 0xA0, 0x17
 };
 
-
-// Вектор инициализации. Длина для ГОСТа - 8 байт, для AES -- 16 байт.
 byte iv[CryptoPP::CIPHER::BLOCKSIZE] = {
 	0xCA, 0x7E, 0x86, 0x38,
-	0xA4, 0x45, 0xDD, 0xA7/*,
-	0x50, 0x17, 0xBA, 0x41,
-	0x5D, 0xAE, 0x36, 0xBD*/
+	0xA4, 0x45, 0xDD, 0xA7
 };
+#endif
 
 
 QString CryptoppWrapper::encode(const QString& plainText) const
