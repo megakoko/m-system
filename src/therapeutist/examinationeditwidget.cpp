@@ -33,11 +33,24 @@ void ExaminationEditWidget::init()
 	m_mainContainer = new ExamContainer(ExamWidget::InvalidId, "main", QString::null);
 	m_widgetsLayout->addWidget(m_mainContainer);
 
-	m_examDate->setDateTime(QDateTime::currentDateTime());
 
-	if(m_examinationId != InvalidId)
+	if(m_examinationId == InvalidId)
 	{
-		// TODO.
+		m_examDate->setDateTime(QDateTime::currentDateTime());
+	}
+	else
+	{
+		QSqlQuery q;
+		q.prepare("SELECT patientId, examinationDate FROM Examination WHERE id = ?");
+		q.addBindValue(m_examinationId);
+		q.exec();
+		checkQuery(q);
+
+		const int idIsValid = q.first();
+		Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
+
+		m_patientName->setText(patientName(q.value(0).toInt()));
+		m_examDate->setDateTime(q.value(1).toDateTime());
 	}
 }
 
@@ -98,6 +111,23 @@ void ExaminationEditWidget::save()
 }
 
 
+QString ExaminationEditWidget::patientName(const int patientId)
+{
+	QSqlQuery q;
+	q.prepare("SELECT familyname, name, patronymic FROM Patient WHERE id = ?");
+	q.addBindValue(patientId);
+	q.exec();
+	checkQuery(q);
+
+	QStringList patientName;
+	if(q.first())
+		for(int i = 0; i <= 2; ++i)
+			patientName += Therapeutist::interfaces->enc->decode(q.value(i).toString());
+
+	return patientName.join(" ");
+}
+
+
 void ExaminationEditWidget::choosePatient()
 {
 	PatientPickerDialog d(this);
@@ -105,20 +135,6 @@ void ExaminationEditWidget::choosePatient()
 	{
 		m_patientId = d.selectedPatientId();
 
-		QSqlQuery q;
-		q.prepare("SELECT familyname, name, patronymic FROM Patient WHERE id = ?");
-		q.addBindValue(m_patientId);
-		q.exec();
-		checkQuery(q);
-
-		if(q.first())
-		{
-			QStringList patientName;
-
-			for(int i = 0; i <= 2; ++i)
-				patientName += Therapeutist::interfaces->enc->decode(q.value(i).toString());
-
-			m_patientName->setText(patientName.join(" "));
-		}
+		m_patientName->setText(patientName(m_patientId));
 	}
 }
