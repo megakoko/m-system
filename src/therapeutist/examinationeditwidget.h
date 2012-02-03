@@ -19,6 +19,8 @@ private:
 	void init();
 	void initConnections();
 
+	static QString patientName(const int patientId);
+
 	int m_examinationId;
 	int m_patientId;
 
