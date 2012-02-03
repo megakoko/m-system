@@ -5,24 +5,33 @@ QT		+= sql
 
 include( ../m-system-config.pri )
 
+INCLUDEPATH += $${ROOTPATH}/src
+
 
 SOURCES +=	therapeutist.cpp \
 			maintherapeutistwidget.cpp \
 			examinationeditwidget.cpp \
+			$${ROOTPATH}/src/patients/decodedpatientlistquery.cpp \
+			$${ROOTPATH}/src/patients/sortfilterproxymodel.cpp \
 			examwidget.cpp \
 			examcontainer.cpp \
 			examwidgetfactory.cpp \
 			examcombobox.cpp \
-			examlineedit.cpp
+			examlineedit.cpp \
+			patientpickerdialog.cpp
 
-HEADERS +=	therapeutist.h \
+HEADERS	+=	therapeutist.h \
 			maintherapeutistwidget.h \
 			examinationeditwidget.h \
+			$${ROOTPATH}/src/patients/decodedpatientlistquery.h \
+			$${ROOTPATH}/src/patients/sortfilterproxymodel.h \
 			examwidget.h \
 			examcontainer.h \
 			examwidgetfactory.h \
 			examcombobox.h \
-			examlineedit.h
+			examlineedit.h \
+			patientpickerdialog.h
 
-FORMS += maintherapeutistwidget.ui \
-			examinationeditwidget.ui
+FORMS	+=	maintherapeutistwidget.ui \
+			examinationeditwidget.ui \
+			patientpickerdialog.ui

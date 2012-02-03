@@ -136,7 +136,10 @@ void MainWindow::loadPlugins()
 	foreach (QString strFileName, dir.entryList(QDir::Files)) {
 		QPluginLoader* loader = new QPluginLoader(dir.absoluteFilePath(strFileName), this);
 		if(!processPlugin(loader))
+		{
+			qDebug() << "failed to load" << strFileName;
 			delete loader;
+		}
 	}
 }
 
