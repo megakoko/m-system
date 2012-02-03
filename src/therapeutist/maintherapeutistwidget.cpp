@@ -6,6 +6,9 @@ MainTherapeutistWidget::MainTherapeutistWidget(QWidget* parent)
 	: PluginWidget(parent)
 {
 	setupUi(this);
+
+	init();
+	initConnections();
 }
 
 
@@ -47,6 +50,11 @@ void MainTherapeutistWidget::examSelectionChanged()
 
 void MainTherapeutistWidget::addExam()
 {
+	ExaminationEditWidget* exam =
+			new ExaminationEditWidget(ExaminationEditWidget::InvalidId, this);
+
+	addNewWidget(exam, "TODO");
+
 	// todo
 }
 
