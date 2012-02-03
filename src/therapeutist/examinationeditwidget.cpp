@@ -30,7 +30,7 @@ ExaminationEditWidget::ExaminationEditWidget(const int examinationId, QWidget *p
 
 void ExaminationEditWidget::init()
 {
-	m_mainContainer = new ExamContainer(ExamWidget::InvalidId, "main", QString::null);
+	m_mainContainer = new ExamContainer(m_examinationId, "main", QString::null);
 	m_widgetsLayout->addWidget(m_mainContainer);
 
 
@@ -49,7 +49,8 @@ void ExaminationEditWidget::init()
 		const int idIsValid = q.first();
 		Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
 
-		m_patientName->setText(patientName(q.value(0).toInt()));
+		m_patientId = q.value(0).toInt();
+		m_patientName->setText(patientName(m_patientId));
 		m_examDate->setDateTime(q.value(1).toDateTime());
 	}
 }
@@ -90,7 +91,7 @@ void ExaminationEditWidget::save()
 	{
 		q.prepare(" UPDATE Examination SET "
 				  " patientId = :patientId, "
-				  " examinatinodate = :examinationDate "
+				  " examinationdate = :examinationDate "
 				  " WHERE id = :id ");
 		q.bindValue(":id", m_examinationId);
 	}

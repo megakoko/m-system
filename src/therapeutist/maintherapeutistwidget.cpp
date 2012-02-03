@@ -9,6 +9,8 @@
 #include <QDebug>
 #include "patients/decodedpatientlistquery.h"
 
+#include <QMessageBox>
+
 #include "therapeutist.h"
 #include "macros.h"
 
@@ -56,7 +58,7 @@ void MainTherapeutistWidget::initConnections()
 
 	connect(m_addExam, SIGNAL(clicked()), SLOT(addExam()));
 	connect(m_editExam, SIGNAL(clicked()), SLOT(editExam()));
-	connect(m_deleteExam, SIGNAL(clicked()), SLOT(editExam()));
+	connect(m_deleteExam, SIGNAL(clicked()), SLOT(deleteExam()));
 }
 
 
@@ -131,27 +133,47 @@ void MainTherapeutistWidget::examSelectionChanged()
 
 void MainTherapeutistWidget::addExam()
 {
-	ExaminationEditWidget* exam =
-			new ExaminationEditWidget(ExaminationEditWidget::InvalidId, this);
+	const int examinationId = ExaminationEditWidget::InvalidId;
+	ExaminationEditWidget* exam = new ExaminationEditWidget(examinationId, this);
 
 	addNewWidget(exam, "TODO");
-
-	// todo
+	connect(exam, SIGNAL(saved()), SLOT(updateExaminationList()));
 }
 
 
 void MainTherapeutistWidget::editExam()
-{	
-	ExaminationEditWidget* exam =
-			new ExaminationEditWidget(selectedExamId(), this);
+{
+	ExaminationEditWidget* exam = new ExaminationEditWidget(selectedExamId(), this);
 
 	addNewWidget(exam, "TODO");
-
-	// todo
+	connect(exam, SIGNAL(saved()), SLOT(updateExaminationList()));
 }
 
 
 void MainTherapeutistWidget::deleteExam()
 {
-	// todo
+	const QString& title = "Удаление осмотра пациента";
+	const QString& descr = "Вы действительно хотите удалить осмотр пациента? "
+						   "Все данные об осмотре также будут удалены.";
+
+	const int rc = QMessageBox::question(this, title, descr,
+										 QMessageBox::Yes | QMessageBox::No);
+
+	if(rc == QMessageBox::Yes)
+	{
+		const int examinationId = selectedExamId();
+
+		QSqlQuery q;
+		q.prepare(" DELETE FROM ExaminationData WHERE examinationId = ?");
+		q.addBindValue(examinationId);
+		q.exec();
+		checkQuery(q);
+
+		q.prepare("DELETE FROM Examination WHERE id = ?");
+		q.addBindValue(examinationId);
+		q.exec();
+		checkQuery(q);
+
+		updateExaminationList();
+	}
 }
