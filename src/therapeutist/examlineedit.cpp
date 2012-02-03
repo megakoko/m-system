@@ -1,0 +1,109 @@
+#include "examlineedit.h"
+
+#include <QLabel>
+#include <QLineEdit>
+#include <QHBoxLayout>
+
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QVariant>
+#include <QDebug>
+
+#include "macros.h"
+#include "therapeutist.h"
+
+
+
+ExamLineEdit::ExamLineEdit(const int examId, const QString &textId, const QString &label)
+	: ExamWidget(examId, textId, label)
+	, m_label(new QLabel(label))
+	, m_lineEdit(new QLineEdit())
+	, m_textWasChanged(false)
+{
+	QHBoxLayout* layout = new QHBoxLayout(this);
+	layout->addWidget(m_label);
+	layout->addWidget(m_lineEdit);
+	setLayout(layout);
+
+	connect(m_lineEdit, SIGNAL(textEdited(QString)), SLOT(textChanged()));
+
+	m_lineEdit->setMaxLength(Therapeutist::interfaces->db->
+							 fieldMaximumLength("examinationdata", "textvalue"));
+
+	init();
+}
+
+
+bool ExamLineEdit::valueIsNull() const
+{
+	return !m_textWasChanged && m_lineEdit->text().isNull();
+}
+
+
+QString ExamLineEdit::value() const
+{
+	return m_lineEdit->text();
+}
+
+
+void ExamLineEdit::init()
+{
+	if(m_examId != InvalidId)
+	{
+		QSqlQuery q;
+		q.prepare(" SELECT id, textValue FROM ExaminationData "
+				  " WHERE examinationId = ? AND uiElementId = ? ");
+		q.addBindValue(m_examId);
+		q.addBindValue(m_textid);
+		q.exec();
+		checkQuery(q);
+
+		if(q.first())
+		{
+			m_examDataId = q.value(0).toInt();
+			m_lineEdit->setText(q.value(1).toString());
+		}
+	}
+}
+
+
+bool ExamLineEdit::save(const int examId) const
+{
+	bool savedSuccessfully = false;
+	if(m_textWasChanged)
+	{
+		QSqlQuery q;
+		if(m_examDataId == InvalidId)
+		{
+			q.prepare(" INSERT INTO ExaminationData "
+					  " (examinationId, uiElementId, textValue) "
+					  " VALUES(:examId, :textid, :textValue) " +
+					  Therapeutist::interfaces->db->returningSentence("id"));
+			q.bindValue(":examId", examId);
+			q.bindValue(":textid", m_textid);
+		}
+		else
+		{
+			q.prepare(" UPDATE ExaminationData SET textValue = :textValue "
+					  " WHERE id = :id");
+			q.bindValue(":id", m_examDataId);
+		}
+
+		q.bindValue(":textValue", m_lineEdit->text());
+		q.exec();
+		checkQuery(q);
+
+//		if(m_examDataId == InvalidId)
+//			m_examDataId = Therapeutist::interfaces->db->lastInsertedId(&q);
+
+		savedSuccessfully = q.isActive();
+	}
+
+	return savedSuccessfully;
+}
+
+
+void ExamLineEdit::textChanged()
+{
+	m_textWasChanged = true;
+}

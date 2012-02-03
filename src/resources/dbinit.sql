@@ -211,7 +211,7 @@ CREATE TABLE UiElement (
 
 -- Таблица с элементами различных списков (ComboBox, например).
 CREATE TABLE UiElementEnums (
-	id					SERIAL PRIMARY KEY,
+	id					INTEGER PRIMARY KEY,
 	uiElementTextId		VARCHAR(40) REFERENCES UiElement(textid),
 	value				VARCHAR(100) NOT NULL
 );
