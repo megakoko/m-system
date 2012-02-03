@@ -52,7 +52,8 @@ void ExamLineEdit::init()
 	{
 		QSqlQuery q;
 		q.prepare(" SELECT id, textValue FROM ExaminationData "
-				  " WHERE examinationId = ? AND uiElementId = ? ");
+				  " WHERE examinationId = ? AND "
+				  " uiElementId = (SELECT id FROM UiElement WHERE textid = ?) ");
 		q.addBindValue(m_examId);
 		q.addBindValue(m_textid);
 		q.exec();
@@ -70,19 +71,30 @@ void ExamLineEdit::init()
 bool ExamLineEdit::save(const int examId) const
 {
 	bool savedSuccessfully = false;
-	if(m_textWasChanged)
+
+	// В этом случае сохранять не надо.
+	if(m_examDataId == InvalidId && valueIsNull())
+		savedSuccessfully = true;
+	else
 	{
 		QSqlQuery q;
-		if(m_examDataId == InvalidId)
+
+		if(m_examDataId == InvalidId && !valueIsNull())
 		{
 			q.prepare(" INSERT INTO ExaminationData "
 					  " (examinationId, uiElementId, textValue) "
-					  " VALUES(:examId, :textid, :textValue) " +
-					  Therapeutist::interfaces->db->returningSentence("id"));
+					  " VALUES(:examId, (SELECT id FROM UiElement WHERE textid = :textid),"
+					  " :textValue) ");
 			q.bindValue(":examId", examId);
 			q.bindValue(":textid", m_textid);
 		}
-		else
+		else if(m_examDataId != InvalidId && valueIsNull())
+		{
+			q.prepare(" DELETE FROM ExaminationData "
+					  " WHERE id = :id");
+			q.bindValue(":id", m_examDataId);
+		}
+		else if(m_examDataId != InvalidId && !valueIsNull())
 		{
 			q.prepare(" UPDATE ExaminationData SET textValue = :textValue "
 					  " WHERE id = :id");
@@ -92,9 +104,6 @@ bool ExamLineEdit::save(const int examId) const
 		q.bindValue(":textValue", m_lineEdit->text());
 		q.exec();
 		checkQuery(q);
-
-//		if(m_examDataId == InvalidId)
-//			m_examDataId = Therapeutist::interfaces->db->lastInsertedId(&q);
 
 		savedSuccessfully = q.isActive();
 	}

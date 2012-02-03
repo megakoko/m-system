@@ -32,6 +32,8 @@ ExamComboBox::ExamComboBox(const int examId, const QString &textId, const QStrin
 	while(q.next())
 		m_comboBox->addItem(q.value(1).toString(), q.value(0));
 	m_comboBox->setCurrentIndex(-1);
+
+	init();
 }
 
 
@@ -53,9 +55,10 @@ void ExamComboBox::init()
 	{
 		QSqlQuery q;
 		q.prepare(" SELECT id, enumValue FROM ExaminationData "
-				  " WHERE examinationId = :examId AND uiElementId = :textid ");
-		q.bindValue(":examId", m_examId);
-		q.bindValue(":textid", m_textid);
+				  " WHERE examinationId = ? "
+				  " AND uiElementId = (SELECT id FROM UiElement WHERE textid = ?) ");
+		q.addBindValue(m_examId);
+		q.addBindValue(m_textid);
 		q.exec();
 		checkQuery(q);
 
@@ -70,25 +73,43 @@ void ExamComboBox::init()
 
 bool ExamComboBox::save(const int examId) const
 {
-	QSqlQuery q;
-	if(m_examDataId == InvalidId)
-	{
-		q.prepare(" INSERT INTO ExaminationData "
-				  " (examinationId, uiElementId, enumValue) "
-				  " VALUES(:examId, :textid, :enumValue) ");
-		q.bindValue(":examId", examId);
-		q.bindValue(":textid", m_textid);
-	}
+	bool savedSuccessfully = false;
+
+	// В этом случае сохранять не надо.
+	if(m_examDataId == InvalidId && valueIsNull())
+		savedSuccessfully = true;
 	else
 	{
-		q.prepare(" UPDATE ExaminationData SET enumValue = :enumValue "
-				  " WHERE id = :id");
-		q.bindValue(":id", m_examDataId);
+		QSqlQuery q;
+
+		if(m_examDataId == InvalidId && !valueIsNull())
+		{
+			q.prepare(" INSERT INTO ExaminationData "
+					  " (examinationId, uiElementId, enumValue) "
+					  " VALUES(:examId, (SELECT id FROM UiElement WHERE textid = :textid),"
+					  " :enumValue) ");
+			q.bindValue(":examId", examId);
+			q.bindValue(":textid", m_textid);
+		}
+		else if(m_examDataId != InvalidId && valueIsNull())
+		{
+			q.prepare(" DELETE FROM ExaminationData "
+					  " WHERE id = :id");
+			q.bindValue(":id", m_examDataId);
+		}
+		else if(m_examDataId != InvalidId && !valueIsNull())
+		{
+			q.prepare(" UPDATE ExaminationData SET enumValue = :enumValue "
+					  " WHERE id = :id");
+			q.bindValue(":id", m_examDataId);
+		}
+
+		q.bindValue(":enumValue", m_comboBox->itemData(m_comboBox->currentIndex()));
+		q.exec();
+		checkQuery(q);
+
+		savedSuccessfully = q.isActive();
 	}
 
-	q.bindValue(":textValue", m_comboBox->itemData(m_comboBox->currentIndex()));
-	q.exec();
-	checkQuery(q);
-
-	return q.isActive();
+	return savedSuccessfully;
 }
