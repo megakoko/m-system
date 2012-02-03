@@ -1,7 +1,6 @@
 #include "decodedpatientlistquery.h"
 
 #include <QDebug>
-#include "patients.h"
 
 
 DecodedPatientListQuery::DecodedPatientListQuery(QObject *parent)
@@ -12,12 +11,14 @@ DecodedPatientListQuery::DecodedPatientListQuery(QObject *parent)
 
 QVariant DecodedPatientListQuery::data(const QModelIndex &index, int role) const
 {
+	Q_ASSERT(!m_interfaces.isNull());
+
 	QVariant result = QProxyModel::data(index, role);
 
 	if(role == Qt::DisplayRole && m_columnsToDecode.contains(index.column()))
 	{
 		Q_ASSERT(result.type() == QVariant::String);
-		result = Patients::interfaces->enc->decode(result.toString());
+		result = m_interfaces->enc->decode(result.toString());
 	}
 
 	return result;
@@ -27,4 +28,10 @@ QVariant DecodedPatientListQuery::data(const QModelIndex &index, int role) const
 void DecodedPatientListQuery::addColumnToDecode(const int column)
 {
 	m_columnsToDecode << column;
+}
+
+
+void DecodedPatientListQuery::setInterfacesPtr(const InterfacesPtr &interfaces)
+{
+	m_interfaces = interfaces;
 }

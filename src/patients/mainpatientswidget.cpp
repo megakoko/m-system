@@ -32,6 +32,7 @@ void MainPatientsWidget::init()
 	m_queryModel = new QSqlQueryModel(this);
 
 	DecodedPatientListQuery* proxy = new DecodedPatientListQuery(this);
+	proxy->setInterfacesPtr(Patients::interfaces);
 	proxy->addColumnToDecode(1);
 	proxy->addColumnToDecode(2);
 	proxy->addColumnToDecode(3);

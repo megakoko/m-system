@@ -3,6 +3,8 @@
 #include "saveablepluginwidget.h"
 #include "ui_examinationeditwidget.h"
 
+class ExamContainer;
+
 class ExaminationEditWidget : public SaveablePluginWidget, private Ui::ExaminationEditWidget
 {
 	Q_OBJECT
@@ -15,7 +17,14 @@ public:
 
 private:
 	void init();
-
+	void initConnections();
 
 	int m_examinationId;
+	int m_patientId;
+
+	ExamContainer* m_mainContainer;
+
+private slots:
+	void choosePatient();
+
 };
