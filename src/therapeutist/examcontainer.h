@@ -15,7 +15,8 @@ class ExamContainer : public ExamWidget
 {
 	Q_OBJECT
 public:
-	ExamContainer(const int examId, const QString& textid, const QString& labelText);
+	ExamContainer(const int examId, const QString& textid,
+				  const QString& labelText, const bool topLevel = false);
 
 	// Определенные чисто виртуальные функции.
 	bool valueIsNull() const;
@@ -30,6 +31,8 @@ private:
 	void updateHeader();
 
 	void expandContainer(const bool expanded);
+
+	const bool m_topLevel;
 
 	// Виджет, который содержит заголовок контейнера и контейнер.
 	QWidget* m_widget;

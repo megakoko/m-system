@@ -30,7 +30,7 @@ ExaminationEditWidget::ExaminationEditWidget(const int examinationId, QWidget *p
 
 void ExaminationEditWidget::init()
 {
-	m_mainContainer = new ExamContainer(m_examinationId, "main", QString::null);
+	m_mainContainer = new ExamContainer(m_examinationId, "main", QString::null, true);
 	m_widgetsLayout->addWidget(m_mainContainer->widget(), 0, Qt::AlignTop);
 
 
