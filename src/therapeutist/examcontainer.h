@@ -5,6 +5,7 @@
 
 class QLabel;
 class QPushButton;
+class QGridLayout;
 
 
 /*
@@ -14,7 +15,7 @@ class ExamContainer : public ExamWidget
 {
 	Q_OBJECT
 public:
-	ExamContainer(const int examId, const QString& textid, const QString& label);
+	ExamContainer(const int examId, const QString& textid, const QString& labelText);
 
 	// Определенные чисто виртуальные функции.
 	bool valueIsNull() const;
@@ -22,21 +23,21 @@ public:
 	void init();
 	bool save(const int examId) const;
 
+	QLabel* label() const;
+	QWidget* widget() const;
+
 private:
-//	void
-
-
+	// Виджет, который содержит заголовок контейнера и контейнер.
+	QWidget* m_widget;
 
 	// Заголовок контейнера.
 	QPushButton* m_header;
 	// Собственно сам контейнер, виджет, который будет хранить в себе другие виджеты.
 	QWidget* m_container;
-	// "Нижний колонтитул"; место, где будет показываться информация об элементах,
-	// данные в которых отличаются от данных по-умолчанию.
-	QLabel* m_footer;
 
+	// Layout для контейнера.
+	QGridLayout* m_containerLayout;
 
-//	bool m_initializedChildren;
 
 	// Список виджетов, которых содержит контейнер.
 	QList<ExamWidget*> m_items;

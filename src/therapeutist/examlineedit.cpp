@@ -14,23 +14,30 @@
 
 
 
-ExamLineEdit::ExamLineEdit(const int examId, const QString &textId, const QString &label)
-	: ExamWidget(examId, textId, label)
-	, m_label(new QLabel(label))
+ExamLineEdit::ExamLineEdit(const int examId, const QString &textId, const QString &labelText)
+	: ExamWidget(examId, textId, labelText)
+	, m_label(new QLabel(labelText))
 	, m_lineEdit(new QLineEdit())
 	, m_textWasChanged(false)
 {
-	QHBoxLayout* layout = new QHBoxLayout(this);
-	layout->addWidget(m_label);
-	layout->addWidget(m_lineEdit);
-	setLayout(layout);
-
 	connect(m_lineEdit, SIGNAL(textEdited(QString)), SLOT(textChanged()));
 
 	m_lineEdit->setMaxLength(Therapeutist::interfaces->db->
 							 fieldMaximumLength("examinationdata", "textvalue"));
 
 	init();
+}
+
+
+QLabel* ExamLineEdit::label() const
+{
+	return m_label;
+}
+
+
+QWidget* ExamLineEdit::widget() const
+{
+	return m_lineEdit;
 }
 
 
