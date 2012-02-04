@@ -28,8 +28,6 @@ public:
 	QWidget* widget() const;
 
 private:
-	void updateHeader();
-
 	void expandContainer(const bool expanded);
 
 	const bool m_topLevel;
@@ -53,6 +51,8 @@ private:
 	QList<ExamWidget*> m_items;
 
 private slots:
+	void updateHeader();
+
 	void expandContainer();
 
 };

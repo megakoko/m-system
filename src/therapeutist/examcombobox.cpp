@@ -29,6 +29,8 @@ ExamComboBox::ExamComboBox(const int examId, const QString &textId, const QStrin
 	m_comboBox->setCurrentIndex(-1);
 
 	init();
+
+	connect(m_comboBox, SIGNAL(currentIndexChanged(int)), SIGNAL(valueChanged()));
 }
 
 

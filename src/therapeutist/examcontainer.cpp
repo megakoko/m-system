@@ -39,7 +39,7 @@ ExamContainer::ExamContainer(const int examId, const QString &textid,
 		m_headerIndicator = new QLabel;
 		m_headerText = new QLabel;
 
-		updateHeader();
+		m_headerIndicator->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 		m_headerIndicator->setMinimumWidth(indicatorWidth);
 
 		header = new QHBoxLayout;
@@ -80,6 +80,8 @@ ExamContainer::ExamContainer(const int examId, const QString &textid,
 		expandContainer(true);
 	else
 		connect(m_headerText, SIGNAL(linkActivated(QString)), SLOT(expandContainer()));
+
+	updateHeader();
 }
 
 
@@ -105,12 +107,20 @@ void ExamContainer::updateHeader()
 {
 	if(!m_topLevel)
 	{
+		const bool childrenValuesAreNull = valueIsNull();
+		const bool containerIsExpanded = m_container->isVisible();
+
 		const QString& link	=
-				QString("<a style='color: black; text-decoration: none' href='ref'>%1</a>")
+				QString("<a style='font-weight: %1; color: black; text-decoration: none' href='ref'>%2</a>")
+				.arg(childrenValuesAreNull ? "normal" : "bold")
 				.arg(m_labelText);
 
-		m_headerText->setText(link);
-		m_headerIndicator->setText(m_container->isVisible() ? "-" : "+");
+		QString text = link;
+		if(!childrenValuesAreNull && !containerIsExpanded)
+			text.append("<br>" + value());
+
+		m_headerText->setText(text);
+		m_headerIndicator->setText(containerIsExpanded ? "-" : "+");
 	}
 }
 
@@ -136,6 +146,9 @@ void ExamContainer::expandContainer(const bool expanded)
 
 			if(widget != NULL && widget->widget() != NULL)
 			{
+				connect(widget, SIGNAL(valueChanged()), SLOT(updateHeader()));
+				connect(widget, SIGNAL(valueChanged()), SIGNAL(valueChanged()));
+
 				const int row = m_items.count();
 				m_items.append(widget);
 
@@ -164,22 +177,87 @@ void ExamContainer::expandContainer(const bool expanded)
 
 bool ExamContainer::valueIsNull() const
 {
-	bool result = false;
-	foreach(const ExamWidget* widget, m_items)
-		if(widget->valueIsNull())
-		{
-			result = true;
-			break;
-		}
+	bool result = true;
+
+	if(!m_items.isEmpty())
+	{
+		foreach(const ExamWidget* widget, m_items)
+			if(!widget->valueIsNull())
+			{
+				result = false;
+				break;
+			}
+	}
+	else if(m_examId != InvalidId)
+	{
+		QSqlQuery q;
+		q.prepare(" SELECT COUNT(*) FROM ExaminationData d "
+				  " LEFT JOIN UiElement ui ON d.uielementId = ui.id "
+				  " WHERE d.examinationId = ? AND ui.parentId = ? ");
+		q.addBindValue(m_examId);
+		q.addBindValue(m_textid);
+		q.exec();
+		checkQuery(q);
+
+		if(q.first())
+			result = (q.value(0).toInt() == 0);
+	}
+
 	return result;
 }
 
 
 QString ExamContainer::value() const
 {
+	static const QString labelAndValueDelimiter = ": ";
+
+
 	QStringList values;
-	foreach(const ExamWidget* widget, m_items)
-		values.append(widget->labelText() + ": " + widget->value());
+
+	if(!m_items.isEmpty())
+	{
+		foreach(const ExamWidget* widget, m_items)
+			if(!widget->valueIsNull())
+				values.append(widget->labelText() + labelAndValueDelimiter + widget->value());
+	}
+	else if(m_examId != InvalidId)
+	{
+		QSqlQuery q;
+		q.prepare(" SELECT ui.label, d.textValue, d.integerValue, uiEnum.value "
+				  " FROM ExaminationData d "
+				  " LEFT JOIN UiElement ui ON d.uielementId = ui.id "
+				  " LEFT JOIN UiElementEnums uiEnum ON "
+					" (ui.textid = uiEnum.uiElementTextId AND d.enumValue = uiEnum.id) "
+				  " WHERE d.examinationId = ? AND ui.parentId = ? "
+				  " ORDER BY ui.id ");
+
+		q.addBindValue(m_examId);
+		q.addBindValue(m_textid);
+		q.exec();
+		checkQuery(q);
+
+
+		while(q.next())
+		{
+			QString val;
+
+			if(!q.value(1).isNull())
+				val = q.value(1).toString();
+			else if(!q.value(2).isNull())
+				val = q.value(2).toString();
+			else if(!q.value(3).isNull())
+				val = q.value(3).toString();
+
+			if(!val.isNull())
+				values << q.value(0).toString() + labelAndValueDelimiter + val;
+			else
+			{
+				qWarning() << "No value for examination data with;"
+						   << "examId =" << m_examId
+						   << "textId =" << m_textid;
+			}
+		}
+	}
 
 	return values.join("; ");
 }
