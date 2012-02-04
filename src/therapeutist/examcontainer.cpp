@@ -24,8 +24,9 @@ ExamContainer::ExamContainer(const int examId, const QString &textid, const QStr
 	, m_headerText(new QLabel())
 	, m_container(new QWidget())
 {
+	const int indicatorWidth = 20;
 	updateHeader();
-	m_headerIndicator->setMinimumWidth(20);
+	m_headerIndicator->setMinimumWidth(indicatorWidth);
 
 	QHBoxLayout* header = new QHBoxLayout;
 	header->setContentsMargins(0, 0, 0, 0);
@@ -47,6 +48,9 @@ ExamContainer::ExamContainer(const int examId, const QString &textid, const QStr
 	m_containerLayout = new QGridLayout;
 	QMargins margins = m_containerLayout->contentsMargins();
 	margins.setRight(0);
+	if(!labelText.isNull())
+		margins.setLeft(indicatorWidth + header->spacing());
+
 	m_containerLayout->setContentsMargins(margins);
 	m_containerLayout->setColumnStretch(labelColumn, 1);
 	m_containerLayout->setColumnStretch(widgetColumn, 3);
