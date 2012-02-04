@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QGridLayout>
 
 #include <QSqlQuery>
 #include <QSqlError>
@@ -12,22 +13,35 @@
 #include "macros.h"
 
 
-ExamContainer::ExamContainer(const int examId, const QString &textid, const QString &label)
-	: ExamWidget(examId, textid, label)
-	, m_header(new QPushButton(label, this))
-	, m_container(new QWidget(this))
-	, m_footer(new QLabel(this))
+static const int labelColumn = 0;
+static const int widgetColumn = 1;
+
+
+ExamContainer::ExamContainer(const int examId, const QString &textid, const QString &labelText)
+	: ExamWidget(examId, textid, labelText)
+	, m_widget(new QWidget())
+	, m_header(new QPushButton(labelText))
+	, m_container(new QWidget())
 {
-	QVBoxLayout* layout = new QVBoxLayout(this);
+	QVBoxLayout* layout = new QVBoxLayout();
+	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addWidget(m_header);
 	layout->addWidget(m_container);
-	layout->addWidget(m_footer);
-	setLayout(layout);
+	m_widget->setLayout(layout);
 
-	QVBoxLayout* containerLayout = new QVBoxLayout;
-	m_container->setLayout(containerLayout);
+	m_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-	if(label.isNull())
+
+	m_containerLayout = new QGridLayout;
+	QMargins margins = m_containerLayout->contentsMargins();
+	margins.setRight(0);
+	m_containerLayout->setContentsMargins(margins);
+	m_containerLayout->setColumnStretch(labelColumn, 1);
+	m_containerLayout->setColumnStretch(widgetColumn, 3);
+	m_container->setLayout(m_containerLayout);
+	m_container->setHidden(true);
+
+	if(labelText.isNull())
 		expandContainer(true);
 	else
 	{
@@ -40,6 +54,18 @@ ExamContainer::ExamContainer(const int examId, const QString &textid, const QStr
 void ExamContainer::init()
 {
 
+}
+
+
+QLabel* ExamContainer::label() const
+{
+	return NULL;
+}
+
+
+QWidget* ExamContainer::widget() const
+{
+	return m_widget;
 }
 
 
@@ -56,10 +82,25 @@ void ExamContainer::expandContainer(bool expanded)
 		{
 			ExamWidget* widget = m_factory.createWidget(m_examId, q.value(0).toString());
 
-			if(widget != NULL)
+			if(widget != NULL && widget->widget() != NULL)
 			{
+				const int row = m_items.count();
 				m_items.append(widget);
-				m_container->layout()->addWidget(widget);
+
+				if(widget->label() == NULL)
+				{
+					// Виджет будет занимать нулевую и первую колонку.
+					m_containerLayout->addWidget(widget->widget(),
+												 row, labelColumn,
+												 1, labelColumn + 2);
+				}
+				else
+				{
+					widget->label()->setWordWrap(true);
+
+					m_containerLayout->addWidget(widget->label(), row, labelColumn);
+					m_containerLayout->addWidget(widget->widget(), row, widgetColumn);
+				}
 			}
 		}
 	}
@@ -85,7 +126,7 @@ QString ExamContainer::value() const
 {
 	QStringList values;
 	foreach(const ExamWidget* widget, m_items)
-		values.append(widget->label() + ": " + widget->value());
+		values.append(widget->labelText() + ": " + widget->value());
 
 	return values.join("; ");
 }

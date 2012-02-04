@@ -1,14 +1,18 @@
 #pragma once
 
-#include <QWidget>
+#include <QObject>
 #include "examwidgetfactory.h"
 
+class QWidget;
+class QLabel;
+
+
 // Базовый класс для всех виджетов интерфейса первичного осмотра.
-class ExamWidget : public QWidget
+class ExamWidget : public QObject
 {
 	friend class ExamWidgetFactory;
 public:
-	ExamWidget(const int examId, const QString& textid, const QString &label);
+	ExamWidget(const int examId, const QString& textid, const QString &labelText);
 	virtual ~ExamWidget();
 
 	static const int InvalidId = 0;
@@ -27,8 +31,15 @@ public:
 	// успешно.
 	virtual bool save(const int examId) const = 0;
 
+	// Возвращает виджет с надписью QLabel. Если такой виджет не нужен, можно
+	// возвращать NULL,
+	virtual QLabel* label() const = 0;
+
+	// Возвращает виджет, с которым будет взаимодействовать пользователь.
+	virtual QWidget* widget() const = 0;
+
 	// Возвращает название виджета.
-	QString label() const;
+	QString labelText() const;
 
 protected:
 	static ExamWidgetFactory m_factory;
@@ -43,8 +54,8 @@ protected:
 	// Идентификатор виджета (берется из базы данных).
 	const QString m_textid;
 
-	void setLabel(const QString& label);
-	QString m_label;
+	void setLabelText(const QString& labelText);
+	QString m_labelText;
 
 private:
 

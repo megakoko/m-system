@@ -12,16 +12,11 @@
 #include "macros.h"
 
 
-ExamComboBox::ExamComboBox(const int examId, const QString &textId, const QString &label)
-	: ExamWidget(examId, textId, label)
-	, m_label(new QLabel(label, this))
-	, m_comboBox(new QComboBox(this))
+ExamComboBox::ExamComboBox(const int examId, const QString &textId, const QString &labelText)
+	: ExamWidget(examId, textId, labelText)
+	, m_label(new QLabel(labelText))
+	, m_comboBox(new QComboBox())
 {
-	QHBoxLayout* layout = new QHBoxLayout(this);
-	layout->addWidget(m_label);
-	layout->addWidget(m_comboBox);
-	setLayout(layout);
-
 	QSqlQuery q;
 	q.prepare(" SELECT id, value FROM UiElementEnums "
 			  " WHERE uiElementTextId = ? ORDER BY id ");
@@ -34,6 +29,18 @@ ExamComboBox::ExamComboBox(const int examId, const QString &textId, const QStrin
 	m_comboBox->setCurrentIndex(-1);
 
 	init();
+}
+
+
+QLabel* ExamComboBox::label() const
+{
+	return m_label;
+}
+
+
+QWidget* ExamComboBox::widget() const
+{
+	return m_comboBox;
 }
 
 
