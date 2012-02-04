@@ -17,27 +17,43 @@ static const int labelColumn = 0;
 static const int widgetColumn = 1;
 
 
-ExamContainer::ExamContainer(const int examId, const QString &textid, const QString &labelText)
+ExamContainer::ExamContainer(const int examId, const QString &textid,
+							 const QString &labelText, const bool topLevel)
 	: ExamWidget(examId, textid, labelText)
+	, m_topLevel(topLevel)
 	, m_widget(new QWidget())
-	, m_headerIndicator(new QLabel())
-	, m_headerText(new QLabel())
+	, m_headerIndicator(NULL)
+	, m_headerText(NULL)
 	, m_container(new QWidget())
 {
-	const int indicatorWidth = 20;
-	updateHeader();
-	m_headerIndicator->setMinimumWidth(indicatorWidth);
+	static const int indicatorWidth = 20;
+	QHBoxLayout* header = NULL;
 
-	QHBoxLayout* header = new QHBoxLayout;
-	header->setContentsMargins(0, 0, 0, 0);
-	header->addWidget(m_headerIndicator, 0, Qt::AlignLeft);
-	header->addWidget(m_headerText, 0, Qt::AlignLeft);
-	header->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
+	// Чтобы код лучше читался.
+	const bool needHeader = !topLevel;
 
 
+	// Создаем заголовок.
+	if(needHeader)
+	{
+		m_headerIndicator = new QLabel;
+		m_headerText = new QLabel;
+
+		updateHeader();
+		m_headerIndicator->setMinimumWidth(indicatorWidth);
+
+		header = new QHBoxLayout;
+		header->setContentsMargins(QMargins());
+		header->addWidget(m_headerIndicator, 0, Qt::AlignLeft);
+		header->addWidget(m_headerText, 0, Qt::AlignLeft);
+		header->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
+	}
+
+
+	// Создаем главный компоновщик.
 	QVBoxLayout* layout = new QVBoxLayout();
-	layout->setContentsMargins(0, 0, 0, 0);
-	if(!labelText.isNull())
+	layout->setContentsMargins(QMargins());
+	if(needHeader)
 		layout->addLayout(header);
 	layout->addWidget(m_container);
 	m_widget->setLayout(layout);
@@ -45,10 +61,11 @@ ExamContainer::ExamContainer(const int examId, const QString &textid, const QStr
 	m_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
 
+	// Создаем компоновщик для контейнера.
 	m_containerLayout = new QGridLayout;
 	QMargins margins = m_containerLayout->contentsMargins();
 	margins.setRight(0);
-	if(!labelText.isNull())
+	if(needHeader)
 		margins.setLeft(indicatorWidth + header->spacing());
 
 	m_containerLayout->setContentsMargins(margins);
@@ -57,14 +74,12 @@ ExamContainer::ExamContainer(const int examId, const QString &textid, const QStr
 	m_container->setLayout(m_containerLayout);
 	m_container->setHidden(true);
 
-	if(labelText.isNull())
-	{
+
+	//
+	if(topLevel)
 		expandContainer(true);
-	}
 	else
-	{
 		connect(m_headerText, SIGNAL(linkActivated(QString)), SLOT(expandContainer()));
-	}
 }
 
 
@@ -88,12 +103,15 @@ QWidget* ExamContainer::widget() const
 
 void ExamContainer::updateHeader()
 {
-	const QString& link	=
-			QString("<a style='color: black; text-decoration: none' href='ref'>%1</a>")
-			.arg(m_labelText);
+	if(!m_topLevel)
+	{
+		const QString& link	=
+				QString("<a style='color: black; text-decoration: none' href='ref'>%1</a>")
+				.arg(m_labelText);
 
-	m_headerText->setText(link);
-	m_headerIndicator->setText(m_container->isVisible() ? "-" : "+");
+		m_headerText->setText(link);
+		m_headerIndicator->setText(m_container->isVisible() ? "-" : "+");
+	}
 }
 
 
