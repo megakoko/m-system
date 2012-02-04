@@ -27,22 +27,29 @@ public:
 	QWidget* widget() const;
 
 private:
+	void updateHeader();
+
+	void expandContainer(const bool expanded);
+
 	// Виджет, который содержит заголовок контейнера и контейнер.
 	QWidget* m_widget;
 
-	// Заголовок контейнера.
-	QPushButton* m_header;
+	// Индикатор "свернутости" в заголовке контейнера.
+	QLabel* m_headerIndicator;
+
+	// Текст в заголовоке контейнера.
+	QLabel* m_headerText;
+
 	// Собственно сам контейнер, виджет, который будет хранить в себе другие виджеты.
 	QWidget* m_container;
 
 	// Layout для контейнера.
 	QGridLayout* m_containerLayout;
 
-
 	// Список виджетов, которых содержит контейнер.
 	QList<ExamWidget*> m_items;
 
 private slots:
-	void expandContainer(bool expanded);
+	void expandContainer();
 
 };

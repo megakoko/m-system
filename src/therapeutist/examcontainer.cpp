@@ -20,12 +20,24 @@ static const int widgetColumn = 1;
 ExamContainer::ExamContainer(const int examId, const QString &textid, const QString &labelText)
 	: ExamWidget(examId, textid, labelText)
 	, m_widget(new QWidget())
-	, m_header(new QPushButton(labelText))
+	, m_headerIndicator(new QLabel())
+	, m_headerText(new QLabel())
 	, m_container(new QWidget())
 {
+	updateHeader();
+	m_headerIndicator->setMinimumWidth(20);
+
+	QHBoxLayout* header = new QHBoxLayout;
+	header->setContentsMargins(0, 0, 0, 0);
+	header->addWidget(m_headerIndicator, 0, Qt::AlignLeft);
+	header->addWidget(m_headerText, 0, Qt::AlignLeft);
+	header->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
+
+
 	QVBoxLayout* layout = new QVBoxLayout();
 	layout->setContentsMargins(0, 0, 0, 0);
-	layout->addWidget(m_header);
+	if(!labelText.isNull())
+		layout->addLayout(header);
 	layout->addWidget(m_container);
 	m_widget->setLayout(layout);
 
@@ -42,11 +54,12 @@ ExamContainer::ExamContainer(const int examId, const QString &textid, const QStr
 	m_container->setHidden(true);
 
 	if(labelText.isNull())
+	{
 		expandContainer(true);
+	}
 	else
 	{
-		m_header->setCheckable(true);
-		connect(m_header, SIGNAL(clicked(bool)), SLOT(expandContainer(bool)));
+		connect(m_headerText, SIGNAL(linkActivated(QString)), SLOT(expandContainer()));
 	}
 }
 
@@ -69,7 +82,24 @@ QWidget* ExamContainer::widget() const
 }
 
 
-void ExamContainer::expandContainer(bool expanded)
+void ExamContainer::updateHeader()
+{
+	const QString& link	=
+			QString("<a style='color: black; text-decoration: none' href='ref'>%1</a>")
+			.arg(m_labelText);
+
+	m_headerText->setText(link);
+	m_headerIndicator->setText(m_container->isVisible() ? "-" : "+");
+}
+
+
+void ExamContainer::expandContainer()
+{
+	expandContainer(!m_container->isVisible());
+}
+
+
+void ExamContainer::expandContainer(const bool expanded)
 {
 	if(m_items.isEmpty())
 	{
@@ -106,6 +136,7 @@ void ExamContainer::expandContainer(bool expanded)
 	}
 
 	m_container->setVisible(expanded);
+	updateHeader();
 }
 
 
