@@ -10,6 +10,7 @@ class QLabel;
 // Базовый класс для всех виджетов интерфейса первичного осмотра.
 class ExamWidget : public QObject
 {
+	Q_OBJECT
 	friend class ExamWidgetFactory;
 public:
 	ExamWidget(const int examId, const QString& textid, const QString &labelText);
@@ -58,6 +59,9 @@ protected:
 	QString m_labelText;
 
 private:
+
+signals:
+	void valueChanged();
 
 };
 

@@ -21,6 +21,7 @@ ExamLineEdit::ExamLineEdit(const int examId, const QString &textId, const QStrin
 	, m_textWasChanged(false)
 {
 	connect(m_lineEdit, SIGNAL(textEdited(QString)), SLOT(textChanged()));
+	connect(m_lineEdit, SIGNAL(textEdited(QString)), SIGNAL(valueChanged()));
 
 	m_lineEdit->setMaxLength(Therapeutist::interfaces->db->
 							 fieldMaximumLength("examinationdata", "textvalue"));
@@ -43,7 +44,7 @@ QWidget* ExamLineEdit::widget() const
 
 bool ExamLineEdit::valueIsNull() const
 {
-	return !m_textWasChanged && m_lineEdit->text().isNull();
+	return !m_textWasChanged && m_lineEdit->text().isEmpty();
 }
 
 

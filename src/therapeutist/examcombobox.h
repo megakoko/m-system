@@ -7,6 +7,7 @@ class QComboBox;
 
 class ExamComboBox : public ExamWidget
 {
+	Q_OBJECT
 public:
 	ExamComboBox(const int examId, const QString& textId, const QString& labelText);
 
