@@ -52,9 +52,22 @@ bool ExamComboBox::valueIsNull() const
 }
 
 
+bool ExamComboBox::valueCanBeReseted() const
+{
+	return true;
+}
+
+
 QString ExamComboBox::value() const
 {
 	return m_comboBox->currentText();
+}
+
+
+void ExamComboBox::resetValue()
+{
+	m_comboBox->setCurrentIndex(-1);
+	emit valueChanged();
 }
 
 
@@ -99,6 +112,7 @@ bool ExamComboBox::save(const int examId) const
 					  " :enumValue) ");
 			q.bindValue(":examId", examId);
 			q.bindValue(":textid", m_textid);
+			q.bindValue(":enumValue", m_comboBox->itemData(m_comboBox->currentIndex()));
 		}
 		else if(m_examDataId != InvalidId && valueIsNull())
 		{
@@ -110,10 +124,10 @@ bool ExamComboBox::save(const int examId) const
 		{
 			q.prepare(" UPDATE ExaminationData SET enumValue = :enumValue "
 					  " WHERE id = :id");
+			q.bindValue(":enumValue", m_comboBox->itemData(m_comboBox->currentIndex()));
 			q.bindValue(":id", m_examDataId);
 		}
 
-		q.bindValue(":enumValue", m_comboBox->itemData(m_comboBox->currentIndex()));
 		q.exec();
 		checkQuery(q);
 

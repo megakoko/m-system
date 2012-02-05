@@ -19,7 +19,19 @@ ExamWidget::~ExamWidget()
 }
 
 
+bool ExamWidget::valueCanBeReseted() const
+{
+	return false;
+}
+
+
 QString ExamWidget::labelText() const
 {
 	return m_labelText;
+}
+
+
+void ExamWidget::resetValue()
+{
+	// Ничего не делаем.
 }

@@ -48,9 +48,23 @@ bool ExamLineEdit::valueIsNull() const
 }
 
 
+bool ExamLineEdit::valueCanBeReseted() const
+{
+	return true;
+}
+
+
 QString ExamLineEdit::value() const
 {
 	return m_lineEdit->text();
+}
+
+
+void ExamLineEdit::resetValue()
+{
+	m_lineEdit->clear();
+	m_textWasChanged = false;
+	emit valueChanged();
 }
 
 
@@ -95,6 +109,7 @@ bool ExamLineEdit::save(const int examId) const
 					  " :textValue) ");
 			q.bindValue(":examId", examId);
 			q.bindValue(":textid", m_textid);
+			q.bindValue(":textValue", m_lineEdit->text());
 		}
 		else if(m_examDataId != InvalidId && valueIsNull())
 		{
@@ -106,10 +121,10 @@ bool ExamLineEdit::save(const int examId) const
 		{
 			q.prepare(" UPDATE ExaminationData SET textValue = :textValue "
 					  " WHERE id = :id");
+			q.bindValue(":textValue", m_lineEdit->text());
 			q.bindValue(":id", m_examDataId);
 		}
 
-		q.bindValue(":textValue", m_lineEdit->text());
 		q.exec();
 		checkQuery(q);
 

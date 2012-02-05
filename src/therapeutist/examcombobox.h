@@ -13,12 +13,16 @@ public:
 
 	// Определенные чисто виртуальные функции.
 	bool valueIsNull() const;
+	bool valueCanBeReseted() const;
 	QString value() const;
 	void init();
 	bool save(const int examId) const;
 
 	QLabel* label() const;
 	QWidget* widget() const;
+
+public slots:
+	void resetValue();
 
 private:
 	QLabel* m_label;

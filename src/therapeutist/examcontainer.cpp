@@ -15,6 +15,7 @@
 
 static const int labelColumn = 0;
 static const int widgetColumn = 1;
+static const int resetButtonColumn = 2;
 
 
 ExamContainer::ExamContainer(const int examId, const QString &textid,
@@ -165,6 +166,14 @@ void ExamContainer::expandContainer(const bool expanded)
 
 					m_containerLayout->addWidget(widget->label(), row, labelColumn);
 					m_containerLayout->addWidget(widget->widget(), row, widgetColumn);
+
+					if(widget->valueCanBeReseted())
+					{
+						QPushButton* resetButton = new QPushButton("reset");
+						connect(resetButton, SIGNAL(clicked()), widget, SLOT(resetValue()));
+
+						m_containerLayout->addWidget(resetButton, row, resetButtonColumn);
+					}
 				}
 			}
 		}
