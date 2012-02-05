@@ -18,7 +18,8 @@ SOURCES +=	therapeutist.cpp \
 			examwidgetfactory.cpp \
 			examcombobox.cpp \
 			examlineedit.cpp \
-			patientpickerdialog.cpp
+			patientpickerdialog.cpp \
+			examinputwidget.cpp
 
 HEADERS	+=	therapeutist.h \
 			maintherapeutistwidget.h \
@@ -30,7 +31,8 @@ HEADERS	+=	therapeutist.h \
 			examwidgetfactory.h \
 			examcombobox.h \
 			examlineedit.h \
-			patientpickerdialog.h
+			patientpickerdialog.h \
+			examinputwidget.h
 
 FORMS	+=	maintherapeutistwidget.ui \
 			examinationeditwidget.ui \

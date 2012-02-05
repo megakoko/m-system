@@ -1,11 +1,10 @@
 #pragma once
 
-#include "examwidget.h"
+#include "examinputwidget.h"
 
-class QLabel;
 class QLineEdit;
 
-class ExamLineEdit : public ExamWidget
+class ExamLineEdit : public ExamInputWidget
 {
 	Q_OBJECT
 public:
@@ -18,16 +17,12 @@ public:
 	void init();
 	bool save(const int examId) const;
 
-	QLabel* label() const;
 	QWidget* widget() const;
 
 public slots:
 	void resetValue();
 
-	void updateLabel();
-
 private:
-	QLabel* m_label;
 	QLineEdit* m_lineEdit;
 
 	bool m_textIsNull;
