@@ -174,8 +174,8 @@ int MainDummyDatabaseWidget::createPatientRecord(const QDate &birthday) const
 	QSqlQuery q;
 	q.prepare("INSERT INTO Patient(familyname, name, patronymic, birthday, sexid) VALUES"
 			  "(:familyname, :name, :patronymic, :birthday, "
-				" (SELECT id FROM Sex WHERE textid = :sextextid)) "
-			  " RETURNING id");
+				" (SELECT id FROM Sex WHERE textid = :sextextid)) " +
+			  DummyDatabase::interfaces->db->returningSentence("id"));
 	q.bindValue(":familyname", encode(patientName.surname));
 	q.bindValue(":name", encode(patientName.firstname));
 	q.bindValue(":patronymic", encode(patientName.patronymic));
@@ -186,7 +186,7 @@ int MainDummyDatabaseWidget::createPatientRecord(const QDate &birthday) const
 
 
 	q.first();
-	return q.value(0).toInt();
+	return DummyDatabase::interfaces->db->lastInsertedId(&q).toInt();
 }
 
 
