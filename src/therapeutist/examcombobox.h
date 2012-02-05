@@ -26,6 +26,8 @@ public slots:
 
 	void updateLabel();
 
+	void comboBoxIndexChanged();
+
 private:
 	QLabel* m_label;
 	QComboBox* m_comboBox;

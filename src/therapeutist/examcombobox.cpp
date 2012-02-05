@@ -17,8 +17,8 @@ ExamComboBox::ExamComboBox(const int examId, const QString &textId, const QStrin
 	, m_label(new QLabel(labelText))
 	, m_comboBox(new QComboBox())
 {
-	connect(m_comboBox, SIGNAL(currentIndexChanged(int)), SIGNAL(valueChanged()));
-	connect(this, SIGNAL(valueChanged()), SLOT(updateLabel()));
+	connect(m_comboBox, SIGNAL(currentIndexChanged(int)), SLOT(comboBoxIndexChanged()));
+	connect(this, SIGNAL(valueChanged(bool)), SLOT(updateLabel()));
 
 
 	QSqlQuery q;
@@ -71,7 +71,7 @@ void ExamComboBox::resetValue()
 	if(!valueIsNull())
 	{
 		m_comboBox->setCurrentIndex(-1);
-		emit valueChanged();
+		emit valueChanged(valueIsNull());
 	}
 }
 
@@ -82,6 +82,12 @@ void ExamComboBox::updateLabel()
 		m_label->setText(m_labelText);
 	else
 		m_label->setText(QString("<b>%1</b>").arg(m_labelText));
+}
+
+
+void ExamComboBox::comboBoxIndexChanged()
+{
+	emit valueChanged(valueIsNull());
 }
 
 

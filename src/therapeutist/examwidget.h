@@ -69,7 +69,9 @@ protected:
 private:
 
 signals:
-	void valueChanged();
+	// Сигнал, который должен испускаться при изменении значения виджета.
+	// Параметр типа bool равен true, если значение является значением по-умолчанию.
+	void valueChanged(bool isNull);
 
 };
 
