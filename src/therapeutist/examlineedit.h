@@ -28,7 +28,7 @@ private:
 	QLabel* m_label;
 	QLineEdit* m_lineEdit;
 
-	bool m_textWasChanged;
+	bool m_textIsNull;
 
 private slots:
 	void textChanged();

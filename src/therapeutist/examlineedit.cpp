@@ -18,7 +18,7 @@ ExamLineEdit::ExamLineEdit(const int examId, const QString &textId, const QStrin
 	: ExamWidget(examId, textId, labelText)
 	, m_label(new QLabel(labelText))
 	, m_lineEdit(new QLineEdit())
-	, m_textWasChanged(false)
+	, m_textIsNull(true)
 {
 	connect(m_lineEdit, SIGNAL(textEdited(QString)), SLOT(textChanged()));
 	connect(m_lineEdit, SIGNAL(textEdited(QString)), SIGNAL(valueChanged()));
@@ -44,7 +44,7 @@ QWidget* ExamLineEdit::widget() const
 
 bool ExamLineEdit::valueIsNull() const
 {
-	return !m_textWasChanged && m_lineEdit->text().isEmpty();
+	return m_textIsNull;
 }
 
 
@@ -63,7 +63,7 @@ QString ExamLineEdit::value() const
 void ExamLineEdit::resetValue()
 {
 	m_lineEdit->clear();
-	m_textWasChanged = false;
+	m_textIsNull = true;
 	emit valueChanged();
 }
 
@@ -137,5 +137,5 @@ bool ExamLineEdit::save(const int examId) const
 
 void ExamLineEdit::textChanged()
 {
-	m_textWasChanged = true;
+	m_textIsNull = false;
 }
