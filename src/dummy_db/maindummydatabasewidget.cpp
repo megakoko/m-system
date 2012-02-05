@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "maindummydatabasewidget.h"
 
 #include <QDebug>
 
@@ -14,13 +14,13 @@
 
 
 #include "macros.h"
-#include "cryptopp/wrapper.h"
+#include "dummydatabase.h"
 
 
 #include <QSettings>
 
-MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
+MainDummyDatabaseWidget::MainDummyDatabaseWidget(QWidget *parent)
+	: PluginWidget(parent)
 {
 	setupUi(this);
 
@@ -31,27 +31,20 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 
-void MainWindow::init()
+void MainDummyDatabaseWidget::init()
 {
-	QSettings settings;
-
-	m_hostname->setText(settings.value("hostname").toString());
-	m_port->setValue(settings.value("port").toInt());
-	m_databasename->setText(settings.value("dbname").toString());
-	m_login->setText(settings.value("login").toString());
-
-	m_toolbar->addAction("(Пере) Подключиться к серверу", this, SLOT(reconnectToDb()));
+	updatePatientsCount();
 }
 
 
-void MainWindow::initConnections()
+void MainDummyDatabaseWidget::initConnections()
 {
 	connect(m_updatePatientsCount, SIGNAL(clicked()), SLOT(updatePatientsCount()));
 	connect(m_createPatients, SIGNAL(clicked()), SLOT(createPatients()));
 }
 
 
-void MainWindow::loadFiles()
+void MainDummyDatabaseWidget::loadFiles()
 {
 	loadFile(":/male_firstname.txt", m_maleFirstName);
 	loadFile(":/male_surname.txt", m_maleSurname);
@@ -65,7 +58,7 @@ void MainWindow::loadFiles()
 }
 
 
-void MainWindow::loadFile(const QString &fileName, QStringList &stringList)
+void MainDummyDatabaseWidget::loadFile(const QString &fileName, QStringList &stringList)
 {
 	QFile f;
 	f.setFileName(fileName);
@@ -74,7 +67,7 @@ void MainWindow::loadFile(const QString &fileName, QStringList &stringList)
 }
 
 
-bool MainWindow::tryToOpen(QFile &f) const
+bool MainDummyDatabaseWidget::tryToOpen(QFile &f) const
 {
 	if(!f.open(QIODevice::ReadOnly))
 		qWarning() << "Не могу открыть файл" << f.fileName();
@@ -83,7 +76,7 @@ bool MainWindow::tryToOpen(QFile &f) const
 }
 
 
-void MainWindow::readFile(QFile &f, QStringList &stringList)
+void MainDummyDatabaseWidget::readFile(QFile &f, QStringList &stringList)
 {
 	QTextStream input(&f);
 	input.setCodec("UTF-8");
@@ -100,57 +93,13 @@ void MainWindow::readFile(QFile &f, QStringList &stringList)
 }
 
 
-
-
-
-
-
-void MainWindow::showMessageInStatusBar(const QString &msg)
+QString MainDummyDatabaseWidget::encode(const QString &plaintext) const
 {
-	m_statusBar->showMessage(msg, 5000);
+	return DummyDatabase::interfaces->enc->encode(plaintext);
 }
 
 
-QString MainWindow::encode(const QString &plaintext) const
-{
-	static const CryptoppWrapper wrapper;
-
-	return wrapper.encode(plaintext);
-}
-
-
-void MainWindow::reconnectToDb()
-{
-	const QString& pw = QInputDialog::getText(this, "Пароль к БД",
-											  "Введите пароль к базе данных",
-											  QLineEdit::Password,
-											  "mspassword");
-
-	if(!pw.isNull())
-	{
-		QSqlDatabase db =	QSqlDatabase::contains() ?
-							QSqlDatabase::database() :
-							QSqlDatabase::addDatabase("QPSQL");
-
-		if(db.isOpen())
-			db.close();
-
-		db.setHostName(m_hostname->text());
-		db.setPort(m_port->value());
-		db.setDatabaseName(m_databasename->text());
-
-		if(db.open(m_login->text(), pw))
-			showMessageInStatusBar("Подключение к БД установлено");
-		else
-			showMessageInStatusBar("Не удалось подключиться");
-	}
-
-
-	updatePatientsCount();
-}
-
-
-void MainWindow::updatePatientsCount()
+void MainDummyDatabaseWidget::updatePatientsCount()
 {
 	QSqlQuery q("SELECT COUNT(*) FROM Patient");
 	checkQuery(q);
@@ -160,7 +109,7 @@ void MainWindow::updatePatientsCount()
 }
 
 
-void MainWindow::createPatients()
+void MainDummyDatabaseWidget::createPatients()
 {
 	initializeRandom();
 
@@ -203,7 +152,7 @@ void MainWindow::createPatients()
 }
 
 
-int MainWindow::createPatientRecord() const
+int MainDummyDatabaseWidget::createPatientRecord() const
 {
 	QString surname;
 	QString firstname;
@@ -241,7 +190,7 @@ int MainWindow::createPatientRecord() const
 }
 
 
-void MainWindow::createDocumentRecord(const int patientId, const QString& documentTextid) const
+void MainDummyDatabaseWidget::createDocumentRecord(const int patientId, const QString& documentTextid) const
 {
 	QSqlQuery q;
 	q.prepare(" INSERT INTO Document "
@@ -262,7 +211,7 @@ void MainWindow::createDocumentRecord(const int patientId, const QString& docume
 }
 
 
-void MainWindow::createAddressRecord(const int patientId,
+void MainDummyDatabaseWidget::createAddressRecord(const int patientId,
 									 const QString& addressType) const
 {
 	QSqlQuery q;
@@ -285,25 +234,25 @@ void MainWindow::createAddressRecord(const int patientId,
 
 // ---------------------------- RANDOM функции ---------------------------
 
-void MainWindow::initializeRandom() const
+void MainDummyDatabaseWidget::initializeRandom() const
 {
 	qsrand(QDateTime::currentMSecsSinceEpoch());
 }
 
 
-int MainWindow::randomInt(const int max) const
+int MainDummyDatabaseWidget::randomInt(const int max) const
 {
 	return qrand() % max;
 }
 
 
-QDate MainWindow::randomDate() const
+QDate MainDummyDatabaseWidget::randomDate() const
 {
 	return QDate(1970 + randomInt(30), randomInt(12)+1, randomInt(28)+1);
 }
 
 
-void MainWindow::randomMaleName(QString &surname, QString &firstname,
+void MainDummyDatabaseWidget::randomMaleName(QString &surname, QString &firstname,
 								QString &patronymic) const
 {
 	surname = m_maleSurname.at(randomInt(m_maleSurname.size()));
@@ -313,7 +262,7 @@ void MainWindow::randomMaleName(QString &surname, QString &firstname,
 
 
 
-void MainWindow::randomFemaleName(QString &surname, QString &firstname,
+void MainDummyDatabaseWidget::randomFemaleName(QString &surname, QString &firstname,
 								QString &patronymic) const
 {
 	surname = m_femaleSurname.at(randomInt(m_femaleSurname.size()));
@@ -322,7 +271,7 @@ void MainWindow::randomFemaleName(QString &surname, QString &firstname,
 }
 
 
-QString MainWindow::randomStreetname() const
+QString MainDummyDatabaseWidget::randomStreetname() const
 {
 	return m_streetName.at(randomInt(m_streetName.size()));
 }

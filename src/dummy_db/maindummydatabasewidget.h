@@ -1,16 +1,18 @@
 #pragma once
 
-#include "ui_mainwindow.h"
+
+#include "pluginwidget.h"
+#include "ui_maindummydatabasewidget.h"
 
 class QFile;
 
 
-class MainWindow : public QMainWindow, private Ui::MainWindow
+class MainDummyDatabaseWidget : public PluginWidget, private Ui::MainDummyDatabaseWidget
 {
 	Q_OBJECT
 
 public:
-	explicit MainWindow(QWidget *parent = 0);
+	explicit MainDummyDatabaseWidget(QWidget *parent = 0);
 
 
 private:
@@ -21,8 +23,6 @@ private:
 	void loadFile(const QString& fileName, QStringList& stringList);
 	bool tryToOpen(QFile& f) const;
 	void readFile(QFile& f, QStringList& stringList);
-
-	void showMessageInStatusBar(const QString& msg);
 
 	// Возвращает зашифрованную с помощью CryptoPP строку.
 	QString encode(const QString& plaintext) const;
@@ -61,8 +61,6 @@ private:
 	QStringList m_streetName;
 
 private slots:
-	void reconnectToDb();
-
 	void updatePatientsCount();
 	void createPatients();
 
