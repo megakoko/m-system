@@ -218,6 +218,7 @@ CREATE TABLE UiElementEnums (
 
 -- Таблица, в которой хранятся введенные в форме первичного осмотра значения.
 CREATE TABLE ExaminationData (
+	id					SERIAL PRIMARY KEY,
 	examinationId		INTEGER REFERENCES Examination(id),
 	uiElementId			INTEGER REFERENCES UiElement(id),
 	textValue			VARCHAR(100),
