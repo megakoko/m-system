@@ -147,8 +147,8 @@ void ExamContainer::expandContainer(const bool expanded)
 
 			if(widget != NULL && widget->widget() != NULL)
 			{
-				connect(widget, SIGNAL(valueChanged()), SLOT(updateHeader()));
-				connect(widget, SIGNAL(valueChanged()), SIGNAL(valueChanged()));
+				connect(widget, SIGNAL(valueChanged(bool)), SLOT(updateHeader()));
+				connect(widget, SIGNAL(valueChanged(bool)), SIGNAL(valueChanged(bool)));
 
 				const int row = m_items.count();
 				m_items.append(widget);
@@ -170,9 +170,17 @@ void ExamContainer::expandContainer(const bool expanded)
 					if(widget->valueCanBeReseted())
 					{
 						QPushButton* resetButton = new QPushButton("reset");
+						resetButton->setDisabled(widget->valueIsNull());
+						m_containerLayout->addWidget(resetButton, row, resetButtonColumn);
+
+
 						connect(resetButton, SIGNAL(clicked()), widget, SLOT(resetValue()));
 
-						m_containerLayout->addWidget(resetButton, row, resetButtonColumn);
+						connect(resetButton, SIGNAL(clicked(bool)),
+								resetButton, SLOT(setEnabled(bool)));
+
+						connect(widget, SIGNAL(valueChanged(bool)),
+								resetButton, SLOT(setDisabled(bool)));
 					}
 				}
 			}

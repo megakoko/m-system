@@ -21,8 +21,7 @@ ExamLineEdit::ExamLineEdit(const int examId, const QString &textId, const QStrin
 	, m_textIsNull(true)
 {
 	connect(m_lineEdit, SIGNAL(textChanged(QString)), SLOT(textChanged()));
-	connect(m_lineEdit, SIGNAL(textChanged(QString)), SIGNAL(valueChanged()));
-	connect(this, SIGNAL(valueChanged()), SLOT(updateLabel()));
+	connect(this, SIGNAL(valueChanged(bool)), SLOT(updateLabel()));
 
 	m_lineEdit->setMaxLength(Therapeutist::interfaces->db->
 							 fieldMaximumLength("examinationdata", "textvalue"));
@@ -68,7 +67,7 @@ void ExamLineEdit::resetValue()
 		m_lineEdit->clear();
 		m_textIsNull = true;
 
-		emit valueChanged();
+		emit valueChanged(valueIsNull());
 	}
 }
 
@@ -152,4 +151,5 @@ bool ExamLineEdit::save(const int examId) const
 void ExamLineEdit::textChanged()
 {
 	m_textIsNull = false;
+	emit valueChanged(valueIsNull());
 }
