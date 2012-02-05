@@ -1,25 +1,17 @@
 TARGET	 = dummy_db
-TEMPLATE = app
+TEMPLATE = lib
+CONFIG	+= plugin
 QT		+= sql
 
 include( ../m-system-config.pri )
 
-
-LIBS		=  -lcryptopp -L$${ROOTPATH}/bin/
-INCLUDEPATH	+=	$${ROOTPATH}/src/
-
-# Передаем линковщику опцию -R$${ROOTPATH}/bin/
-unix {
-	QMAKE_CXXFLAGS += -Wl,-R$${ROOTPATH}/bin/
-}
-
-
-
 RESOURCES+= resources/resources.qrc
 
-SOURCES	 +=	main.cpp \
-			mainwindow.cpp
+SOURCES	 +=	\
+			dummydatabase.cpp \
+			maindummydatabasewidget.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += dummydatabase.h \
+			maindummydatabasewidget.h
 
-FORMS    += mainwindow.ui
+FORMS    += maindummydatabasewidget.ui
