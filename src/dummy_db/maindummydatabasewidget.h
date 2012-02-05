@@ -7,6 +7,14 @@
 class QFile;
 
 
+struct Name
+{
+	QString surname;
+	QString firstname;
+	QString patronymic;
+};
+
+
 class MainDummyDatabaseWidget : public PluginWidget, private Ui::MainDummyDatabaseWidget
 {
 	Q_OBJECT
@@ -31,20 +39,20 @@ private:
 	// Вставка в различные таблицы.
 
 	// Возвращает ID пациента.
-	int createPatientRecord() const;
-	void createDocumentRecord(const int patientId, const QString& documentTextid) const;
+	int createPatientRecord(const QDate& birthday) const;
+	void createDocumentRecord(const int patientId,
+							  const QString& documentTextid,
+							  const QDate& patientBirthday) const;
 	void createAddressRecord(const int patientId, const QString& addressType) const;
 
 
 	// Random-функции.
 	void initializeRandom() const;
 	inline int randomInt(const int max) const;
-	inline QDate randomDate() const;
+	inline QDate randomDate(const int minimumYear = 1930) const;
 
-	inline void randomMaleName(QString& surname, QString& firstname,
-							   QString& patronymic) const;
-	inline void randomFemaleName(QString& surname, QString& firstname,
-								 QString& patronymic) const;
+	inline Name randomMaleName() const;
+	inline Name randomFemaleName() const;
 	inline QString randomStreetname() const;
 
 

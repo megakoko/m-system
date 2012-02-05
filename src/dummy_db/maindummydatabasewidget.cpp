@@ -131,12 +131,14 @@ void MainDummyDatabaseWidget::createPatients()
 			qApp->processEvents();
 		}
 
-		const int patientId = createPatientRecord();
 
-		createDocumentRecord(patientId, "passport");
-		createDocumentRecord(patientId, "insuranceMandatory");
+		const QDate& birthday = randomDate();
+		const int patientId = createPatientRecord(birthday);
+
+		createDocumentRecord(patientId, "passport", birthday);
+		createDocumentRecord(patientId, "insuranceMandatory", birthday);
 		if(randomInt(2))
-			createDocumentRecord(patientId, "insuranceVoluntary");
+			createDocumentRecord(patientId, "insuranceVoluntary", birthday);
 
 
 		createAddressRecord(patientId, "mailing");
@@ -152,21 +154,19 @@ void MainDummyDatabaseWidget::createPatients()
 }
 
 
-int MainDummyDatabaseWidget::createPatientRecord() const
+int MainDummyDatabaseWidget::createPatientRecord(const QDate &birthday) const
 {
-	QString surname;
-	QString firstname;
-	QString patronymic;
+	Name patientName;
 
 	QString sextextid;
 	if(randomInt(2))
 	{
-		randomMaleName(surname, firstname, patronymic);
+		patientName = randomMaleName();
 		sextextid = "male";
 	}
 	else
 	{
-		randomFemaleName(surname, firstname, patronymic);
+		patientName = randomFemaleName();
 		sextextid = "female";
 	}
 
@@ -176,10 +176,10 @@ int MainDummyDatabaseWidget::createPatientRecord() const
 			  "(:familyname, :name, :patronymic, :birthday, "
 				" (SELECT id FROM Sex WHERE textid = :sextextid)) "
 			  " RETURNING id");
-	q.bindValue(":familyname", encode(surname));
-	q.bindValue(":name", encode(firstname));
-	q.bindValue(":patronymic", encode(patronymic));
-	q.bindValue(":birthday", randomDate());
+	q.bindValue(":familyname", encode(patientName.surname));
+	q.bindValue(":name", encode(patientName.firstname));
+	q.bindValue(":patronymic", encode(patientName.patronymic));
+	q.bindValue(":birthday", birthday);
 	q.bindValue(":sextextid", sextextid);
 	q.exec();
 	checkQuery(q);
@@ -190,7 +190,9 @@ int MainDummyDatabaseWidget::createPatientRecord() const
 }
 
 
-void MainDummyDatabaseWidget::createDocumentRecord(const int patientId, const QString& documentTextid) const
+void MainDummyDatabaseWidget::createDocumentRecord(const int patientId,
+												   const QString& documentTextid,
+												   const QDate &patientBirthday) const
 {
 	QSqlQuery q;
 	q.prepare(" INSERT INTO Document "
@@ -200,8 +202,8 @@ void MainDummyDatabaseWidget::createDocumentRecord(const int patientId, const QS
 	q.bindValue(":docTextid", documentTextid);
 	q.bindValue(":patientId", patientId);
 	q.bindValue(":serialNumber", encode(QString::number(randomInt(1E4)) + ' ' +
-								 QString::number(randomInt(1E6))));
-	q.bindValue(":date", randomDate());
+										QString::number(randomInt(1E6))));
+	q.bindValue(":date", randomDate(patientBirthday.year() + 14));
 	if(documentTextid == "passport")
 		q.bindValue(":givenBy", encode("РОВД"));
 	else
@@ -246,28 +248,33 @@ int MainDummyDatabaseWidget::randomInt(const int max) const
 }
 
 
-QDate MainDummyDatabaseWidget::randomDate() const
+QDate MainDummyDatabaseWidget::randomDate(const int minimumYear) const
 {
-	return QDate(1970 + randomInt(30), randomInt(12)+1, randomInt(28)+1);
+	const int maximumAge = qMax(1990 - minimumYear, 14);
+	return QDate(minimumYear + randomInt(maximumAge), randomInt(12)+1, randomInt(28)+1);
 }
 
 
-void MainDummyDatabaseWidget::randomMaleName(QString &surname, QString &firstname,
-								QString &patronymic) const
+Name MainDummyDatabaseWidget::randomMaleName() const
 {
-	surname = m_maleSurname.at(randomInt(m_maleSurname.size()));
-	firstname = m_maleFirstName.at(randomInt(m_maleFirstName.size()));
-	patronymic = m_malePatronymic.at(randomInt(m_malePatronymic.size()));
+	Name name = {
+		m_maleSurname.at(randomInt(m_maleSurname.size())),
+		m_maleFirstName.at(randomInt(m_maleFirstName.size())),
+		m_malePatronymic.at(randomInt(m_malePatronymic.size()))
+	};
+	return name;
 }
 
 
 
-void MainDummyDatabaseWidget::randomFemaleName(QString &surname, QString &firstname,
-								QString &patronymic) const
+Name MainDummyDatabaseWidget::randomFemaleName() const
 {
-	surname = m_femaleSurname.at(randomInt(m_femaleSurname.size()));
-	firstname = m_femaleFirstName.at(randomInt(m_femaleFirstName.size()));
-	patronymic = m_femalePatronymic.at(randomInt(m_femalePatronymic.size()));
+	Name name = {
+		m_femaleSurname.at(randomInt(m_femaleSurname.size())),
+		m_femaleFirstName.at(randomInt(m_femaleFirstName.size())),
+		m_femalePatronymic.at(randomInt(m_femalePatronymic.size())),
+	};
+	return name;
 }
 
 
