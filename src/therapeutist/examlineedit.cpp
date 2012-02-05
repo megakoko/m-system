@@ -81,6 +81,13 @@ void ExamLineEdit::updateLabel()
 }
 
 
+void ExamLineEdit::textChanged()
+{
+	m_textIsNull = false;
+	emit valueChanged(valueIsNull());
+}
+
+
 void ExamLineEdit::init()
 {
 	if(m_examId != InvalidId)
@@ -145,11 +152,4 @@ bool ExamLineEdit::save(const int examId) const
 	}
 
 	return savedSuccessfully;
-}
-
-
-void ExamLineEdit::textChanged()
-{
-	m_textIsNull = false;
-	emit valueChanged(valueIsNull());
 }
