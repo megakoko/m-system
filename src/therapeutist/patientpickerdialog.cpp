@@ -70,6 +70,10 @@ void PatientPickerDialog::initConnections()
 void PatientPickerDialog::updatePatientsList()
 {
 	m_queryModel->setQuery(patientListQuery());
+	// Загружаем все записи.
+	while(m_queryModel->canFetchMore())
+		m_queryModel->fetchMore();
+
 	m_sortModel->setFilterWildcard(m_searchLine->text());
 	m_sortModel->sort(1);	// Колонка с фамилией.
 
