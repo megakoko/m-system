@@ -17,6 +17,10 @@ ExamComboBox::ExamComboBox(const int examId, const QString &textId, const QStrin
 	, m_label(new QLabel(labelText))
 	, m_comboBox(new QComboBox())
 {
+	connect(m_comboBox, SIGNAL(currentIndexChanged(int)), SIGNAL(valueChanged()));
+	connect(this, SIGNAL(valueChanged()), SLOT(updateLabel()));
+
+
 	QSqlQuery q;
 	q.prepare(" SELECT id, value FROM UiElementEnums "
 			  " WHERE uiElementTextId = ? ORDER BY id ");
@@ -29,8 +33,6 @@ ExamComboBox::ExamComboBox(const int examId, const QString &textId, const QStrin
 	m_comboBox->setCurrentIndex(-1);
 
 	init();
-
-	connect(m_comboBox, SIGNAL(currentIndexChanged(int)), SIGNAL(valueChanged()));
 }
 
 
@@ -66,8 +68,20 @@ QString ExamComboBox::value() const
 
 void ExamComboBox::resetValue()
 {
-	m_comboBox->setCurrentIndex(-1);
-	emit valueChanged();
+	if(!valueIsNull())
+	{
+		m_comboBox->setCurrentIndex(-1);
+		emit valueChanged();
+	}
+}
+
+
+void ExamComboBox::updateLabel()
+{
+	if(valueIsNull())
+		m_label->setText(m_labelText);
+	else
+		m_label->setText(QString("<b>%1</b>").arg(m_labelText));
 }
 
 

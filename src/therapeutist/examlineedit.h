@@ -24,6 +24,8 @@ public:
 public slots:
 	void resetValue();
 
+	void updateLabel();
+
 private:
 	QLabel* m_label;
 	QLineEdit* m_lineEdit;

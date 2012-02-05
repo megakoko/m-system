@@ -20,8 +20,9 @@ ExamLineEdit::ExamLineEdit(const int examId, const QString &textId, const QStrin
 	, m_lineEdit(new QLineEdit())
 	, m_textIsNull(true)
 {
-	connect(m_lineEdit, SIGNAL(textEdited(QString)), SLOT(textChanged()));
-	connect(m_lineEdit, SIGNAL(textEdited(QString)), SIGNAL(valueChanged()));
+	connect(m_lineEdit, SIGNAL(textChanged(QString)), SLOT(textChanged()));
+	connect(m_lineEdit, SIGNAL(textChanged(QString)), SIGNAL(valueChanged()));
+	connect(this, SIGNAL(valueChanged()), SLOT(updateLabel()));
 
 	m_lineEdit->setMaxLength(Therapeutist::interfaces->db->
 							 fieldMaximumLength("examinationdata", "textvalue"));
@@ -62,9 +63,22 @@ QString ExamLineEdit::value() const
 
 void ExamLineEdit::resetValue()
 {
-	m_lineEdit->clear();
-	m_textIsNull = true;
-	emit valueChanged();
+	if(!valueIsNull())
+	{
+		m_lineEdit->clear();
+		m_textIsNull = true;
+
+		emit valueChanged();
+	}
+}
+
+
+void ExamLineEdit::updateLabel()
+{
+	if(valueIsNull())
+		m_label->setText(m_labelText);
+	else
+		m_label->setText(QString("<b>%1</b>").arg(m_labelText));
 }
 
 
