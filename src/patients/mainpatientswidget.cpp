@@ -109,6 +109,10 @@ QString MainPatientsWidget::patientListQuery() const
 void MainPatientsWidget::updatePatientsList()
 {
 	m_queryModel->setQuery(patientListQuery());
+	// Загружаем все записи.
+	while(m_queryModel->canFetchMore())
+		m_queryModel->fetchMore();
+
 	m_sortModel->setFilterWildcard(m_searchline->text());
 	m_sortModel->sort(1);	// Колонка с фамилией.
 
