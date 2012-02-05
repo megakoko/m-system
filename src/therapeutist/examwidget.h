@@ -5,6 +5,7 @@
 
 class QWidget;
 class QLabel;
+class QPushButton;
 
 
 // Базовый класс для всех виджетов интерфейса первичного осмотра.
@@ -21,6 +22,9 @@ public:
 	// Возвращает true, если значение, которое хранит виджет, НЕ отличается от значения
 	// по-умолчанию.
 	virtual bool valueIsNull() const = 0;
+
+	// Возвращает true, если значение, хранящееся в виджете может быть сброшено.
+	virtual bool valueCanBeReseted() const;
 
 	// Возвращает текущее значение, которое хранит виджет.
 	virtual QString value() const = 0;
@@ -41,6 +45,10 @@ public:
 
 	// Возвращает название виджета.
 	QString labelText() const;
+
+public slots:
+	// Сбрасывает значение, которое хранит виджет.
+	virtual void resetValue();
 
 protected:
 	static ExamWidgetFactory m_factory;
