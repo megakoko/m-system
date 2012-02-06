@@ -15,10 +15,7 @@ LotusMainWindow::LotusMainWindow(QWidget *parent)
 
 void LotusMainWindow::init()
 {
-	splitter->setStretchFactor(0, 1);
-	splitter->setStretchFactor(1, 2);
 
-	connect(m_parse, SIGNAL(clicked()), SLOT(parse()));
 }
 
 
@@ -31,23 +28,68 @@ void LotusMainWindow::dragEnterEvent(QDragEnterEvent *event)
 
 void LotusMainWindow::dropEvent(QDropEvent *event)
 {
+	QStringList files;
 	foreach(const QUrl& url, event->mimeData()->urls())
 	{
 		const QFileInfo& info(url.toString().remove("file://"));
 
 		if(info.isFile())
-		{
-			m_files << info.filePath();
-			m_inputFiles->addItem(info.fileName());
-		}
+			files << info.filePath();
 	}
+
+	m_outputSql->setPlainText(parse(files, files.first(),
+									m_containerTextId->text(), m_startId->value()));
 }
 
 
-void LotusMainWindow::parse()
+QString LotusMainWindow::parse(const QStringList& filenames,
+							   const QString& containerLabel,
+							   const QString& containerTextid, const int startId)
 {
-	QList<UiElement> uiElements = FormParser::parseFiles(m_files);
+	const int increment = 10;
 
-	foreach(const UiElement element, uiElements)
-		qDebug() << element.textId << element.label << element.enumValues;
+
+	QList<UiElement> ui = FormParser::parseFiles(filenames);
+
+	QString text;
+
+	const QString uiElementTemplate = "SELECT %1, '%2', '%3', NULL, '%4', '%5'";
+	QStringList uiElements;
+
+	int id = startId;
+	uiElements += uiElementTemplate.arg(id).arg(containerTextid).arg("main").arg("container").arg(containerLabel);
+	id += increment;
+	foreach(const UiElement& element, ui)
+	{
+		if(!element.textId.isNull())
+		{
+			QString type = element.enumValues.isEmpty() ? "lineedit" : "combobox";
+
+			uiElements += uiElementTemplate.arg(id).arg(element.textId).arg(containerTextid).arg(type).arg(element.label);
+			id += increment;
+		}
+	}
+	text += "INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)\n"
+			+ uiElements.join(" UNION\n") + ";\n\n";
+
+
+	id = startId;
+	QStringList uiElementEnums;
+	const QString uiElementEnumTemplate = "SELECT %1, '%2', '%3'";
+	foreach(const UiElement& element, ui)
+	{
+		if(!element.textId.isNull())
+		{
+			foreach(const QString& value, element.enumValues)
+			{
+				uiElementEnums += uiElementEnumTemplate.arg(id).arg(element.textId).arg(value);
+				id += increment;
+			}
+		}
+	}
+	text += "INSERT INTO UiElementEnums(id, uiElementTextId, value)\n"
+			+ uiElementEnums.join(" UNION\n") + ";\n";
+
+
+	return text;
 }

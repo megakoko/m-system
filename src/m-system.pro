@@ -1,9 +1,9 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS	+=	lotusformparser
 
 SUBDIRS	+= 	cryptopp \
+			lotusformparser \
 			loader \
 			users \
 			patients \
