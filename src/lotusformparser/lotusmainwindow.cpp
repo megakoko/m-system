@@ -31,7 +31,7 @@ void LotusMainWindow::dropEvent(QDropEvent *event)
 	QStringList files;
 	foreach(const QUrl& url, event->mimeData()->urls())
 	{
-		const QFileInfo& info(url.toString().remove("file://"));
+		const QFileInfo& info(url.toLocalFile());
 
 		if(info.isFile())
 			files << info.filePath();
