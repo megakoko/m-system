@@ -314,3 +314,37 @@ SELECT 4200, 'NeckTGCS', 'плотная' UNION
 SELECT 4210, 'NeckTGSU', 'поверхность гладкая' UNION
 SELECT 4220, 'NeckTGSU', 'поверхность бугристая';
 
+
+
+INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
+SELECT 5010, 'OVall', 'main', CAST(NULL AS "numeric"), 'container', 'Органы зрения' UNION
+SELECT 5020, 'NS_cnzo', 'OVall', NULL, 'lineedit', 'Острота зрения' UNION
+SELECT 5030, 'NS_cnzc', 'OVall', NULL, 'lineedit', 'Цветоощущение' UNION
+SELECT 5040, 'NS_cnzp', 'OVall', NULL, 'lineedit', 'Поля зрения' UNION
+SELECT 5050, 'NS_cngd', 'OVall', NULL, 'lineedit', 'Диплопия' UNION
+SELECT 5060, 'US_OVemot', 'OVall', NULL, 'lineedit', 'Движения глазных яблок' UNION
+SELECT 5070, 'US_OVMio', 'OVall', NULL, 'combobox', 'Миоз' UNION
+SELECT 5080, 'US_OVMyd', 'OVall', NULL, 'combobox', 'Мидриаз' UNION
+SELECT 5090, 'US_OVEno', 'OVall', NULL, 'combobox', 'Энофтальм' UNION
+SELECT 5100, 'US_OVExo', 'OVall', NULL, 'combobox', 'Экзофтальм' UNION
+SELECT 5110, 'US_OVCS', 'OVall', NULL, 'combobox', 'Цвет склер' UNION
+SELECT 5120, 'US_OVd', 'OVall', NULL, 'lineedit', 'Дополнительно';
+
+INSERT INTO UiElementEnums(id, uiElementTextId, value)
+SELECT 5010, 'US_OVMio', 'правосторонний' UNION
+SELECT 5020, 'US_OVMio', 'левосторонний' UNION
+SELECT 5030, 'US_OVMio', 'двусторонний' UNION
+SELECT 5040, 'US_OVMyd', 'правосторонний' UNION
+SELECT 5050, 'US_OVMyd', 'левосторонний' UNION
+SELECT 5060, 'US_OVMyd', 'двусторонний' UNION
+SELECT 5070, 'US_OVEno', 'правосторонний' UNION
+SELECT 5080, 'US_OVEno', 'левосторонний' UNION
+SELECT 5090, 'US_OVEno', 'двусторонний' UNION
+SELECT 5100, 'US_OVExo', 'правосторонний' UNION
+SELECT 5110, 'US_OVExo', 'левосторонний' UNION
+SELECT 5120, 'US_OVExo', 'двусторонний' UNION
+SELECT 5130, 'US_OVExo', 'отсутствует' UNION
+SELECT 5140, 'US_OVCS', 'обычный' UNION
+SELECT 5150, 'US_OVCS', 'субиктеричный' UNION
+SELECT 5160, 'US_OVCS', 'иктеричный' UNION
+SELECT 5170, 'US_OVCS', 'гиперемия склер';
