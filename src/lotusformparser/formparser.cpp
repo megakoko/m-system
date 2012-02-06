@@ -7,6 +7,9 @@
 #include <QDebug>
 
 
+const QRegExp trailingPunctuation("[.,: ]+$");
+
+
 QList<UiElement> FormParser::parseFiles(const QStringList &fileNames)
 {
 	QFile file;
@@ -107,7 +110,7 @@ QString FormParser::extractLabel(const QDomElement& tableCell)
 			label = pars.at(0).toElement().text();
 	}
 
-	return label;
+	return label.remove(trailingPunctuation);
 }
 
 
@@ -120,7 +123,7 @@ QStringList FormParser::extractEnumValues(const QDomElement& tableCell)
 	{
 		const QDomNodeList& texts = textLists.at(0).toElement().elementsByTagName("text");
 		for(int i = 0; i < texts.size(); ++i)
-			enumValues += texts.at(i).toElement().text();
+			enumValues += texts.at(i).toElement().text().remove(trailingPunctuation);
 	}
 
 	return enumValues;
