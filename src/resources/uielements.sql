@@ -836,3 +836,368 @@ SELECT 8230, 'CVSPTALP', 'обычная' UNION
 SELECT 8240, 'CVSPTALP', 'усиленная' UNION
 SELECT 8250, 'CVSPTALP', 'ослабленная' UNION
 SELECT 8260, 'CVSPTALP', 'не пальпируется';
+
+
+
+
+INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
+SELECT 9010, 'NSall', 'main', CAST(NULL AS "numeric"), 'container', 'Неврологический статус' UNION
+SELECT 9020, 'NS_os', 'NSall', NULL, 'container', 'Общемозговые симптомы' UNION
+SELECT 9030, 'NS_sud', 'NS_os', NULL, 'combobox', 'Судороги' UNION
+SELECT 9040, 'NS_ha', 'NS_os', NULL, 'lineedit', 'Головная боль' UNION
+SELECT 9050, 'NS_go', 'NS_os', NULL, 'lineedit', 'Головокружение' UNION
+SELECT 9060, 'NS_rv', 'NS_os', NULL, 'lineedit', 'Рвота без предшествующего периода тошноты' UNION
+SELECT 9070, 'NS_cnzz', 'NS_os', NULL, 'lineedit', 'Зрительные галлюцинации' UNION
+SELECT 9080, 'NS_cnsg', 'NS_os', NULL, 'lineedit', 'Слуховые галлюцинации' UNION
+SELECT 9090, 'NS_cnog', 'NS_os', NULL, 'lineedit', 'Обонятельные галлюцинации' UNION
+SELECT 9100, 'NS_cnosg', 'NS_os', NULL, 'lineedit', 'Осязательные галлюцинации' UNION
+SELECT 9110, 'NS_osd', 'NS_os', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9120, 'NS_ms', 'NSall', NULL, 'container', 'Менингеальные симптомы' UNION
+SELECT 9130, 'NS_mp', 'NS_ms', NULL, 'lineedit', 'Менингеальная поза' UNION
+SELECT 9140, 'NS_hy', 'NS_ms', NULL, 'lineedit', 'Общая кожная гиперэстезия' UNION
+SELECT 9150, 'NS_rig', 'NS_ms', NULL, 'combobox', 'Ригидность затылочных мышц' UNION
+SELECT 9160, 'NS_syk', 'NS_ms', NULL, 'combobox', 'Симптом Кернига' UNION
+SELECT 9170, 'NS_syb', 'NS_ms', NULL, 'container', 'Симптом Брудзинского' UNION
+SELECT 9180, 'NS_syb_1d', 'NS_syb', NULL, 'combobox', 'верхний' UNION
+SELECT 9190, 'NS_syb_2d', 'NS_syb', NULL, 'combobox', 'скуловой' UNION
+SELECT 9200, 'NS_syb_3d', 'NS_syb', NULL, 'combobox', 'щечный' UNION
+SELECT 9210, 'NS_syb_4d', 'NS_syb', NULL, 'combobox', 'лобковый' UNION
+SELECT 9220, 'NS_syb_5d', 'NS_syb', NULL, 'combobox', 'нижний' UNION
+SELECT 9230, 'NS_syg', 'NS_ms', NULL, 'combobox', 'Симптом Гиллена' UNION
+SELECT 9240, 'NS_syl', 'NS_ms', NULL, 'combobox', 'Симптом подвешивания Лессажа' UNION
+SELECT 9250, 'NS_sybech', 'NS_ms', NULL, 'combobox', 'Симптом Бехтерева' UNION
+SELECT 9260, 'NS_sytre', 'NS_ms', NULL, 'combobox', 'Симптом "треножника"' UNION
+SELECT 9270, 'NS_syfan', 'NS_ms', NULL, 'combobox', 'Симптом Фанкони' UNION
+SELECT 9280, 'NS_sypoc', 'NS_ms', NULL, 'combobox', 'Симптом "поцелуя в колено"' UNION
+SELECT 9290, 'NS_sym', 'NS_ms', NULL, 'combobox', 'Симптом Мэйтуса' UNION
+SELECT 9300, 'NS_syr', 'NS_ms', NULL, 'lineedit', 'Большой родничок' UNION
+SELECT 9310, 'NS_msd', 'NS_ms', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9320, 'NS_cn', 'NSall', NULL, 'container', 'Черепные нервы' UNION
+SELECT 9330, 'NS_cno', 'NS_cn', NULL, 'container', 'Обонятельный нерв' UNION
+SELECT 9340, 'NS_cnoan', 'NS_cno', NULL, 'lineedit', 'Аносмия' UNION
+SELECT 9350, 'NS_cnohy', 'NS_cno', NULL, 'lineedit', 'Гипосмия' UNION
+SELECT 9360, 'NS_cnohyp', 'NS_cno', NULL, 'lineedit', 'Гиперосмия' UNION
+SELECT 9370, 'NS_cnodys', 'NS_cno', NULL, 'lineedit', 'Дизосмия' UNION
+SELECT 9380, 'NS_cnod', 'NS_cno', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9390, 'NS_cnz', 'NS_cn', NULL, 'container', 'Зрительный нерв' UNION
+SELECT 9400, 'NS_cnzg', 'NS_cnz', NULL, 'lineedit', 'Глазное дно' UNION
+SELECT 9410, 'NS_cnzd', 'NS_cnz', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9420, 'NS_cng', 'NS_cn', NULL, 'container', 'Глазодвигательные нервы' UNION
+SELECT 9430, 'NS_cngs', 'NS_cng', NULL, 'lineedit', 'Ширина и равномерность глазных щелей' UNION
+SELECT 9440, 'NS_cngr', 'NS_cng', NULL, 'lineedit', 'Положение и объем движений глазных яблок' UNION
+SELECT 9450, 'NS_cngb', 'NS_cng', NULL, 'combobox', 'Синдром Бернара-Горнера' UNION
+SELECT 9460, 'NS_cnga', 'NS_cng', NULL, 'combobox', 'Синдром Аргайла-Робертсона' UNION
+SELECT 9470, 'NS_cngg', 'NS_cng', NULL, 'combobox', 'Синдром Гертвига-Мажанди' UNION
+SELECT 9480, 'NS_cngdop', 'NS_cng', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9490, 'NS_cnt', 'NS_cn', NULL, 'container', 'Тройничный нерв' UNION
+SELECT 9500, 'NS_cntm', 'NS_cnt', NULL, 'lineedit', 'Объем движений нижней челюсти' UNION
+SELECT 9510, 'NS_cntz', 'NS_cnt', NULL, 'lineedit', 'Напряжение и трофика жевательных мышц' UNION
+SELECT 9520, 'NS_cntb', 'NS_cnt', NULL, 'lineedit', 'Боли и парестезии в области лица' UNION
+SELECT 9530, 'NS_cntt', 'NS_cnt', NULL, 'lineedit', 'Болевые точки' UNION
+SELECT 9540, 'NS_cntc', 'NS_cnt', NULL, 'lineedit', 'Чувствительность кожи лица' UNION
+SELECT 9550, 'NS_cntrn', 'NS_cnt', NULL, 'combobox', 'Надбровный рефлекс' UNION
+SELECT 9560, 'NS_cntrc', 'NS_cnt', NULL, 'combobox', 'Конъюнктивальный рефлекс' UNION
+SELECT 9570, 'NS_cntrk', 'NS_cnt', NULL, 'combobox', 'Корнеальный рефлекс' UNION
+SELECT 9580, 'NS_cntrm', 'NS_cnt', NULL, 'combobox', 'Нижнечелюстной рефлекс' UNION
+SELECT 9590, 'NS_cntd', 'NS_cnt', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9600, 'NS_cnl', 'NS_cn', NULL, 'container', 'Лицевой нерв' UNION
+SELECT 9610, 'NS_cnlm', 'NS_cnl', NULL, 'lineedit', 'Иннервация мимической мускулатуры' UNION
+SELECT 9620, 'NS_cnlt', 'NS_cnl', NULL, 'lineedit', 'Чувствительность передних 2/3 языка' UNION
+SELECT 9630, 'NS_cnlh', 'NS_cnl', NULL, 'lineedit', 'Гиперакузия' UNION
+SELECT 9640, 'NS_cnls', 'NS_cnl', NULL, 'lineedit', 'Слезотечение' UNION
+SELECT 9650, 'NS_cnlb', 'NS_cnl', NULL, 'combobox', 'Симптом Белла' UNION
+SELECT 9660, 'NS_cnlc', 'NS_cnl', NULL, 'combobox', 'Симптом "крокодиловых слез"' UNION
+SELECT 9670, 'NS_cnll', 'NS_cnl', NULL, 'lineedit', 'Лагофтальм' UNION
+SELECT 9680, 'NS_cnld', 'NS_cnl', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9690, 'NS_cns', 'NS_cn', NULL, 'container', 'Слуховой и вестибулярный нервы' UNION
+SELECT 9700, 'NS_cnso', 'NS_cns', NULL, 'combobox', 'Острота слуха' UNION
+SELECT 9710, 'NS_cnsh', 'NS_cns', NULL, 'lineedit', 'Гипакузия' UNION
+SELECT 9720, 'NS_cnsz', 'NS_cns', NULL, 'lineedit', 'Гиперакузия' UNION
+SELECT 9730, 'NS_cnss', 'NS_cns', NULL, 'lineedit', 'Шум в ушах' UNION
+SELECT 9740, 'NS_cnsn', 'NS_cns', NULL, 'lineedit', 'Нистагм' UNION
+SELECT 9750, 'NS_cnsd', 'NS_cns', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9760, 'NS_cny', 'NS_cn', NULL, 'container', 'Языкоглоточный и блуждающий нервы' UNION
+SELECT 9770, 'NS_cnym', 'NS_cny', NULL, 'lineedit', 'Мягкое небо' UNION
+SELECT 9780, 'NS_cnyl', 'NS_cny', NULL, 'lineedit', 'Положение язычка' UNION
+SELECT 9790, 'NS_cnyc', 'NS_cny', NULL, 'lineedit', 'Чувствительность' UNION
+SELECT 9800, 'NS_cnyg', 'NS_cny', NULL, 'lineedit', 'Глоточные рефлексы' UNION
+SELECT 9810, 'NS_cnyn', 'NS_cny', NULL, 'lineedit', 'Небные рефлексы' UNION
+SELECT 9820, 'NS_cnyo', 'NS_cny', NULL, 'lineedit', 'Глотание' UNION
+SELECT 9830, 'NS_cnyf', 'NS_cny', NULL, 'lineedit', 'Фонация' UNION
+SELECT 9840, 'NS_cnya', 'NS_cny', NULL, 'lineedit', 'Артикуляция' UNION
+SELECT 9850, 'NS_cnyi', 'NS_cny', NULL, 'lineedit', 'Иннервация задней трети языка' UNION
+SELECT 9860, 'NS_cnys', 'NS_cny', NULL, 'lineedit', 'Саливация' UNION
+SELECT 9870, 'NS_cnyp', 'NS_cny', NULL, 'lineedit', 'Парасимпатическая иннервация внутренних органов' UNION
+SELECT 9880, 'NS_cnyd', 'NS_cny', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9890, 'NS_cnd', 'NSall', NULL, 'container', 'Добавочный нерв' UNION
+SELECT 9900, 'NS_cndp', 'NS_cnd', NULL, 'lineedit', 'Положение плеч, лопаток и головы в покое' UNION
+SELECT 9910, 'NS_cndm', 'NS_cnd', NULL, 'lineedit', 'Поднимание плеч, повороты головы' UNION
+SELECT 9920, 'NS_cnds', 'NS_cnd', NULL, 'lineedit', 'Напряжение, трофика грудино-ключично-сосцевидной мышцы и трапециевидной мышцы' UNION
+SELECT 9930, 'NS_cndk', 'NS_cnd', NULL, 'lineedit', 'Кривошея' UNION
+SELECT 9940, 'NS_cndd', 'NS_cnd', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 9950, 'NS_cnpod', 'NSall', NULL, 'container', 'Подъязычный нерв' UNION
+SELECT 9960, 'NS_cnpodg', 'NS_cnpod', NULL, 'lineedit', 'Положение языка в полости рта и при высовывании' UNION
+SELECT 9970, 'NS_cnpoda', 'NS_cnpod', NULL, 'lineedit', 'Атрофия (гипотрофия) и фибриллярные|Атрофия (гипотрофия) и фибриллярные подергивания в мышцах языка' UNION
+SELECT 9980, 'NS_cnpodr', 'NS_cnpod', NULL, 'lineedit', 'Дизартрия' UNION
+SELECT 9990, 'NS_cnpodd', 'NS_cnpod', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10000, 'NS_bu', 'NSall', NULL, 'container', 'Бульбарный и псевдобульбарный синдромы' UNION
+SELECT 10010, 'NS_bud', 'NS_bu', NULL, 'lineedit', 'Дизартрия' UNION
+SELECT 10020, 'NS_buf', 'NS_bu', NULL, 'lineedit', 'Дисфония' UNION
+SELECT 10030, 'NS_bug', 'NS_bu', NULL, 'lineedit', 'Дисфагия' UNION
+SELECT 10040, 'NS_bum', 'NS_bu', NULL, 'combobox', 'Рефлекс Маринеско-Радовичи' UNION
+SELECT 10050, 'NS_buv', 'NS_bu', NULL, 'combobox', 'Рефлекс Вюрпа' UNION
+SELECT 10060, 'NS_buo', 'NS_bu', NULL, 'combobox', 'Рефлекс Оппенгейма' UNION
+SELECT 10070, 'NS_bua', 'NS_bu', NULL, 'combobox', 'Рефлекс Аствацатурова' UNION
+SELECT 10080, 'NS_buc', 'NS_bu', NULL, 'combobox', 'Корнеоментальный рефлекс' UNION
+SELECT 10090, 'NS_buk', 'NS_bu', NULL, 'combobox', 'Корнеомандибулярный рефлекс' UNION
+SELECT 10100, 'NS_bus', 'NS_bu', NULL, 'combobox', 'Дистанс-рефлекс' UNION
+SELECT 10110, 'NS_budop', 'NS_bu', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10120, 'NS_dv', 'NSall', NULL, 'container', 'Двигательная сфера' UNION
+SELECT 10130, 'NS_dvm', 'NS_dv', NULL, 'combobox', 'Проба Мингаццини-Барре' UNION
+SELECT 10140, 'NS_dvl', 'NS_dv', NULL, 'lineedit', 'Параличи и парезы конечностей' UNION
+SELECT 10150, 'NS_dvd', 'NS_dv', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10160, 'NS_res', 'NSall', NULL, 'container', 'Сухожильные и надкостничные рефлексы' UNION
+SELECT 10170, 'NS_resm', 'NS_res', NULL, 'combobox', 'Нижнечелюстной рефлекс' UNION
+SELECT 10180, 'NS_resn', 'NS_res', NULL, 'combobox', 'Надбровный рефлекс' UNION
+SELECT 10190, 'NS_resb', 'NS_res', NULL, 'combobox', 'Рефлекс с двуглавой мыщцы плеча' UNION
+SELECT 10200, 'NS_rest', 'NS_res', NULL, 'combobox', 'Рефлекс с трехглавой мышцы плеча' UNION
+SELECT 10210, 'NS_resc', 'NS_res', NULL, 'combobox', 'Карпорадиальный рефлекс' UNION
+SELECT 10220, 'NS_resr', 'NS_res', NULL, 'combobox', 'Реберно-абдоминальный рефлекс' UNION
+SELECT 10230, 'NS_reso', 'NS_res', NULL, 'combobox', 'Лопаточно-плечевой рефлекс' UNION
+SELECT 10240, 'NS_resp', 'NS_res', NULL, 'combobox', 'Лобковый рефлекс' UNION
+SELECT 10250, 'NS_resk', 'NS_res', NULL, 'combobox', 'Коленный рефлекс' UNION
+SELECT 10260, 'NS_resa', 'NS_res', NULL, 'combobox', 'Ахиллов рефлекс' UNION
+SELECT 10270, 'NS_resv', 'NS_res', NULL, 'combobox', 'Подошвенный рефлекс' UNION
+SELECT 10280, 'NS_resd', 'NS_res', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10290, 'NS_rec', 'NSall', NULL, 'container', 'Кожные рефлексы' UNION
+SELECT 10300, 'NS_reca', 'NS_rec', NULL, 'lineedit', 'Брюшные рефлексы' UNION
+SELECT 10310, 'NS_recc', 'NS_rec', NULL, 'lineedit', 'Кремастерные рефлексы' UNION
+SELECT 10320, 'NS_recn', 'NS_rec', NULL, 'lineedit', 'Анальный рефлекс' UNION
+SELECT 10330, 'NS_recy', 'NS_rec', NULL, 'lineedit', 'Ягодичный рефлекс' UNION
+SELECT 10340, 'NS_recp', 'NS_rec', NULL, 'lineedit', 'Подошвенный рефлекс' UNION
+SELECT 10350, 'NS_recd', 'NS_rec', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10360, 'NS_resl', 'NSall', NULL, 'container', 'Рефлексы со слизистых' UNION
+SELECT 10370, 'NS_reslc', 'NS_resl', NULL, 'combobox', 'Конъюнктивальный рефлекс' UNION
+SELECT 10380, 'NS_reslo', 'NS_resl', NULL, 'combobox', 'Корнеальный рефлекс' UNION
+SELECT 10390, 'NS_reslg', 'NS_resl', NULL, 'combobox', 'Глоточный рефлекс' UNION
+SELECT 10400, 'NS_resln', 'NS_resl', NULL, 'combobox', 'Небный рефлекс' UNION
+SELECT 10410, 'NS_resld', 'NS_resl', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10420, 'NS_rep', 'NSall', NULL, 'container', 'Патологические рефлексы' UNION
+SELECT 10430, 'NS_repr', 'NS_rep', NULL, 'lineedit', 'Кистевой рефлекс Россолимо' UNION
+SELECT 10440, 'NS_repj', 'NS_rep', NULL, 'lineedit', 'Кистевой рефлекс Жуковского' UNION
+SELECT 10450, 'NS_repi', 'NS_rep', NULL, 'lineedit', 'Кистевой рефлекс Якобсона-Ласка' UNION
+SELECT 10460, 'NS_reps', 'NS_rep', NULL, 'lineedit', 'Стопный рефлекс Россолимо' UNION
+SELECT 10470, 'NS_repj2', 'NS_rep', NULL, 'lineedit', 'Стопный рефлекс Жуковского' UNION
+SELECT 10480, 'NS_repb1', 'NS_rep', NULL, 'lineedit', 'Стопный рефлекс Бехтерева-1' UNION
+SELECT 10490, 'NS_repb2', 'NS_rep', NULL, 'lineedit', 'Стопный рефлекс Бехтерева-2' UNION
+SELECT 10500, 'NS_repba', 'NS_rep', NULL, 'lineedit', 'Стопный рефлекс Бабинского' UNION
+SELECT 10510, 'NS_repo', 'NS_rep', NULL, 'lineedit', 'Стопный рефлекс Оппенгейма' UNION
+SELECT 10520, 'NS_repg', 'NS_rep', NULL, 'lineedit', 'Стопный рефлекс Гордона' UNION
+SELECT 10530, 'NS_reph', 'NS_rep', NULL, 'lineedit', 'Стопный рефлекс Шеффера' UNION
+SELECT 10540, 'NS_repbe', 'NS_rep', NULL, 'lineedit', 'Симптом Бехтерева-Мари-Фуа' UNION
+SELECT 10550, 'NS_repsh', 'NS_rep', NULL, 'lineedit', 'Тибиальный феномен Штрюмпелля' UNION
+SELECT 10560, 'NS_repp', 'NS_rep', NULL, 'lineedit', 'Пронаторная синкинезия' UNION
+SELECT 10570, 'NS_repra', 'NS_rep', NULL, 'lineedit', 'Радиальная синкинезия' UNION
+SELECT 10580, 'NS_repsy', 'NS_rep', NULL, 'lineedit', 'Синкинезия Раймиста' UNION
+SELECT 10590, 'NS_repd', 'NS_rep', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10600, 'NS_co', 'NSall', NULL, 'container', 'Координация движений' UNION
+SELECT 10610, 'NS_coa', 'NS_co', NULL, 'lineedit', 'Атаксия' UNION
+SELECT 10620, 'NS_cot', 'NS_co', NULL, 'lineedit', 'Тремор' UNION
+SELECT 10630, 'NS_con', 'NS_co', NULL, 'lineedit', 'Нистагм' UNION
+SELECT 10640, 'NS_cos', 'NS_co', NULL, 'lineedit', 'Скандированная речь' UNION
+SELECT 10650, 'NS_cor', 'NS_co', NULL, 'lineedit', 'Проба Ромберга' UNION
+SELECT 10660, 'NS_copn', 'NS_co', NULL, 'lineedit', 'Локомоторная пальценосовая проба' UNION
+SELECT 10670, 'NS_copk', 'NS_co', NULL, 'lineedit', 'Локомоторная пяточноколенная проба' UNION
+SELECT 10680, 'NS_cosh', 'NS_co', NULL, 'combobox', 'Проба Шильдера' UNION
+SELECT 10690, 'NS_coi', 'NS_co', NULL, 'lineedit', 'Пробы на адиадохокинез' UNION
+SELECT 10700, 'NS_coas', 'NS_co', NULL, 'lineedit', 'Пробы на асинергию' UNION
+SELECT 10710, 'NS_cohy', 'NS_co', NULL, 'lineedit', 'Пробы на гиперметрию' UNION
+SELECT 10720, 'NS_cost', 'NS_co', NULL, 'combobox', 'Феномен Стюарта-Холмса' UNION
+SELECT 10730, 'NS_cod', 'NS_co', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10740, 'NS_chu', 'NSall', NULL, 'container', 'Чувствительность' UNION
+SELECT 10750, 'NS_chub', 'NS_chu', NULL, 'lineedit', 'Болевая чувствительность' UNION
+SELECT 10760, 'NS_chut', 'NS_chu', NULL, 'lineedit', 'Температурная чувствительность' UNION
+SELECT 10770, 'NS_chuta', 'NS_chu', NULL, 'lineedit', 'Тактильная чувствительность' UNION
+SELECT 10780, 'NS_chul', 'NS_chu', NULL, 'combobox', 'Симптом Лассега' UNION
+SELECT 10790, 'NS_chun', 'NS_chu', NULL, 'combobox', 'Симптом Нери' UNION
+SELECT 10800, 'NS_chus', 'NS_chu', NULL, 'combobox', 'Симптом Сикара' UNION
+SELECT 10810, 'NS_chum', 'NS_chu', NULL, 'combobox', 'Симптом Мацкевича' UNION
+SELECT 10820, 'NS_chuv', 'NS_chu', NULL, 'combobox', 'Симптом Вассермана' UNION
+SELECT 10830, 'NS_chubt', 'NS_chu', NULL, 'lineedit', 'Болевые точки' UNION
+SELECT 10840, 'NS_chuz', 'NS_chu', NULL, 'lineedit', 'Зоны Захарьина-Геда' UNION
+SELECT 10850, 'NS_chug', 'NS_chu', NULL, 'lineedit', 'Глубокая чувствительность' UNION
+SELECT 10860, 'NS_chud', 'NS_chu', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10870, 'NS_ve', 'NSall', NULL, 'container', 'Вегетативно-трофическая сфера' UNION
+SELECT 10880, 'NS_vet', 'NS_ve', NULL, 'lineedit', 'Трофика кожи' UNION
+SELECT 10890, 'NS_ven', 'NS_ve', NULL, 'lineedit', 'Состояние ногтей и оволосение' UNION
+SELECT 10900, 'NS_vee', 'NS_ve', NULL, 'lineedit', 'Дермографизм' UNION
+SELECT 10910, 'NS_ves', 'NS_ve', NULL, 'lineedit', 'Солярный рефлекс' UNION
+SELECT 10920, 'NS_vec', 'NS_ve', NULL, 'lineedit', 'Клиноортостатическая проба' UNION
+SELECT 10930, 'NS_veg', 'NS_ve', NULL, 'lineedit', 'Глазосердечный рефлекс Даньини-Ашнера' UNION
+SELECT 10940, 'NS_vepi', 'NS_ve', NULL, 'lineedit', 'Пиломоторный рефлекс' UNION
+SELECT 10950, 'NS_ved', 'NS_ve', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 10960, 'NS_vi', 'NSall', NULL, 'container', 'Высшие корковые функции' UNION
+SELECT 10970, 'NS_vig', 'NS_ve', NULL, 'lineedit', 'Гнозис' UNION
+SELECT 10980, 'NS_vip', 'NS_ve', NULL, 'lineedit', 'Праксис' UNION
+SELECT 10990, 'NS_vir', 'NS_ve', NULL, 'lineedit', 'Речь' UNION
+SELECT 11000, 'NS_vis', 'NS_ve', NULL, 'lineedit', 'Письмо, чтение, счет' UNION
+SELECT 11010, 'NS_viv', 'NS_ve', NULL, 'lineedit', 'Память, внимание, интеллект' UNION
+SELECT 11020, 'NS_vie', 'NS_ve', NULL, 'lineedit', 'Эмоциональная сфера' UNION
+SELECT 11030, 'NS_viso', 'NS_ve', NULL, 'lineedit', 'Сон' UNION
+SELECT 11040, 'NS_vid', 'NS_ve', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 11050, 'NS_d', 'NS_ve', NULL, 'lineedit', 'Дополнительно';
+
+INSERT INTO UiElementEnums(id, uiElementTextId, value)
+SELECT 9010, 'NS_sud', 'отсутствуют' UNION
+SELECT 9020, 'NS_sud', 'наблюдаются парциальные судороги' UNION
+SELECT 9030, 'NS_sud', 'наблюдаются генерализованные судороги' UNION
+SELECT 9040, 'NS_sud', 'наблюдаются тонические судороги' UNION
+SELECT 9050, 'NS_sud', 'наблюдаются клонические судороги' UNION
+SELECT 9060, 'NS_sud', 'наблюдаются тонико-клонические судороги' UNION
+SELECT 9070, 'NS_rig', 'не выявляется' UNION
+SELECT 9080, 'NS_rig', 'выраженная' UNION
+SELECT 9090, 'NS_rig', 'умеренная' UNION
+SELECT 9100, 'NS_syk', 'отрицательный' UNION
+SELECT 9110, 'NS_syk', 'положительный' UNION
+SELECT 9120, 'NS_syk', 'резко положительный' UNION
+SELECT 9130, 'NS_syb_1d', 'отрицательный' UNION
+SELECT 9140, 'NS_syb_1d', 'положительный' UNION
+SELECT 9150, 'NS_syb_1d', 'резко положительный' UNION
+SELECT 9160, 'NS_syb_2d', 'отрицательный' UNION
+SELECT 9170, 'NS_syb_2d', 'положительный' UNION
+SELECT 9180, 'NS_syb_2d', 'резко положительный' UNION
+SELECT 9190, 'NS_syb_3d', 'отрицательный' UNION
+SELECT 9200, 'NS_syb_3d', 'положительный' UNION
+SELECT 9210, 'NS_syb_3d', 'резко положительный' UNION
+SELECT 9220, 'NS_syb_4d', 'отрицательный' UNION
+SELECT 9230, 'NS_syb_4d', 'положительный' UNION
+SELECT 9240, 'NS_syb_4d', 'резко положительный' UNION
+SELECT 9250, 'NS_syb_5d', 'отрицательный' UNION
+SELECT 9260, 'NS_syb_5d', 'положительный' UNION
+SELECT 9270, 'NS_syb_5d', 'резко положительный' UNION
+SELECT 9280, 'NS_syg', 'отрицательный' UNION
+SELECT 9290, 'NS_syg', 'положительный' UNION
+SELECT 9300, 'NS_syg', 'резко положительный' UNION
+SELECT 9310, 'NS_syl', 'отрицательный' UNION
+SELECT 9320, 'NS_syl', 'положительный' UNION
+SELECT 9330, 'NS_sybech', 'отрицательный' UNION
+SELECT 9340, 'NS_sybech', 'положительный' UNION
+SELECT 9350, 'NS_sytre', 'отрицательный' UNION
+SELECT 9360, 'NS_sytre', 'положительный' UNION
+SELECT 9370, 'NS_syfan', 'отрицательный' UNION
+SELECT 9380, 'NS_syfan', 'положительный' UNION
+SELECT 9390, 'NS_sypoc', 'отрицательный' UNION
+SELECT 9400, 'NS_sypoc', 'положительный' UNION
+SELECT 9410, 'NS_sym', 'отрицательный' UNION
+SELECT 9420, 'NS_sym', 'положительный' UNION
+SELECT 9430, 'NS_cngb', 'отрицательный' UNION
+SELECT 9440, 'NS_cngb', 'положительный' UNION
+SELECT 9450, 'NS_cngb', 'резко положительный' UNION
+SELECT 9460, 'NS_cnga', 'отрицательный' UNION
+SELECT 9470, 'NS_cnga', 'положительный' UNION
+SELECT 9480, 'NS_cngg', 'отрицательный' UNION
+SELECT 9490, 'NS_cngg', 'положительный' UNION
+SELECT 9500, 'NS_cntrn', 'обычный' UNION
+SELECT 9510, 'NS_cntrn', 'оживлен' UNION
+SELECT 9520, 'NS_cntrn', 'вялый' UNION
+SELECT 9530, 'NS_cntrn', 'отсутствует' UNION
+SELECT 9540, 'NS_cntrc', 'обычный' UNION
+SELECT 9550, 'NS_cntrc', 'оживлен' UNION
+SELECT 9560, 'NS_cntrc', 'вялый' UNION
+SELECT 9570, 'NS_cntrc', 'отсутствует' UNION
+SELECT 9580, 'NS_cntrk', 'обычный' UNION
+SELECT 9590, 'NS_cntrk', 'оживлен' UNION
+SELECT 9600, 'NS_cntrk', 'вялый' UNION
+SELECT 9610, 'NS_cntrk', 'отсутствует' UNION
+SELECT 9620, 'NS_cntrm', 'обычный' UNION
+SELECT 9630, 'NS_cntrm', 'оживлен' UNION
+SELECT 9640, 'NS_cntrm', 'вялый' UNION
+SELECT 9650, 'NS_cntrm', 'отсутствует' UNION
+SELECT 9660, 'NS_cnlb', 'отрицательный' UNION
+SELECT 9670, 'NS_cnlb', 'положительный' UNION
+SELECT 9680, 'NS_cnlc', 'отрицательный' UNION
+SELECT 9690, 'NS_cnlc', 'положительный' UNION
+SELECT 9700, 'NS_cnso', 'не изменена' UNION
+SELECT 9710, 'NS_cnso', 'снижена' UNION
+SELECT 9720, 'NS_bum', 'отрицательный' UNION
+SELECT 9730, 'NS_bum', 'положительный' UNION
+SELECT 9740, 'NS_buv', 'отрицательный' UNION
+SELECT 9750, 'NS_buv', 'положительный' UNION
+SELECT 9760, 'NS_buo', 'отрицательный' UNION
+SELECT 9770, 'NS_buo', 'положительный' UNION
+SELECT 9780, 'NS_bua', 'отрицательный' UNION
+SELECT 9790, 'NS_bua', 'положительный' UNION
+SELECT 9800, 'NS_buc', 'отрицательный' UNION
+SELECT 9810, 'NS_buc', 'положительный' UNION
+SELECT 9820, 'NS_buk', 'отрицательный' UNION
+SELECT 9830, 'NS_buk', 'положительный' UNION
+SELECT 9840, 'NS_bus', 'отрицательный' UNION
+SELECT 9850, 'NS_bus', 'положительный' UNION
+SELECT 9860, 'NS_dvm', 'отрицательная' UNION
+SELECT 9870, 'NS_dvm', 'положительная' UNION
+SELECT 9880, 'NS_resm', 'обычный' UNION
+SELECT 9890, 'NS_resm', 'оживлен' UNION
+SELECT 9900, 'NS_resm', 'вялый' UNION
+SELECT 9910, 'NS_resm', 'отсутствует' UNION
+SELECT 9920, 'NS_resn', 'обычный' UNION
+SELECT 9930, 'NS_resn', 'оживлен' UNION
+SELECT 9940, 'NS_resn', 'вялый' UNION
+SELECT 9950, 'NS_resn', 'отсутствует' UNION
+SELECT 9960, 'NS_resb', 'обычный' UNION
+SELECT 9970, 'NS_resb', 'оживлен' UNION
+SELECT 9980, 'NS_resb', 'вялый' UNION
+SELECT 9990, 'NS_resb', 'отсутствует' UNION
+SELECT 10000, 'NS_rest', 'обычный' UNION
+SELECT 10010, 'NS_rest', 'оживлен' UNION
+SELECT 10020, 'NS_rest', 'вялый' UNION
+SELECT 10030, 'NS_rest', 'отсутствует' UNION
+SELECT 10040, 'NS_resc', 'обычный' UNION
+SELECT 10050, 'NS_resc', 'оживлен' UNION
+SELECT 10060, 'NS_resc', 'вялый' UNION
+SELECT 10070, 'NS_resc', 'отсутствует' UNION
+SELECT 10080, 'NS_resr', 'обычный' UNION
+SELECT 10090, 'NS_resr', 'оживлен' UNION
+SELECT 10100, 'NS_resr', 'вялый' UNION
+SELECT 10110, 'NS_resr', 'отсутствует' UNION
+SELECT 10120, 'NS_reso', 'обычный' UNION
+SELECT 10130, 'NS_reso', 'оживлен' UNION
+SELECT 10140, 'NS_reso', 'вялый' UNION
+SELECT 10150, 'NS_reso', 'отсутствует' UNION
+SELECT 10160, 'NS_resp', 'обычный' UNION
+SELECT 10170, 'NS_resp', 'оживлен' UNION
+SELECT 10180, 'NS_resp', 'вялый' UNION
+SELECT 10190, 'NS_resp', 'отсутствует' UNION
+SELECT 10200, 'NS_resk', 'обычный' UNION
+SELECT 10210, 'NS_resk', 'оживлен' UNION
+SELECT 10220, 'NS_resk', 'вялый' UNION
+SELECT 10230, 'NS_resk', 'отсутствует' UNION
+SELECT 10240, 'NS_resa', 'обычный' UNION
+SELECT 10250, 'NS_resa', 'оживлен' UNION
+SELECT 10260, 'NS_resa', 'вялый' UNION
+SELECT 10270, 'NS_resa', 'отсутствует' UNION
+SELECT 10280, 'NS_resv', 'обычный' UNION
+SELECT 10290, 'NS_resv', 'оживлен' UNION
+SELECT 10300, 'NS_resv', 'вялый' UNION
+SELECT 10310, 'NS_resv', 'отсутствует' UNION
+SELECT 10320, 'NS_reslc', 'положительный' UNION
+SELECT 10330, 'NS_reslc', 'отрицательный' UNION
+SELECT 10340, 'NS_reslo', 'положительный' UNION
+SELECT 10350, 'NS_reslo', 'отрицательный' UNION
+SELECT 10360, 'NS_reslg', 'положительный' UNION
+SELECT 10370, 'NS_reslg', 'отрицательный' UNION
+SELECT 10380, 'NS_resln', 'положительный' UNION
+SELECT 10390, 'NS_resln', 'отрицательный' UNION
+SELECT 10400, 'NS_cosh', 'положительный' UNION
+SELECT 10410, 'NS_cosh', 'отрицательный' UNION
+SELECT 10420, 'NS_cost', 'положительный' UNION
+SELECT 10430, 'NS_cost', 'отрицательный' UNION
+SELECT 10440, 'NS_chul', 'положительный' UNION
+SELECT 10450, 'NS_chul', 'отрицательный' UNION
+SELECT 10460, 'NS_chun', 'положительный' UNION
+SELECT 10470, 'NS_chun', 'отрицательный' UNION
+SELECT 10480, 'NS_chus', 'положительный' UNION
+SELECT 10490, 'NS_chus', 'отрицательный' UNION
+SELECT 10500, 'NS_chum', 'положительный' UNION
+SELECT 10510, 'NS_chum', 'отрицательный' UNION
+SELECT 10520, 'NS_chuv', 'положительный' UNION
+SELECT 10530, 'NS_chuv', 'отрицательный';
