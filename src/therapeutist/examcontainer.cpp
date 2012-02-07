@@ -17,6 +17,8 @@ static const int labelColumn = 0;
 static const int widgetColumn = 1;
 static const int resetButtonColumn = 2;
 
+const QString ExamContainer::labelAndValueDelimiter = ": ";
+
 
 ExamContainer::ExamContainer(const int examId, const QString &textid,
 							 const QString &labelText, const bool topLevel)
@@ -92,12 +94,26 @@ ExamContainer::ExamContainer(const int examId, const QString &textid,
 		connect(m_headerText, SIGNAL(linkActivated(QString)), SLOT(expandContainer()));
 
 	updateHeader();
+	init();
 }
 
 
 void ExamContainer::init()
 {
+	if(m_examId != InvalidId)
+	{
+		QSqlQuery q;
+		q.prepare(" SELECT id FROM ExaminationData "
+				  " WHERE examinationId = ? AND "
+					" uiElementId = (SELECT id FROM UiElement WHERE textid = ?) ");
+		q.addBindValue(m_examId);
+		q.addBindValue(m_textid);
+		q.exec();
+		checkQuery(q);
 
+		if(q.first())
+			m_examDataId = q.value(0).toInt();
+	}
 }
 
 
@@ -127,7 +143,7 @@ void ExamContainer::updateHeader()
 
 		QString text = link;
 		if(!childrenValuesAreNull && !containerIsExpanded)
-			text.append("<br>" + value());
+			text.append("<br>" + value() + '.');
 
 		m_headerText->setText(text);
 		m_headerIndicator->setText(containerIsExpanded ? "-" : "+");
@@ -235,59 +251,85 @@ bool ExamContainer::valueIsNull() const
 }
 
 
+QStringList ExamContainer::containerValueFromDatabase(const QString& containerTextId) const
+{
+	QStringList values;
+
+	QSqlQuery q;
+	q.prepare(" SELECT ui.label, d.textValue, d.integerValue, uiEnum.value, "
+				" ui.typeid, ui.textId "
+			  " FROM ExaminationData d "
+			  " LEFT JOIN UiElement ui ON d.uielementId = ui.id "
+			  " LEFT JOIN UiElementEnums uiEnum ON "
+				" (ui.textid = uiEnum.uiElementTextId AND d.enumValue = uiEnum.id) "
+			  " WHERE (d.examinationId = ? AND ui.parentId = ?) "
+			  " ORDER BY ui.id ");
+
+	q.addBindValue(m_examId);
+	q.addBindValue(containerTextId);
+	q.exec();
+	checkQuery(q);
+
+
+	while(q.next())
+	{
+		if(q.value(4).toString() == "container")
+		{
+			values << containerValueFromDatabase(q.value(5).toString());
+		}
+		else
+		{
+			QString val;
+			val += q.value(0).toString() + labelAndValueDelimiter;
+
+
+			bool recordHasValue = false;
+			for(int recordColumn = 1; recordColumn <= 3; ++recordColumn)
+				if(!q.value(recordColumn).isNull())
+				{
+					val += q.value(recordColumn).toString();
+					recordHasValue = true;
+					break;
+				}
+			Q_ASSERT(recordHasValue);
+
+
+			values << val;
+		}
+	}
+
+	return values;
+}
+
+
 QString ExamContainer::value() const
 {
-	static const QString labelAndValueDelimiter = ": ";
-
-
 	QStringList values;
 
 	if(!m_items.isEmpty())
 	{
 		foreach(const ExamWidget* widget, m_items)
 			if(!widget->valueIsNull())
-				values.append(widget->labelText() + labelAndValueDelimiter + widget->value());
+			{
+				const bool widgetIsContainer =
+						(dynamic_cast<const ExamContainer*>(widget) != NULL);
+
+				if(widgetIsContainer)
+					values << widget->value();
+				else
+				{
+					values << widget->labelText() +
+							  labelAndValueDelimiter +
+							  widget->value();
+				}
+			}
 	}
 	else if(m_examId != InvalidId)
 	{
-		QSqlQuery q;
-		q.prepare(" SELECT ui.label, d.textValue, d.integerValue, uiEnum.value "
-				  " FROM ExaminationData d "
-				  " LEFT JOIN UiElement ui ON d.uielementId = ui.id "
-				  " LEFT JOIN UiElementEnums uiEnum ON "
-					" (ui.textid = uiEnum.uiElementTextId AND d.enumValue = uiEnum.id) "
-				  " WHERE d.examinationId = ? AND ui.parentId = ? "
-				  " ORDER BY ui.id ");
-
-		q.addBindValue(m_examId);
-		q.addBindValue(m_textid);
-		q.exec();
-		checkQuery(q);
-
-
-		while(q.next())
-		{
-			QString val;
-
-			if(!q.value(1).isNull())
-				val = q.value(1).toString();
-			else if(!q.value(2).isNull())
-				val = q.value(2).toString();
-			else if(!q.value(3).isNull())
-				val = q.value(3).toString();
-
-			if(!val.isNull())
-				values << q.value(0).toString() + labelAndValueDelimiter + val;
-			else
-			{
-				qWarning() << "No value for examination data with;"
-						   << "examId =" << m_examId
-						   << "textId =" << m_textid;
-			}
-		}
+		values = containerValueFromDatabase(m_textid);
 	}
 
-	return values.join("; ");
+	return values.join(". ");
 }
 
 
@@ -296,6 +338,36 @@ bool ExamContainer::save(const int examId) const
 	bool savedSuccessfully = true;
 	foreach(const ExamWidget* widget, m_items)
 		savedSuccessfully &= widget->save(examId);
+
+
+	if(m_examDataId != InvalidId || !valueIsNull())
+	{
+		QSqlQuery q;
+		if(m_examDataId == InvalidId && !valueIsNull())
+		{
+			q.prepare(" INSERT INTO ExaminationData "
+					  " (examinationId, uiElementId) "
+					  " VALUES(:examId, (SELECT id FROM UiElement WHERE textid = :textid))");
+			q.bindValue(":examId", examId);
+			q.bindValue(":textid", m_textid);
+
+			q.exec();
+			checkQuery(q);
+
+			savedSuccessfully &= q.isActive();
+		}
+		else if(m_examDataId != InvalidId && valueIsNull())
+		{
+			q.prepare(" DELETE FROM ExaminationData WHERE id = :id");
+			q.bindValue(":id", m_examDataId);
+
+			q.exec();
+			checkQuery(q);
+
+			savedSuccessfully &= q.isActive();
+		}
+	}
+
 
 	return savedSuccessfully;
 }
