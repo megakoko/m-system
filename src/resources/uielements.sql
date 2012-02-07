@@ -1156,3 +1156,25 @@ SELECT 13130, 'DAARRE', 'следы кала обычного цвета' UNION
 SELECT 13140, 'DAARRE', 'следы кала черного цвета' UNION
 SELECT 13150, 'DAARRE', 'следы алой крови' UNION
 SELECT 13160, 'DAARRE', 'следы темной крови';
+
+
+
+INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
+SELECT 14010, 'UGSall', 'main', CAST(NULL AS "numeric"), 'container', 'Мочеполовая система' UNION
+SELECT 14020, 'UGSL', 'UGSall', NULL, 'lineedit', 'Осмотр поясницы' UNION
+SELECT 14030, 'UGSPK', 'UGSall', NULL, 'lineedit', 'Пальпация почек' UNION
+SELECT 14040, 'UGSSP', 'UGSall', NULL, 'container', 'Cимптом Пастернацкого' UNION
+SELECT 14050, 'UGSSPR', 'UGSSP', NULL, 'combobox', 'Справа' UNION
+SELECT 14060, 'UGSSPL', 'UGSSP', NULL, 'combobox', 'Слева' UNION
+SELECT 14070, 'UGSGS', 'UGSall', NULL, 'lineedit', 'Гинекологическое исследование' UNION
+SELECT 14080, 'UGSd', 'UGSall', NULL, 'lineedit', 'Дополнительно';
+
+INSERT INTO UiElementEnums(id, uiElementTextId, value)
+SELECT 14010, 'UGSSPR', 'отрицательный' UNION
+SELECT 14020, 'UGSSPR', 'сомнительный' UNION
+SELECT 14030, 'UGSSPR', 'положительный' UNION
+SELECT 14040, 'UGSSPR', 'резко положительный' UNION
+SELECT 14050, 'UGSSPL', 'отрицательный' UNION
+SELECT 14060, 'UGSSPL', 'сомнительный' UNION
+SELECT 14070, 'UGSSPL', 'положительный' UNION
+SELECT 14080, 'UGSSPL', 'резко положительный';
