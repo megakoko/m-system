@@ -980,3 +980,179 @@ SELECT 10500, 'NS_chum', 'положительный' UNION
 SELECT 10510, 'NS_chum', 'отрицательный' UNION
 SELECT 10520, 'NS_chuv', 'положительный' UNION
 SELECT 10530, 'NS_chuv', 'отрицательный';
+
+
+
+
+INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
+SELECT 12010, 'DAall', 'main', CAST(NULL AS "numeric"), 'container', 'Органы пищеварения' UNION
+SELECT 12020, 'DAMOC', 'DAall', NULL, 'lineedit', 'Рот и полость рта' UNION
+SELECT 12030, 'DADH', 'DAall', NULL, 'lineedit', 'Состояние зубов' UNION
+SELECT 12040, 'DAT', 'DAall', NULL, 'combobox', 'Язык' UNION
+SELECT 12050, 'DAZ', 'DAall', NULL, 'lineedit', 'Зев' UNION
+SELECT 12060, 'DATT', 'DAall', NULL, 'combobox', 'Миндалины' UNION
+SELECT 12070, 'DAA', 'DAall', NULL, 'combobox', 'Живот' UNION
+SELECT 12080, 'DAAJ', 'DAall', NULL, 'combobox', 'Тонкая кишка' UNION
+SELECT 12090, 'DAAC', 'DAall', NULL, 'combobox', 'Толстая кишка' UNION
+SELECT 12100, 'DAAS', 'DAall', NULL, 'combobox', 'Сигмовидная кишка' UNION
+SELECT 12110, 'DAAd4', 'DAall', NULL, 'lineedit', 'Окружность живота на уровне пупка' UNION
+SELECT 12120, 'NS_to', 'DAall', NULL, 'lineedit', 'Тошнота' UNION
+SELECT 12130, 'DASlog', 'DAall', NULL, 'container', 'Симптомы' UNION
+SELECT 12140, 'DASVA', 'DASlog', NULL, 'combobox', 'Симптом Волковича аппендикулярный' UNION
+SELECT 12150, 'DASM', 'DASlog', NULL, 'combobox', 'Симптом Менделя' UNION
+SELECT 12160, 'DASR', 'DASlog', NULL, 'combobox', 'Симптом Ровзинга' UNION
+SELECT 12170, 'DASBM', 'DASlog', NULL, 'combobox', 'Симптом Бартомье-Михельсона' UNION
+SELECT 12180, 'DASSO', 'DASlog', NULL, 'combobox', 'Симптом Образцова' UNION
+SELECT 12190, 'DASV', 'DASlog', NULL, 'combobox', 'Симптом Воскресенского' UNION
+SELECT 12200, 'DASC', 'DASlog', NULL, 'combobox', 'Симптом Курвуазье' UNION
+SELECT 12210, 'DASMG', 'DASlog', NULL, 'combobox', 'Симптом Мюсси-Георгиевского' UNION
+SELECT 12220, 'DASK', 'DASlog', NULL, 'combobox', 'Симптом Кера' UNION
+SELECT 12230, 'DASOrtner', 'DASlog', NULL, 'combobox', 'Симптом Ортнера' UNION
+SELECT 12240, 'DASTshB', 'DASlog', NULL, 'combobox', 'Симптом Щеткина-Блюмберга' UNION
+SELECT 12250, 'DAlogo', 'DASlog', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 12260, 'DAL', 'DAall', NULL, 'container', 'Печень' UNION
+SELECT 12270, 'DALPer', 'DAL', NULL, 'container', 'перкуторно (размеры по методу Курлова)' UNION
+SELECT 12280, 'DALPer1t', 'DALPer', NULL, 'lineedit', 'по l. mediaclavicularis dextra' UNION
+SELECT 12290, 'DALPer2t', 'DALPer', NULL, 'lineedit', 'по l. mediasternalis anterior' UNION
+SELECT 12300, 'DALPer3t', 'DALPer', NULL, 'lineedit', 'по l. costalis sinistra:' UNION
+SELECT 12310, 'DALPal', 'DAL', NULL, 'container', 'пальпаторно' UNION
+SELECT 12320, 'DALPalC', 'DALPal', NULL, 'lineedit', 'Консистенция' UNION
+SELECT 12330, 'DALPalT', 'DALPal', NULL, 'lineedit', 'Поверхность' UNION
+SELECT 12340, 'DALPalP', 'DALPal', NULL, 'lineedit', 'Болезненность' UNION
+SELECT 12349, 'DALPalE_', 'DALPal', NULL, 'container', 'край' UNION
+SELECT 12350, 'DALPalE', 'DALPalE_', NULL, 'combobox', '' UNION
+SELECT 12360, 'DALPalEd2', 'DALPalE_', NULL, 'combobox', '' UNION
+SELECT 12370, 'DALPalEd3', 'DALPalE_', NULL, 'combobox', '' UNION
+SELECT 12380, 'DALBBd', 'DALPalE_', NULL, 'combobox', '' UNION
+SELECT 12390, 'DALo', 'DAL', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 12400, 'DAS', 'DAall', NULL, 'container', 'Селезенка' UNION
+SELECT 12410, 'DASPal', 'DAS', NULL, 'lineedit', 'пальпаторно' UNION
+SELECT 12420, 'DASPer', 'DAS', NULL, 'lineedit', 'перкуторно' UNION
+SELECT 12430, 'DASo', 'DAS', NULL, 'lineedit', 'дополнительно' UNION
+SELECT 12440, 'DAP', 'DAall', NULL, 'combobox', 'Перистальтика' UNION
+SELECT 12450, 'DAF', 'DAall', NULL, 'combobox', 'Газы' UNION
+SELECT 12460, 'DAAR', 'DAall', NULL, 'container', 'Задний проход и прямая кишка' UNION
+SELECT 12470, 'DAARA', 'DAAR', NULL, 'combobox', 'При осмотре заднего прохода' UNION
+SELECT 12480, 'DAARR', 'DAAR', NULL, 'container', 'При ректальном исследовании' UNION
+SELECT 12490, 'DAARRTS', 'DAARR', NULL, 'combobox', 'тонус сфинктера' UNION
+SELECT 12500, 'DAARRAm', 'DAARR', NULL, 'combobox', 'ампула прямой кишки' UNION
+SELECT 12510, 'DAARRE', 'DAARR', NULL, 'combobox', 'на перчатке' UNION
+SELECT 12520, 'DAd', 'DAall', NULL, 'lineedit', 'Дополнительно';
+
+INSERT INTO UiElementEnums(id, uiElementTextId, value)
+SELECT 12010, 'DAT', 'чистый' UNION
+SELECT 12020, 'DAT', 'влажный' UNION
+SELECT 12030, 'DAT', 'сухой' UNION
+SELECT 12040, 'DAT', 'обложен белым налетом' UNION
+SELECT 12050, 'DAT', 'обложен бурым налетом' UNION
+SELECT 12060, 'DAT', 'обложен грязным налетом' UNION
+SELECT 12070, 'DATT', 'не увеличены' UNION
+SELECT 12080, 'DATT', 'увеличены' UNION
+SELECT 12090, 'DATT', 'физиологической окраски' UNION
+SELECT 12100, 'DATT', 'гиперемированы' UNION
+SELECT 12110, 'DATT', 'покрыты белым налетом' UNION
+SELECT 12120, 'DAA', 'правильной формы' UNION
+SELECT 12130, 'DAA', 'мягкий' UNION
+SELECT 12140, 'DAA', 'напряжен' UNION
+SELECT 12150, 'DAA', 'не вздут' UNION
+SELECT 12160, 'DAA', 'поддут' UNION
+SELECT 12170, 'DAA', 'вздут' UNION
+SELECT 12180, 'DAA', 'безболезненный во всех отделах' UNION
+SELECT 12190, 'DAA', 'болезненный' UNION
+SELECT 12200, 'DAA', 'участвует в акте дыхания' UNION
+SELECT 12210, 'DAA', 'ограничено участвует в акте дыхания' UNION
+SELECT 12220, 'DAA', 'не участвует в акте дыхания' UNION
+SELECT 12230, 'DAA', 'напряжения мышц передней брюшной стенки нет' UNION
+SELECT 12240, 'DAA', 'определяется умеренное напряжение мышц передней брюшной стенки' UNION
+SELECT 12250, 'DAA', 'определяется выраженное напряжение мышц передней брюшной стенки' UNION
+SELECT 12260, 'DAAJ', 'пальпаторно без патологии' UNION
+SELECT 12270, 'DAAJ', 'не урчит' UNION
+SELECT 12280, 'DAAJ', 'слабо урчит' UNION
+SELECT 12290, 'DAAJ', 'грубо урчит' UNION
+SELECT 12300, 'DAAJ', 'спазмированности нет' UNION
+SELECT 12310, 'DAAJ', 'уплотнена' UNION
+SELECT 12320, 'DAAJ', 'спазмирована' UNION
+SELECT 12330, 'DAAJ', 'выражено спазмирована' UNION
+SELECT 12340, 'DAAJ', 'безболезненная' UNION
+SELECT 12350, 'DAAJ', 'слабо болезненная' UNION
+SELECT 12360, 'DAAJ', 'болезненная' UNION
+SELECT 12370, 'DAAJ', 'выражено болезненная' UNION
+SELECT 12380, 'DAAC', 'пальпаторно без патологии' UNION
+SELECT 12390, 'DAAC', 'не урчит' UNION
+SELECT 12400, 'DAAC', 'слабо урчит' UNION
+SELECT 12410, 'DAAC', 'грубо урчит' UNION
+SELECT 12420, 'DAAC', 'спазмированности нет' UNION
+SELECT 12430, 'DAAC', 'уплотнена' UNION
+SELECT 12440, 'DAAC', 'спазмирована' UNION
+SELECT 12450, 'DAAC', 'выражено спазмирована' UNION
+SELECT 12460, 'DAAC', 'безболезненная' UNION
+SELECT 12470, 'DAAC', 'слабо болезненная' UNION
+SELECT 12480, 'DAAC', 'болезненная' UNION
+SELECT 12490, 'DAAC', 'выражено болезненная' UNION
+SELECT 12500, 'DAAS', 'пальпаторно без патологии' UNION
+SELECT 12510, 'DAAS', 'не урчит' UNION
+SELECT 12520, 'DAAS', 'слабо урчит' UNION
+SELECT 12530, 'DAAS', 'грубо урчит' UNION
+SELECT 12540, 'DAAS', 'спазмированности нет' UNION
+SELECT 12550, 'DAAS', 'уплотнена' UNION
+SELECT 12560, 'DAAS', 'спазмирована' UNION
+SELECT 12570, 'DAAS', 'выражено спазмирована' UNION
+SELECT 12580, 'DAAS', 'безболезненная' UNION
+SELECT 12590, 'DAAS', 'слабо болезненная' UNION
+SELECT 12600, 'DAAS', 'болезненная' UNION
+SELECT 12610, 'DAAS', 'выражено болезненная' UNION
+SELECT 12620, 'DASVA', 'отрицательный' UNION
+SELECT 12630, 'DASVA', 'положительный' UNION
+SELECT 12640, 'DASM', 'отрицательный' UNION
+SELECT 12650, 'DASM', 'положительный' UNION
+SELECT 12660, 'DASR', 'отрицательный' UNION
+SELECT 12670, 'DASR', 'положительный' UNION
+SELECT 12680, 'DASBM', 'отрицательный' UNION
+SELECT 12690, 'DASBM', 'положительный' UNION
+SELECT 12700, 'DASSO', 'отрицательный' UNION
+SELECT 12710, 'DASSO', 'положительный' UNION
+SELECT 12720, 'DASV', 'отрицательный' UNION
+SELECT 12730, 'DASV', 'положительный' UNION
+SELECT 12740, 'DASC', 'отрицательный' UNION
+SELECT 12750, 'DASC', 'положительный' UNION
+SELECT 12760, 'DASMG', 'отрицательный' UNION
+SELECT 12770, 'DASMG', 'положительный' UNION
+SELECT 12780, 'DASK', 'отрицательный' UNION
+SELECT 12790, 'DASK', 'положительный' UNION
+SELECT 12800, 'DASOrtner', 'отрицательный' UNION
+SELECT 12810, 'DASOrtner', 'положительный' UNION
+SELECT 12820, 'DASTshB', 'отрицательный' UNION
+SELECT 12830, 'DASTshB', 'положительный' UNION
+SELECT 12840, 'DALPer', 'печеночная тупость не определяется' UNION
+SELECT 12850, 'DALPal', 'край' UNION
+SELECT 12860, 'DALPalE', 'острый' UNION
+SELECT 12870, 'DALPalE', 'закруглённый' UNION
+SELECT 12880, 'DALPalEd2', 'ровный' UNION
+SELECT 12890, 'DALPalEd2', 'фестончатый' UNION
+SELECT 12900, 'DALPalEd3', 'мягкий' UNION
+SELECT 12910, 'DALPalEd3', 'плотный' UNION
+SELECT 12920, 'DALBBd', 'располагается по ребёрной дуге' UNION
+SELECT 12930, 'DALBBd', 'располагается ниже края ребёрной дуги на 1 см' UNION
+SELECT 12940, 'DALBBd', 'располагается ниже края ребёрной дуги на 2 см' UNION
+SELECT 12950, 'DALBBd', 'располагается ниже края ребёрной дуги на 3 см' UNION
+SELECT 12960, 'DALBBd', 'располагается ниже края ребёрной дуги на 4 см' UNION
+SELECT 12970, 'DALBBd', 'располагается ниже края ребёрной дуги на 5 см' UNION
+SELECT 12980, 'DAP', 'отчетливая' UNION
+SELECT 12990, 'DAP', 'бурная' UNION
+SELECT 13000, 'DAP', 'вялая' UNION
+SELECT 13010, 'DAP', 'не выслушивается' UNION
+SELECT 13020, 'DAF', 'отходят' UNION
+SELECT 13030, 'DAF', 'отходят плохо' UNION
+SELECT 13040, 'DAF', 'не отходят' UNION
+SELECT 13050, 'DAARA', 'патологии не наблюдается' UNION
+SELECT 13060, 'DAARR', 'наблюдается выраженная болезненность' UNION
+SELECT 13070, 'DAARRTS', 'повышен' UNION
+SELECT 13080, 'DAARRTS', 'сохранен' UNION
+SELECT 13090, 'DAARRTS', 'снижен' UNION
+SELECT 13100, 'DAARRTS', 'отсутствует' UNION
+SELECT 13110, 'DAARRAm', 'свободна, проходима' UNION
+SELECT 13120, 'DAARRAm', 'содержит каловые массы' UNION
+SELECT 13130, 'DAARRE', 'следы кала обычного цвета' UNION
+SELECT 13140, 'DAARRE', 'следы кала черного цвета' UNION
+SELECT 13150, 'DAARRE', 'следы алой крови' UNION
+SELECT 13160, 'DAARRE', 'следы темной крови';
