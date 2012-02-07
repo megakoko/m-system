@@ -28,7 +28,14 @@ public:
 	QWidget* widget() const;
 
 private:
+	// Возвращает значение всех элементов, содержащихся в контейнере
+	// с textid = containerTextId.
+	QStringList containerValueFromDatabase(const QString& containerTextId) const;
+
 	void expandContainer(const bool expanded);
+
+
+	static const QString labelAndValueDelimiter;
 
 	const bool m_topLevel;
 
