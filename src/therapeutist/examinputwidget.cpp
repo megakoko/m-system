@@ -87,7 +87,7 @@ bool ExamInputWidget::saveHelper(const QString& fieldName, const int examId, con
 		}
 		else if(m_examDataId != InvalidId && !valueIsNull())
 		{
-			q.prepare(" UPDATE ExaminationData SET textValue = :textValue "
+			q.prepare(" UPDATE ExaminationData SET " + fieldName + " = :value "
 					  " WHERE id = :id");
 			q.bindValue(":value", value);
 			q.bindValue(":id", m_examDataId);
