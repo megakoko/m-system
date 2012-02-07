@@ -7,11 +7,33 @@ UNION SELECT 'textedit'
 UNION SELECT 'spinbox';
 
 
+-- Элементы нулевого уровня и элементы первого уровня без дочерних элементов.
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
-SELECT 01, 'main', NULL, CAST(NULL AS "numeric"), 'container', NULL;
+SELECT 01, 'main', NULL, CAST(NULL AS "numeric"), 'container', NULL UNION 
+SELECT 02, 'Pre', 'main', NULL, 'lineedit', 'Вводная часть' UNION
+SELECT 03, 'HospAim', 'main', NULL, 'combobox', 'Цель госпитализации' UNION	-- multivalue
+SELECT 04, 'Complaints', 'main', NULL, 'lineedit', 'Жалобы' UNION
+SELECT 05, 'AA_FT', 'main', NULL, 'lineedit', 'Анамнез болезни' UNION
+SELECT 16000, 'StatusLocalis', 'main', NULL, 'lineedit', 'Status localis' UNION
+SELECT 16010, 'Extra', 'main', NULL, 'lineedit', 'Дополнительно' UNION
+SELECT 16020, 'EntranceDiagnosis', 'main', NULL, 'lineedit', 'Ds.';
+
+INSERT INTO UiElementEnums(id, uiElementTextId, value)
+SELECT 1, 'HospAim', 'обследование' UNION
+SELECT 2, 'HospAim', 'консервативное лечение' UNION
+SELECT 3, 'HospAim', 'оперативное вмешательство' UNION
+SELECT 4, 'HospAim', 'травма, связанная с производством' UNION
+SELECT 5, 'HospAim', 'травма, не связанная с производством';
 
 
--- Элементы интерфейса.
+-- ************************************************************ --
+-- Далее идут элементы первого уровня с их дочерними элементами --
+-- ************************************************************ --
+
+
+-------------------
+-- Анамнез жизни --
+-------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 10, 'PA', 'main', CAST(NULL AS "numeric"), 'container', 'Анамнез жизни' UNION
 SELECT 20, 'PA_PD', 'PA', NULL, 'lineedit', 'Перенесённые заболевания' UNION
@@ -54,8 +76,9 @@ SELECT 180, 'PA_exp', 'открытого больничного листа не
 SELECT 190, 'PA_exp', 'открыт больничный лист № с' UNION
 SELECT 200, 'PA_exp', 'КЭК проводилась';
 
-
-
+------------------
+-- Общий осмотр --
+------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 1010, 'USall', 'main', CAST(NULL AS "numeric"), 'container', 'Общий осмотр' UNION
 SELECT 1020, 'US_GC', 'USall', NULL, 'combobox', 'Общее состояние' UNION
@@ -252,7 +275,9 @@ SELECT 2590, 'US_Gbe', 'кожа над л/у гиперемирована' UNIO
 SELECT 2600, 'US_Gbe', 'наблюдается локальная гипертермия в области узлов';
 
 
-
+---------------------------------
+-- Опорно-двигательный аппарат --
+---------------------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 3010, 'MSSall', 'main', CAST(NULL AS "numeric"), 'container', 'Опорно-двигательный аппарат' UNION
 SELECT 3020, 'MSSS', 'MSSall', NULL, 'lineedit', 'Костные структуры' UNION
@@ -274,10 +299,12 @@ SELECT 3170, 'MSSd', 'MSSall', NULL, 'lineedit', 'Дополнительно';
 
 --INSERT INTO UiElementEnums(id, uiElementTextId, value)
 --SELECT 3010, 'MSSM', 'без явных признаков патологии' UNION
---SELECT 3020, 'MSSJ', 'без явных признаков патологии';
+--SELECT 3020, 'MSSJ', 'без явных признаков патологии'
 
 
-
+---------
+-- Шея --
+---------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 4010, 'Neckall', 'main', CAST(NULL AS "numeric"), 'container', 'Шея' UNION
 SELECT 4020, 'NeckF', 'Neckall', NULL, 'lineedit', 'Форма шеи' UNION
@@ -315,7 +342,9 @@ SELECT 4210, 'NeckTGSU', 'поверхность гладкая' UNION
 SELECT 4220, 'NeckTGSU', 'поверхность бугристая';
 
 
-
+-------------------
+-- Органы зрения --
+-------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 5010, 'OVall', 'main', CAST(NULL AS "numeric"), 'container', 'Органы зрения' UNION
 SELECT 5020, 'NS_cnzo', 'OVall', NULL, 'lineedit', 'Острота зрения' UNION
@@ -350,6 +379,9 @@ SELECT 5160, 'US_OVCS', 'иктеричный' UNION
 SELECT 5170, 'US_OVCS', 'гиперемия склер';
 
 
+--------------------
+-- Органы дыхания --
+--------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 6010, 'RAall', 'main', CAST(NULL AS "numeric"), 'container', 'Органы дыхания' UNION
 SELECT 6020, 'US_RAFT', 'RAall', NULL, 'combobox', 'Форма грудной клетки' UNION
@@ -396,9 +428,9 @@ SELECT 6280, 'US_RAVT', 'усилено с обех сторон' UNION
 SELECT 6290, 'US_RAVT', 'ослаблено с обех сторон';
 
 
-
-
-
+---------------------------------
+-- Сердечно-сосудистая система --
+---------------------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 7010, 'CVSall', 'main', CAST(NULL AS "numeric"), 'container', 'Сердечно-сосудистая система' UNION
 SELECT 7020, 'CVSPH', 'CVSall', NULL, 'combobox', 'Перкуссия сердца' UNION
@@ -618,7 +650,9 @@ SELECT 8250, 'CVSPTALP', 'ослабленная' UNION
 SELECT 8260, 'CVSPTALP', 'не пальпируется';
 
 
-
+----------------------------
+-- Неврологический статус --
+----------------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 9010, 'NSall', 'main', CAST(NULL AS "numeric"), 'container', 'Неврологический статус' UNION
 SELECT 9020, 'NS_os', 'NSall', NULL, 'container', 'Общемозговые симптомы' UNION
@@ -982,8 +1016,9 @@ SELECT 10520, 'NS_chuv', 'положительный' UNION
 SELECT 10530, 'NS_chuv', 'отрицательный';
 
 
-
-
+------------------------
+-- Органы пищеварения --
+------------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 12010, 'DAall', 'main', CAST(NULL AS "numeric"), 'container', 'Органы пищеварения' UNION
 SELECT 12020, 'DAMOC', 'DAall', NULL, 'lineedit', 'Рот и полость рта' UNION
@@ -1158,7 +1193,9 @@ SELECT 13150, 'DAARRE', 'следы алой крови' UNION
 SELECT 13160, 'DAARRE', 'следы темной крови';
 
 
-
+-------------------------
+-- Мочеполовая система --
+-------------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 14010, 'UGSall', 'main', CAST(NULL AS "numeric"), 'container', 'Мочеполовая система' UNION
 SELECT 14020, 'UGSL', 'UGSall', NULL, 'lineedit', 'Осмотр поясницы' UNION
@@ -1180,9 +1217,9 @@ SELECT 14070, 'UGSSPL', 'положительный' UNION
 SELECT 14080, 'UGSSPL', 'резко положительный';
 
 
-
-
-
+---------------------------------
+-- Физиологические отправления --
+---------------------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
 SELECT 15010, 'FECall', 'main', CAST(NULL AS "numeric"), 'container', 'Физиологические отправления' UNION
 SELECT 15020, 'FECM', 'FECall', NULL, 'combobox', 'Диурез' UNION
