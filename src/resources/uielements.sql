@@ -1178,3 +1178,36 @@ SELECT 14050, 'UGSSPL', 'отрицательный' UNION
 SELECT 14060, 'UGSSPL', 'сомнительный' UNION
 SELECT 14070, 'UGSSPL', 'положительный' UNION
 SELECT 14080, 'UGSSPL', 'резко положительный';
+
+
+
+
+
+INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label)
+SELECT 15010, 'FECall', 'main', CAST(NULL AS "numeric"), 'container', 'Физиологические отправления' UNION
+SELECT 15020, 'FECM', 'FECall', NULL, 'combobox', 'Диурез' UNION
+SELECT 15030, 'FECS', 'FECall', NULL, 'combobox', 'Стул' UNION
+SELECT 15040, 'FECd', 'FECall', NULL, 'lineedit', 'Дополнительно';
+
+INSERT INTO UiElementEnums(id, uiElementTextId, value)
+SELECT 15010, 'FECM', 'не снижен' UNION
+SELECT 15020, 'FECM', 'снижен' UNION
+SELECT 15030, 'FECM', 'повышен' UNION
+SELECT 15040, 'FECM', 'поллакиурия' UNION
+SELECT 15050, 'FECM', 'никтурия' UNION
+SELECT 15060, 'FECM', 'олигурия' UNION
+SELECT 15070, 'FECM', 'полиурия' UNION
+SELECT 15080, 'FECM', 'анурия' UNION
+SELECT 15090, 'FECS', 'без особенностей' UNION
+SELECT 15100, 'FECS', 'для осмотра не предоставлен' UNION
+SELECT 15110, 'FECS', 'обильный' UNION
+SELECT 15120, 'FECS', 'скудный' UNION
+SELECT 15130, 'FECS', 'оформленный' UNION
+SELECT 15140, 'FECS', 'неоформленный' UNION
+SELECT 15150, 'FECS', 'жидкий' UNION
+SELECT 15160, 'FECS', 'слизистый' UNION
+SELECT 15170, 'FECS', 'пенистый' UNION
+SELECT 15180, 'FECS', 'дегтеобразный' UNION
+SELECT 15190, 'FECS', 'с гнилостным запахом' UNION
+SELECT 15200, 'FECS', 'без патологических примесей' UNION
+SELECT 15210, 'FECS', 'с примесью алой крови';
