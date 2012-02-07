@@ -38,16 +38,25 @@ ExamContainer::ExamContainer(const int examId, const QString &textid,
 	if(needHeader)
 	{
 		m_headerIndicator = new QLabel;
-		m_headerText = new QLabel;
 
-		m_headerIndicator->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+		QSizePolicy sizePolicy1(QSizePolicy::Maximum, QSizePolicy::Preferred);
+		sizePolicy1.setHorizontalStretch(0);
+		sizePolicy1.setVerticalStretch(0);
+		sizePolicy1.setHeightForWidth(m_headerIndicator->sizePolicy().hasHeightForWidth());
+		m_headerIndicator->setSizePolicy(sizePolicy1);
+
+		m_headerIndicator->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
 		m_headerIndicator->setMinimumWidth(indicatorWidth);
+
+
+		m_headerText = new QLabel;
+		m_headerText->setWordWrap(true);
+
 
 		header = new QHBoxLayout;
 		header->setContentsMargins(QMargins());
-		header->addWidget(m_headerIndicator, 0, Qt::AlignLeft);
-		header->addWidget(m_headerText, 0, Qt::AlignLeft);
-		header->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
+		header->addWidget(m_headerIndicator);
+		header->addWidget(m_headerText);
 	}
 
 
