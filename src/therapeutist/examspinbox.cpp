@@ -48,7 +48,7 @@ void ExamSpinBox::resetValue()
 {
 	if(!valueIsNull())
 	{
-		m_spinBox->clear();
+		m_spinBox->setValue(m_spinBox->minimum());
 
 		emit valueChanged(valueIsNull());
 	}
