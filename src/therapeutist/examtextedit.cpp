@@ -16,8 +16,8 @@ ExamTextEdit::ExamTextEdit(const int examId, const QString &textId)
 {
 	connect(m_textEdit, SIGNAL(textChanged()), SLOT(textChanged()));
 
-//	m_lineEdit->setMaxLength(Therapeutist::interfaces->db->
-//							 fieldMaximumLength("examinationdata", "textvalue"));
+	m_textEdit->setMaxLength(Therapeutist::interfaces->db->
+							 fieldMaximumLength("examinationdata", "textvalue"));
 
 	init();
 }
