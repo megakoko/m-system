@@ -2,7 +2,7 @@
 
 #include "examinputwidget.h"
 
-class QPlainTextEdit;
+class PlainTextEdit;
 
 class ExamTextEdit : public ExamInputWidget
 {
@@ -23,7 +23,7 @@ public slots:
 	void resetValue();
 
 private:
-	QPlainTextEdit* m_textEdit;
+	PlainTextEdit* m_textEdit;
 
 private slots:
 	void textChanged();

@@ -8,11 +8,17 @@ class PlainTextEdit : public QPlainTextEdit
 public:
 	PlainTextEdit(QWidget* parent = NULL);
 
+	int maxLength() const;
+	void setMaxLength(const int maxLength);
+
 private:
 	int requiredHeight() const;
 	int m_lastHeight;
 
+	int m_maxLength;
+
 private slots:
 	void resizeWidget();
+	void chopText();
 
 };
