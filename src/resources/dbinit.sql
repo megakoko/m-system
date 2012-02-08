@@ -223,7 +223,7 @@ CREATE TABLE ExaminationData (
 	examinationId		INTEGER REFERENCES Examination(id),
 	uiElementId			INTEGER REFERENCES UiElement(id),
 	textValue			VARCHAR(100),
-	integerValue		INTEGER,
+	realValue			REAL,
 	enumValue			INTEGER REFERENCES UiElementEnums(id)
 );
 

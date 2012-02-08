@@ -264,7 +264,7 @@ QStringList ExamContainer::containerValueFromDatabase(const QString& containerTe
 	QStringList values;
 
 	QSqlQuery q;
-	q.prepare(" SELECT ui.label, d.textValue, d.integerValue, uiEnum.value, "
+	q.prepare(" SELECT ui.label, d.textValue, d.realValue, uiEnum.value, "
 				" ui.typeid, ui.textId "
 			  " FROM ExaminationData d "
 			  " LEFT JOIN UiElement ui ON d.uielementId = ui.id "
