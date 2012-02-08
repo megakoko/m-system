@@ -12,7 +12,6 @@ public:
 
 	// Определенные чисто виртуальные функции.
 	bool valueIsNull() const;
-	bool valueCanBeReseted() const;
 	QString value() const;
 	void init();
 	bool save(const int examId) const;

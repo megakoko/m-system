@@ -37,12 +37,6 @@ bool ExamLineEdit::valueIsNull() const
 }
 
 
-bool ExamLineEdit::valueCanBeReseted() const
-{
-	return true;
-}
-
-
 QString ExamLineEdit::value() const
 {
 	return m_lineEdit->text();

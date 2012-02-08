@@ -38,12 +38,6 @@ bool ExamSpinBox::valueIsNull() const
 }
 
 
-bool ExamSpinBox::valueCanBeReseted() const
-{
-	return true;
-}
-
-
 QString ExamSpinBox::value() const
 {
 	return m_spinBox->text();

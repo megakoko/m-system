@@ -30,6 +30,12 @@ QLabel* ExamInputWidget::label() const
 }
 
 
+bool ExamInputWidget::valueCanBeReseted() const
+{
+	return true;
+}
+
+
 void ExamInputWidget::updateLabelStyle()
 {
 	const QString& text = (shortLabelText().isNull() ? labelText() : shortLabelText());
