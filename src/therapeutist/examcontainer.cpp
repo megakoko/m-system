@@ -21,8 +21,8 @@ const QString ExamContainer::labelAndValueDelimiter = ": ";
 
 
 ExamContainer::ExamContainer(const int examId, const QString &textid,
-							 const QString &labelText, const bool topLevel)
-	: ExamWidget(examId, textid, labelText)
+							 const bool topLevel)
+	: ExamWidget(examId, textid)
 	, m_topLevel(topLevel)
 	, m_widget(new QWidget())
 	, m_headerIndicator(NULL)
@@ -117,6 +117,13 @@ void ExamContainer::init()
 }
 
 
+void ExamContainer::setLabelText(const QString &labelText)
+{
+	ExamWidget::setLabelText(labelText);
+	updateHeader();
+}
+
+
 QLabel* ExamContainer::label() const
 {
 	return NULL;
@@ -139,7 +146,7 @@ void ExamContainer::updateHeader()
 		const QString& link	=
 				QString("<a style='font-weight: %1; color: black; text-decoration: none' href='ref'>%2</a>")
 				.arg(childrenValuesAreNull ? "normal" : "bold")
-				.arg(m_labelText);
+				.arg(labelText());
 
 		QString text = link;
 		if(!childrenValuesAreNull && !containerIsExpanded)

@@ -36,13 +36,16 @@ ExamWidget* ExamWidgetFactory::createWidget(const int examId,
 	{
 		const QString& type = q.value(0).toString();
 		if(type == "container")
-			widget = new ExamContainer(examId, textid, q.value(1).toString());
+			widget = new ExamContainer(examId, textid);
 		else if(type == "lineedit")
-			widget = new ExamLineEdit(examId, textid, q.value(1).toString());
+			widget = new ExamLineEdit(examId, textid);
 		else if(type == "combobox")
-			widget = new ExamComboBox(examId, textid, q.value(1).toString());
+			widget = new ExamComboBox(examId, textid);
 		else
 			qWarning() << "Unknown type for widget factory:" << type;
+
+		if(widget != NULL)
+			widget->setLabelText(q.value(1).toString());
 	}
 
 	return widget;

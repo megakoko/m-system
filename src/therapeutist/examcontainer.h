@@ -15,8 +15,7 @@ class ExamContainer : public ExamWidget
 {
 	Q_OBJECT
 public:
-	ExamContainer(const int examId, const QString& textid,
-				  const QString& labelText, const bool topLevel = false);
+	ExamContainer(const int examId, const QString& textid, const bool topLevel = false);
 
 	// Определенные чисто виртуальные функции.
 	bool valueIsNull() const;
@@ -26,6 +25,9 @@ public:
 
 	QLabel* label() const;
 	QWidget* widget() const;
+
+protected:
+	void setLabelText(const QString &labelText);
 
 private:
 	// Возвращает значение всех элементов, содержащихся в контейнере

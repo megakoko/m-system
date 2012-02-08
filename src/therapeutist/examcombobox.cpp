@@ -10,8 +10,8 @@
 #include "macros.h"
 
 
-ExamComboBox::ExamComboBox(const int examId, const QString &textId, const QString &labelText)
-	: ExamInputWidget(examId, textId, labelText)
+ExamComboBox::ExamComboBox(const int examId, const QString &textId)
+	: ExamInputWidget(examId, textId)
 	, m_comboBox(new QComboBox())
 {
 	connect(m_comboBox, SIGNAL(currentIndexChanged(int)), SLOT(comboBoxIndexChanged()));

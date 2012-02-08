@@ -14,7 +14,7 @@ class ExamWidget : public QObject
 	Q_OBJECT
 	friend class ExamWidgetFactory;
 public:
-	ExamWidget(const int examId, const QString& textid, const QString &labelText);
+	ExamWidget(const int examId, const QString& textid);
 	virtual ~ExamWidget();
 
 	static const int InvalidId = 0;
@@ -63,10 +63,10 @@ protected:
 	// Идентификатор виджета (берется из базы данных).
 	const QString m_textid;
 
-	void setLabelText(const QString& labelText);
-	QString m_labelText;
+	virtual void setLabelText(const QString& labelText);
 
 private:
+	QString m_labelText;
 
 signals:
 	// Сигнал, который должен испускаться при изменении значения виджета.

@@ -9,12 +9,18 @@
 #include "macros.h"
 
 
-ExamInputWidget::ExamInputWidget(const int examId, const QString &textId,
-								 const QString &labelText)
-	: ExamWidget(examId, textId, labelText)
-	, m_label(new QLabel(labelText))
+ExamInputWidget::ExamInputWidget(const int examId, const QString &textId)
+	: ExamWidget(examId, textId)
+	, m_label(new QLabel())
 {
 	connect(this, SIGNAL(valueChanged(bool)), SLOT(updateLabelStyle()));
+}
+
+
+void ExamInputWidget::setLabelText(const QString &labelText)
+{
+	ExamWidget::setLabelText(labelText);
+	updateLabelStyle();
 }
 
 
@@ -27,9 +33,9 @@ QLabel* ExamInputWidget::label() const
 void ExamInputWidget::updateLabelStyle()
 {
 	if(valueIsNull())
-		m_label->setText(m_labelText);
+		m_label->setText(labelText());
 	else
-		m_label->setText(QString("<b>%1</b>").arg(m_labelText));
+		m_label->setText(QString("<b>%1</b>").arg(labelText()));
 }
 
 
