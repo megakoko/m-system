@@ -196,7 +196,8 @@ void ExamContainer::expandContainer(const bool expanded)
 				{
 					widget->label()->setWordWrap(true);
 
-					m_containerLayout->addWidget(widget->label(), row, labelColumn);
+					m_containerLayout->addWidget(widget->label(), row, labelColumn,
+												 Qt::AlignTop);
 					m_containerLayout->addWidget(widget->widget(), row, widgetColumn);
 
 					if(widget->valueCanBeReseted())

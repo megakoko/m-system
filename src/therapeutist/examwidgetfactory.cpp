@@ -11,6 +11,7 @@
 #include "examcontainer.h"
 #include "examlineedit.h"
 #include "examcombobox.h"
+#include "examtextedit.h"
 
 
 ExamWidgetFactory::ExamWidgetFactory()
@@ -41,6 +42,8 @@ ExamWidget* ExamWidgetFactory::createWidget(const int examId,
 			widget = new ExamLineEdit(examId, textid);
 		else if(type == "combobox")
 			widget = new ExamComboBox(examId, textid);
+		else if(type == "textedit")
+			widget = new ExamTextEdit(examId, textid);
 		else
 			qWarning() << "Unknown type for widget factory:" << type;
 
