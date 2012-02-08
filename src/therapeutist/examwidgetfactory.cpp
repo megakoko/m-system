@@ -23,7 +23,7 @@ ExamWidget* ExamWidgetFactory::createWidget(const int examId,
 											const QString& textid) const
 {
 	QSqlQuery q;
-	q.prepare(" SELECT typeid, label "
+	q.prepare(" SELECT typeid, label, shortLabel "
 			  " FROM UiElement "
 			  " WHERE textid = ? ");
 	q.addBindValue(textid);
@@ -45,7 +45,7 @@ ExamWidget* ExamWidgetFactory::createWidget(const int examId,
 			qWarning() << "Unknown type for widget factory:" << type;
 
 		if(widget != NULL)
-			widget->setLabelText(q.value(1).toString());
+			widget->setLabelText(q.value(1).toString(), q.value(2).toString());
 	}
 
 	return widget;

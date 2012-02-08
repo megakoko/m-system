@@ -30,9 +30,16 @@ QString ExamWidget::labelText() const
 }
 
 
-void ExamWidget::setLabelText(const QString &labelText)
+QString ExamWidget::shortLabelText() const
+{
+	return m_shortLabelText;
+}
+
+
+void ExamWidget::setLabelText(const QString &labelText, const QString& shortLabelText)
 {
 	m_labelText = labelText;
+	m_shortLabelText = shortLabelText;
 }
 
 

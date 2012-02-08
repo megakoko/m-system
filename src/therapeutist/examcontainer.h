@@ -27,7 +27,7 @@ public:
 	QWidget* widget() const;
 
 protected:
-	void setLabelText(const QString &labelText);
+	void setLabelText(const QString &labelText, const QString& shortLabelText);
 
 private:
 	// Возвращает значение всех элементов, содержащихся в контейнере

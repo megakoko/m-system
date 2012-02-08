@@ -46,6 +46,9 @@ public:
 	// Возвращает название виджета.
 	QString labelText() const;
 
+	//
+	QString shortLabelText() const;
+
 public slots:
 	// Сбрасывает значение, которое хранит виджет.
 	virtual void resetValue();
@@ -63,10 +66,11 @@ protected:
 	// Идентификатор виджета (берется из базы данных).
 	const QString m_textid;
 
-	virtual void setLabelText(const QString& labelText);
+	virtual void setLabelText(const QString& labelText, const QString &shortLabelText);
 
 private:
 	QString m_labelText;
+	QString m_shortLabelText;
 
 signals:
 	// Сигнал, который должен испускаться при изменении значения виджета.

@@ -206,7 +206,8 @@ CREATE TABLE UiElement (
 	parentId			VARCHAR(40) REFERENCES UiElement(textId),
 	availableForSexId	INTEGER REFERENCES Sex(id),			-- Пол, для которого доступен элемент.
 	typeId				VARCHAR(40) REFERENCES UiElementType(textid),
-	label				VARCHAR(100)
+	label				VARCHAR(100),
+	shortLabel			VARCHAR(100)
 );
 
 -- Таблица с элементами различных списков (ComboBox, например).
