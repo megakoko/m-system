@@ -21,7 +21,8 @@ SOURCES +=	therapeutist.cpp \
 			patientpickerdialog.cpp \
 			examinputwidget.cpp \
 			examtextedit.cpp \
-			plaintextedit.cpp
+			plaintextedit.cpp \
+			examspinbox.cpp
 
 HEADERS	+=	therapeutist.h \
 			maintherapeutistwidget.h \
@@ -36,7 +37,8 @@ HEADERS	+=	therapeutist.h \
 			patientpickerdialog.h \
 			examinputwidget.h \
 			examtextedit.h \
-			plaintextedit.h
+			plaintextedit.h \
+			examspinbox.h
 
 FORMS	+=	maintherapeutistwidget.ui \
 			examinationeditwidget.ui \

@@ -88,9 +88,9 @@ SELECT 1040, 'US_PP', 'USall', NULL, 'combobox', 'Положение пацие�
 SELECT 1050, 'US_Look', 'USall', NULL, 'combobox', 'Выражение лица', NULL UNION
 SELECT 1060, 'US_Gait', 'USall', NULL, 'combobox', 'Походка', NULL UNION
 SELECT 1070, 'US_BB', 'USall', NULL, 'combobox', 'Телосложение', NULL UNION
-SELECT 1090, 'US_MB', 'USall', NULL, 'textedit', 'Масса тела, кг', NULL UNION
-SELECT 1100, 'US_Stature', 'USall', NULL, 'textedit', 'Рост, см', NULL UNION
-SELECT 1110, 'US_TB', 'USall', NULL, 'textedit', 'Температура тела, °C', NULL UNION
+SELECT 1090, 'US_MB', 'USall', NULL, 'spinbox', 'Масса тела, кг', NULL UNION
+SELECT 1100, 'US_Stature', 'USall', NULL, 'spinbox', 'Рост, см', NULL UNION
+SELECT 1110, 'US_TB', 'USall', NULL, 'spinbox', 'Температура тела, °C', NULL UNION
 SELECT 1120, 'US_Coverlet', 'USall', NULL, 'combobox', 'Кожные покровы', NULL UNION
 SELECT 1130, 'US_MV', 'USall', NULL, 'combobox', 'Видимые слизистые', NULL UNION
 SELECT 1140, 'US_SF', 'USall', NULL, 'combobox', 'Подкожно-жировая клетчатка', NULL UNION
