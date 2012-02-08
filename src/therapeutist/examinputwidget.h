@@ -8,7 +8,7 @@ class ExamInputWidget : public ExamWidget
 {
 	Q_OBJECT
 public:
-	ExamInputWidget(const int examId, const QString& textId, const QString& labelText);
+	ExamInputWidget(const int examId, const QString& textId);
 
 	// Возвращает надпись m_label.
 	QLabel* label() const;
@@ -18,6 +18,8 @@ public slots:
 	void updateLabelStyle();
 
 protected:
+	void setLabelText(const QString &labelText);
+
 	// Помогает в инициализации виджета: возвращает значение, которое хранится в поле
 	// fieldName таблицы ExaminationData.
 	QVariant initHelpher(const QString& fieldName);

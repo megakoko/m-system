@@ -8,7 +8,7 @@ class ExamComboBox : public ExamInputWidget
 {
 	Q_OBJECT
 public:
-	ExamComboBox(const int examId, const QString& textId, const QString& labelText);
+	ExamComboBox(const int examId, const QString& textId);
 
 	// Определенные чисто виртуальные функции.
 	bool valueIsNull() const;

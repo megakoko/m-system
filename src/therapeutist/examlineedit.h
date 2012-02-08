@@ -8,7 +8,7 @@ class ExamLineEdit : public ExamInputWidget
 {
 	Q_OBJECT
 public:
-	ExamLineEdit(const int examId, const QString& textId, const QString& labelText);
+	ExamLineEdit(const int examId, const QString& textId);
 
 	// Определенные чисто виртуальные функции.
 	bool valueIsNull() const;

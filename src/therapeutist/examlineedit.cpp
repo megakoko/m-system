@@ -11,8 +11,8 @@
 #include "therapeutist.h"
 
 
-ExamLineEdit::ExamLineEdit(const int examId, const QString &textId, const QString &labelText)
-	: ExamInputWidget(examId, textId, labelText)
+ExamLineEdit::ExamLineEdit(const int examId, const QString &textId)
+	: ExamInputWidget(examId, textId)
 	, m_lineEdit(new QLineEdit())
 	, m_textIsNull(true)
 {
