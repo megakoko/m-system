@@ -18,7 +18,7 @@ public slots:
 	void updateLabelStyle();
 
 protected:
-	void setLabelText(const QString &labelText);
+	void setLabelText(const QString &labelText, const QString &shortLabelText);
 
 	// Помогает в инициализации виджета: возвращает значение, которое хранится в поле
 	// fieldName таблицы ExaminationData.

@@ -117,9 +117,9 @@ void ExamContainer::init()
 }
 
 
-void ExamContainer::setLabelText(const QString &labelText)
+void ExamContainer::setLabelText(const QString &labelText, const QString &shortLabelText)
 {
-	ExamWidget::setLabelText(labelText);
+	ExamWidget::setLabelText(labelText, shortLabelText);
 	updateHeader();
 }
 

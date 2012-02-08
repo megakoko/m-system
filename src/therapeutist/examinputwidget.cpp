@@ -17,9 +17,9 @@ ExamInputWidget::ExamInputWidget(const int examId, const QString &textId)
 }
 
 
-void ExamInputWidget::setLabelText(const QString &labelText)
+void ExamInputWidget::setLabelText(const QString &labelText, const QString& shortLabelText)
 {
-	ExamWidget::setLabelText(labelText);
+	ExamWidget::setLabelText(labelText, shortLabelText);
 	updateLabelStyle();
 }
 
@@ -32,10 +32,12 @@ QLabel* ExamInputWidget::label() const
 
 void ExamInputWidget::updateLabelStyle()
 {
+	const QString& text = (shortLabelText().isNull() ? labelText() : shortLabelText());
+
 	if(valueIsNull())
-		m_label->setText(labelText());
+		m_label->setText(text);
 	else
-		m_label->setText(QString("<b>%1</b>").arg(labelText()));
+		m_label->setText(QString("<b>%1</b>").arg(text));
 }
 
 
