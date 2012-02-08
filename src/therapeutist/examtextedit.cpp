@@ -35,12 +35,6 @@ bool ExamTextEdit::valueIsNull() const
 }
 
 
-bool ExamTextEdit::valueCanBeReseted() const
-{
-	return true;
-}
-
-
 QString ExamTextEdit::value() const
 {
 	return m_textEdit->toPlainText();

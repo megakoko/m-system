@@ -13,6 +13,8 @@ public:
 	// Возвращает надпись m_label.
 	QLabel* label() const;
 
+	bool valueCanBeReseted() const;
+
 public slots:
 	// Обновляет стиль надписи: делает ее полужирной, если значение виджета не null.
 	void updateLabelStyle();

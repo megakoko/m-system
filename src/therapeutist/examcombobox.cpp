@@ -44,12 +44,6 @@ bool ExamComboBox::valueIsNull() const
 }
 
 
-bool ExamComboBox::valueCanBeReseted() const
-{
-	return true;
-}
-
-
 QString ExamComboBox::value() const
 {
 	return m_comboBox->currentText();
