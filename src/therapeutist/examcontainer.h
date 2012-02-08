@@ -37,6 +37,7 @@ private:
 	void expandContainer(const bool expanded);
 
 
+	static const int m_indicatorWidth;
 	static const QString labelAndValueDelimiter;
 
 	const bool m_topLevel;

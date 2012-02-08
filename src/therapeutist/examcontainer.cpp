@@ -13,9 +13,12 @@
 #include "macros.h"
 
 
-static const int labelColumn = 0;
-static const int widgetColumn = 1;
-static const int resetButtonColumn = 2;
+static const int spacerColumn = 0;
+static const int labelColumn = 1;
+static const int widgetColumn = 2;
+static const int resetButtonColumn = 3;
+
+const int ExamContainer::m_indicatorWidth = 20;
 
 const QString ExamContainer::labelAndValueDelimiter = ": ";
 
@@ -29,7 +32,6 @@ ExamContainer::ExamContainer(const int examId, const QString &textid,
 	, m_headerText(NULL)
 	, m_container(new QWidget())
 {
-	static const int indicatorWidth = 20;
 	QHBoxLayout* header = NULL;
 
 	// Чтобы код лучше читался.
@@ -48,7 +50,7 @@ ExamContainer::ExamContainer(const int examId, const QString &textid,
 		m_headerIndicator->setSizePolicy(sizePolicy1);
 
 		m_headerIndicator->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
-		m_headerIndicator->setMinimumWidth(indicatorWidth);
+		m_headerIndicator->setMinimumWidth(m_indicatorWidth);
 
 
 		m_headerText = new QLabel;
@@ -78,7 +80,7 @@ ExamContainer::ExamContainer(const int examId, const QString &textid,
 	QMargins margins = m_containerLayout->contentsMargins();
 	margins.setRight(0);
 	if(needHeader)
-		margins.setLeft(indicatorWidth + header->spacing());
+		margins.setLeft(m_indicatorWidth + header->spacing());
 
 	m_containerLayout->setContentsMargins(margins);
 	m_containerLayout->setColumnStretch(labelColumn, 1);
@@ -189,13 +191,15 @@ void ExamContainer::expandContainer(const bool expanded)
 				{
 					// Виджет будет занимать нулевую и первую колонку.
 					m_containerLayout->addWidget(widget->widget(),
-												 row, labelColumn,
-												 1, 3);
+												 row, spacerColumn,
+												 1, resetButtonColumn - spacerColumn + 1);
 				}
 				else
 				{
 					widget->label()->setWordWrap(true);
 
+					QSpacerItem* spacer = new QSpacerItem(m_indicatorWidth, 0);
+					m_containerLayout->addItem(spacer, row, spacerColumn);
 					m_containerLayout->addWidget(widget->label(), row, labelColumn,
 												 Qt::AlignTop);
 					m_containerLayout->addWidget(widget->widget(), row, widgetColumn);
