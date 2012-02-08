@@ -190,7 +190,7 @@ void ExamContainer::expandContainer(const bool expanded)
 					// Виджет будет занимать нулевую и первую колонку.
 					m_containerLayout->addWidget(widget->widget(),
 												 row, labelColumn,
-												 1, labelColumn + 2);
+												 1, 3);
 				}
 				else
 				{
