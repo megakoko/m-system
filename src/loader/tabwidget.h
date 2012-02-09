@@ -24,7 +24,8 @@ public slots:
 	void addHomeTab(HomePage* homePage);
 
 	/// \returns номер добавленной вкладки или -1, если вкладка не была добавлена.
-	int addWidget(PluginWidget* widget, const QString& caption, const QString& textid = QString::null);
+	int addWidget(PluginWidget* widget, const QString& caption);
+	int addWidget(PluginWidget* widget, const QString& caption, const QString& textid);
 
 protected:
 	void tabInserted(int index);
@@ -37,5 +38,10 @@ private:
 
 	bool userWantsToSaveWidget();
 	bool userWantsToCloseWidgetThatCannotBeSaved(const QString& errorDescription);
+
+private slots:
+	/// Сохраняет виджет, находящийся во вкладке с индексом index. Возвращает true, если
+	/// виджет был сохранен.
+	bool saveWidget(QWidget* widget = NULL);
 
 };

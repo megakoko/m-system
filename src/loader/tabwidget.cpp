@@ -136,7 +136,7 @@ void TabWidget::addHomeTab(HomePage *homePage)
 }
 
 
-int TabWidget::addWidget(PluginWidget *widget, const QString &caption, const QString &textid)
+int TabWidget::addWidget(PluginWidget *widget, const QString &caption)
 {
 	int index = -1;
 
@@ -147,25 +147,13 @@ int TabWidget::addWidget(PluginWidget *widget, const QString &caption, const QSt
 		setCurrentIndex(index);
 
 
-		// Если textid равен значению по-умолчанию, добавляем в tabData() textid
-		// вкладки, которая добавляет новую вкладку.
-		if(textid.isNull())
+		const int parentIndex = indexOf(qobject_cast<QWidget*>(sender()));
+		if(parentIndex >= 0)
 		{
-			const int parentIndex = indexOf(qobject_cast<QWidget*>(sender()));
-			if(parentIndex >= 0)
-			{
-				const QStringList& data = tabBar()->tabData(parentIndex).toStringList();
+			const QStringList& data = tabBar()->tabData(parentIndex).toStringList();
 
-				if(data.size() == 2)
-					tabBar()->setTabData(index, data.last());
-			}
-		}
-		// Если передали textid, значит добавляется главная вкладка модуля.
-		// Добавляем в tabData() значения "main" и textid.
-		else
-		{
-			const QStringList& data = QStringList() << "main" << textid;
-			tabBar()->setTabData(index, data);
+			if(data.size() == 2)
+				tabBar()->setTabData(index, data.last());
 		}
 
 
@@ -179,6 +167,50 @@ int TabWidget::addWidget(PluginWidget *widget, const QString &caption, const QSt
 	}
 	return index;
 }
+
+
+int TabWidget::addWidget(PluginWidget *widget, const QString &caption,
+						 const QString &textid)
+{
+		const int index = addWidget(widget, caption);
+
+		if(index >= 0)
+		{
+				const QVariant& data = QStringList() << "main" << textid;
+				tabBar()->setTabData(index, data);
+		}
+		return index;
+}
+
+
+bool TabWidget::saveWidget(QWidget *widget)
+{
+	if(widget == NULL)
+		widget = qobject_cast<QWidget*>(sender());
+
+	bool savedSuccessfully = false;
+
+	SaveablePluginWidget* saveableWidget = dynamic_cast<SaveablePluginWidget*>(widget);
+	if(saveableWidget != NULL)
+	{
+		QString errorDescription;
+
+		if(saveableWidget->canSave(errorDescription))
+		{
+			// Убеждаемся, что по-ошибке переменная не была использована.
+			Q_ASSERT(errorDescription.isNull());
+
+			if(userWantsToSaveWidget())
+			{
+				saveableWidget->save();
+				savedSuccessfully = true;
+			}
+		}
+	}
+
+	return savedSuccessfully;
+}
+
 
 
 bool TabWidget::tabIsMain(const int index) const
