@@ -152,7 +152,7 @@ void MainPatientsWidget::addPatient()
 	if(widget != NULL)
 	{
 		connect(widget, SIGNAL(saved()), SLOT(updatePatientsList()));
-		addNewWidget(widget, widget->fullPatientName());
+		emit requestToAddNewWidget(widget, widget->fullPatientName());
 	}
 }
 
@@ -164,7 +164,7 @@ void MainPatientsWidget::editPatient()
 
 	PatientEditWidget* widget = new PatientEditWidget(patientId, this);
 	connect(widget, SIGNAL(saved()), SLOT(updatePatientsList()));
-	addNewWidget(widget, widget->fullPatientName());
+	emit requestToAddNewWidget(widget, widget->fullPatientName());
 }
 
 

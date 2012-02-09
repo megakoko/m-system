@@ -119,7 +119,7 @@ void UserEditWidget::init()
 void UserEditWidget::initConnections()
 {
 	connect(m_isAdmin, SIGNAL(toggled(bool)), SLOT(isAdminToggled(bool)));
-	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
+	connect(m_save, SIGNAL(clicked()), SIGNAL(requestToCloseTab()));
 
 	connect(m_login, SIGNAL(editingFinished()), SLOT(loginEdited()));
 }
@@ -360,5 +360,5 @@ QString UserEditWidget::fullUserName() const
 
 void UserEditWidget::loginEdited()
 {
-	emit setTabLabel(fullUserName());
+	emit requestToSetTabLabel(fullUserName());
 }

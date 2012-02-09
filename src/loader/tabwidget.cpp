@@ -169,10 +169,10 @@ int TabWidget::addWidget(PluginWidget *widget, const QString &caption, const QSt
 		}
 
 
-		connect(widget, SIGNAL(closeMe()), SLOT(closeTab()));
-		connect(widget, SIGNAL(setTabLabel(QString)), SLOT(setTabLabel(QString)));
+		connect(widget, SIGNAL(requestToCloseTab()), SLOT(closeTab()));
+		connect(widget, SIGNAL(requestToSetTabLabel(QString)), SLOT(setTabLabel(QString)));
 		connect(widget,
-				SIGNAL(addNewWidget(PluginWidget*, QString)),
+				SIGNAL(requestToAddNewWidget(PluginWidget*, QString)),
 				SLOT(addWidget(PluginWidget*,QString)));
 
 

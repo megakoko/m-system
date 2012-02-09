@@ -62,7 +62,7 @@ void StaffEditWidget::initConnections()
 	connect(m_name, SIGNAL(editingFinished()), SLOT(nameChanged()));
 	connect(m_patronymic, SIGNAL(editingFinished()), SLOT(nameChanged()));
 
-	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
+	connect(m_save, SIGNAL(clicked()), SIGNAL(requestToCloseTab()));
 }
 
 
@@ -141,5 +141,5 @@ void StaffEditWidget::save()
 
 void StaffEditWidget::nameChanged()
 {
-	emit setTabLabel(staffName());
+	emit requestToSetTabLabel(staffName());
 }

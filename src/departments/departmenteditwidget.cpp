@@ -37,7 +37,7 @@ void DepartmentEditWidget::init()
 
 
 	connect(m_name, SIGNAL(editingFinished()), SLOT(nameChanged()));
-	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
+	connect(m_save, SIGNAL(clicked()), SIGNAL(requestToCloseTab()));
 
 	connect(m_departmentStaff, SIGNAL(doubleClicked(QModelIndex)),
 			SLOT(editStaffPosition()));
@@ -180,7 +180,7 @@ void DepartmentEditWidget::save()
 
 void DepartmentEditWidget::nameChanged()
 {
-	emit setTabLabel(departmentName());
+	emit requestToSetTabLabel(departmentName());
 }
 
 

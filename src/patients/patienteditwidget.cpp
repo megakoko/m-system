@@ -174,7 +174,7 @@ void PatientEditWidget::initConnections()
 	connect(m_editMailingAddress, SIGNAL(clicked()), SLOT(launchMailingAddressEditing()));
 	connect(m_editActualAddress, SIGNAL(clicked()), SLOT(launchActualAddressEditing()));
 
-	connect(m_save, SIGNAL(clicked()), SIGNAL(closeMe()));
+	connect(m_save, SIGNAL(clicked()), SIGNAL(requestToCloseTab()));
 
 	connect(m_documentTable, SIGNAL(doubleClicked(QModelIndex)), SLOT(editDocument()));
 	connect(m_documentTable->selectionModel(),
@@ -412,7 +412,7 @@ void PatientEditWidget::save()
 
 void PatientEditWidget::patientNameEdited()
 {
-	emit setTabLabel(fullPatientName());
+	emit requestToSetTabLabel(fullPatientName());
 }
 
 

@@ -136,7 +136,7 @@ void MainTherapeutistWidget::addExam()
 	const int examinationId = ExaminationEditWidget::InvalidId;
 	ExaminationEditWidget* exam = new ExaminationEditWidget(examinationId, this);
 
-	addNewWidget(exam, "TODO");
+	emit requestToAddNewWidget(exam, "TODO");
 	connect(exam, SIGNAL(saved()), SLOT(updateExaminationList()));
 }
 
@@ -145,7 +145,7 @@ void MainTherapeutistWidget::editExam()
 {
 	ExaminationEditWidget* exam = new ExaminationEditWidget(selectedExamId(), this);
 
-	addNewWidget(exam, "TODO");
+	emit requestToAddNewWidget(exam, "TODO");
 	connect(exam, SIGNAL(saved()), SLOT(updateExaminationList()));
 }
 
