@@ -136,7 +136,7 @@ void TabWidget::addHomeTab(HomePage *homePage)
 }
 
 
-int TabWidget::addWidget(PluginWidget *widget, const QString& caption)
+int TabWidget::addWidget(PluginWidget *widget, const QString &caption, const QString &textid)
 {
 	int index = -1;
 
@@ -146,34 +146,36 @@ int TabWidget::addWidget(PluginWidget *widget, const QString& caption)
 		setTabToolTip(index, caption);
 		setCurrentIndex(index);
 
-		const int parentIndex = indexOf(qobject_cast<QWidget*>(sender()));
-		if(parentIndex >= 0)
-		{
-			const QStringList& data = tabBar()->tabData(parentIndex).toStringList();
 
-			if(data.size() == 2)
-				tabBar()->setTabData(index, data.last());
+		// Если textid равен значению по-умолчанию, добавляем в tabData() textid
+		// вкладки, которая добавляет новую вкладку.
+		if(textid.isNull())
+		{
+			const int parentIndex = indexOf(qobject_cast<QWidget*>(sender()));
+			if(parentIndex >= 0)
+			{
+				const QStringList& data = tabBar()->tabData(parentIndex).toStringList();
+
+				if(data.size() == 2)
+					tabBar()->setTabData(index, data.last());
+			}
 		}
+		// Если передали textid, значит добавляется главная вкладка модуля.
+		// Добавляем в tabData() значения "main" и textid.
+		else
+		{
+			const QStringList& data = QStringList() << "main" << textid;
+			tabBar()->setTabData(index, data);
+		}
+
 
 		connect(widget, SIGNAL(closeMe()), SLOT(closeTab()));
 		connect(widget, SIGNAL(setTabLabel(QString)), SLOT(setTabLabel(QString)));
 		connect(widget,
 				SIGNAL(addNewWidget(PluginWidget*, QString)),
 				SLOT(addWidget(PluginWidget*,QString)));
-	}
-	return index;
-}
 
 
-int TabWidget::addWidget(PluginWidget *widget, const QString &caption,
-						 const QString &textid)
-{
-	const int index = addWidget(widget, caption);
-
-	if(index >= 0)
-	{
-		const QVariant& data = QStringList() << "main" << textid;
-		tabBar()->setTabData(index, data);
 	}
 	return index;
 }
