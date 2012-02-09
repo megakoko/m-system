@@ -14,7 +14,7 @@ public:
 
 private:
 	void init();
-	void addPersonalInformation(QDomElement& body);
+	void addExaminationInformation(QDomElement& body);
 
 	static const QString CSS;
 
