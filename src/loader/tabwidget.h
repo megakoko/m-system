@@ -24,8 +24,7 @@ public slots:
 	void addHomeTab(HomePage* homePage);
 
 	/// \returns номер добавленной вкладки или -1, если вкладка не была добавлена.
-	int addWidget(PluginWidget* widget, const QString& caption);
-	int addWidget(PluginWidget* widget, const QString& caption, const QString& textid);
+	int addWidget(PluginWidget* widget, const QString& caption, const QString& textid = QString::null);
 
 protected:
 	void tabInserted(int index);
