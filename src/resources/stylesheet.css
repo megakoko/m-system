@@ -1,0 +1,62 @@
+QPushButton[type] {
+	width: 30px;
+	height: 30px;
+	
+	border-style: none;
+}
+
+
+/* ---------- */
+QPushButton[type='add'] {
+	background: url(:/add.png) no-repeat center;
+}
+
+QPushButton[type='edit'] {
+	background: url(:/edit.png) no-repeat center;
+}
+
+QPushButton[type='remove'] {
+	background: url(:/remove.png) no-repeat center;
+}
+
+QPushButton[type='cancel'] {
+	background: url(:/cancel.png) no-repeat center;
+}
+
+
+/* Hover */
+QPushButton[type='add']:hover {
+	background-image: url(:/hover/add.png);
+}
+
+QPushButton[type='edit']:hover {
+	background-image: url(:/hover/edit.png);
+}
+
+QPushButton[type='remove']:hover {
+	background-image: url(:/hover/remove.png);
+}
+
+QPushButton[type='cancel']:hover {
+	background-image: url(:/hover/cancel.png);
+}
+
+
+/* disabled */
+QPushButton[type='add']:disabled {
+	background-image: url(:/disabled/add.png);
+}
+
+QPushButton[type='edit']:disabled {
+	background-image: url(:/disabled/edit.png);
+}
+
+QPushButton[type='remove']:disabled {
+	background-image: url(:/disabled/remove.png);
+}
+
+QPushButton[type='cancel']:disabled {
+	background-image: url(:/disabled/cancel.png);
+}
+
+

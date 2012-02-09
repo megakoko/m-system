@@ -38,9 +38,8 @@
       </item>
       <item>
        <widget class="QPushButton" name="m_editHealthFacility">
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/edit.png</normaloff>:/edit.png</iconset>
+        <property name="type" stdset="0">
+         <string>edit</string>
         </property>
        </widget>
       </item>
@@ -68,9 +67,8 @@
       </item>
       <item>
        <widget class="QPushButton" name="m_editPositions">
-        <property name="icon">
-         <iconset resource="../resources/resources.qrc">
-          <normaloff>:/edit.png</normaloff>:/edit.png</iconset>
+        <property name="type" stdset="0">
+         <string>edit</string>
         </property>
        </widget>
       </item>
@@ -103,25 +101,22 @@
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QPushButton" name="m_addDepartment">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/add.png</normaloff>:/add.png</iconset>
+          <property name="type" stdset="0">
+           <string>add</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_editDepartmnet">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/edit.png</normaloff>:/edit.png</iconset>
+          <property name="type" stdset="0">
+           <string>edit</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_deleteDepartment">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
+          <property name="type" stdset="0">
+		   <string>remove</string>
           </property>
          </widget>
         </item>
@@ -169,25 +164,22 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QPushButton" name="m_addStaff">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/add.png</normaloff>:/add.png</iconset>
+          <property name="type" stdset="0">
+           <string>add</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_editStaff">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/edit.png</normaloff>:/edit.png</iconset>
+          <property name="type" stdset="0">
+           <string>edit</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_deleteStaff">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
+          <property name="type" stdset="0">
+		   <string>remove</string>
           </property>
          </widget>
         </item>
@@ -211,8 +203,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../resources/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
