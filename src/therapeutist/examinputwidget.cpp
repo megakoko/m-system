@@ -7,6 +7,7 @@
 #include <QDebug>
 
 #include "macros.h"
+#include "therapeutist.h"
 
 
 ExamInputWidget::ExamInputWidget(const int examId, const QString &textId)
@@ -72,8 +73,9 @@ QVariant ExamInputWidget::initHelpher(const QString& fieldName)
 }
 
 
-bool ExamInputWidget::saveHelper(const QString& fieldName, const int examId, const QVariant& value) const
+bool ExamInputWidget::saveHelper(const QString& fieldName, const int examId, const QVariant& value)
 {
+
 	bool savedSuccessfully = false;
 
 	// В этом случае сохранять не надо.
@@ -81,6 +83,7 @@ bool ExamInputWidget::saveHelper(const QString& fieldName, const int examId, con
 		savedSuccessfully = true;
 	else
 	{
+		qDebug() << m_examDataId;
 		QSqlQuery q;
 
 		if(m_examDataId == InvalidId && !valueIsNull())
@@ -88,7 +91,8 @@ bool ExamInputWidget::saveHelper(const QString& fieldName, const int examId, con
 			q.prepare(" INSERT INTO ExaminationData "
 					  " (examinationId, uiElementId, " + fieldName + ") "
 					  " VALUES(:examId, (SELECT id FROM UiElement WHERE textid = :textid),"
-					  " :value) ");
+					  " :value) " +
+					  Therapeutist::interfaces->db->returningSentence("id"));
 			q.bindValue(":examId", examId);
 			q.bindValue(":textid", m_textid);
 			q.bindValue(":value", value);
@@ -109,6 +113,11 @@ bool ExamInputWidget::saveHelper(const QString& fieldName, const int examId, con
 
 		q.exec();
 		checkQuery(q);
+
+
+		if(m_examDataId == InvalidId)
+			m_examDataId = Therapeutist::interfaces->db->lastInsertedId(&q).toInt();
+
 
 		savedSuccessfully = q.isActive();
 	}

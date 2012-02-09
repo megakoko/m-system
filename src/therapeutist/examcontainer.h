@@ -21,7 +21,7 @@ public:
 	bool valueIsNull() const;
 	QString value() const;
 	void init();
-	bool save(const int examId) const;
+	bool save(const int examId);
 
 	QLabel* label() const;
 	QWidget* widget() const;

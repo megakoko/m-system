@@ -69,7 +69,7 @@ void ExamLineEdit::init()
 }
 
 
-bool ExamLineEdit::save(const int examId) const
+bool ExamLineEdit::save(const int examId)
 {
 	return saveHelper("textValue", examId, m_lineEdit->text());
 }

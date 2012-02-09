@@ -75,7 +75,7 @@ void ExamComboBox::init()
 }
 
 
-bool ExamComboBox::save(const int examId) const
+bool ExamComboBox::save(const int examId)
 {
 	const QVariant& value = m_comboBox->itemData(m_comboBox->currentIndex());
 	return saveHelper("enumValue", examId, value);

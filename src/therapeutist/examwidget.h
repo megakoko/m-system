@@ -34,7 +34,7 @@ public:
 
 	// Сохраняет данные, введенные в виджете и возращает true, если сохранение прошло
 	// успешно.
-	virtual bool save(const int examId) const = 0;
+	virtual bool save(const int examId) = 0;
 
 	// Возвращает виджет с надписью QLabel. Если такой виджет не нужен, можно
 	// возвращать NULL,
