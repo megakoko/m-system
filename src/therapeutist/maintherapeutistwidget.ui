@@ -69,6 +69,14 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButton">
+          <property name="icon">
+           <iconset resource="../resources/resources.qrc">
+            <normaloff>:/spyglass.png</normaloff>:/spyglass.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>

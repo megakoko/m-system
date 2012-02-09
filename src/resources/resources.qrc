@@ -8,5 +8,6 @@
         <file alias="edit.png">icons/pen_16x16.png</file>
         <file alias="remove.png">icons/minus_16x4.png</file>
         <file alias="cancel.png">icons/x_14x14.png</file>
+        <file alias="spyglass.png">icons/magnifying_glass_alt_16x16.png</file>
     </qresource>
 </RCC>
