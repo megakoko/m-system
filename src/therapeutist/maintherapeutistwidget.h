@@ -37,4 +37,6 @@ private slots:
 	void editExam();
 	void deleteExam();
 
+	void openExamPreview();
+
 };

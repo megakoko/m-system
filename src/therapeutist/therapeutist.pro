@@ -1,7 +1,7 @@
 TARGET	 = therapeutist
 TEMPLATE = lib
 CONFIG	+= plugin
-QT		+= sql
+QT		+= sql webkit xml
 
 include( ../m-system-config.pri )
 
@@ -22,7 +22,8 @@ SOURCES +=	therapeutist.cpp \
 			examinputwidget.cpp \
 			examtextedit.cpp \
 			plaintextedit.cpp \
-			examspinbox.cpp
+			examspinbox.cpp \
+			examinationpreview.cpp
 
 HEADERS	+=	therapeutist.h \
 			maintherapeutistwidget.h \
@@ -38,8 +39,10 @@ HEADERS	+=	therapeutist.h \
 			examinputwidget.h \
 			examtextedit.h \
 			plaintextedit.h \
-			examspinbox.h
+			examspinbox.h \
+			examinationpreview.h
 
 FORMS	+=	maintherapeutistwidget.ui \
 			examinationeditwidget.ui \
-			patientpickerdialog.ui
+			patientpickerdialog.ui \
+			examinationpreview.ui
