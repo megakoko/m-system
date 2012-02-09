@@ -13,6 +13,7 @@
 
 #include "therapeutist.h"
 #include "macros.h"
+#include "examinationpreview.h"
 
 
 MainTherapeutistWidget::MainTherapeutistWidget(QWidget* parent)
@@ -45,6 +46,7 @@ void MainTherapeutistWidget::init()
 
 	m_editExam->setEnabled(false);
 	m_deleteExam->setEnabled(false);
+	m_openPreview->setEnabled(false);
 }
 
 
@@ -59,6 +61,8 @@ void MainTherapeutistWidget::initConnections()
 	connect(m_addExam, SIGNAL(clicked()), SLOT(addExam()));
 	connect(m_editExam, SIGNAL(clicked()), SLOT(editExam()));
 	connect(m_deleteExam, SIGNAL(clicked()), SLOT(deleteExam()));
+
+	connect(m_openPreview, SIGNAL(clicked()), SLOT(openExamPreview()));
 }
 
 
@@ -128,6 +132,7 @@ void MainTherapeutistWidget::examSelectionChanged()
 
 	m_editExam->setDisabled(disableButtons);
 	m_deleteExam->setDisabled(disableButtons);
+	m_openPreview->setDisabled(disableButtons);
 }
 
 
@@ -176,4 +181,11 @@ void MainTherapeutistWidget::deleteExam()
 
 		updateExaminationList();
 	}
+}
+
+
+void MainTherapeutistWidget::openExamPreview()
+{
+	ExaminationPreview* preview = new ExaminationPreview(selectedExamId());
+	emit requestToAddNewWidget(preview, "TODO");
 }
