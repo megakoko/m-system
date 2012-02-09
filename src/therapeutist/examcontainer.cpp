@@ -10,6 +10,7 @@
 #include <QVariant>
 #include <QDebug>
 
+#include "therapeutist.h"
 #include "macros.h"
 
 
@@ -345,10 +346,10 @@ QString ExamContainer::value() const
 }
 
 
-bool ExamContainer::save(const int examId) const
+bool ExamContainer::save(const int examId)
 {
 	bool savedSuccessfully = true;
-	foreach(const ExamWidget* widget, m_items)
+	foreach(ExamWidget* widget, m_items)
 		savedSuccessfully &= widget->save(examId);
 
 
@@ -359,12 +360,15 @@ bool ExamContainer::save(const int examId) const
 		{
 			q.prepare(" INSERT INTO ExaminationData "
 					  " (examinationId, uiElementId) "
-					  " VALUES(:examId, (SELECT id FROM UiElement WHERE textid = :textid))");
+					  " VALUES(:examId, (SELECT id FROM UiElement WHERE textid = :textid))"
+					  + Therapeutist::interfaces->db->returningSentence("id"));
 			q.bindValue(":examId", examId);
 			q.bindValue(":textid", m_textid);
 
 			q.exec();
 			checkQuery(q);
+
+			m_examDataId = Therapeutist::interfaces->db->lastInsertedId(&q).toInt();
 
 			savedSuccessfully &= q.isActive();
 		}

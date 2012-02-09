@@ -69,7 +69,7 @@ void ExamTextEdit::init()
 }
 
 
-bool ExamTextEdit::save(const int examId) const
+bool ExamTextEdit::save(const int examId)
 {
 	return saveHelper("textValue", examId, m_textEdit->toPlainText());
 }

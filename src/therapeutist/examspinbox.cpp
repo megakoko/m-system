@@ -68,7 +68,7 @@ void ExamSpinBox::init()
 }
 
 
-bool ExamSpinBox::save(const int examId) const
+bool ExamSpinBox::save(const int examId)
 {
 	return saveHelper("realValue", examId, m_spinBox->value());
 }

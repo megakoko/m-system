@@ -28,7 +28,7 @@ protected:
 
 	// Помогает в сохранении значения, введенного в виджет (value): сохраняет его в поле
 	// fieldName таблицы ExaminationData с внешним ключом на таблицу Examination - examId.
-	bool saveHelper(const QString& fieldName, const int examId, const QVariant &value) const;
+	bool saveHelper(const QString& fieldName, const int examId, const QVariant &value);
 
 private:
 	// Надпись.
