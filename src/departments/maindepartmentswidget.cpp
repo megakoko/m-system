@@ -119,7 +119,7 @@ void MainDepartmentsWidget::updateStaffList()
 void MainDepartmentsWidget::addStaff()
 {
 	StaffEditWidget* w = new StaffEditWidget(StaffEditWidget::InvalidId, this);
-	addNewWidget(w, w->staffName());
+	emit requestToAddNewWidget(w, w->staffName());
 	connect(w, SIGNAL(saved()), SLOT(updateStaffList()));
 }
 
@@ -127,7 +127,7 @@ void MainDepartmentsWidget::addStaff()
 void MainDepartmentsWidget::editStaff()
 {
 	StaffEditWidget* w = new StaffEditWidget(selectedStaffId(), this);
-	addNewWidget(w, w->staffName());
+	emit requestToAddNewWidget(w, w->staffName());
 	connect(w, SIGNAL(saved()), SLOT(updateStaffList()));
 }
 
@@ -255,7 +255,7 @@ void MainDepartmentsWidget::addDepartment()
 {
 	DepartmentEditWidget* w = new DepartmentEditWidget(DepartmentEditWidget::InvalidId,
 													   this);
-	addNewWidget(w, w->departmentName());
+	emit requestToAddNewWidget(w, w->departmentName());
 	connect(w, SIGNAL(saved()), SLOT(updateDepartmentList()));
 }
 
@@ -263,7 +263,7 @@ void MainDepartmentsWidget::addDepartment()
 void MainDepartmentsWidget::editDepartment()
 {
 	DepartmentEditWidget* w = new DepartmentEditWidget(selectedDepartmentId(), this);
-	addNewWidget(w, w->departmentName());
+	emit requestToAddNewWidget(w, w->departmentName());
 	connect(w, SIGNAL(saved()), SLOT(updateDepartmentList()));
 }
 

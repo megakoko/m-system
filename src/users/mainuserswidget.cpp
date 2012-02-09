@@ -98,7 +98,7 @@ void MainUsersWidget::createUser()
 {
 	UserEditWidget* widget = new UserEditWidget(SaveablePluginWidget::InvalidId, this);
 	connect(widget, SIGNAL(saved()), SLOT(updateUserList()));
-	addNewWidget(widget, widget->fullUserName());
+	requestToAddNewWidget(widget, widget->fullUserName());
 }
 
 
@@ -109,7 +109,7 @@ void MainUsersWidget::editUser()
 
 	UserEditWidget* widget = new UserEditWidget(userid, this);
 	connect(widget, SIGNAL(saved()), SLOT(updateUserList()));
-	addNewWidget(widget, widget->fullUserName());
+	requestToAddNewWidget(widget, widget->fullUserName());
 }
 
 

@@ -59,7 +59,7 @@ void ExaminationEditWidget::init()
 void ExaminationEditWidget::initConnections()
 {
 	connect(m_choosePatient, SIGNAL(clicked()), SLOT(choosePatient()));
-	connect(m_save, SIGNAL(clicked()), SLOT(save()));
+	connect(m_save, SIGNAL(clicked()), SIGNAL(requestForSaving()));
 }
 
 
