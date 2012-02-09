@@ -3,6 +3,8 @@
 #include "ui_examinationpreview.h"
 #include "pluginwidget.h"
 
+#include <QDomDocument>
+
 
 class ExaminationPreview : public PluginWidget, private Ui::ExaminationPreview
 {
@@ -12,9 +14,12 @@ public:
 
 private:
 	void init();
+	void addPersonalInformation(QDomElement& body);
 
 	static const QString CSS;
 
 	const int m_examId;
+
+	QDomDocument m_doc;
 
 };
