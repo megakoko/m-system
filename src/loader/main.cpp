@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
 #include <QTextCodec>
 #include <QTranslator>
+#include <QFile>
 #include <QDebug>
 #include "mainwindow.h"
 
@@ -19,7 +20,14 @@ int main(int argc, char *argv[])
 	if(translator.load(":/qt_ru_4.7.3.qm"))
 		app.installTranslator(&translator);
 	else
-		qCritical() << "Не найдет файл перевода самой библиотеки Qt.";
+		qCritical() << "Не найден файл перевода самой библиотеки Qt.";
+
+	QFile f(":/stylesheet.css");
+	if(f.open(QIODevice::ReadOnly))
+		qApp->setStyleSheet(f.readAll());
+	else
+		qCritical() << "Не найден файл с QSS-стилями" << f.fileName();
+
 
 	MainWindow w;
 	w.show();
