@@ -207,8 +207,8 @@ void ExamContainer::expandContainer(const bool expanded)
 
 					if(widget->valueCanBeReseted())
 					{
-						QPushButton* resetButton =
-								new QPushButton(QIcon(":/cancel.png"), QString::null);
+						QPushButton* resetButton = new QPushButton();
+						resetButton->setProperty("type", "cancel");
 						resetButton->setToolTip("Сбросить значение");
 						resetButton->setDisabled(widget->valueIsNull());
 						m_containerLayout->addWidget(resetButton, row, resetButtonColumn);

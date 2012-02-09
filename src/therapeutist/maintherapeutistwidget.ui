@@ -40,9 +40,8 @@
           <property name="text">
            <string/>
           </property>
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/add.png</normaloff>:/add.png</iconset>
+          <property name="type" stdset="0">
+           <string>add</string>
           </property>
          </widget>
         </item>
@@ -51,9 +50,8 @@
           <property name="text">
            <string/>
           </property>
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/edit.png</normaloff>:/edit.png</iconset>
+          <property name="type" stdset="0">
+           <string>edit</string>
           </property>
          </widget>
         </item>
@@ -62,17 +60,15 @@
           <property name="text">
            <string/>
           </property>
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
+          <property name="type" stdset="0">
+           <string>remove</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/spyglass.png</normaloff>:/spyglass.png</iconset>
+          <property name="type" stdset="0">
+           <string>spyglass</string>
           </property>
          </widget>
         </item>
@@ -96,8 +92,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../resources/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

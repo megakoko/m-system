@@ -49,25 +49,22 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QPushButton" name="m_createUser">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/add.png</normaloff>:/add.png</iconset>
+          <property name="type" stdset="0">
+           <string>add</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_editUser">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/edit.png</normaloff>:/edit.png</iconset>
+          <property name="type" stdset="0">
+           <string>edit</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="m_deleteUser">
-          <property name="icon">
-           <iconset resource="../resources/resources.qrc">
-            <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
+          <property name="type" stdset="0">
+           <string>remove</string>
           </property>
          </widget>
         </item>
@@ -91,8 +88,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../resources/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

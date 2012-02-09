@@ -43,9 +43,8 @@
          <property name="text">
           <string/>
          </property>
-         <property name="icon">
-          <iconset resource="../resources/resources.qrc">
-           <normaloff>:/edit.png</normaloff>:/edit.png</iconset>
+         <property name="type" stdset="0">
+          <string>edit</string>
          </property>
         </widget>
        </item>
@@ -81,8 +80,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>610</width>
-        <height>297</height>
+        <width>612</width>
+        <height>304</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -122,8 +121,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../resources/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
