@@ -1,15 +1,16 @@
 #include "maintherapeutistwidget.h"
 #include "examinationeditwidget.h"
 
+#include <QMessageBox>
 
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QDebug>
-#include "components/decodingproxymodel.h"
 
-#include <QMessageBox>
+#include "components/decodingproxymodel.h"
+#include "components/columnjoiningproxymodel.h"
 
 #include "therapeutist.h"
 #include "macros.h"
@@ -31,17 +32,22 @@ void MainTherapeutistWidget::init()
 	// todo
 	m_queryModel = new QSqlQueryModel(this);
 
-	m_proxyModel = new DecodingProxyModel(this);
+	DecodingProxyModel* m_proxyModel = new DecodingProxyModel(this);
 	m_proxyModel->setInterfacesPtr(Therapeutist::interfaces);
 	m_proxyModel->addColumnToDecode(2);
 	m_proxyModel->addColumnToDecode(3);
 	m_proxyModel->addColumnToDecode(4);
 	m_proxyModel->setModel(m_queryModel);
 
+	ColumnJoiningProxyModel* columnJoining = new ColumnJoiningProxyModel(this);
+	columnJoining->setJoinedColumns(2, 3, "Имя пациента");
+	columnJoining->setModel(m_proxyModel);
+
 	updateExaminationList();
 
-	m_examinations->setModel(m_proxyModel);
-	m_examinations->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+	m_examinations->setModel(columnJoining);
+	m_examinations->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
+	m_examinations->horizontalHeader()->setResizeMode(2, QHeaderView::Stretch);
 	m_examinations->setColumnHidden(0, true);
 
 	m_editExam->setEnabled(false);
@@ -68,12 +74,10 @@ void MainTherapeutistWidget::initConnections()
 
 QString MainTherapeutistWidget::examinationListQuery()
 {
-	static const QString psqlSelect = /* Предложение SELECT для PostgreSQL */
-								" SELECT e.id, to_char(e.examinationDate, 'dd.mm.yyyy HH24:MI'), "
+	static const QString select=" SELECT e.id, %1 AS \"Время осмотра\", "
 								" p.familyName, p.name, p.patronymic ";
-	static const QString sqliteSelect = /* Предложение SELECT для SQLite */
-								" SELECT e.id, strftime('%d.%m.%Y %H:%M', e.examinationDate), "
-								" p.familyName, p.name, p.patronymic ";
+	static const QString psqlSelect = select.arg("to_char(e.examinationDate, 'dd.mm.yyyy HH24:MI')");
+	static const QString sqliteSelect = select.arg("strftime('%d.%m.%Y %H:%M', e.examinationDate)");
 	static const QString from  =" FROM Examination e "
 								" LEFT JOIN Patient p ON e.patientId = p.id ";
 	static const QString order =" ORDER BY e.examinationDate DESC";
