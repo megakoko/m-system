@@ -7,7 +7,7 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QDebug>
-#include "patients/decodedpatientlistquery.h"
+#include "components/decodedpatientlistquery.h"
 
 #include <QMessageBox>
 

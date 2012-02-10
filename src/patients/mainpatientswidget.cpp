@@ -13,8 +13,8 @@
 #include "patients.h"
 #include "patienteditwidget.h"
 
-#include "decodedpatientlistquery.h"
-#include "sortfilterproxymodel.h"
+#include "components/decodedpatientlistquery.h"
+#include "components/sortfilterproxymodel.h"
 
 
 MainPatientsWidget::MainPatientsWidget(QWidget *parent)

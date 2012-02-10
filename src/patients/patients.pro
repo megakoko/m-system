@@ -5,15 +5,22 @@ QT		+= sql
 
 include( ../m-system-config.pri )
 
+LIBS		=  -lcomponents -L$${ROOTPATH}/bin/
+INCLUDEPATH	+=	$${ROOTPATH}/src/
+
+# Передаем линковщику опцию -R$${ROOTPATH}/bin/
+unix {
+	QMAKE_CXXFLAGS += -Wl,-R$${ROOTPATH}/bin/
+}
+
+
 HEADERS +=	patients.h \
 			mainpatientswidget.h \
 			patienteditwidget.h \
 			address.h \
 			addressdialog.h \
 			document.h \
-			documenteditdialog.h \
-			decodedpatientlistquery.h \
-			sortfilterproxymodel.h
+			documenteditdialog.h
 
 SOURCES +=	patients.cpp \
 			mainpatientswidget.cpp \
@@ -21,9 +28,7 @@ SOURCES +=	patients.cpp \
 			address.cpp \
 			addressdialog.cpp \
 			document.cpp \
-			documenteditdialog.cpp \
-			decodedpatientlistquery.cpp \
-			sortfilterproxymodel.cpp
+			documenteditdialog.cpp
 
 FORMS += 	mainpatientswidget.ui \
 			patienteditwidget.ui \
