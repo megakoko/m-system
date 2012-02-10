@@ -5,7 +5,9 @@ TEMPLATE = lib
 include( ../m-system-config.pri )
 
 HEADERS	+=	yosortfilterproxymodel.h \
-			decodingproxymodel.h
+			decodingproxymodel.h \
+			columnjoiningproxymodel.h
 
 SOURCES +=	yosortfilterproxymodel.cpp \
-			decodingproxymodel.cpp
+			decodingproxymodel.cpp \
+			columnjoiningproxymodel.cpp
