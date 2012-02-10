@@ -15,6 +15,7 @@
 
 #include "components/decodingproxymodel.h"
 #include "components/yosortfilterproxymodel.h"
+#include "components/columnjoiningproxymodel.h"
 
 
 MainPatientsWidget::MainPatientsWidget(QWidget *parent)
@@ -48,6 +49,7 @@ void MainPatientsWidget::init()
 
 	m_view->setModel(m_sortModel);
 	m_view->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+	m_view->horizontalHeader()->setResizeMode(4, QHeaderView::ResizeToContents);
 	m_view->setColumnHidden(0, true);
 
 	m_editPatient->setEnabled(false);
@@ -76,12 +78,10 @@ void MainPatientsWidget::initConnections()
 
 QString MainPatientsWidget::patientListQuery() const
 {
-	static const QString psqlSelect = /* Предложение SELECT для PostgreSQL */
-								" SELECT id, familyName, name, patronymic, "
-								" to_char(birthday, 'dd.mm.yyyy') ";
-	static const QString sqliteSelect = /* Предложение SELECT для SQLite */
-								" SELECT id, familyName, name, patronymic, "
-								" strftime('%d.%m.%Y', birthday) ";
+	static const QString select=" SELECT id, familyName AS \"Фамилия\", name AS \"Имя\", "
+								" patronymic AS \"Отчество\", %1 AS \"Дата рождения\"";
+	static const QString psqlSelect = select.arg("to_char(birthday, 'dd.mm.yyyy')");
+	static const QString sqliteSelect = select.arg("strftime('%d.%m.%Y', birthday)");
 	static const QString from  =" FROM Patient ";
 	static const QString order =" ORDER BY familyName, name, patronymic ";
 
