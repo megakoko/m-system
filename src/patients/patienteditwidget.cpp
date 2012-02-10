@@ -93,9 +93,9 @@ void PatientEditWidget::init()
 		const bool idIsValid = q.first();
 		Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
 
-		m_familyName->setText(Patients::interfaces->enc->decode(q.value(0).toString()));
-		m_name->setText(Patients::interfaces->enc->decode(q.value(1).toString()));
-		m_patronymic->setText(Patients::interfaces->enc->decode(q.value(2).toString()));
+		m_familyName->setText(Patients::interfaces->enc->decodeStr(q.value(0).toString()));
+		m_name->setText(Patients::interfaces->enc->decodeStr(q.value(1).toString()));
+		m_patronymic->setText(Patients::interfaces->enc->decodeStr(q.value(2).toString()));
 		m_birthDay->setDate(q.value(3).toDate());
 
 		if(q.value(4).toString() == "male")
@@ -374,9 +374,9 @@ void PatientEditWidget::save()
 				  " WHERE id = :patientId ");
 		q.bindValue(":patientId", m_patientId);
 	}
-	q.bindValue(":familyName", Patients::interfaces->enc->encode(m_familyName->text()));
-	q.bindValue(":name", Patients::interfaces->enc->encode(m_name->text()));
-	q.bindValue(":patronymic", Patients::interfaces->enc->encode(m_patronymic->text()));
+	q.bindValue(":familyName", Patients::interfaces->enc->encodeStr(m_familyName->text()));
+	q.bindValue(":name", Patients::interfaces->enc->encodeStr(m_name->text()));
+	q.bindValue(":patronymic", Patients::interfaces->enc->encodeStr(m_patronymic->text()));
 	q.bindValue(":birthDay", m_birthDay->date());
 
 	if(m_male->isChecked())

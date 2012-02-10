@@ -18,7 +18,7 @@ QVariant DecodingProxyModel::data(const QModelIndex &index, int role) const
 	if(role == Qt::DisplayRole && m_columnsToDecode.contains(index.column()))
 	{
 		Q_ASSERT(result.type() == QVariant::String);
-		result = m_interfaces->enc->decode(result.toString());
+		result = m_interfaces->enc->decodeStr(result.toString());
 	}
 
 	return result;

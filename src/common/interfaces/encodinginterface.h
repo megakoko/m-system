@@ -9,9 +9,9 @@ class EncodingInterface
 {
 public:
 	/// Шифрует строку \a plainText и возвращает результат шифрования.
-	virtual QString encode(const QString& plainText) const = 0;
+	virtual QString encodeStr(const QString& plainText) const = 0;
 	/// Дешифрует строку \a cipherText и возвращает результат дешифрования.
-	virtual QString decode(const QString& cipherText) const = 0;
+	virtual QString decodeStr(const QString& cipherText) const = 0;
 
 
 	/// Шифрует дату \a plainDate и возвращает результат шифрования.

@@ -114,7 +114,7 @@ QByteArray CryptoppWrapper::decodeByteArray(const QByteArray& cipherBytes) const
 }
 
 
-QString CryptoppWrapper::encode(const QString& plainText) const
+QString CryptoppWrapper::encodeStr(const QString& plainText) const
 {
 	QString encoded;
 
@@ -131,7 +131,7 @@ QString CryptoppWrapper::encode(const QString& plainText) const
 }
 
 
-QString CryptoppWrapper::decode(const QString& cipherText) const
+QString CryptoppWrapper::decodeStr(const QString& cipherText) const
 {
 	QString decoded;
 

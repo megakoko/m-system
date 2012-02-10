@@ -37,7 +37,7 @@ QDomElement addElement(QDomElement &parent,
 
 QString decode(const QString& cipherText)
 {
-	return Therapeutist::interfaces->enc->decode(cipherText);
+	return Therapeutist::interfaces->enc->decodeStr(cipherText);
 }
 
 

@@ -37,9 +37,9 @@ Document::Document()
 
 Document::Document(const QSqlRecord &rec)
 	: documentTypeId(rec.value("documentTypeId").toInt())
-	, serialNumber(Patients::interfaces->enc->decode(rec.value("serialNumber").toString()))
+	, serialNumber(Patients::interfaces->enc->decodeStr(rec.value("serialNumber").toString()))
 	, date(rec.value("date").toDate())
-	, givenBy(Patients::interfaces->enc->decode(rec.value("givenBy").toString()))
+	, givenBy(Patients::interfaces->enc->decodeStr(rec.value("givenBy").toString()))
 	, m_id(rec.value("id").toInt())
 {
 
@@ -74,9 +74,9 @@ void Document::save(const int patientId) const
 		q.bindValue(":patientId", patientId);
 	}
 	q.bindValue(":documentTypeId", documentTypeId);
-	q.bindValue(":serialNumber", Patients::interfaces->enc->encode(serialNumber));
+	q.bindValue(":serialNumber", Patients::interfaces->enc->encodeStr(serialNumber));
 	q.bindValue(":date", date);
-	q.bindValue(":givenBy", Patients::interfaces->enc->encode(givenBy));
+	q.bindValue(":givenBy", Patients::interfaces->enc->encodeStr(givenBy));
 
 	q.exec();
 	checkQuery(q);
