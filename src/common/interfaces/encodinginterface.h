@@ -1,6 +1,7 @@
 #pragma once
 
 class QString;
+class QDate;
 
 
 /// Интерфейс для использования шифрования в программе.
@@ -11,6 +12,13 @@ public:
 	virtual QString encode(const QString& plainText) const = 0;
 	/// Дешифрует строку \a cipherText и возвращает результат дешифрования.
 	virtual QString decode(const QString& cipherText) const = 0;
+
+
+	/// Шифрует дату \a plainDate и возвращает результат шифрования.
+	virtual QString encodeDate(const QDate& plainDate) const = 0;
+	/// Дешифрует дату \a cipherDate и возвращает результат дешифрования.
+	virtual QDate decodeDate(const QString& cipherDate) const = 0;
+
 
 	/// Возвращает MD5-хэш от MD5-хэша строки \a plainText, посоленной солью \a salt.
 	virtual QString password(const QString& plainText, const QString& salt) const = 0;

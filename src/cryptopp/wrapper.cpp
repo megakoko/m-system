@@ -148,6 +148,48 @@ QString CryptoppWrapper::decode(const QString& cipherText) const
 }
 
 
+QString CryptoppWrapper::encodeDate(const QDate& plainDate) const
+{
+	QString encoded;
+
+	try
+	{
+		QByteArray arr;
+
+		QDataStream stream(&arr, QIODevice::WriteOnly);
+		stream << plainDate;
+
+		encoded = QString(encodeByteArray(arr));
+	}
+	catch(const CryptoPP::Exception& e)
+	{
+		qWarning() << "Failed to encode date" << plainDate << endl << "Reason:" << e.what();
+	}
+
+	return encoded;
+}
+
+
+QDate CryptoppWrapper::decodeDate(const QString &cipherDate) const
+{
+	QDate decoded;
+
+	try
+	{
+		QByteArray arr = decodeByteArray(cipherDate.toUtf8());
+		QDataStream stream(&arr, QIODevice::ReadOnly);
+
+		stream >> decoded;
+	}
+	catch(const CryptoPP::Exception& e)
+	{
+		qWarning() << "Failed to decode date" << cipherDate << endl << "Reason:" << e.what();
+	}
+
+	return decoded;
+}
+
+
 QString CryptoppWrapper::password(const QString &plainText, const QString &salt) const
 {
 	QCryptographicHash crypt(QCryptographicHash::Md5);
