@@ -34,9 +34,9 @@ void MainTherapeutistWidget::init()
 
 	DecodingProxyModel* m_proxyModel = new DecodingProxyModel(this);
 	m_proxyModel->setInterfacesPtr(Therapeutist::interfaces);
-	m_proxyModel->addColumnToDecode(2);
-	m_proxyModel->addColumnToDecode(3);
-	m_proxyModel->addColumnToDecode(4);
+	m_proxyModel->addEncodedStringColumn(2);
+	m_proxyModel->addEncodedStringColumn(3);
+	m_proxyModel->addEncodedStringColumn(4);
 	m_proxyModel->setModel(m_queryModel);
 
 	ColumnJoiningProxyModel* columnJoining = new ColumnJoiningProxyModel(this);
