@@ -110,8 +110,8 @@ QMap<QString, QStringList> Database::initializeCipheredTablesMap() const
 	// value -- QStringList из названий зашифрованных полей в таблице.
 	QMap<QString, QStringList> map;
 
-	map.insert("patient", QStringList() << "familyname" << "name" << "patronymic");
-	map.insert("document", QStringList() << "serialnumber" << "givenby");
+	map.insert("patient", QStringList() << "familyname" << "name" << "patronymic" << "birthday");
+	map.insert("document", QStringList() << "serialnumber" << "givenby" << "date");
 	map.insert("address", QStringList() << "city" << "street" << "house" << "apartment");
 
 	return map;

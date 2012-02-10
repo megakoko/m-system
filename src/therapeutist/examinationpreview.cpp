@@ -114,8 +114,9 @@ void ExaminationPreview::addExaminationInformation(QDomElement &body)
 							  " " + decode(q.value(2).toString()) +
 							  " " + decode(q.value(3).toString()) + ".");
 
-		const QString& birthDay = q.value(4).toDate().toString("dd/MM/yyyy");
-		addElement(body, "p", "Дата рождения: " + birthDay + ".");
+		const QDate& birthDay = Therapeutist::interfaces->enc->decodeDate(q.value(4).toString());
+
+		addElement(body, "p", "Дата рождения: " + birthDay.toString("dd/MM/yyyy") + ".");
 	}
 }
 

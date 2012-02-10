@@ -96,7 +96,7 @@ void PatientEditWidget::init()
 		m_familyName->setText(Patients::interfaces->enc->decodeStr(q.value(0).toString()));
 		m_name->setText(Patients::interfaces->enc->decodeStr(q.value(1).toString()));
 		m_patronymic->setText(Patients::interfaces->enc->decodeStr(q.value(2).toString()));
-		m_birthDay->setDate(q.value(3).toDate());
+		m_birthDay->setDate(Patients::interfaces->enc->decodeDate(q.value(3).toString()));
 
 		if(q.value(4).toString() == "male")
 			m_male->setChecked(true);
@@ -377,7 +377,7 @@ void PatientEditWidget::save()
 	q.bindValue(":familyName", Patients::interfaces->enc->encodeStr(m_familyName->text()));
 	q.bindValue(":name", Patients::interfaces->enc->encodeStr(m_name->text()));
 	q.bindValue(":patronymic", Patients::interfaces->enc->encodeStr(m_patronymic->text()));
-	q.bindValue(":birthDay", m_birthDay->date());
+	q.bindValue(":birthDay", Patients::interfaces->enc->encodeDate(m_birthDay->date()));
 
 	if(m_male->isChecked())
 		q.bindValue(":sextextid", "male");

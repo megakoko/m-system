@@ -45,7 +45,7 @@ CREATE TABLE Patient (
 	familyName 			VARCHAR (408) NOT NULL,
 	name 				VARCHAR (408) NOT NULL,
 	patronymic 			VARCHAR (408) NOT NULL,
-	birthDay			TIMESTAMP NOT NULL,
+	birthDay			VARCHAR (408) NOT NULL,
 	sexId				INTEGER REFERENCES Sex(id)
 );
 
@@ -62,7 +62,7 @@ CREATE TABLE Document (
 	documentTypeId 		INTEGER REFERENCES DocumentType (id),
 	patientId 			INTEGER REFERENCES Patient (id),
 	serialNumber 		VARCHAR (408) NOT NULL,
-	date 				TIMESTAMP NOT NULL,
+	date 				VARCHAR (408) NOT NULL,
 	givenBy 			VARCHAR (408) NOT NULL
 );
 
