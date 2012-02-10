@@ -1,13 +1,13 @@
-#include "sortfilterproxymodel.h"
+#include "yosortfilterproxymodel.h"
 
-SortFilterProxyModel::SortFilterProxyModel(QObject* parent)
+YoSortFilterProxyModel::YoSortFilterProxyModel(QObject* parent)
 	: QSortFilterProxyModel(parent)
 {
 
 }
 
 
-bool SortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+bool YoSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
 	bool result = false;
 
@@ -30,13 +30,13 @@ bool SortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &
 }
 
 
-bool SortFilterProxyModel::containsYo(const QString& str)
+bool YoSortFilterProxyModel::containsYo(const QString& str)
 {
 	return str.contains(QChar(0x0401), Qt::CaseInsensitive);
 }
 
 
-QString SortFilterProxyModel::replaceYo(const QString& str)
+QString YoSortFilterProxyModel::replaceYo(const QString& str)
 {
 	if(containsYo(str))
 	{

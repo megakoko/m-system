@@ -3,7 +3,7 @@
 #include "ui_maintherapeutistwidget.h"
 #include "pluginwidget.h"
 
-class DecodedPatientListQuery;
+class DecodingProxyModel;
 class QSqlQueryModel;
 
 
@@ -25,7 +25,7 @@ private:
 
 	static QString examinationListQuery();
 
-	DecodedPatientListQuery* m_proxyModel;
+	DecodingProxyModel* m_proxyModel;
 	QSqlQueryModel* m_queryModel;
 
 private slots:

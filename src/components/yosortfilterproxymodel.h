@@ -6,10 +6,10 @@
 /**
 	Переопределенная QSortFilterProxyModel, нечувствительная к букве "Ё".
 */
-class SortFilterProxyModel : public QSortFilterProxyModel
+class YoSortFilterProxyModel : public QSortFilterProxyModel
 {
 public:
-	SortFilterProxyModel(QObject* parent = NULL);
+	YoSortFilterProxyModel(QObject* parent = NULL);
 
 protected:
 	bool lessThan(const QModelIndex &left, const QModelIndex &right) const;

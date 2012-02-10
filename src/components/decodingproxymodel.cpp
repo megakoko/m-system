@@ -1,15 +1,15 @@
-#include "decodedpatientlistquery.h"
+#include "decodingproxymodel.h"
 
 #include <QDebug>
 
 
-DecodedPatientListQuery::DecodedPatientListQuery(QObject *parent)
+DecodingProxyModel::DecodingProxyModel(QObject *parent)
 	: QProxyModel(parent)
 {
 }
 
 
-QVariant DecodedPatientListQuery::data(const QModelIndex &index, int role) const
+QVariant DecodingProxyModel::data(const QModelIndex &index, int role) const
 {
 	Q_ASSERT(!m_interfaces.isNull());
 
@@ -25,13 +25,13 @@ QVariant DecodedPatientListQuery::data(const QModelIndex &index, int role) const
 }
 
 
-void DecodedPatientListQuery::addColumnToDecode(const int column)
+void DecodingProxyModel::addColumnToDecode(const int column)
 {
 	m_columnsToDecode << column;
 }
 
 
-void DecodedPatientListQuery::setInterfacesPtr(const InterfacesPtr &interfaces)
+void DecodingProxyModel::setInterfacesPtr(const InterfacesPtr &interfaces)
 {
 	m_interfaces = interfaces;
 }
