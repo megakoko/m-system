@@ -7,6 +7,7 @@
 #include <QDebug>
 
 #include "components/decodingproxymodel.h"
+#include "components/columnjoiningproxymodel.h"
 #include "components/yosortfilterproxymodel.h"
 
 #include "therapeutist.h"
@@ -33,8 +34,12 @@ void PatientPickerDialog::init()
 	proxy->addColumnToDecode(3);
 	proxy->setModel(m_queryModel);
 
+	ColumnJoiningProxyModel* columnJoining = new ColumnJoiningProxyModel(this);
+	columnJoining->setJoinedColumns(1, 3, "Имя пациента");
+	columnJoining->setModel(proxy);
+
 	m_sortModel = new YoSortFilterProxyModel(this);
-	m_sortModel->setSourceModel(proxy);
+	m_sortModel->setSourceModel(columnJoining);
 	m_sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 	m_sortModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	m_sortModel->setFilterKeyColumn(1);
@@ -42,7 +47,8 @@ void PatientPickerDialog::init()
 	updatePatientsList();
 
 	m_patientTable->setModel(m_sortModel);
-	m_patientTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+	m_patientTable->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+	m_patientTable->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);
 	m_patientTable->setColumnHidden(0, true);
 
 	m_ok->setEnabled(false);
@@ -83,12 +89,10 @@ void PatientPickerDialog::updatePatientsList()
 
 QString PatientPickerDialog::patientListQuery() const
 {
-	static const QString psqlSelect = /* Предложение SELECT для PostgreSQL */
-								" SELECT id, familyName, name, patronymic, "
-								" to_char(birthday, 'dd.mm.yyyy') ";
-	static const QString sqliteSelect = /* Предложение SELECT для SQLite */
-								" SELECT id, familyName, name, patronymic, "
-								" strftime('%d.%m.%Y', birthday) ";
+	static const QString select=" SELECT id, familyName, name, patronymic, "
+								" %1 AS \"Дата рождения\" ";
+	static const QString psqlSelect = select.arg("to_char(birthday, 'dd.mm.yyyy')");
+	static const QString sqliteSelect = select.arg("strftime('%d.%m.%Y', birthday)");
 	static const QString from  =" FROM Patient ";
 	static const QString order =" ORDER BY familyName, name, patronymic ";
 
