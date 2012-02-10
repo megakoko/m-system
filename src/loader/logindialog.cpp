@@ -98,7 +98,7 @@ bool LoginDialog::connectToDatabase()
 
 	const bool opened = db.open(
 		m_settings.value("login").toString(),
-		MainWindow::interfaces->enc->decode(m_settings.value("password").toString()));
+		MainWindow::interfaces->enc->decodeStr(m_settings.value("password").toString()));
 
 	if(opened)
 		Database::setSqlDriver(dbdriver);

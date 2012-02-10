@@ -11,8 +11,8 @@
 class CryptoppWrapper : public EncodingInterface
 {
 public:
-	QString encode(const QString& plainText) const;
-	QString decode(const QString& cipherText) const;
+	QString encodeStr(const QString& plainText) const;
+	QString decodeStr(const QString& cipherText) const;
 
 
 	QString encodeDate(const QDate& plainDate) const;

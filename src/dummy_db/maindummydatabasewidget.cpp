@@ -95,7 +95,7 @@ void MainDummyDatabaseWidget::readFile(QFile &f, QStringList &stringList)
 
 QString MainDummyDatabaseWidget::encode(const QString &plaintext) const
 {
-	return DummyDatabase::interfaces->enc->encode(plaintext);
+	return DummyDatabase::interfaces->enc->encodeStr(plaintext);
 }
 
 

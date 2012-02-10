@@ -124,7 +124,7 @@ QString ExaminationEditWidget::patientName(const int patientId)
 	QStringList patientName;
 	if(q.first())
 		for(int i = 0; i <= 2; ++i)
-			patientName += Therapeutist::interfaces->enc->decode(q.value(i).toString());
+			patientName += Therapeutist::interfaces->enc->decodeStr(q.value(i).toString());
 
 	return patientName.join(" ");
 }
