@@ -6,7 +6,6 @@
 #include "interfaces.h"
 
 
-// TODO: Вынести создание такой модели в отдельный интерфейс.
 class DecodedPatientListQuery : public QProxyModel
 {
 public:

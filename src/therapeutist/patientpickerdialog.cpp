@@ -6,8 +6,8 @@
 #include <QSqlRecord>
 #include <QDebug>
 
-#include "patients/decodedpatientlistquery.h"
-#include "patients/sortfilterproxymodel.h"
+#include "components/decodedpatientlistquery.h"
+#include "components/sortfilterproxymodel.h"
 
 #include "therapeutist.h"
 #include "macros.h"

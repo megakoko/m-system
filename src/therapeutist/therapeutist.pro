@@ -5,14 +5,19 @@ QT		+= sql webkit xml
 
 include( ../m-system-config.pri )
 
-INCLUDEPATH += $${ROOTPATH}/src
+
+LIBS		=  -lcomponents -L$${ROOTPATH}/bin/
+INCLUDEPATH	+=	$${ROOTPATH}/src/
+
+# Передаем линковщику опцию -R$${ROOTPATH}/bin/
+unix {
+	QMAKE_CXXFLAGS += -Wl,-R$${ROOTPATH}/bin/
+}
 
 
 SOURCES +=	therapeutist.cpp \
 			maintherapeutistwidget.cpp \
 			examinationeditwidget.cpp \
-			$${ROOTPATH}/src/patients/decodedpatientlistquery.cpp \
-			$${ROOTPATH}/src/patients/sortfilterproxymodel.cpp \
 			examwidget.cpp \
 			examcontainer.cpp \
 			examwidgetfactory.cpp \
@@ -28,8 +33,6 @@ SOURCES +=	therapeutist.cpp \
 HEADERS	+=	therapeutist.h \
 			maintherapeutistwidget.h \
 			examinationeditwidget.h \
-			$${ROOTPATH}/src/patients/decodedpatientlistquery.h \
-			$${ROOTPATH}/src/patients/sortfilterproxymodel.h \
 			examwidget.h \
 			examcontainer.h \
 			examwidgetfactory.h \
