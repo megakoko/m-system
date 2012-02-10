@@ -1,5 +1,6 @@
 #include "decodingproxymodel.h"
 
+#include <QDate>
 #include <QDebug>
 
 
@@ -13,21 +14,47 @@ QVariant DecodingProxyModel::data(const QModelIndex &index, int role) const
 {
 	Q_ASSERT(!m_interfaces.isNull());
 
-	QVariant result = QProxyModel::data(index, role);
+	QVariant result;
 
-	if(role == Qt::DisplayRole && m_columnsToDecode.contains(index.column()))
-	{
-		Q_ASSERT(result.type() == QVariant::String);
-		result = m_interfaces->enc->decodeStr(result.toString());
-	}
+	if(role == Qt::DisplayRole && columnIsEncoded(index.column()))
+		result = decodeData(index);
+	else
+		result = QProxyModel::data(index, role);
 
 	return result;
 }
 
 
-void DecodingProxyModel::addColumnToDecode(const int column)
+bool DecodingProxyModel::columnIsEncoded(const int column) const
+{
+	return m_columnsToDecode.contains(column) || m_dateColumnsToDecode.contains(column);
+}
+
+
+QVariant DecodingProxyModel::decodeData(const QModelIndex &index) const
+{
+	QVariant result;
+
+	if(m_columnsToDecode.contains(index.column()))
+		result = m_interfaces->enc->decodeStr(QProxyModel::data(index).toString());
+	else if(m_dateColumnsToDecode.contains(index.column()))
+		result = m_interfaces->enc->decodeDate(QProxyModel::data(index).toString()).toString("dd.MM.yyyy");
+	else
+		Q_ASSERT(false);
+
+	return result;
+}
+
+
+void DecodingProxyModel::addEncodedStringColumn(const int column)
 {
 	m_columnsToDecode << column;
+}
+
+
+void DecodingProxyModel::addEncodedDateColumn(const int column)
+{
+	m_dateColumnsToDecode << column;
 }
 
 

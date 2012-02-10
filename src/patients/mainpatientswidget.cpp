@@ -34,9 +34,9 @@ void MainPatientsWidget::init()
 
 	DecodingProxyModel* proxy = new DecodingProxyModel(this);
 	proxy->setInterfacesPtr(Patients::interfaces);
-	proxy->addColumnToDecode(1);
-	proxy->addColumnToDecode(2);
-	proxy->addColumnToDecode(3);
+	proxy->addEncodedStringColumn(1);
+	proxy->addEncodedStringColumn(2);
+	proxy->addEncodedStringColumn(3);
 	proxy->setModel(m_queryModel);
 
 	m_sortModel = new YoSortFilterProxyModel(this);
