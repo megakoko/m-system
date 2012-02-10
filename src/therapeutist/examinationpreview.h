@@ -6,6 +6,8 @@
 #include <QDomDocument>
 
 
+class QSqlRecord;
+
 class ExaminationPreview : public PluginWidget, private Ui::ExaminationPreview
 {
 	Q_OBJECT
@@ -15,6 +17,12 @@ public:
 private:
 	void init();
 	void addExaminationInformation(QDomElement& body);
+	void addExaminationData(QDomElement& body);
+
+	QStringList containerData(const QString& containerTextId) const;
+
+	static QString examDataQuery();
+	static QString examDataFromSqlRecord(const QSqlRecord& record);
 
 	static const QString CSS;
 
