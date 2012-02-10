@@ -56,19 +56,19 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="m_openPreview">
+          <property name="type" stdset="0">
+           <string>spyglass</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="m_deleteExam">
           <property name="text">
            <string/>
           </property>
           <property name="type" stdset="0">
            <string>remove</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="m_openPreview">
-          <property name="type" stdset="0">
-           <string>spyglass</string>
           </property>
          </widget>
         </item>
