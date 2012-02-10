@@ -17,4 +17,11 @@ public:
 
 	QString salt(const int length) const;
 
+private:
+	/// Шифрует \a plainBytes. Результат возвращает в Base64.
+	QByteArray encodeByteArray(const QByteArray& plainBytes) const;
+
+	/// Расшифровывает \a cipherBytes. Входной параметр должен быть в Base64.
+	QByteArray decodeByteArray(const QByteArray& cipherBytes) const;
+
 };

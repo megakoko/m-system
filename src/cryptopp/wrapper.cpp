@@ -9,8 +9,9 @@
 
 
 /*
-	Для использования того или иного шифра надо раскомментировать define один из них.
+	Для использования того или иного шифра надо раскомментировать define одного из них.
 */
+
 //#define CIPHER_AES
 #define CIPHER_GOST
 
@@ -66,69 +67,84 @@ byte iv[CryptoPP::CIPHER::BLOCKSIZE] = {
 #endif
 
 
+
+QByteArray CryptoppWrapper::encodeByteArray(const QByteArray& plainBytes) const
+{
+	const QByteArray& inputArray(plainBytes);
+	std::string cipherText;
+
+
+	CryptoPP::CIPHER::Encryption encryption(key, CryptoPP::CIPHER::DEFAULT_KEYLENGTH);
+	CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption(encryption, iv);
+
+
+	CryptoPP::StringSink* sink = new CryptoPP::StringSink(cipherText);
+	CryptoPP::StreamTransformationFilter stfEncryptor(cbcEncryption, sink);
+
+
+	const byte* bytes = reinterpret_cast<const byte*>(inputArray.data());
+	stfEncryptor.Put(bytes, inputArray.length() + 1);
+	stfEncryptor.MessageEnd();
+
+
+	return QByteArray(cipherText.c_str(), cipherText.length()).toBase64();
+}
+
+
+QByteArray CryptoppWrapper::decodeByteArray(const QByteArray& cipherBytes) const
+{
+	QByteArray cipherByteArray = QByteArray::fromBase64(cipherBytes);
+	std::string outputBytes;
+
+
+	CryptoPP::CIPHER::Decryption decryption(key, CryptoPP::CIPHER::DEFAULT_KEYLENGTH);
+	CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(decryption, iv);
+
+
+	CryptoPP::StringSink* sink = new CryptoPP::StringSink(outputBytes);
+	CryptoPP::StreamTransformationFilter stfDecryptor(cbcDecryption, sink);
+
+
+	byte* bytes = reinterpret_cast<byte*>(cipherByteArray.data());
+	stfDecryptor.Put(bytes, cipherByteArray.length());
+	stfDecryptor.MessageEnd();
+
+
+	return QByteArray(outputBytes.c_str(), outputBytes.length());
+}
+
+
 QString CryptoppWrapper::encode(const QString& plainText) const
 {
-	QString result;
+	QString encoded;
+
 	try
 	{
-		const QByteArray& inputArray(plainText.toUtf8());
-		std::string cipherText;
-
-
-		CryptoPP::CIPHER::Encryption encryption(key, CryptoPP::CIPHER::DEFAULT_KEYLENGTH);
-		CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption(encryption, iv);
-
-
-		CryptoPP::StringSink* sink = new CryptoPP::StringSink(cipherText);
-		CryptoPP::StreamTransformationFilter stfEncryptor(cbcEncryption, sink);
-
-
-		const byte* bytes = reinterpret_cast<const byte*>(inputArray.data());
-		stfEncryptor.Put(bytes, inputArray.length() + 1);
-		stfEncryptor.MessageEnd();
-
-
-		result = QByteArray(cipherText.c_str(), cipherText.length()).toBase64();
+		encoded = QString(encodeByteArray(plainText.toUtf8()));
 	}
 	catch(const CryptoPP::Exception& e)
 	{
 		qWarning() << "Failed to encode" << plainText << endl << "Reason:" << e.what();
 	}
 
-	return result;
+	return encoded;
 }
 
 
 QString CryptoppWrapper::decode(const QString& cipherText) const
 {
-	QString result;
+	QString decoded;
+
 	try
 	{
-		QByteArray cipherByteArray = QByteArray::fromBase64(cipherText.toUtf8());
-		std::string outputBytes;
-
-
-		CryptoPP::CIPHER::Decryption decryption(key, CryptoPP::CIPHER::DEFAULT_KEYLENGTH);
-		CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(decryption, iv);
-
-
-		CryptoPP::StringSink* sink = new CryptoPP::StringSink(outputBytes);
-		CryptoPP::StreamTransformationFilter stfDecryptor(cbcDecryption, sink);
-
-
-		byte* bytes = reinterpret_cast<byte*>(cipherByteArray.data());
-		stfDecryptor.Put(bytes, cipherByteArray.length());
-		stfDecryptor.MessageEnd();
-
-
-		result = QString::fromStdString(outputBytes.data());
+		decoded = QString(decodeByteArray(cipherText.toUtf8()));
 	}
 	catch(const CryptoPP::Exception& e)
 	{
 		qWarning() << "Failed to decode" << cipherText << endl << "Reason:" << e.what();
 	}
 
-	return result;
+	return decoded;
 }
 
 
