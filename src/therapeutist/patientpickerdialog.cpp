@@ -6,8 +6,8 @@
 #include <QSqlRecord>
 #include <QDebug>
 
-#include "components/decodedpatientlistquery.h"
-#include "components/sortfilterproxymodel.h"
+#include "components/decodingproxymodel.h"
+#include "components/yosortfilterproxymodel.h"
 
 #include "therapeutist.h"
 #include "macros.h"
@@ -26,14 +26,14 @@ void PatientPickerDialog::init()
 {
 	m_queryModel = new QSqlQueryModel(this);
 
-	DecodedPatientListQuery* proxy = new DecodedPatientListQuery(this);
+	DecodingProxyModel* proxy = new DecodingProxyModel(this);
 	proxy->setInterfacesPtr(Therapeutist::interfaces);
 	proxy->addColumnToDecode(1);
 	proxy->addColumnToDecode(2);
 	proxy->addColumnToDecode(3);
 	proxy->setModel(m_queryModel);
 
-	m_sortModel = new SortFilterProxyModel(this);
+	m_sortModel = new YoSortFilterProxyModel(this);
 	m_sortModel->setSourceModel(proxy);
 	m_sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 	m_sortModel->setFilterCaseSensitivity(Qt::CaseInsensitive);

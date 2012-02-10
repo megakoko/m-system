@@ -6,10 +6,10 @@
 #include "interfaces.h"
 
 
-class DecodedPatientListQuery : public QProxyModel
+class DecodingProxyModel : public QProxyModel
 {
 public:
-	explicit DecodedPatientListQuery(QObject *parent = 0);
+	explicit DecodingProxyModel(QObject *parent = 0);
 
 	QVariant data(const QModelIndex &index, int role) const;
 

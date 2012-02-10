@@ -7,7 +7,7 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QDebug>
-#include "components/decodedpatientlistquery.h"
+#include "components/decodingproxymodel.h"
 
 #include <QMessageBox>
 
@@ -31,7 +31,7 @@ void MainTherapeutistWidget::init()
 	// todo
 	m_queryModel = new QSqlQueryModel(this);
 
-	m_proxyModel = new DecodedPatientListQuery(this);
+	m_proxyModel = new DecodingProxyModel(this);
 	m_proxyModel->setInterfacesPtr(Therapeutist::interfaces);
 	m_proxyModel->addColumnToDecode(2);
 	m_proxyModel->addColumnToDecode(3);

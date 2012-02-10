@@ -4,8 +4,8 @@ TEMPLATE = lib
 
 include( ../m-system-config.pri )
 
-HEADERS	+=	sortfilterproxymodel.h \
-			decodedpatientlistquery.h
+HEADERS	+=	yosortfilterproxymodel.h \
+			decodingproxymodel.h
 
-SOURCES +=	sortfilterproxymodel.cpp \
-			decodedpatientlistquery.cpp
+SOURCES +=	yosortfilterproxymodel.cpp \
+			decodingproxymodel.cpp

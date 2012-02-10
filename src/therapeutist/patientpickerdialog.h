@@ -3,7 +3,7 @@
 #include "ui_patientpickerdialog.h"
 
 class QSqlQueryModel;
-class SortFilterProxyModel;
+class YoSortFilterProxyModel;
 
 
 class PatientPickerDialog : public QDialog, private Ui::PatientPickerDialog
@@ -24,7 +24,7 @@ private:
 
 
 	QSqlQueryModel* m_queryModel;
-	SortFilterProxyModel* m_sortModel;
+	YoSortFilterProxyModel* m_sortModel;
 
 private slots:
 	void updatePatientsList();
