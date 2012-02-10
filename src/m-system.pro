@@ -3,6 +3,7 @@ TEMPLATE = subdirs
 
 
 SUBDIRS	+= 	cryptopp \
+			components \
 			lotusformparser \
 			loader \
 			users \
