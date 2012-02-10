@@ -21,7 +21,6 @@ SOURCES		+=	main.cpp\
 				tabwidget.cpp \
 				homepage.cpp \
 				aboutdialog.cpp \
-				encoding.cpp \
 				database.cpp
 
 HEADERS		+=	mainwindow.h \
@@ -32,7 +31,6 @@ HEADERS		+=	mainwindow.h \
 				tabwidget.h \
 				homepage.h \
 				aboutdialog.h \
-				encoding.h \
 				database.h
 
 FORMS		+=	mainwindow.ui \
