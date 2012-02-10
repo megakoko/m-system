@@ -34,6 +34,8 @@ private:
 
 	// Возвращает зашифрованную с помощью CryptoPP строку.
 	QString encode(const QString& plaintext) const;
+	// Возвращает зашифрованную с помощью CryptoPP дату.
+	QString encode(const QDate& plainDate) const;
 
 
 	// Вставка в различные таблицы.

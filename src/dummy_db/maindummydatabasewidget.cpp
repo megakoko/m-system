@@ -99,6 +99,12 @@ QString MainDummyDatabaseWidget::encode(const QString &plaintext) const
 }
 
 
+QString MainDummyDatabaseWidget::encode(const QDate &plainDate) const
+{
+	return DummyDatabase::interfaces->enc->encodeDate(plainDate);
+}
+
+
 void MainDummyDatabaseWidget::updatePatientsCount()
 {
 	QSqlQuery q("SELECT COUNT(*) FROM Patient");
@@ -179,7 +185,7 @@ int MainDummyDatabaseWidget::createPatientRecord(const QDate &birthday) const
 	q.bindValue(":familyname", encode(patientName.surname));
 	q.bindValue(":name", encode(patientName.firstname));
 	q.bindValue(":patronymic", encode(patientName.patronymic));
-	q.bindValue(":birthday", birthday);
+	q.bindValue(":birthday", encode(birthday));
 	q.bindValue(":sextextid", sextextid);
 	q.exec();
 	checkQuery(q);
@@ -203,7 +209,7 @@ void MainDummyDatabaseWidget::createDocumentRecord(const int patientId,
 	q.bindValue(":patientId", patientId);
 	q.bindValue(":serialNumber", encode(QString::number(randomInt(1E4)) + ' ' +
 										QString::number(randomInt(1E6))));
-	q.bindValue(":date", randomDate(patientBirthday.year() + 14));
+	q.bindValue(":date", encode(randomDate(patientBirthday.year() + 14)));
 	if(documentTextid == "passport")
 		q.bindValue(":givenBy", encode("РОВД"));
 	else

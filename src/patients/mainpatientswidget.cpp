@@ -37,6 +37,7 @@ void MainPatientsWidget::init()
 	proxy->addEncodedStringColumn(1);
 	proxy->addEncodedStringColumn(2);
 	proxy->addEncodedStringColumn(3);
+	proxy->addEncodedDateColumn(4);
 	proxy->setModel(m_queryModel);
 
 	m_sortModel = new YoSortFilterProxyModel(this);
@@ -78,29 +79,11 @@ void MainPatientsWidget::initConnections()
 
 QString MainPatientsWidget::patientListQuery() const
 {
-	static const QString select=" SELECT id, familyName AS \"Фамилия\", name AS \"Имя\", "
-								" patronymic AS \"Отчество\", %1 AS \"Дата рождения\"";
-	static const QString psqlSelect = select.arg("to_char(birthday, 'dd.mm.yyyy')");
-	static const QString sqliteSelect = select.arg("strftime('%d.%m.%Y', birthday)");
-	static const QString from  =" FROM Patient ";
-	static const QString order =" ORDER BY familyName, name, patronymic ";
-
-
-	QString query;
-
-	switch(Patients::interfaces->db->currentSqlDriver())
-	{
-	case DatabaseInterface::PSQL:
-		query = psqlSelect;
-		break;
-	case DatabaseInterface::SQLITE:
-		query = sqliteSelect;
-		break;
-	default:
-		qFatal("Unknown sql driver");
-	}
-
-	query += from + order;
+	static const QString query =
+			" SELECT id, familyName AS \"Фамилия\", name AS \"Имя\", "
+				" patronymic AS \"Отчество\", birthday AS \"Дата рождения\""
+			" FROM Patient "
+			" ORDER BY familyName, name, patronymic ";
 
 	return query;
 }

@@ -32,6 +32,7 @@ void PatientPickerDialog::init()
 	proxy->addEncodedStringColumn(1);
 	proxy->addEncodedStringColumn(2);
 	proxy->addEncodedStringColumn(3);
+	proxy->addEncodedDateColumn(4);
 	proxy->setModel(m_queryModel);
 
 	ColumnJoiningProxyModel* columnJoining = new ColumnJoiningProxyModel(this);
@@ -89,29 +90,10 @@ void PatientPickerDialog::updatePatientsList()
 
 QString PatientPickerDialog::patientListQuery() const
 {
-	static const QString select=" SELECT id, familyName, name, patronymic, "
-								" %1 AS \"Дата рождения\" ";
-	static const QString psqlSelect = select.arg("to_char(birthday, 'dd.mm.yyyy')");
-	static const QString sqliteSelect = select.arg("strftime('%d.%m.%Y', birthday)");
-	static const QString from  =" FROM Patient ";
-	static const QString order =" ORDER BY familyName, name, patronymic ";
-
-
-	QString query;
-
-	switch(Therapeutist::interfaces->db->currentSqlDriver())
-	{
-	case DatabaseInterface::PSQL:
-		query = psqlSelect;
-		break;
-	case DatabaseInterface::SQLITE:
-		query = sqliteSelect;
-		break;
-	default:
-		qFatal("Unknown sql driver");
-	}
-
-	query += from + order;
+	static const QString query =
+			" SELECT id, familyName, name, patronymic, birthday AS \"Дата рождения\" "
+			" FROM Patient "
+			" ORDER BY familyName, name, patronymic ";
 
 	return query;
 }
