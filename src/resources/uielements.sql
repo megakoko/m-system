@@ -429,7 +429,7 @@ SELECT 7030, 'CVSAH', 'CVSall', NULL, 'combobox', 'Аускультация се
 SELECT 7040, 'CVSHB', 'CVSall', NULL, 'combobox', 'Сердечные сокращения', NULL UNION
 SELECT 7045, 'CSSHB_', 'CVSall', NULL, 'textedit', 'Частота сердечных сокращений', NULL UNION
 SELECT 7050, 'CVSP', 'CVSall', NULL, 'combobox', 'Пульс', NULL UNION
-SELECT 7055, 'CVSP_', 'CVSall', NULL, 'combobox', 'Частота пульса', NULL UNION
+SELECT 7055, 'CVSP_', 'CVSall', NULL, 'textedit', 'Частота пульса', NULL UNION
 SELECT 7060, 'CVSJS', 'CVSall', NULL, 'textedit', 'Дефицит пульса', NULL UNION
 SELECT 7070, 'CVSAP', 'CVSall', NULL, 'container', 'Артериальное давление', NULL UNION
 SELECT 7080, 'CVSAPRTt', 'CVSAP', NULL, 'textedit', 'Артериальное давление на правой верхней конечности', 'на правой верхней конечности' UNION
