@@ -22,9 +22,6 @@ ExaminationEditWidget::ExaminationEditWidget(const int examinationId, QWidget *p
 	setupUi(this);
 	init();
 	initConnections();
-
-	Q_ASSERT(InvalidId == ExamWidget::InvalidId);
-	Q_ASSERT(InvalidId == PatientPickerDialog::InvalidId);
 }
 
 
