@@ -71,7 +71,7 @@ private:
 	QStringList m_streetName;
 
 private slots:
-	void updatePatientsCount();
+	void updateInformation();
 	void createPatients();
 
 };
