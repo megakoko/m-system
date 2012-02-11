@@ -31,14 +31,37 @@ void ExaminationEditWidget::init()
 	m_widgetsLayout->addWidget(m_mainContainer->widget(), 0, Qt::AlignTop);
 
 
+	QSqlQuery q;
+
+	q.prepare(" SELECT s.id, p.name, s.familyName, s.name, s.patronymic  "
+			  " FROM DepartmentStaffPosition dsp "
+			  " LEFT JOIN Staff s ON dsp.staffId = s.id "
+			  " LEFT JOIN Position p ON dsp.positionId = p.id "
+			  " WHERE p.textid = ? ");
+	q.addBindValue("therapeutist");
+	q.exec();
+	checkQuery(q);
+	while(q.next())
+	{
+		const QString& position = q.value(1).toString();
+		const QString& name = q.value(2).toString() + " " +
+							  q.value(3).toString() + " " +
+							  q.value(4).toString();
+
+		m_staff->addItem(position + " " + name, q.value(0));
+	}
+	m_staff->setCurrentIndex(-1);
+
+
+
 	if(m_examinationId == InvalidId)
 	{
 		m_examDate->setDateTime(QDateTime::currentDateTime());
 	}
 	else
 	{
-		QSqlQuery q;
-		q.prepare("SELECT patientId, examinationDate FROM Examination WHERE id = ?");
+		q.prepare(" SELECT patientId, examinationDate, examinedByStaffId "
+				  " FROM Examination WHERE id = ? ");
 		q.addBindValue(m_examinationId);
 		q.exec();
 		checkQuery(q);
@@ -49,6 +72,7 @@ void ExaminationEditWidget::init()
 		m_patientId = q.value(0).toInt();
 		m_patientName->setText(patientName(m_patientId));
 		m_examDate->setDateTime(q.value(1).toDateTime());
+		m_staff->setCurrentIndex(m_staff->findData(q.value(2)));
 	}
 }
 
@@ -67,6 +91,11 @@ bool ExaminationEditWidget::canSave(QString &errorDescription) const
 		errorDescription = "Не выбран пациент";
 		return false;
 	}
+	else if(m_staff->currentIndex() == -1)
+	{
+		errorDescription = "Не выбран врач, проводящий осмотр";
+		return false;
+	}
 
 	return true;
 }
@@ -80,8 +109,8 @@ void ExaminationEditWidget::save()
 	if(m_examinationId == InvalidId)
 	{
 		q.prepare(" INSERT INTO Examination "
-				  " ( patientId,  examinationDate) VALUES "
-				  " (:patientId, :examinationDate) " +
+				  " ( patientId,  examinationDate,  examinedByStaffId) VALUES "
+				  " (:patientId, :examinationDate, :examinedByStaffId) " +
 				  Therapeutist::interfaces->db->returningSentence("id"));
 
 	}
@@ -89,12 +118,14 @@ void ExaminationEditWidget::save()
 	{
 		q.prepare(" UPDATE Examination SET "
 				  " patientId = :patientId, "
-				  " examinationdate = :examinationDate "
+				  " examinationdate = :examinationDate, "
+				  " examinedByStaffId = :examinedByStaffId "
 				  " WHERE id = :id ");
 		q.bindValue(":id", m_examinationId);
 	}
 	q.bindValue(":patientId", m_patientId);
 	q.bindValue(":examinationDate", m_examDate->dateTime());
+	q.bindValue(":examinedByStaffId", m_staff->itemData(m_staff->currentIndex()));
 
 	q.exec();
 	checkQuery(q);
