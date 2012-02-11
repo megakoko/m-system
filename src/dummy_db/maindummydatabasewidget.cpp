@@ -33,13 +33,13 @@ MainDummyDatabaseWidget::MainDummyDatabaseWidget(QWidget *parent)
 
 void MainDummyDatabaseWidget::init()
 {
-	updatePatientsCount();
+	updateInformation();
 }
 
 
 void MainDummyDatabaseWidget::initConnections()
 {
-	connect(m_updatePatientsCount, SIGNAL(clicked()), SLOT(updatePatientsCount()));
+	connect(m_updateInformation, SIGNAL(clicked()), SLOT(updateInformation()));
 	connect(m_createPatients, SIGNAL(clicked()), SLOT(createPatients()));
 }
 
@@ -105,7 +105,7 @@ QString MainDummyDatabaseWidget::encode(const QDate &plainDate) const
 }
 
 
-void MainDummyDatabaseWidget::updatePatientsCount()
+void MainDummyDatabaseWidget::updateInformation()
 {
 	QSqlQuery q("SELECT COUNT(*) FROM Patient");
 	checkQuery(q);
@@ -156,7 +156,7 @@ void MainDummyDatabaseWidget::createPatients()
 	progress.setValue(patientsCount);
 
 	q.exec("COMMIT");
-	updatePatientsCount();
+	updateInformation();
 }
 
 
