@@ -8,5 +8,6 @@
 		<file>male_surname.txt</file>
 		<file>resources.qrc</file>
 		<file>streetnames.txt</file>
+		<file>departments.txt</file>
     </qresource>
 </RCC>

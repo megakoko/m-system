@@ -70,6 +70,8 @@ private:
 
 	QStringList m_streetName;
 
+	QStringList m_departments;
+
 private slots:
 	void updateInformation();
 	void createPatients();

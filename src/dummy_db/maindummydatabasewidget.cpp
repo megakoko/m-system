@@ -55,6 +55,8 @@ void MainDummyDatabaseWidget::loadFiles()
 	loadFile(":/female_patronymic.txt", m_femalePatronymic);
 
 	loadFile(":/streetnames.txt", m_streetName);
+
+	loadFile(":/departments.txt", m_departments);
 }
 
 
