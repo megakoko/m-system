@@ -17,6 +17,8 @@ private:
 
 	QSet<int> m_markedForDeletionPositions;
 
+	QSet<int> m_undeletablePositionIds;
+
 private slots:
 	void save();
 

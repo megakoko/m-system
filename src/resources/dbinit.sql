@@ -145,7 +145,8 @@ CREATE TABLE Department (
 -- Должности.
 CREATE TABLE Position (
 	id					SERIAL PRIMARY KEY,
-	name				VARCHAR (40) NOT NULL
+	name				VARCHAR (40) NOT NULL,
+	textid				VARCHAR (40)
 );
 
 
@@ -248,6 +249,9 @@ INSERT INTO Plugin(textid, name) VALUES ('dummy_db', 'Создание тест�
 
 INSERT INTO Sex(textid, name) VALUES ('male', 'Мужчина');
 INSERT INTO Sex(textid, name) VALUES ('female', 'Женщина');
+
+
+INSERT INTO Position(textid, name) VALUES('therapeutist', 'Врач-терапевт');
 
 
 INSERT INTO DocumentType(textid, name) VALUES ('passport', 'Паспорт');
