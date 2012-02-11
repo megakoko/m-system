@@ -163,6 +163,9 @@ int TabWidget::addWidget(PluginWidget *widget, const QString &caption)
 				SIGNAL(requestToAddNewWidget(PluginWidget*, QString)),
 				SLOT(addWidget(PluginWidget*,QString)));
 
+		SaveablePluginWidget* saveable = dynamic_cast<SaveablePluginWidget*>(widget);
+		if(saveable != NULL)
+			connect(saveable, SIGNAL(requestForSaving()), SLOT(saveWidget()));
 
 	}
 	return index;
@@ -185,12 +188,15 @@ int TabWidget::addWidget(PluginWidget *widget, const QString &caption,
 
 bool TabWidget::saveWidget(QWidget *widget)
 {
+	SaveablePluginWidget* saveableWidget;
+
 	if(widget == NULL)
-		widget = qobject_cast<QWidget*>(sender());
+		saveableWidget = dynamic_cast<SaveablePluginWidget*>(sender());
+	else
+		saveableWidget = dynamic_cast<SaveablePluginWidget*>(widget);
+
 
 	bool savedSuccessfully = false;
-
-	SaveablePluginWidget* saveableWidget = dynamic_cast<SaveablePluginWidget*>(widget);
 	if(saveableWidget != NULL)
 	{
 		QString errorDescription;
@@ -205,6 +211,10 @@ bool TabWidget::saveWidget(QWidget *widget)
 				saveableWidget->save();
 				savedSuccessfully = true;
 			}
+		}
+		else
+		{
+			QMessageBox::information(this, "Сохранение невозможно", errorDescription);
 		}
 	}
 
