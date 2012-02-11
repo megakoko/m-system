@@ -115,7 +115,12 @@ void MainDummyDatabaseWidget::updateInformation()
 	checkQuery(q);
 
 	q.first();
-	m_patientsCount->setText(q.value(0).toString());
+	m_patientsCount->setNum(q.value(0).toInt());
+
+	q.exec("SELECT COUNT(*) FROM Staff");
+	checkQuery(q);
+	q.first();
+	m_staffCount->setNum(q.value(0).toInt());
 }
 
 
@@ -266,6 +271,8 @@ void MainDummyDatabaseWidget::createStaff()
 		q.exec();
 		checkQuery(q);
 	}
+
+	updateInformation();
 }
 
 
