@@ -42,6 +42,7 @@ void MainDummyDatabaseWidget::initConnections()
 	connect(m_updateInformation, SIGNAL(clicked()), SLOT(updateInformation()));
 	connect(m_createPatients, SIGNAL(clicked()), SLOT(createPatients()));
 	connect(m_createStaff, SIGNAL(clicked()), SLOT(createStaff()));
+	connect(m_createDepartments, SIGNAL(clicked()), SLOT(createDepartments()));
 }
 
 
@@ -266,6 +267,145 @@ void MainDummyDatabaseWidget::createStaff()
 		checkQuery(q);
 	}
 }
+
+
+QVariantList MainDummyDatabaseWidget::positionIdsFromDatabase() const
+{
+	QSqlQuery q("SELECT id FROM Position");
+	checkQuery(q);
+
+	QVariantList ids;
+	while(q.next())
+		ids << q.value(0);
+
+	return ids;
+}
+
+
+QVariantList MainDummyDatabaseWidget::staffIdsFromDatabase() const
+{
+	QSqlQuery q("SELECT id FROM Staff");
+	checkQuery(q);
+
+	QVariantList ids;
+	while(q.next())
+		ids << q.value(0);
+
+	return ids;
+}
+
+
+void MainDummyDatabaseWidget::createPositions()
+{
+	static const QStringList predefinedPositions =
+			QStringList() << "Врач" << "Лаборант" << "Медсестра";
+
+	QSet<QString> positionsInDatabase;
+
+	QSqlQuery q;
+
+	q.exec("SELECT name FROM Position");
+	checkQuery(q);
+	while(q.next())
+		positionsInDatabase << q.value(0).toString();
+
+
+	q.prepare("INSERT INTO Position(name) VALUES(?)");
+	foreach(const QString& position, predefinedPositions)
+		if(!positionsInDatabase.contains(position))
+		{
+			q.addBindValue(position);
+			q.exec();
+			checkQuery(q);
+		}
+}
+
+
+void MainDummyDatabaseWidget::createDepartmentStaffPositions(const QVariant departmentId,
+															 const QVariant headOfDepartmentId,
+															 const QVariantList &staffIds,
+															 const QVariantList &positionIds)
+{
+	if(!staffIds.isEmpty() && !positionIds.isEmpty())
+	{
+		QSqlQuery q;
+		q.prepare(" INSERT INTO DepartmentStaffPosition "
+				  " (departmentId, staffId, positionId) "
+				  " VALUES(?, ?, ?) ");
+
+
+		const int numberOfPeopleInDepartment = staffIds.size() / 10;
+		for(int i = 0; i < numberOfPeopleInDepartment - 1; ++i)
+		{
+			q.addBindValue(departmentId);
+			q.addBindValue(staffIds.at(randomInt(staffIds.size())));
+			q.addBindValue(positionIds.at(randomInt(positionIds.size())));
+			q.exec();
+			checkQuery(q);
+		}
+
+
+		// Глава отделения пусть тоже какую-то должность занимает помимо должности главы
+		// отделения.
+		q.addBindValue(departmentId);
+		q.addBindValue(headOfDepartmentId);
+		q.addBindValue(positionIds.at(randomInt(positionIds.size())));
+		q.exec();
+		checkQuery(q);
+	}
+}
+
+
+void MainDummyDatabaseWidget::createDepartments()
+{
+	createPositions();
+
+	const QVariantList staffIds = staffIdsFromDatabase();
+	const QVariantList positionIds = positionIdsFromDatabase();
+
+
+	if(staffIds.isEmpty() || positionIds.isEmpty())
+		return;
+
+
+	QSqlQuery q;
+
+	q.exec("SELECT name FROM Department");
+	checkQuery(q);
+
+	QSet<QString> departmentsInDatabase;
+	while(q.next())
+		departmentsInDatabase << q.value(0).toString();
+
+
+	q.prepare(" INSERT INTO Department "
+			  " (name, shortName, typeid, headOfDepartmentId) "
+			  " VALUES(?, ?, (SELECT id FROM DepartmentType WHERE textid = ?), ?)" +
+			  DummyDatabase::interfaces->db->returningSentence("id"));
+	for(int i = 0; i < m_departments.size(); ++i)
+	{
+		const QString& name = m_departments.at(i);
+		if(!departmentsInDatabase.contains(name) && !name.isEmpty())
+		{
+			const QString& type = randomInt(2) ? "clinic" : "hospital";
+			const QVariant headId = staffIds.at(randomInt(staffIds.size()));
+
+
+			q.addBindValue(name);
+			q.addBindValue(name[0].toUpper());
+			q.addBindValue(type);
+			q.addBindValue(headId);
+
+			q.exec();
+			checkQuery(q);
+
+			const QVariant& departmentId = DummyDatabase::interfaces->db->lastInsertedId(&q);
+			createDepartmentStaffPositions(departmentId, headId, staffIds, positionIds);
+		}
+	}
+}
+
+
 
 
 
