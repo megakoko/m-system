@@ -31,7 +31,7 @@ void PositionsEditDialog::init()
 			SLOT(itemChanged(QListWidgetItem*)));
 
 
-	QSqlQuery q("SELECT id, name FROM Position ORDER BY id");
+	QSqlQuery q("SELECT id, name, textid FROM Position ORDER BY id");
 	checkQuery(q);
 
 
@@ -40,7 +40,16 @@ void PositionsEditDialog::init()
 	{
 		item = new QListWidgetItem(q.value(1).toString());
 		item->setData(Qt::UserRole, q.value(0));
-		item->setFlags(item->flags() | Qt::ItemIsEditable);
+
+		// Если у записи определен textid, ее нельзя удалять.
+		if(q.value(2).isNull())
+			item->setFlags(item->flags() | Qt::ItemIsEditable);
+		else
+		{
+			m_undeletablePositionIds << q.value(0).toInt();
+			item->setToolTip("Эта должность является предопределенной и не может быть "
+							 "удалена.");
+		}
 
 		m_positionList->addItem(item);
 	}
@@ -114,13 +123,23 @@ void PositionsEditDialog::deletePosition()
 
 	const QVariant& id = m_positionList->takeItem(row)->data(Qt::UserRole);
 	if(!id.isNull() && id.canConvert<int>())
+	{
+		Q_ASSERT(!m_undeletablePositionIds.contains(id.toInt()));
 		m_markedForDeletionPositions << id.toInt();
+	}
 }
 
 
 void PositionsEditDialog::selectionChanged()
 {
-	m_deletePosition->setEnabled(m_positionList->selectedItems().count() > 0);
+	QList<QListWidgetItem*> selectedItems = m_positionList->selectedItems();
+
+	// Количество выделенных элементов = 1 и запись не является неудаляемой.
+	const bool enableDeleteButton =
+			selectedItems.count() == 1 &&
+			!m_undeletablePositionIds.contains(selectedItems.first()->data(Qt::UserRole).toInt());
+
+	m_deletePosition->setEnabled(enableDeleteButton);
 }
 
 
