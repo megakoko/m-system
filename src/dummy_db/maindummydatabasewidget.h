@@ -15,6 +15,14 @@ struct Name
 };
 
 
+struct ComboBox {
+	int id;
+	int parentId;
+	QList<int> items;
+};
+
+
+
 class MainDummyDatabaseWidget : public PluginWidget, private Ui::MainDummyDatabaseWidget
 {
 	Q_OBJECT
@@ -65,6 +73,13 @@ private:
 										const QVariantList& positionIds);
 
 
+	//
+	QList<ComboBox> examinationComboBoxes() const;
+	/// id -> parentId
+	QMap<int, int> examinationContainers() const;
+
+
+
 	// Random-функции.
 	void initializeRandom() const;
 	inline int randomInt(const int max) const;
@@ -73,6 +88,8 @@ private:
 	inline Name randomMaleName() const;
 	inline Name randomFemaleName() const;
 	inline QString randomStreetname() const;
+
+	QVariant randomPatientId() const;
 
 
 
@@ -94,5 +111,6 @@ private slots:
 	void createPatients();
 	void createStaff();
 	void createDepartments();
+	void createExaminations();
 
 };
