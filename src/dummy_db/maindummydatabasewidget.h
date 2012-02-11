@@ -75,5 +75,6 @@ private:
 private slots:
 	void updateInformation();
 	void createPatients();
+	void createStaff();
 
 };
