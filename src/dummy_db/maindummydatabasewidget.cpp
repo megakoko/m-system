@@ -41,6 +41,7 @@ void MainDummyDatabaseWidget::initConnections()
 {
 	connect(m_updateInformation, SIGNAL(clicked()), SLOT(updateInformation()));
 	connect(m_createPatients, SIGNAL(clicked()), SLOT(createPatients()));
+	connect(m_createStaff, SIGNAL(clicked()), SLOT(createStaff()));
 }
 
 
@@ -237,6 +238,33 @@ void MainDummyDatabaseWidget::createAddressRecord(const int patientId,
 	q.bindValue(":apartment", encode(QString::number(randomInt(200))));
 	q.exec();
 	checkQuery(q);
+}
+
+
+void MainDummyDatabaseWidget::createStaff()
+{
+	initializeRandom();
+
+	QSqlQuery q;
+	q.prepare(" INSERT INTO Staff "
+			  " (familyName, name, patronymic, birthday, specialization) "
+			  " VALUES (?, ?, ?, ?, ?)");
+
+
+	for(int i = 0; i < m_createStaffCount->value(); ++i)
+	{
+		const Name& name = randomInt(2) ? randomMaleName() : randomFemaleName();
+		const QDate& birthday = randomDate();
+		const QString& specialization = "";
+
+		q.addBindValue(name.surname);
+		q.addBindValue(name.firstname);
+		q.addBindValue(name.patronymic);
+		q.addBindValue(birthday);
+		q.addBindValue(specialization);
+		q.exec();
+		checkQuery(q);
+	}
 }
 
 
