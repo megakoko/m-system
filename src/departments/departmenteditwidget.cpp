@@ -186,7 +186,7 @@ void DepartmentEditWidget::nameChanged()
 
 void DepartmentEditWidget::staffPositionSelectionChanged()
 {
-	const bool disableButtons = m_departmentStaff->selectedItems().isEmpty();
+	const bool disableButtons = m_departmentStaff->selectedItems().size() != 1;
 
 	m_editStaffInDepartment->setDisabled(disableButtons);
 	m_deleteStaffFromDepartment->setDisabled(disableButtons);
