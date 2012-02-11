@@ -11,6 +11,7 @@
 #include "components/yosortfilterproxymodel.h"
 
 #include "therapeutist.h"
+#include "saveablepluginwidget.h"
 #include "macros.h"
 
 PatientPickerDialog::PatientPickerDialog(QWidget *parent)
@@ -111,7 +112,7 @@ int PatientPickerDialog::selectedPatientId() const
 {
 	const QModelIndexList& indexes = m_patientTable->selectionModel()->selectedRows(0);
 
-	int id = InvalidId;
+	int id = SaveablePluginWidget::InvalidId;
 	if(indexes.size() == 1)
 	{
 		const int row = m_sortModel->mapToSource(indexes.first()).row();

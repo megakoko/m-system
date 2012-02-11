@@ -14,8 +14,6 @@ public:
 
 	int selectedPatientId() const;
 
-	static const int InvalidId = 0;
-
 private:
 	void init();
 	void initConnections();
