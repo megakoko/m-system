@@ -11,7 +11,9 @@
 
 
 DummyExaminations::DummyExaminations(DummyDataPtr dummyData)
-	: m_dummyData(dummyData)
+	: m_comboboxes(examinationComboBoxes())
+	, m_containers(examinationContainers())
+	, m_dummyData(dummyData)
 {
 
 }
@@ -87,13 +89,35 @@ QMap<int, int> DummyExaminations::examinationContainers() const
 }
 
 
-void DummyExaminations::createExaminations(const int count)
+QList<ComboBox> DummyExaminations::randomComboBoxes(const int percentage)
 {
-	const QList<ComboBox>& comboboxes = examinationComboBoxes();
-	const QMap<int, int>& containers = examinationContainers();
+	const int requiredSize = m_comboboxes.size() * percentage / 100.0;
 
 
+	// Проще выкинуть из list1 некоторые данные и вернуть list1.
+	if(percentage > 50)
+	{
+		QList<ComboBox> list1(m_comboboxes);
+		while(list1.size() > requiredSize)
+			list1.removeAt(m_dummyData->randomInt(list1.size()));
 
+		return list1;
+	}
+	// Проще заполнить list2 данными из list1 и вернуть list2.
+	else /* percentage <= 50 */
+	{
+		QList<ComboBox> list1(m_comboboxes);
+		QList<ComboBox> list2;
+		while(list2.size() < requiredSize)
+			list2 << list1.takeAt(m_dummyData->randomInt(list1.size()));
+
+		return list2;
+	}
+}
+
+
+void DummyExaminations::createExaminations(const int count, const int percentage)
+{
 	for(int i = 0; i < count; ++i)
 	{
 		QSqlQuery q;
@@ -119,9 +143,12 @@ void DummyExaminations::createExaminations(const int count)
 
 		QVariantList containerIds;
 
-		for(int i = 0; i < comboboxes.size()/2; ++i)
+
+
+		QList<ComboBox> comboboxes = randomComboBoxes(percentage);
+		for(int i = 0; i < comboboxes.size(); ++i)
 		{
-			ComboBox c = comboboxes.at(m_dummyData->randomInt(comboboxes.size()));
+			ComboBox c = comboboxes.at(i);
 
 			examIds << examId;
 			uiElementIds << c.id;
@@ -143,9 +170,9 @@ void DummyExaminations::createExaminations(const int count)
 
 		for(int i = 0; i < containerIds.count(); ++i)
 		{
-			if(containers.contains(containerIds.at(i).toInt()))
+			if(m_containers.contains(containerIds.at(i).toInt()))
 			{
-				const int parentContainterId = containers.value(containerIds.at(i).toInt());
+				const int parentContainterId = m_containers.value(containerIds.at(i).toInt());
 				if(!containerIds.contains(parentContainterId))
 					containerIds << parentContainterId;
 			}

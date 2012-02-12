@@ -84,7 +84,8 @@ void MainDummyDatabaseWidget::createDepartments()
 void MainDummyDatabaseWidget::createExaminations()
 {
 	DummyExaminations e(m_dummyData);
-	e.createExaminations(m_createExaminationsCount->value());
+	e.createExaminations(m_createExaminationsCount->value(),
+						 m_createExaminationsPercentage->value());
 
 	updateInformation();
 }
