@@ -71,7 +71,7 @@ void ExaminationEditWidget::init()
 		Q_ASSERT(idIsValid); Q_UNUSED(idIsValid);
 
 		m_patientId = q.value(0).toInt();
-		m_patientName->setText(patientName(m_patientId));
+		m_patientName->setText(patientName(m_patientId).join(" "));
 		m_examDate->setDateTime(q.value(1).toDateTime());
 		m_staff->setCurrentIndex(m_staff->findData(q.value(2)));
 	}
@@ -82,6 +82,40 @@ void ExaminationEditWidget::initConnections()
 {
 	connect(m_choosePatient, SIGNAL(clicked()), SLOT(choosePatient()));
 	connect(m_save, SIGNAL(clicked()), SIGNAL(requestForSaving()));
+}
+
+
+QString ExaminationEditWidget::tabName(const int patientId)
+{
+	QString result = "Осмотр пациента";
+
+	if(patientId != InvalidId)
+	{
+		const QStringList& patientNameList = patientName(patientId);
+
+		const QString& familyName = patientNameList[0];
+		const QString& firstName = patientNameList[1];
+		const QString& patronymic = patientNameList[2];
+
+
+		result += ": " + familyName;
+
+		if(!firstName.isEmpty())
+		{
+			result += " ";
+			result += firstName[0];
+			result += ".";
+		}
+
+		if(!patronymic.isEmpty())
+		{
+			result += " ";
+			result += patronymic[0];
+			result += ".";
+		}
+	}
+
+	return result;
 }
 
 
@@ -142,7 +176,7 @@ void ExaminationEditWidget::save()
 }
 
 
-QString ExaminationEditWidget::patientName(const int patientId)
+QStringList ExaminationEditWidget::patientName(const int patientId)
 {
 	QSqlQuery q;
 	q.prepare("SELECT familyname, name, patronymic FROM Patient WHERE id = ?");
@@ -155,7 +189,7 @@ QString ExaminationEditWidget::patientName(const int patientId)
 		for(int i = 0; i <= 2; ++i)
 			patientName += Therapeutist::interfaces->enc->decodeStr(q.value(i).toString());
 
-	return patientName.join(" ");
+	return patientName;
 }
 
 
@@ -166,6 +200,8 @@ void ExaminationEditWidget::choosePatient()
 	{
 		m_patientId = d.selectedPatientId();
 
-		m_patientName->setText(patientName(m_patientId));
+
+		m_patientName->setText(patientName(m_patientId).join(" "));
+		emit requestToSetTabLabel(tabName(m_patientId));
 	}
 }

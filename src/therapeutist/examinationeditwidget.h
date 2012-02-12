@@ -12,6 +12,8 @@ class ExaminationEditWidget : public SaveablePluginWidget, private Ui::Examinati
 public:
 	explicit ExaminationEditWidget(const int examinationId, QWidget *parent = 0);
 
+	static QString tabName(const int patientId);
+
 	bool canSave(QString &errorDescription) const;
 	void save();
 
@@ -19,7 +21,7 @@ private:
 	void init();
 	void initConnections();
 
-	static QString patientName(const int patientId);
+	static QStringList patientName(const int patientId);
 
 	int m_examinationId;
 	int m_patientId;
