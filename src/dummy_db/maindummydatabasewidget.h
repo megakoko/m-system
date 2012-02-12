@@ -29,21 +29,7 @@ private:
 	void initConnections();
 
 
-	// Возвращает зашифрованную с помощью CryptoPP строку.
-	QString encode(const QString& plaintext) const;
-	// Возвращает зашифрованную с помощью CryptoPP дату.
-	QString encode(const QDate& plainDate) const;
-
-
 	// Вставка в различные таблицы.
-
-	// Возвращает ID пациента.
-	int createPatientRecord(const QDate& birthday) const;
-	void createDocumentRecord(const int patientId,
-							  const QString& documentTextid,
-							  const QDate& patientBirthday) const;
-	void createAddressRecord(const int patientId, const QString& addressType) const;
-
 
 	/// Возвращает идентификаторы всех должностей из базы данных.
 	QVariantList positionIdsFromDatabase() const;

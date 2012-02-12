@@ -10,10 +10,12 @@ RESOURCES+= resources/resources.qrc
 SOURCES	 +=	\
 			dummydatabase.cpp \
 			maindummydatabasewidget.cpp \
-			dummydata.cpp
+			dummydata.cpp \
+			dummypatients.cpp
 
 HEADERS  += dummydatabase.h \
 			maindummydatabasewidget.h \
-			dummydata.h
+			dummydata.h \
+			dummypatients.h
 
 FORMS    += maindummydatabasewidget.ui
