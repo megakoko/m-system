@@ -147,10 +147,10 @@ void DummyExaminations::createExaminations(const int count, const int percentage
 		q.prepare(" INSERT INTO Examination "
 				  " (patientId, examinedByStaffId, examinationDate) "
 				  " VALUES(?, ?, ?) " +
-				  DummyDatabase::interfaces->db->returningSentence("id"));	// TODO: examined staff.
+				  DummyDatabase::interfaces->db->returningSentence("id"));
 		q.addBindValue(patientId);
 		q.addBindValue(therapeutistId);
-		q.addBindValue(QDateTime::currentDateTime()); // TODO
+		q.addBindValue(QDateTime::currentDateTime());
 		q.exec();
 		checkQuery(q);
 
