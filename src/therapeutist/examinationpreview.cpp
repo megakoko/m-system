@@ -2,6 +2,9 @@
 
 #include <QDateTime>
 
+#include <QPrinter>
+#include <QPrintDialog>
+
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlError>
@@ -48,17 +51,44 @@ ExaminationPreview::ExaminationPreview(const int examinationId, QWidget *parent)
 {
 	setupUi(this);
 
-	m_fontFamily->addItem("Шрифт с засечками", "'Times New Roman', Times, serif");
-	m_fontFamily->addItem("Шрифт без засечек", "Arial, sans-serif");
-
-	connect(m_fontFamily, SIGNAL(currentIndexChanged(int)), SLOT(updateStyle()));
-	connect(m_fontSize, SIGNAL(valueChanged(int)), SLOT(updateStyle()));
-
 	init();
+	createHtmlDocument();
 }
 
 
 void ExaminationPreview::init()
+{
+	m_fontFamily->addItem("Шрифт с засечками", "'Times New Roman', Times, serif");
+	m_fontFamily->addItem("Шрифт без засечек", "Arial, sans-serif");
+	updateStyle();
+
+	connect(m_fontFamily, SIGNAL(currentIndexChanged(int)), SLOT(updateStyle()));
+	connect(m_fontSize, SIGNAL(valueChanged(int)), SLOT(updateStyle()));
+	connect(m_print, SIGNAL(clicked()), SLOT(print()));
+}
+
+
+void ExaminationPreview::print()
+{
+	QPrinter printer;
+	printer.setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
+	QPrintDialog dialog(&printer, this);
+	if(dialog.exec() == QDialog::Accepted)
+		m_view->print(&printer);
+}
+
+
+void ExaminationPreview::updateStyle()
+{
+	const QVariant& family = m_fontFamily->itemData(m_fontFamily->currentIndex());
+	const int size = m_fontSize->value();
+
+	QFont f(family.toString(), size);
+	m_view->document()->setDefaultFont(f);
+}
+
+
+void ExaminationPreview::createHtmlDocument()
 {
 	QDomElement html = m_doc.createElement("html");
 	m_doc.appendChild(html);
@@ -72,8 +102,8 @@ void ExaminationPreview::init()
 	meta.setAttribute("http-equiv", "Content-Type");
 	meta.setAttribute("content", "text/html; charset=utf-8");
 
-	m_style = addElement(head, "style", css());
-	m_style.setAttribute("type", "text/css");
+	QDomElement style = addElement(head, "style", css());
+	style.setAttribute("type", "text/css");
 
 
 	addElement(body, "h1", "Первичный осмотр пациента");
@@ -82,7 +112,7 @@ void ExaminationPreview::init()
 
 
 
-	m_webView->setHtml(m_doc.toByteArray());
+	m_view->setHtml(m_doc.toByteArray());
 
 
 #ifndef QT_NO_DEBUG
@@ -100,45 +130,26 @@ QString ExaminationPreview::css() const
 {
 	static const QString base =
 			"* {"
-				"font-family: %1;"
-				"font-size: %2pt;"
 				"margin: 0 20px 0 10px;"
 			"}"
 
 			"h1 {"
-				"font-size: 150%;"
 				"margin-top: 10px;"
 				"margin-bottom: 30px;"
 			"}"
 
 			"h2 {"
-				"font-size: 125%;"
 				"margin-top: 10px;"
 				"margin-bottom: 3px;"
 			"}"
 
 			"p {"
-				"margin-top: 5px;"
-				"margin-bottom: 5px;"
+				"margin-top: 3px;"
+				"margin-bottom: 3px;"
 			"}";
 
-	const QVariant& family = m_fontFamily->itemData(m_fontFamily->currentIndex());
-	const int size = m_fontSize->value();
 
-	return base.arg(family.toString()).arg(size);
-}
-
-
-void ExaminationPreview::updateStyle()
-{
-	QDomText text = m_style.firstChild().toText();
-
-	if(!text.isNull())
-	{
-		text.setData(css());
-		m_webView->setHtml(m_doc.toByteArray());
-	}
-
+	return base;
 }
 
 
