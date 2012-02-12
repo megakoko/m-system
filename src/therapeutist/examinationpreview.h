@@ -16,6 +16,7 @@ public:
 
 private:
 	void init();
+	void createHtmlDocument();
 
 	QString css() const;
 
@@ -31,9 +32,9 @@ private:
 	const int m_examId;
 
 	QDomDocument m_doc;
-	QDomElement m_style;
 
 private slots:
 	void updateStyle();
+	void print();
 
 };

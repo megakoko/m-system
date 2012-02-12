@@ -1,7 +1,7 @@
 TARGET	 = therapeutist
 TEMPLATE = lib
 CONFIG	+= plugin
-QT		+= sql webkit xml
+QT		+= sql xml
 
 include( ../m-system-config.pri )
 

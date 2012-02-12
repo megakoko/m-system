@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>616</width>
     <height>300</height>
    </rect>
   </property>
@@ -50,6 +50,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="m_print">
+       <property name="text">
+        <string>Печать...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -65,23 +72,10 @@
     </layout>
    </item>
    <item>
-    <widget class="QWebView" name="m_webView">
-     <property name="url">
-      <url>
-       <string>about:blank</string>
-      </url>
-     </property>
-    </widget>
+    <widget class="QTextBrowser" name="m_view"/>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
