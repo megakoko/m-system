@@ -4,12 +4,8 @@
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QSqlRecord>
 #include <QSqlError>
 
-#include <QInputDialog>
-#include <QDateTime>
-#include <QFile>
 #include <QProgressDialog>
 
 
@@ -17,17 +13,14 @@
 #include "dummydatabase.h"
 
 
-#include <QSettings>
-
 MainDummyDatabaseWidget::MainDummyDatabaseWidget(QWidget *parent)
 	: PluginWidget(parent)
+	, m_dummyData(new DummyData)
 {
 	setupUi(this);
 
 	init();
 	initConnections();
-	loadFiles();
-
 }
 
 
@@ -44,57 +37,6 @@ void MainDummyDatabaseWidget::initConnections()
 	connect(m_createStaff, SIGNAL(clicked()), SLOT(createStaff()));
 	connect(m_createDepartments, SIGNAL(clicked()), SLOT(createDepartments()));
 	connect(m_createExaminations, SIGNAL(clicked()), SLOT(createExaminations()));
-}
-
-
-void MainDummyDatabaseWidget::loadFiles()
-{
-	loadFile(":/male_firstname.txt", m_maleFirstName);
-	loadFile(":/male_surname.txt", m_maleSurname);
-	loadFile(":/male_patronymic.txt", m_malePatronymic);
-
-	loadFile(":/female_firstname.txt", m_femaleFirstName);
-	loadFile(":/female_surname.txt", m_femaleSurname);
-	loadFile(":/female_patronymic.txt", m_femalePatronymic);
-
-	loadFile(":/streetnames.txt", m_streetName);
-
-	loadFile(":/departments.txt", m_departments);
-}
-
-
-void MainDummyDatabaseWidget::loadFile(const QString &fileName, QStringList &stringList)
-{
-	QFile f;
-	f.setFileName(fileName);
-	if(tryToOpen(f))
-		readFile(f, stringList);
-}
-
-
-bool MainDummyDatabaseWidget::tryToOpen(QFile &f) const
-{
-	if(!f.open(QIODevice::ReadOnly))
-		qWarning() << "Не могу открыть файл" << f.fileName();
-
-	return f.isOpen();
-}
-
-
-void MainDummyDatabaseWidget::readFile(QFile &f, QStringList &stringList)
-{
-	QTextStream input(&f);
-	input.setCodec("UTF-8");
-
-	QString line;
-	forever
-	{
-		line = input.readLine();
-		if(line.isNull())
-			break;
-
-		stringList << line;
-	}
 }
 
 
@@ -127,8 +69,6 @@ void MainDummyDatabaseWidget::updateInformation()
 
 void MainDummyDatabaseWidget::createPatients()
 {
-	initializeRandom();
-
 	const int patientsCount = m_createPatientsCount->value();
 
 	QProgressDialog progress("Создание пациентов", "Остановить", 0, patientsCount, this);
@@ -148,17 +88,17 @@ void MainDummyDatabaseWidget::createPatients()
 		}
 
 
-		const QDate& birthday = randomDate();
+		const QDate& birthday = m_dummyData->randomDate();
 		const int patientId = createPatientRecord(birthday);
 
 		createDocumentRecord(patientId, "passport", birthday);
 		createDocumentRecord(patientId, "insuranceMandatory", birthday);
-		if(randomInt(2))
+		if(m_dummyData->randomInt(2))
 			createDocumentRecord(patientId, "insuranceVoluntary", birthday);
 
 
 		createAddressRecord(patientId, "mailing");
-		if(randomInt(5) == 0)
+		if(m_dummyData->randomInt(5) == 0)
 			createAddressRecord(patientId, "actual");
 
 
@@ -175,14 +115,14 @@ int MainDummyDatabaseWidget::createPatientRecord(const QDate &birthday) const
 	Name patientName;
 
 	QString sextextid;
-	if(randomInt(2))
+	if(m_dummyData->randomInt(2))
 	{
-		patientName = randomMaleName();
+		patientName = m_dummyData->randomMaleName();
 		sextextid = "male";
 	}
 	else
 	{
-		patientName = randomFemaleName();
+		patientName = m_dummyData->randomFemaleName();
 		sextextid = "female";
 	}
 
@@ -217,9 +157,9 @@ void MainDummyDatabaseWidget::createDocumentRecord(const int patientId,
 			  " :patientId, :serialNumber, :date, :givenBy)");
 	q.bindValue(":docTextid", documentTextid);
 	q.bindValue(":patientId", patientId);
-	q.bindValue(":serialNumber", encode(QString::number(randomInt(1E4)) + ' ' +
-										QString::number(randomInt(1E6))));
-	q.bindValue(":date", encode(randomDate(patientBirthday.year() + 14)));
+	q.bindValue(":serialNumber", encode(QString::number(m_dummyData->randomInt(1E4)) + ' ' +
+										QString::number(m_dummyData->randomInt(1E6))));
+	q.bindValue(":date", encode(m_dummyData->randomDate(patientBirthday.year() + 14)));
 	if(documentTextid == "passport")
 		q.bindValue(":givenBy", encode("РОВД"));
 	else
@@ -240,9 +180,9 @@ void MainDummyDatabaseWidget::createAddressRecord(const int patientId,
 	q.bindValue(":patientId", patientId);
 	q.bindValue(":textid", addressType);
 	q.bindValue(":city", encode("Ижевск"));
-	q.bindValue(":street", encode(randomStreetname()));
-	q.bindValue(":house", encode(QString::number(randomInt(250))));
-	q.bindValue(":apartment", encode(QString::number(randomInt(200))));
+	q.bindValue(":street", encode(m_dummyData->randomStreetname()));
+	q.bindValue(":house", encode(QString::number(m_dummyData->randomInt(250))));
+	q.bindValue(":apartment", encode(QString::number(m_dummyData->randomInt(200))));
 	q.exec();
 	checkQuery(q);
 }
@@ -250,8 +190,6 @@ void MainDummyDatabaseWidget::createAddressRecord(const int patientId,
 
 void MainDummyDatabaseWidget::createStaff()
 {
-	initializeRandom();
-
 	QSqlQuery q;
 	q.prepare(" INSERT INTO Staff "
 			  " (familyName, name, patronymic, birthday, specialization) "
@@ -260,8 +198,10 @@ void MainDummyDatabaseWidget::createStaff()
 
 	for(int i = 0; i < m_createStaffCount->value(); ++i)
 	{
-		const Name& name = randomInt(2) ? randomMaleName() : randomFemaleName();
-		const QDate& birthday = randomDate();
+		const Name& name = m_dummyData->randomInt(2) ?
+						   m_dummyData->randomMaleName() :
+						   m_dummyData->randomFemaleName();
+		const QDate& birthday = m_dummyData->randomDate();
 		const QString& specialization = "";
 
 		q.addBindValue(name.surname);
@@ -346,8 +286,8 @@ void MainDummyDatabaseWidget::createDepartmentStaffPositions(const QVariant depa
 		for(int i = 0; i < numberOfPeopleInDepartment - 1; ++i)
 		{
 			q.addBindValue(departmentId);
-			q.addBindValue(staffIds.at(randomInt(staffIds.size())));
-			q.addBindValue(positionIds.at(randomInt(positionIds.size())));
+			q.addBindValue(staffIds.at(m_dummyData->randomInt(staffIds.size())));
+			q.addBindValue(positionIds.at(m_dummyData->randomInt(positionIds.size())));
 			q.exec();
 			checkQuery(q);
 		}
@@ -357,7 +297,7 @@ void MainDummyDatabaseWidget::createDepartmentStaffPositions(const QVariant depa
 		// отделения.
 		q.addBindValue(departmentId);
 		q.addBindValue(headOfDepartmentId);
-		q.addBindValue(positionIds.at(randomInt(positionIds.size())));
+		q.addBindValue(positionIds.at(m_dummyData->randomInt(positionIds.size())));
 		q.exec();
 		checkQuery(q);
 	}
@@ -390,13 +330,14 @@ void MainDummyDatabaseWidget::createDepartments()
 			  " (name, shortName, typeid, headOfDepartmentId) "
 			  " VALUES(?, ?, (SELECT id FROM DepartmentType WHERE textid = ?), ?)" +
 			  DummyDatabase::interfaces->db->returningSentence("id"));
-	for(int i = 0; i < m_departments.size(); ++i)
+	const QStringList& departments = m_dummyData->departments();
+	for(int i = 0; i < departments.size(); ++i)
 	{
-		const QString& name = m_departments.at(i);
+		const QString& name = departments.at(i);
 		if(!departmentsInDatabase.contains(name) && !name.isEmpty())
 		{
-			const QString& type = randomInt(2) ? "clinic" : "hospital";
-			const QVariant headId = staffIds.at(randomInt(staffIds.size()));
+			const QString& type = m_dummyData->randomInt(2) ? "clinic" : "hospital";
+			const QVariant headId = staffIds.at(m_dummyData->randomInt(staffIds.size()));
 
 
 			q.addBindValue(name);
@@ -485,18 +426,6 @@ QMap<int, int> MainDummyDatabaseWidget::examinationContainers() const
 }
 
 
-QVariant MainDummyDatabaseWidget::randomPatientId() const
-{
-	QSqlQuery q("SELECT id FROM Patient ORDER BY random() LIMIT 1");
-
-	QVariant id;
-	if(q.first())
-		id = q.value(0);
-
-	return id;
-}
-
-
 void MainDummyDatabaseWidget::createExaminations()
 {
 	const QList<ComboBox>& comboboxes = examinationComboBoxes();
@@ -511,7 +440,7 @@ void MainDummyDatabaseWidget::createExaminations()
 				  " (patientId, examinationDate) "
 				  " VALUES(?, ?) " +
 				  DummyDatabase::interfaces->db->returningSentence("id"));	// TODO: examined staff.
-		q.addBindValue(randomPatientId());
+		q.addBindValue(m_dummyData->randomPatientId());
 		q.addBindValue(QDateTime::currentDateTime()); // TODO
 		q.exec();
 		checkQuery(q);
@@ -531,11 +460,11 @@ void MainDummyDatabaseWidget::createExaminations()
 
 		for(int i = 0; i < comboboxes.size()/2; ++i)
 		{
-			ComboBox c = comboboxes.at(randomInt(comboboxes.size()));
+			ComboBox c = comboboxes.at(m_dummyData->randomInt(comboboxes.size()));
 
 			examIds << examId;
 			uiElementIds << c.id;
-			enumValueIds << c.items.at(randomInt(c.items.size()));
+			enumValueIds << c.items.at(m_dummyData->randomInt(c.items.size()));
 
 			if(!containerIds.contains(c.parentId))
 				containerIds << c.parentId;
@@ -576,52 +505,3 @@ void MainDummyDatabaseWidget::createExaminations()
 
 
 
-
-// ---------------------------- RANDOM функции ---------------------------
-
-void MainDummyDatabaseWidget::initializeRandom() const
-{
-	qsrand(QDateTime::currentMSecsSinceEpoch());
-}
-
-
-int MainDummyDatabaseWidget::randomInt(const int max) const
-{
-	return qrand() % max;
-}
-
-
-QDate MainDummyDatabaseWidget::randomDate(const int minimumYear) const
-{
-	const int maximumAge = qMax(1990 - minimumYear, 14);
-	return QDate(minimumYear + randomInt(maximumAge), randomInt(12)+1, randomInt(28)+1);
-}
-
-
-Name MainDummyDatabaseWidget::randomMaleName() const
-{
-	Name name = {
-		m_maleSurname.at(randomInt(m_maleSurname.size())),
-		m_maleFirstName.at(randomInt(m_maleFirstName.size())),
-		m_malePatronymic.at(randomInt(m_malePatronymic.size()))
-	};
-	return name;
-}
-
-
-
-Name MainDummyDatabaseWidget::randomFemaleName() const
-{
-	Name name = {
-		m_femaleSurname.at(randomInt(m_femaleSurname.size())),
-		m_femaleFirstName.at(randomInt(m_femaleFirstName.size())),
-		m_femalePatronymic.at(randomInt(m_femalePatronymic.size())),
-	};
-	return name;
-}
-
-
-QString MainDummyDatabaseWidget::randomStreetname() const
-{
-	return m_streetName.at(randomInt(m_streetName.size()));
-}
