@@ -1,5 +1,7 @@
 #include "dummyexaminations.h"
 
+#include <QApplication>
+#include <QProgressDialog>
 #include <QDebug>
 
 #include <QSqlDatabase>
@@ -91,6 +93,7 @@ QMap<int, int> DummyExaminations::examinationContainers() const
 
 QList<ComboBox> DummyExaminations::randomComboBoxes(const int percentage)
 {
+	Q_ASSERT(percentage <= 100 && percentage >= 0);
 	const int requiredSize = m_comboboxes.size() * percentage / 100.0;
 
 
@@ -98,7 +101,7 @@ QList<ComboBox> DummyExaminations::randomComboBoxes(const int percentage)
 	if(percentage > 50)
 	{
 		QList<ComboBox> list1(m_comboboxes);
-		while(list1.size() > requiredSize)
+		while(list1.size() >= requiredSize)
 			list1.removeAt(m_dummyData->randomInt(list1.size()));
 
 		return list1;
@@ -108,7 +111,7 @@ QList<ComboBox> DummyExaminations::randomComboBoxes(const int percentage)
 	{
 		QList<ComboBox> list1(m_comboboxes);
 		QList<ComboBox> list2;
-		while(list2.size() < requiredSize)
+		while(list2.size() <= requiredSize)
 			list2 << list1.takeAt(m_dummyData->randomInt(list1.size()));
 
 		return list2;
@@ -118,9 +121,21 @@ QList<ComboBox> DummyExaminations::randomComboBoxes(const int percentage)
 
 void DummyExaminations::createExaminations(const int count, const int percentage)
 {
+	QProgressDialog progress("Создание первичных осмотров", "Остановить", 0, count);
+	progress.setWindowModality(Qt::WindowModal);
+
+
+	QSqlQuery q("BEGIN");
 	for(int i = 0; i < count; ++i)
 	{
-		QSqlQuery q;
+		if(progress.wasCanceled())
+			break;
+		else
+		{
+			progress.setValue(i);
+			qApp->processEvents();
+		}
+
 		q.prepare(" INSERT INTO Examination "
 				  " (patientId, examinationDate) "
 				  " VALUES(?, ?) " +
@@ -188,4 +203,7 @@ void DummyExaminations::createExaminations(const int count, const int percentage
 		q.execBatch();
 		checkQuery(q);
 	}
+
+	progress.setValue(count);
+	q.exec("COMMIT");
 }

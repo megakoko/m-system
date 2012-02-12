@@ -1,5 +1,6 @@
 #include "dummydepartments.h"
 
+#include <QApplication>
 #include <QProgressDialog>
 #include <QDebug>
 
@@ -21,7 +22,11 @@ DummyDepartments::DummyDepartments(DummyDataPtr dummyData)
 
 void DummyDepartments::createStaff(const int count)
 {
-	QSqlQuery q;
+	QProgressDialog progress("Создание персонала", "Остановить", 0, count);
+	progress.setWindowModality(Qt::WindowModal);
+
+
+	QSqlQuery q("BEGIN");
 	q.prepare(" INSERT INTO Staff "
 			  " (familyName, name, patronymic, birthday, specialization) "
 			  " VALUES (?, ?, ?, ?, ?)");
@@ -29,6 +34,14 @@ void DummyDepartments::createStaff(const int count)
 
 	for(int i = 0; i < count; ++i)
 	{
+		if(progress.wasCanceled())
+			break;
+		else
+		{
+			progress.setValue(i);
+			qApp->processEvents();
+		}
+
 		const Name& name = m_dummyData->randomInt(2) ?
 						   m_dummyData->randomMaleName() :
 						   m_dummyData->randomFemaleName();
@@ -43,6 +56,10 @@ void DummyDepartments::createStaff(const int count)
 		q.exec();
 		checkQuery(q);
 	}
+
+
+	progress.setValue(count);
+	q.exec("COMMIT");
 }
 
 
@@ -145,7 +162,8 @@ void DummyDepartments::createDepartments()
 		return;
 
 
-	QSqlQuery q;
+
+	QSqlQuery q("BEGIN");
 
 	q.exec("SELECT name FROM Department");
 	checkQuery(q);
@@ -154,14 +172,27 @@ void DummyDepartments::createDepartments()
 	while(q.next())
 		departmentsInDatabase << q.value(0).toString();
 
+	const QStringList& departments = m_dummyData->departments();
+
+
+	QProgressDialog progress("Создание отделений", "Остановить", 0, departments.size());
+	progress.setWindowModality(Qt::WindowModal);
+
 
 	q.prepare(" INSERT INTO Department "
 			  " (name, shortName, typeid, headOfDepartmentId) "
 			  " VALUES(?, ?, (SELECT id FROM DepartmentType WHERE textid = ?), ?)" +
 			  DummyDatabase::interfaces->db->returningSentence("id"));
-	const QStringList& departments = m_dummyData->departments();
 	for(int i = 0; i < departments.size(); ++i)
 	{
+		if(progress.wasCanceled())
+			break;
+		else
+		{
+			progress.setValue(i);
+			qApp->processEvents();
+		}
+
 		const QString& name = departments.at(i);
 		if(!departmentsInDatabase.contains(name) && !name.isEmpty())
 		{
@@ -181,4 +212,7 @@ void DummyDepartments::createDepartments()
 			createDepartmentStaffPositions(departmentId, headId, staffIds, positionIds);
 		}
 	}
+
+	progress.setValue(departments.size());
+	q.exec("COMMIT");
 }
