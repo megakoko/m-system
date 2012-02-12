@@ -22,6 +22,7 @@ private:
 
 	int selectedExamId() const;
 
+	static int examIdToPatientId(const int examId);
 	static QString examinationListQuery();
 
 	QSqlQueryModel* m_queryModel;

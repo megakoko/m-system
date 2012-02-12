@@ -102,6 +102,22 @@ QString MainTherapeutistWidget::examinationListQuery()
 }
 
 
+int MainTherapeutistWidget::examIdToPatientId(const int examId)
+{
+	QSqlQuery q;
+	q.prepare("SELECT patientId FROM Examination WHERE id = ?");
+	q.addBindValue(examId);
+	q.exec();
+	checkQuery(q);
+
+	int patientId = SaveablePluginWidget::InvalidId;
+	if(q.first() && !q.value(0).isNull())
+		patientId = q.value(0).toInt();
+
+	return patientId;
+}
+
+
 void MainTherapeutistWidget::updateExaminationList()
 {
 	m_queryModel->setQuery(examinationListQuery());
@@ -141,19 +157,20 @@ void MainTherapeutistWidget::examSelectionChanged()
 
 void MainTherapeutistWidget::addExam()
 {
-	const int examinationId = ExaminationEditWidget::InvalidId;
-	ExaminationEditWidget* exam = new ExaminationEditWidget(examinationId, this);
+	const int examId = ExaminationEditWidget::InvalidId;
+	ExaminationEditWidget* exam = new ExaminationEditWidget(examId, this);
 
-	emit requestToAddNewWidget(exam, "TODO");
+	emit requestToAddNewWidget(exam, exam->tabName(examIdToPatientId(examId)));
 	connect(exam, SIGNAL(saved()), SLOT(updateExaminationList()));
 }
 
 
 void MainTherapeutistWidget::editExam()
 {
+	const int examId = selectedExamId();
 	ExaminationEditWidget* exam = new ExaminationEditWidget(selectedExamId(), this);
 
-	emit requestToAddNewWidget(exam, "TODO");
+	emit requestToAddNewWidget(exam, exam->tabName(examIdToPatientId(examId)));
 	connect(exam, SIGNAL(saved()), SLOT(updateExaminationList()));
 }
 
@@ -189,6 +206,9 @@ void MainTherapeutistWidget::deleteExam()
 
 void MainTherapeutistWidget::openExamPreview()
 {
+	const int examId = selectedExamId();
+
 	ExaminationPreview* preview = new ExaminationPreview(selectedExamId());
-	emit requestToAddNewWidget(preview, "TODO");
+	emit requestToAddNewWidget(preview,
+							   ExaminationEditWidget::tabName(examIdToPatientId(examId)));
 }
