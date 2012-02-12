@@ -41,15 +41,18 @@ QString decode(const QString& cipherText)
 }
 
 
-const QString ExaminationPreview::CSS =
-		"";
-
 
 ExaminationPreview::ExaminationPreview(const int examinationId, QWidget *parent)
 	: PluginWidget(parent)
 	, m_examId(examinationId)
 {
 	setupUi(this);
+
+	m_fontFamily->addItem("Шрифт с засечками", "'Times New Roman', Times, serif");
+	m_fontFamily->addItem("Шрифт без засечек", "Arial, sans-serif");
+
+	connect(m_fontFamily, SIGNAL(currentIndexChanged(int)), SLOT(updateStyle()));
+	connect(m_fontSize, SIGNAL(valueChanged(int)), SLOT(updateStyle()));
 
 	init();
 }
@@ -69,8 +72,8 @@ void ExaminationPreview::init()
 	meta.setAttribute("http-equiv", "Content-Type");
 	meta.setAttribute("content", "text/html; charset=utf-8");
 
-	QDomElement style = addElement(head, "style", CSS);
-	style.setAttribute("type", "text/css");
+	m_style = addElement(head, "style", css());
+	m_style.setAttribute("type", "text/css");
 
 
 	addElement(body, "h1", "Первичный осмотр пациента");
@@ -90,6 +93,52 @@ void ExaminationPreview::init()
 	if(f.open(QIODevice::WriteOnly))
 		f.write(m_doc.toByteArray(2));
 #endif
+}
+
+
+QString ExaminationPreview::css() const
+{
+	static const QString base =
+			"* {"
+				"font-family: %1;"
+				"font-size: %2pt;"
+				"margin: 0 20px 0 10px;"
+			"}"
+
+			"h1 {"
+				"font-size: 150%;"
+				"margin-top: 10px;"
+				"margin-bottom: 30px;"
+			"}"
+
+			"h2 {"
+				"font-size: 125%;"
+				"margin-top: 10px;"
+				"margin-bottom: 3px;"
+			"}"
+
+			"p {"
+				"margin-top: 5px;"
+				"margin-bottom: 5px;"
+			"}";
+
+	const QVariant& family = m_fontFamily->itemData(m_fontFamily->currentIndex());
+	const int size = m_fontSize->value();
+
+	return base.arg(family.toString()).arg(size);
+}
+
+
+void ExaminationPreview::updateStyle()
+{
+	QDomText text = m_style.firstChild().toText();
+
+	if(!text.isNull())
+	{
+		text.setData(css());
+		m_webView->setHtml(m_doc.toByteArray());
+	}
+
 }
 
 
