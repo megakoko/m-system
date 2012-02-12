@@ -136,11 +136,20 @@ void DummyExaminations::createExaminations(const int count, const int percentage
 			qApp->processEvents();
 		}
 
+
+		const QVariant& patientId = m_dummyData->randomPatientId();
+		const QVariant& therapeutistId = m_dummyData->randomTherapeutistId();
+
+		if(patientId.isNull() || therapeutistId.isNull())
+			break;
+
+
 		q.prepare(" INSERT INTO Examination "
-				  " (patientId, examinationDate) "
-				  " VALUES(?, ?) " +
+				  " (patientId, examinedByStaffId, examinationDate) "
+				  " VALUES(?, ?, ?) " +
 				  DummyDatabase::interfaces->db->returningSentence("id"));	// TODO: examined staff.
-		q.addBindValue(m_dummyData->randomPatientId());
+		q.addBindValue(patientId);
+		q.addBindValue(therapeutistId);
 		q.addBindValue(QDateTime::currentDateTime()); // TODO
 		q.exec();
 		checkQuery(q);

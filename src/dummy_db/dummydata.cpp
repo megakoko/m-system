@@ -84,6 +84,25 @@ QStringList DummyData::departments() const
 QVariant DummyData::randomPatientId() const
 {
 	QSqlQuery q("SELECT id FROM Patient ORDER BY random() LIMIT 1");
+	checkQuery(q);
+
+	QVariant id;
+	if(q.first())
+		id = q.value(0);
+
+	return id;
+}
+
+
+QVariant DummyData::randomTherapeutistId() const
+{
+	QSqlQuery q(" SELECT s.id "
+				" FROM departmentstaffposition dsp "
+				" LEFT JOIN staff s ON dsp.staffId = s.id "
+				" LEFT JOIN Position p ON dsp.positionId = p.id "
+				" WHERE p.textid = 'therapeutist'"
+				" ORDER BY random() LIMIT 1 ");
+	checkQuery(q);
 
 	QVariant id;
 	if(q.first())

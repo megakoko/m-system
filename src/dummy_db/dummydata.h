@@ -33,6 +33,8 @@ public:
 
 	QVariant randomPatientId() const;
 
+	QVariant randomTherapeutistId() const;
+
 private:
 	void loadFiles();
 	void loadFile(const QString& fileName, QStringList& stringList);
