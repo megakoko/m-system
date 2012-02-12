@@ -33,11 +33,12 @@ void ExaminationEditWidget::init()
 
 	QSqlQuery q;
 
-	q.prepare(" SELECT s.id, p.name, s.familyName, s.name, s.patronymic  "
+	q.prepare(" SELECT DISTINCT s.id, p.name, s.familyName, s.name, s.patronymic  "
 			  " FROM DepartmentStaffPosition dsp "
 			  " LEFT JOIN Staff s ON dsp.staffId = s.id "
 			  " LEFT JOIN Position p ON dsp.positionId = p.id "
-			  " WHERE p.textid = ? ");
+			  " WHERE p.textid = ? "
+			  " ORDER BY s.familyName, s.name, s.patronymic ");
 	q.addBindValue("therapeutist");
 	q.exec();
 	checkQuery(q);
