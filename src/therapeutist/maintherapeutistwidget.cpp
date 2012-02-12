@@ -29,7 +29,6 @@ MainTherapeutistWidget::MainTherapeutistWidget(QWidget* parent)
 
 void MainTherapeutistWidget::init()
 {
-	// todo
 	m_queryModel = new QSqlQueryModel(this);
 
 	DecodingProxyModel* m_proxyModel = new DecodingProxyModel(this);
