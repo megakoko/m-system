@@ -12,12 +12,14 @@ SOURCES	 +=	\
 			maindummydatabasewidget.cpp \
 			dummydata.cpp \
 			dummypatients.cpp \
-			dummydepartments.cpp
+			dummydepartments.cpp \
+			dummyexaminations.cpp
 
 HEADERS  += dummydatabase.h \
 			maindummydatabasewidget.h \
 			dummydata.h \
 			dummypatients.h \
-			dummydepartments.h
+			dummydepartments.h \
+			dummyexaminations.h
 
 FORMS    += maindummydatabasewidget.ui

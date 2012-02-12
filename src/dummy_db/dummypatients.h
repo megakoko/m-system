@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QSharedPointer>
 #include "dummydata.h"
 
 class DummyPatients
