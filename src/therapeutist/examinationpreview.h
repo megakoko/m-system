@@ -16,6 +16,9 @@ public:
 
 private:
 	void init();
+
+	QString css() const;
+
 	void addExaminationInformation(QDomElement& body);
 	void addExaminationData(QDomElement& body);
 
@@ -24,10 +27,13 @@ private:
 	static QString examDataQuery();
 	static QString examDataFromSqlRecord(const QSqlRecord& record);
 
-	static const QString CSS;
 
 	const int m_examId;
 
 	QDomDocument m_doc;
+	QDomElement m_style;
+
+private slots:
+	void updateStyle();
 
 };
