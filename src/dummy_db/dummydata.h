@@ -54,3 +54,4 @@ private:
 
 };
 
+typedef QSharedPointer<DummyData> DummyDataPtr;
