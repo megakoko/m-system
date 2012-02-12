@@ -22,6 +22,7 @@ private:
 
 	void addExaminationInformation(QDomElement& body);
 	void addExaminationData(QDomElement& body);
+	void addTherapeutistSigning(QDomElement& body);
 
 	QStringList containerData(const QString& containerTextId) const;
 
@@ -32,6 +33,9 @@ private:
 	const int m_examId;
 
 	QDomDocument m_doc;
+
+	/// Имя проводившего осмотр терапевта.
+	QString m_therapeutistFullName;
 
 private slots:
 	void updateStyle();

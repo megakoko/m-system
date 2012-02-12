@@ -109,6 +109,7 @@ void ExaminationPreview::createHtmlDocument()
 	addElement(body, "h1", "Первичный осмотр пациента");
 	addExaminationInformation(body);
 	addExaminationData(body);
+	addTherapeutistSigning(body);
 
 
 
@@ -146,6 +147,10 @@ QString ExaminationPreview::css() const
 			"p {"
 				"margin-top: 3px;"
 				"margin-bottom: 3px;"
+			"}"
+
+			".therapeutist_signing {"
+				"margin-top: 15px;"
 			"}";
 
 
@@ -156,9 +161,11 @@ QString ExaminationPreview::css() const
 void ExaminationPreview::addExaminationInformation(QDomElement &body)
 {
 	QSqlQuery q;
-	q.prepare(" SELECT e.examinationDate, p.familyName, p.name, p.patronymic, p.birthday "
+	q.prepare(" SELECT e.examinationDate, p.familyName, p.name, p.patronymic, p.birthday, "
+			  " s.familyName, s.name, s.patronymic"
 			  " FROM Examination e "
 			  " JOIN Patient p ON e.patientId = p.id "
+			  " JOIN Staff s ON e.examinedByStaffId = s.id "
 			  " WHERE e.id = ? ");
 	q.addBindValue(m_examId);
 	q.exec();
@@ -177,6 +184,12 @@ void ExaminationPreview::addExaminationInformation(QDomElement &body)
 		const QDate& birthDay = Therapeutist::interfaces->enc->decodeDate(q.value(4).toString());
 
 		addElement(body, "p", "Дата рождения: " + birthDay.toString("dd/MM/yyyy") + ".");
+
+
+
+		m_therapeutistFullName = q.value(5).toString() + " " +
+								 q.value(6).toString() + " " +
+								 q.value(7).toString();
 	}
 }
 
@@ -268,4 +281,14 @@ QStringList ExaminationPreview::containerData(const QString& containerTextId) co
 	}
 
 	return dataList;
+}
+
+
+void ExaminationPreview::addTherapeutistSigning(QDomElement &body)
+{
+	// QTextDocument не поддерживает border-bottom.
+	const QString& text = QString("_").repeated(30) + " " + m_therapeutistFullName;
+	QDomElement therapeutistName = addElement(body, "p", text);
+	therapeutistName.setAttribute("class", "therapeutist_signing");
+	therapeutistName.setAttribute("align", "right");
 }
