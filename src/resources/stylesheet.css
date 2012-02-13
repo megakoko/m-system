@@ -1,6 +1,6 @@
 QPushButton[type] {
-	width: 30px;
-	height: 30px;
+	min-width: 30px;
+	min-height: 30px;
 
 	border-style: none;
 }
@@ -72,3 +72,8 @@ QPushButton[type='spyglass']:disabled {
 }
 
 
+/* Pressed */
+QPushButton[type]:pressed {
+	margin-top: 3px;
+	margin-left: 3px;
+}
