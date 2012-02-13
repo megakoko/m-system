@@ -11,6 +11,7 @@
 #include "therapeutist.h"
 #include "examcontainer.h"
 #include "patientpickerdialog.h"
+#include "therapeutistpickerdialog.h"
 
 
 
@@ -18,6 +19,7 @@ ExaminationEditWidget::ExaminationEditWidget(const int examinationId, QWidget *p
 	: SaveablePluginWidget(parent)
 	, m_examinationId(examinationId)
 	, m_patientId(InvalidId)
+	, m_therapeutistId(InvalidId)
 {
 	setupUi(this);
 	init();
@@ -31,38 +33,18 @@ void ExaminationEditWidget::init()
 	m_widgetsLayout->addWidget(m_mainContainer->widget(), 0, Qt::AlignTop);
 
 
-	QSqlQuery q;
-
-	q.prepare(" SELECT DISTINCT s.id, p.name, s.familyName, s.name, s.patronymic  "
-			  " FROM DepartmentStaffPosition dsp "
-			  " LEFT JOIN Staff s ON dsp.staffId = s.id "
-			  " LEFT JOIN Position p ON dsp.positionId = p.id "
-			  " WHERE p.textid = ? "
-			  " ORDER BY s.familyName, s.name, s.patronymic ");
-	q.addBindValue("therapeutist");
-	q.exec();
-	checkQuery(q);
-	while(q.next())
-	{
-		const QString& position = q.value(1).toString();
-		const QString& name = q.value(2).toString() + " " +
-							  q.value(3).toString() + " " +
-							  q.value(4).toString();
-
-		m_staff->addItem(position + " " + name, q.value(0));
-	}
-	m_staff->setCurrentIndex(-1);
-
-
-
 	if(m_examinationId == InvalidId)
 	{
 		m_examDate->setDateTime(QDateTime::currentDateTime());
 	}
 	else
 	{
-		q.prepare(" SELECT patientId, examinationDate, examinedByStaffId "
-				  " FROM Examination WHERE id = ? ");
+		QSqlQuery q;
+		q.prepare(" SELECT patientId, examinationDate, examinedByStaffId, "
+				  " s.familyName || ' ' || s.name || ' ' || s.patronymic "
+				  " FROM Examination e "
+				  " LEFT JOIN Staff s ON e.examinedByStaffId = s.id "
+				  " WHERE e.id = ? ");
 		q.addBindValue(m_examinationId);
 		q.exec();
 		checkQuery(q);
@@ -73,7 +55,8 @@ void ExaminationEditWidget::init()
 		m_patientId = q.value(0).toInt();
 		m_patientName->setText(patientName(m_patientId).join(" "));
 		m_examDate->setDateTime(q.value(1).toDateTime());
-		m_staff->setCurrentIndex(m_staff->findData(q.value(2)));
+		m_therapeutistId = q.value(2).toInt();
+		m_therapeutistName->setText(q.value(3).toString());
 	}
 }
 
@@ -81,6 +64,7 @@ void ExaminationEditWidget::init()
 void ExaminationEditWidget::initConnections()
 {
 	connect(m_choosePatient, SIGNAL(clicked()), SLOT(choosePatient()));
+	connect(m_chooseTherapeutist, SIGNAL(clicked()), SLOT(chooseTherapeutist()));
 	connect(m_save, SIGNAL(clicked()), SIGNAL(requestForSaving()));
 }
 
@@ -126,7 +110,7 @@ bool ExaminationEditWidget::canSave(QString &errorDescription) const
 		errorDescription = "Не выбран пациент";
 		return false;
 	}
-	else if(m_staff->currentIndex() == -1)
+	else if(m_therapeutistId == InvalidId)
 	{
 		errorDescription = "Не выбран врач, проводящий осмотр";
 		return false;
@@ -160,7 +144,7 @@ void ExaminationEditWidget::save()
 	}
 	q.bindValue(":patientId", m_patientId);
 	q.bindValue(":examinationDate", m_examDate->dateTime());
-	q.bindValue(":examinedByStaffId", m_staff->itemData(m_staff->currentIndex()));
+	q.bindValue(":examinedByStaffId", m_therapeutistId);
 
 	q.exec();
 	checkQuery(q);
@@ -203,5 +187,16 @@ void ExaminationEditWidget::choosePatient()
 
 		m_patientName->setText(patientName(m_patientId).join(" "));
 		emit requestToSetTabLabel(tabName(m_patientId));
+	}
+}
+
+
+void ExaminationEditWidget::chooseTherapeutist()
+{
+	TherapeutistPickerDialog d(this);
+	if(d.exec() == QDialog::Accepted)
+	{
+		m_therapeutistId = d.selectedTherapeutistId();
+		m_therapeutistName->setText(d.selectedTherapeutistName());
 	}
 }
