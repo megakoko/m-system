@@ -58,7 +58,14 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QDateTimeEdit" name="m_examDate"/>
+      <widget class="QDateTimeEdit" name="m_examDate">
+       <property name="displayFormat">
+        <string>dd.MM.yyyy HH:mm</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
@@ -91,7 +98,7 @@
         <x>0</x>
         <y>0</y>
         <width>612</width>
-        <height>304</height>
+        <height>269</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">

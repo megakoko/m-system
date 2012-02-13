@@ -173,7 +173,7 @@ void ExaminationPreview::addExaminationInformation(QDomElement &body)
 
 	if(q.first())
 	{
-		const QString& examDate = q.value(0).toDateTime().toString("dd/MM/yyyy HH:mm");
+		const QString& examDate = q.value(0).toDateTime().toString("dd.MM.yyyy HH:mm");
 		addElement(body, "p", "Дата осмотра: " + examDate + ".");
 
 
@@ -183,7 +183,7 @@ void ExaminationPreview::addExaminationInformation(QDomElement &body)
 
 		const QDate& birthDay = Therapeutist::interfaces->enc->decodeDate(q.value(4).toString());
 
-		addElement(body, "p", "Дата рождения: " + birthDay.toString("dd/MM/yyyy") + ".");
+		addElement(body, "p", "Дата рождения: " + birthDay.toString("dd.MM.yyyy") + ".");
 
 
 
