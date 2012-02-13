@@ -66,15 +66,15 @@ SELECT 80, 'PA_UP', 'проживает в собственном доме со 
 SELECT 90, 'PA_UP', 'проживает в собственном доме с частичными удобствами' UNION
 SELECT 100, 'PA_UP', 'проживает в собственном доме без удобств' UNION
 SELECT 110, 'PA_UP', 'проживает в общежитии' UNION
-SELECT 120, 'PA_UP', 'не имеет постоянного места жительства' UNION
-SELECT 130, 'PA_exp', 'работающий' UNION
-SELECT 140, 'PA_exp', 'неработающий' UNION
-SELECT 150, 'PA_exp', 'инвалид III группы' UNION
-SELECT 160, 'PA_exp', 'инвалид II группы' UNION
-SELECT 170, 'PA_exp', 'инвалид I группы' UNION
-SELECT 180, 'PA_exp', 'открытого больничного листа нет' UNION
-SELECT 190, 'PA_exp', 'открыт больничный лист № с' UNION
-SELECT 200, 'PA_exp', 'КЭК проводилась';
+SELECT 120, 'PA_UP', 'не имеет постоянного места жительства';-- UNION
+--SELECT 130, 'PA_exp', 'работающий' UNION
+--SELECT 140, 'PA_exp', 'неработающий' UNION
+--SELECT 150, 'PA_exp', 'инвалид III группы' UNION
+--SELECT 160, 'PA_exp', 'инвалид II группы' UNION
+--SELECT 170, 'PA_exp', 'инвалид I группы' UNION
+--SELECT 180, 'PA_exp', 'открытого больничного листа нет' UNION
+--SELECT 190, 'PA_exp', 'открыт больничный лист № с' UNION
+--SELECT 200, 'PA_exp', 'КЭК проводилась'
 
 
 ------------------
