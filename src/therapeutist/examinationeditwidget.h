@@ -25,10 +25,12 @@ private:
 
 	int m_examinationId;
 	int m_patientId;
+	int m_therapeutistId;
 
 	ExamContainer* m_mainContainer;
 
 private slots:
 	void choosePatient();
+	void chooseTherapeutist();
 
 };
