@@ -28,6 +28,9 @@ private:
 										const QVariantList& staffIds,
 										const QVariantList& positionIds);
 
+	/// Возвращает сокращенное название отделения.
+	static QString departmentShortName(const QString& departmentFullName);
+
 	DummyDataPtr m_dummyData;
 
 };
