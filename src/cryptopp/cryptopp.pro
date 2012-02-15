@@ -4,17 +4,8 @@ TEMPLATE = lib
 
 include( ../m-system-config.pri )
 
-
-# Выключаем все предупреждения для компилятора GNU GCC / MinGW.
-linux-g++ | win32-g++ {
-    QMAKE_CXXFLAGS += -w
-}
-
-# Выключаем все предупреждения для компиляторов Microsoft Visual C++.
-win32-msvc2003 | win32-msvc2005 | win32-msvc2008 | win32-msvc2010 {
-# TODO: проверить опцию /w
-    QMAKE_CXXFLAGS += /w
-}
+# Выключаем предупреждения.
+CONFIG	+=	warn_off
 
 # В Windows добавляем линкуем с библиотекой ws2_32.
 win32 {
