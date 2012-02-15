@@ -48,7 +48,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QPushButton" name="m_createUser">
+		 <widget class="QToolButton" name="m_createUser">
           <property name="toolTip">
            <string>Добавить пользователя</string>
           </property>
@@ -58,7 +58,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="m_editUser">
+		 <widget class="QToolButton" name="m_editUser">
           <property name="toolTip">
            <string>Редактировать пользователя</string>
           </property>
@@ -68,7 +68,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="m_deleteUser">
+		 <widget class="QToolButton" name="m_deleteUser">
           <property name="toolTip">
            <string>Удалить пациента</string>
           </property>
