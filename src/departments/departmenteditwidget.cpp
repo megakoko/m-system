@@ -95,8 +95,8 @@ void DepartmentEditWidget::init()
 void DepartmentEditWidget::initComboboxes()
 {
 	QSqlQuery q;
-	q.exec(" SELECT id, familyName || ' ' || name || ' ' || patronymic AS Имя "
-		   " FROM Staff");
+	q.exec(" SELECT id, familyName || ' ' || name || ' ' || patronymic AS fullname "
+		   " FROM Staff ORDER BY fullname");
 	checkQuery(q);
 	while(q.next())
 		m_headOfDepartment->addItem(q.value(1).toString(), q.value(0));
