@@ -2,7 +2,7 @@
 
 #include <QString>
 #include <QDate>
-#include "encodinginterface.h"
+#include "interfaces/encodinginterface.h"
 
 
 /*

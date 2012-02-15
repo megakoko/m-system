@@ -3,7 +3,7 @@
 #pragma once
 #include "ui_mainwindow.h"
 
-#include "interfaces.h"
+#include "interfaces/interfaces.h"
 
 class QPluginLoader;
 class SettingsDialog;

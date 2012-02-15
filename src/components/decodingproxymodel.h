@@ -3,7 +3,7 @@
 #include <QProxyModel>
 #include <QSet>
 
-#include "interfaces.h"
+#include "interfaces/interfaces.h"
 
 
 class DecodingProxyModel : public QProxyModel

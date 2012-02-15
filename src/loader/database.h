@@ -1,6 +1,6 @@
 #pragma once
 
-#include "databaseinterface.h"
+#include "interfaces/databaseinterface.h"
 #include <QString>
 #include <QMap>
 

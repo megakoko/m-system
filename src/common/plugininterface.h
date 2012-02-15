@@ -1,6 +1,6 @@
 
 #pragma once
-#include "interfaces.h"
+#include "interfaces/interfaces.h"
 
 class QString;
 class PluginWidget;

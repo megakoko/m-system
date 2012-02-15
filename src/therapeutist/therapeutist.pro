@@ -7,12 +7,6 @@ include( ../m-system-config.pri )
 
 
 LIBS		=  -lcomponents -L$${ROOTPATH}/bin/
-INCLUDEPATH	+=	$${ROOTPATH}/src/
-
-# Передаем линковщику опцию -R$${ROOTPATH}/bin/
-unix {
-	QMAKE_CXXFLAGS += -Wl,-R$${ROOTPATH}/bin/
-}
 
 
 SOURCES +=	therapeutist.cpp \
