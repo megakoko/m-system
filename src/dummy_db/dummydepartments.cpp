@@ -201,7 +201,7 @@ void DummyDepartments::createDepartments()
 
 
 			q.addBindValue(name);
-			q.addBindValue(name[0].toUpper());
+			q.addBindValue(departmentShortName(name));
 			q.addBindValue(type);
 			q.addBindValue(headId);
 
@@ -215,4 +215,22 @@ void DummyDepartments::createDepartments()
 
 	progress.setValue(departments.size());
 	q.exec("COMMIT");
+}
+
+
+QString DummyDepartments::departmentShortName(const QString &departmentFullName)
+{
+	const QStringList& words = departmentFullName.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+
+	QString shortName;
+	if(!words.isEmpty())
+	{
+		// Первое слово - аббревиатура. Тогда его и возвращаем.
+		if(words[0].toUpper() == words[0])
+			shortName = words[0];
+		else foreach(const QString& word, words)
+			shortName += word[0].toUpper();
+	}
+
+	return shortName;
 }
