@@ -126,7 +126,7 @@ bool DepartmentEditWidget::canSave(QString &errorDescription) const
 	}
 	else if(m_headOfDepartment->currentIndex() < 0)
 	{
-		errorDescription = QString::fromUtf8("Не выбран глава отделения");
+		errorDescription = QString::fromUtf8("Не выбран заведующий отделением");
 		return false;
 	}
 
