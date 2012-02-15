@@ -33,9 +33,40 @@ void ExaminationEditWidget::init()
 	m_widgetsLayout->addWidget(m_mainContainer->widget(), 0, Qt::AlignTop);
 
 
+	// Если текущий пользователь не администратор, то отключаем возможность
+	// выбора доктора, проводившего осмотр.
+	if(!Therapeutist::interfaces->usr->currentUserIsAdmin())
+		m_chooseTherapeutist->setEnabled(false);
+
+
 	if(m_examinationId == InvalidId)
 	{
 		m_examDate->setDateTime(QDateTime::currentDateTime());
+
+
+		// Если текущий пользователь (не являющийся админом) создает осмотр, автоматически
+		// определяем ID врача и его имя.
+		if(!Therapeutist::interfaces->usr->currentUserIsAdmin())
+		{
+			QSqlQuery q;
+			q.prepare(" SELECT s.id, s.familyname || ' ' || s.name || ' ' || s.patronymic "
+					  " FROM MUser u "
+					  " LEFT JOIN Staff s ON u.attachedStaffId = s.id "
+					  " LEFT JOIN DepartmentStaffPosition dsp ON s.id = dsp.staffId "
+					  " LEFT JOIN Position p ON dsp.positionId = p.id "
+					  " WHERE u.id = ? AND p.textid = ?");
+
+			q.addBindValue(Therapeutist::interfaces->usr->currentUserId());
+			q.addBindValue("therapeutist");	// На всякий случай пусть отсеются все не-терапевты.
+			q.exec();
+			checkQuery(q);
+
+			if(q.first())
+			{
+				m_therapeutistId = q.value(0).toInt();
+				m_therapeutistName->setText(q.value(1).toString());
+			}
+		}
 	}
 	else
 	{
