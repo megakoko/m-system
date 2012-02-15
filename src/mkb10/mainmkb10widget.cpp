@@ -33,11 +33,8 @@ MainMkb10Widget::MainMkb10Widget(QWidget *parent)
 	connect(m_treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
 			SLOT(treeWidgetItemExpanded(QTreeWidgetItem*)));
 
-	connect(m_search, SIGNAL(clicked()), SLOT(filterDeseases()));
-	connect(m_filter, SIGNAL(returnPressed()), SLOT(filterDeseases()));
-
-	connect(m_clear, SIGNAL(clicked()), m_filter, SLOT(clear()));
-	connect(m_clear, SIGNAL(clicked()), SLOT(filterDeseases()));
+	connect(m_searchWidget, SIGNAL(searchPressed()), SLOT(filterDeseases()));
+	m_searchWidget->setLabelText("Поиск по описанию:");
 }
 
 
@@ -57,7 +54,7 @@ void MainMkb10Widget::initTreeWidget()
 void MainMkb10Widget::filterDeseases()
 {
 	// Средство против SQL-инъекции.
-	const QString& filter = m_filter->text().simplified().remove("'");
+	const QString& filter = m_searchWidget->enteredText().simplified().remove("'");
 
 	if(filter.isEmpty())
 		m_stackedWidget->setCurrentIndex(PAGE_TREE);

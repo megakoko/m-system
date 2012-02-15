@@ -36,14 +36,14 @@ void SearchWidget::init()
 	m_lineEdit->setStyleSheet(QString("padding-right: %1px;").arg(paddingRight));
 
 
-	QHBoxLayout* layout = new QHBoxLayout(this);
-	layout->addWidget(m_label);
-	layout->addWidget(m_lineEdit);
-	layout->addWidget(m_searchButton);
+	m_layout = new QHBoxLayout(this);
+	m_layout->addWidget(m_label);
+	m_layout->addWidget(m_lineEdit);
+	m_layout->addWidget(m_searchButton);
 
 	// Убираем поля слева, справа, снизу и сверху.
-	layout->setContentsMargins(QMargins());
-	setLayout(layout);
+	m_layout->setContentsMargins(QMargins());
+	setLayout(m_layout);
 }
 
 
@@ -60,8 +60,13 @@ void SearchWidget::resizeEvent(QResizeEvent*)
 {
 	const QSize& size = m_clearButton->sizeHint();
 	const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-	m_clearButton->move(m_lineEdit->rect().right() - frameWidth - size.width(),
-						(rect().bottom() + 1 - size.height())/2);
+
+
+	const int x = (m_label->isHidden() ? 0 : m_label->width() + m_layout->spacing()) +
+				  m_lineEdit->width() - frameWidth - size.width();
+	const int y = (height() + 1 - size.height())/2;
+
+	m_clearButton->move(x, y);
 
 }
 

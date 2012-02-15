@@ -6,6 +6,9 @@ QT		+= sql
 include( ../m-system-config.pri )
 
 
+LIBS	+=  -lcomponents -L$${ROOTPATH}/bin/
+
+
 HEADERS +=	mkb10.h \
     mainmkb10widget.h
 

@@ -54,6 +54,8 @@ void PatientPickerDialog::init()
 	m_patientTable->setColumnHidden(0, true);
 
 	m_ok->setEnabled(false);
+
+	m_searchWidget->setLabelText("Поиск по фамилии:");
 }
 
 
@@ -68,10 +70,8 @@ void PatientPickerDialog::initConnections()
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(selectionChanged()));
 
-	connect(m_searchLine, SIGNAL(returnPressed()), SLOT(updatePatientsList()));
-	connect(m_search, SIGNAL(clicked()), SLOT(updatePatientsList()));
-	connect(m_clear, SIGNAL(clicked()), m_searchLine, SLOT(clear()));
-	connect(m_clear, SIGNAL(clicked()), SLOT(updatePatientsList()));
+
+	connect(m_searchWidget, SIGNAL(searchPressed()), SLOT(updatePatientsList()));
 }
 
 
@@ -82,7 +82,7 @@ void PatientPickerDialog::updatePatientsList()
 	while(m_queryModel->canFetchMore())
 		m_queryModel->fetchMore();
 
-	m_sortModel->setFilterWildcard(m_searchLine->text());
+	m_sortModel->setFilterWildcard(m_searchWidget->enteredText());
 	m_sortModel->sort(1);	// Колонка с фамилией.
 
 	checkQuery(m_queryModel->query());
