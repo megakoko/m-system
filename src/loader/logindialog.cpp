@@ -79,15 +79,6 @@ int LoginDialog::loggedUserId() const
 
 bool LoginDialog::connectToDatabase()
 {
-	if(QSqlDatabase::contains())
-	{
-		QSqlDatabase db = QSqlDatabase::database();
-
-		db.close();
-		QSqlDatabase::removeDatabase(db.connectionName());
-	}
-
-
 	const QString& dbdriver = QSettings().value("dbdriver").toString();
 
 	QSqlDatabase db = QSqlDatabase::addDatabase(dbdriver);
@@ -109,6 +100,18 @@ bool LoginDialog::connectToDatabase()
 	}
 
 	return opened;
+}
+
+
+void LoginDialog::disconnectFromDatabase()
+{
+	if(QSqlDatabase::contains())
+	{
+		QSqlDatabase db = QSqlDatabase::database();
+
+		db.close();
+		QSqlDatabase::removeDatabase(db.connectionName());
+	}
 }
 
 

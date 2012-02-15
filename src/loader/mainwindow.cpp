@@ -109,6 +109,8 @@ void MainWindow::logOut()
 	m_homePage->clearButtons();
 	m_tabWidget->closeAllTabs();
 
+	LoginDialog::disconnectFromDatabase();
+
 	unloadPlugins();
 }
 

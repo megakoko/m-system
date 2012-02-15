@@ -14,6 +14,7 @@ public:
 	explicit LoginDialog(QWidget *parent = 0);
 
 	int loggedUserId() const;
+	static void disconnectFromDatabase();
 
 private:
 	void initConnections();
