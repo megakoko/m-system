@@ -136,6 +136,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="toolTip">
+           <string>Редактировать адрес прописки</string>
+          </property>
           <property name="type" stdset="0">
            <string>edit</string>
           </property>
@@ -148,6 +151,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Редактировать адрес проживания</string>
           </property>
           <property name="type" stdset="0">
            <string>edit</string>
@@ -216,6 +222,9 @@
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QPushButton" name="m_addDocument">
+            <property name="toolTip">
+             <string>Добавить документ</string>
+            </property>
             <property name="type" stdset="0">
              <string>add</string>
             </property>
@@ -223,6 +232,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="m_editDocument">
+            <property name="toolTip">
+             <string>Редактировать документ</string>
+            </property>
             <property name="type" stdset="0">
              <string>edit</string>
             </property>
@@ -230,6 +242,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="m_deleteDocument">
+            <property name="toolTip">
+             <string>Удалить документ</string>
+            </property>
             <property name="type" stdset="0">
              <string>remove</string>
             </property>

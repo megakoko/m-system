@@ -40,6 +40,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="toolTip">
+          <string>Выбрать пациента</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -90,6 +93,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Выбрать проводившего осмотр врача-терапевта</string>
          </property>
          <property name="text">
           <string/>
