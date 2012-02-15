@@ -139,7 +139,7 @@ void DummyDepartments::createDepartmentStaffPositions(const QVariant departmentI
 		}
 
 
-		// Глава отделения пусть тоже какую-то должность занимает помимо должности главы
+		// Зав. отделением пусть тоже какую-то должность занимает помимо должности главы
 		// отделения.
 		q.addBindValue(departmentId);
 		q.addBindValue(headOfDepartmentId);
