@@ -15,6 +15,9 @@ public:
 
 	QString enteredText() const;
 
+protected:
+	void resizeEvent(QResizeEvent *);
+
 private:
 	void init();
 	void initConnections();
