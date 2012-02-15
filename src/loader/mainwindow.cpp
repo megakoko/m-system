@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QPluginLoader>
+#include <QMessageBox>
 
 
 #include "pluginwidget.h"
@@ -102,16 +103,25 @@ void MainWindow::logIn()
 
 void MainWindow::logOut()
 {
-	m_connectionAction->setText(QString::fromUtf8("Войти в систему"));
-	disconnect(m_connectionAction, SIGNAL(triggered()), this, SLOT(logOut()));
-	connect(m_connectionAction, SIGNAL(triggered()), SLOT(logIn()));
+	const int answer = QMessageBox::question(this, "Выход из системы",
+											 "Вы действительно хотите выйти из системы? "
+											 "Все несохраненные данные будут утеряны.",
+											 QMessageBox::Yes | QMessageBox::No);
 
-	m_homePage->clearButtons();
-	m_tabWidget->closeAllTabs();
 
-	LoginDialog::disconnectFromDatabase();
+	if(answer == QMessageBox::Yes)
+	{
+		m_connectionAction->setText(QString::fromUtf8("Войти в систему"));
+		disconnect(m_connectionAction, SIGNAL(triggered()), this, SLOT(logOut()));
+		connect(m_connectionAction, SIGNAL(triggered()), SLOT(logIn()));
 
-	unloadPlugins();
+		m_homePage->clearButtons();
+		m_tabWidget->closeAllTabs();
+
+		LoginDialog::disconnectFromDatabase();
+
+		unloadPlugins();
+	}
 }
 
 
