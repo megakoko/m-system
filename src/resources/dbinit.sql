@@ -267,6 +267,6 @@ INSERT INTO AddressType(textid, name) VALUES ('actual', 'Адрес прожив
 INSERT INTO HealthFacility(id, name) VALUES(1, 'Медицинское учреждение');
 
 
-INSERT INTO DepartmentType(textid, name) VALUES ('clinic', 'Амбулатория');
-INSERT INTO DepartmentType(textid, name) VALUES ('hospital', 'Стационар');
+INSERT INTO DepartmentType(textid, name) VALUES ('clinic', 'Амбулаторное отделение');
+INSERT INTO DepartmentType(textid, name) VALUES ('hospital', 'Стационарное отделение');
 
