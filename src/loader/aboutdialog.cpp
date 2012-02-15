@@ -44,17 +44,24 @@ AboutDialog::AboutDialog(QWidget *parent)
 	layout->addLayout(buttonLayout);
 
 	setLayout(layout);
+
+
+	resize(0, 0);
 }
 
 
 
 QString AboutDialog::aboutText() const
 {
-	return QString::fromUtf8(
-		"<H1>M-System</H1>"
-		"<p>"
-			"2011 (c)"
-		"</p>");
+	static const QChar copyright(0x00A9);	// Знак копирайта.
+	static const QChar dash(0x2014);		// Длинное тире.
+
+	return QString(
+				"<h2>M-System</h2>"
+				"<h3>Медицинская информационная система</h3>"
+				"<p>"
+					"%1 Суфиянов Вадим, Чукавин Андрей, Насырова Юлия, 2011 %2 2012 "
+				"</p>").arg(copyright).arg(dash);
 }
 
 
