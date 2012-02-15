@@ -13,7 +13,6 @@
 
 DatabaseInterface::SqlDriver Database::m_currentDriver = DatabaseInterface::Unknown;
 bool Database::m_currentDriverValueWasInitialized = false;
-int Database::m_currentUserId = DatabaseInterface::InvalidId;
 
 
 int Database::fieldMaximumLength(QString table, QString field) const
@@ -89,18 +88,6 @@ int Database::fieldMaximumLength(QString table, QString field) const
 
 
 	return length;
-}
-
-
-int Database::currentUserId() const
-{
-	return m_currentUserId;
-}
-
-
-void Database::setCurrentUserId(const int id)
-{
-	m_currentUserId = id;
 }
 
 

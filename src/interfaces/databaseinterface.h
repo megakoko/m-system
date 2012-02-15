@@ -14,11 +14,6 @@ public:
 	virtual int fieldMaximumLength(QString table, QString field) const = 0;
 
 
-	/// Возвращает идентификатор пользователя, который в данный момент работает в системе.
-	/// Возвращает DatabaseInterface::InvalidId, если идентификатор не может быть получен.
-	virtual int currentUserId() const = 0;
-	static const int InvalidId = 0;
-
 	/// Доступные SQL драйвера.
 	enum SqlDriver {
 		SQLITE,
