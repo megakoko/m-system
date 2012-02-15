@@ -1,7 +1,7 @@
 #include "examcontainer.h"
 
 #include <QLabel>
-#include <QPushButton>
+#include <QToolButton>
 #include <QVBoxLayout>
 #include <QGridLayout>
 
@@ -207,7 +207,7 @@ void ExamContainer::expandContainer(const bool expanded)
 
 					if(widget->valueCanBeReseted())
 					{
-						QPushButton* resetButton = new QPushButton();
+						QToolButton* resetButton = new QToolButton;
 						resetButton->setProperty("type", "cancel");
 						resetButton->setToolTip("Сбросить значение");
 						resetButton->setDisabled(widget->valueIsNull());

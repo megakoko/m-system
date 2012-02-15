@@ -61,7 +61,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="m_chooseTherapeutist">
+	  <widget class="QToolButton" name="m_chooseTherapeutist">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -111,7 +111,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="m_choosePatient">
+	  <widget class="QToolButton" name="m_choosePatient">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>

@@ -4,7 +4,6 @@
 
 
 class QLabel;
-class QPushButton;
 class QGridLayout;
 
 

@@ -26,7 +26,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QPushButton" name="m_addPosition">
+		<widget class="QToolButton" name="m_addPosition">
          <property name="toolTip">
           <string>Добавить должность</string>
          </property>
@@ -36,7 +36,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="m_deletePosition">
+		<widget class="QToolButton" name="m_deletePosition">
          <property name="toolTip">
           <string>Удалить должность</string>
          </property>

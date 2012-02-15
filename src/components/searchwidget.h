@@ -4,7 +4,7 @@
 
 class QLabel;
 class QLineEdit;
-class QPushButton;
+class QToolButton;
 
 class SearchWidget : public QWidget
 {
@@ -24,8 +24,8 @@ private:
 
 	QLabel* m_label;
 	QLineEdit* m_lineEdit;
-	QPushButton* m_searchButton;
-	QPushButton* m_clearButton;
+	QToolButton* m_searchButton;
+	QToolButton* m_clearButton;
 
 signals:
 	void searchPressed();
