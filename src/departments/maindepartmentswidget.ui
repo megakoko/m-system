@@ -37,7 +37,7 @@
        </widget>
       </item>
       <item>
-	   <widget class="QToolButton" name="m_editHealthFacility">
+       <widget class="QToolButton" name="m_editHealthFacility">
         <property name="toolTip">
          <string>Редактировать информацию о медицинском учреждении</string>
         </property>
@@ -66,10 +66,13 @@
         <property name="text">
          <string/>
         </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
-	   <widget class="QToolButton" name="m_editPositions">
+       <widget class="QToolButton" name="m_editPositions">
         <property name="toolTip">
          <string>Редактировать список должностей</string>
         </property>
@@ -106,7 +109,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-		 <widget class="QToolButton" name="m_addDepartment">
+         <widget class="QToolButton" name="m_addDepartment">
           <property name="toolTip">
            <string>Добавить отделение</string>
           </property>
@@ -116,7 +119,7 @@
          </widget>
         </item>
         <item>
-		 <widget class="QToolButton" name="m_editDepartmnet">
+         <widget class="QToolButton" name="m_editDepartmnet">
           <property name="toolTip">
            <string>Редактировать информацию об отделении</string>
           </property>
@@ -126,7 +129,7 @@
          </widget>
         </item>
         <item>
-		 <widget class="QToolButton" name="m_deleteDepartment">
+         <widget class="QToolButton" name="m_deleteDepartment">
           <property name="toolTip">
            <string>Удалить информацию об отделении</string>
           </property>
@@ -178,7 +181,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-		 <widget class="QToolButton" name="m_addStaff">
+         <widget class="QToolButton" name="m_addStaff">
           <property name="toolTip">
            <string>Добавить сотрудника</string>
           </property>
@@ -188,7 +191,7 @@
          </widget>
         </item>
         <item>
-		 <widget class="QToolButton" name="m_editStaff">
+         <widget class="QToolButton" name="m_editStaff">
           <property name="toolTip">
            <string>Редактировать информацию о сотруднике</string>
           </property>
@@ -198,7 +201,7 @@
          </widget>
         </item>
         <item>
-		 <widget class="QToolButton" name="m_deleteStaff">
+         <widget class="QToolButton" name="m_deleteStaff">
           <property name="toolTip">
            <string>Удалить информацию о сотруднике</string>
           </property>
