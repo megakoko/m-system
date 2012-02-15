@@ -3,7 +3,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
-#include <QPushButton>
+#include <QToolButton>
 
 #include <QVariant>
 #include <QStyle>
@@ -13,8 +13,8 @@ SearchWidget::SearchWidget(QWidget *parent)
 	: QWidget(parent)
 	, m_label(new QLabel(this))
 	, m_lineEdit(new QLineEdit(this))
-	, m_searchButton(new QPushButton(this))
-	, m_clearButton(new QPushButton(this))
+	, m_searchButton(new QToolButton(this))
+	, m_clearButton(new QToolButton(this))
 {
 	init();
 	initConnections();

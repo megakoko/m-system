@@ -1,4 +1,4 @@
-QPushButton[type] {
+QToolButton[type] {
 	min-width: 30px;
 	min-height: 30px;
 	max-width: 30px;
@@ -9,73 +9,73 @@ QPushButton[type] {
 
 
 /* ---------- */
-QPushButton[type='add'] {
+QToolButton[type='add'] {
 	background: url(:/add.png) no-repeat center;
 }
 
-QPushButton[type='edit'] {
+QToolButton[type='edit'] {
 	background: url(:/edit.png) no-repeat center;
 }
 
-QPushButton[type='remove'] {
+QToolButton[type='remove'] {
 	background: url(:/remove.png) no-repeat center;
 }
 
-QPushButton[type='cancel'] {
+QToolButton[type='cancel'] {
 	background: url(:/cancel.png) no-repeat center;
 }
 
-QPushButton[type='spyglass'] {
+QToolButton[type='spyglass'] {
 	background: url(:/spyglass.png) no-repeat center;
 }
 
 
 /* Hover */
-QPushButton[type='add']:hover {
+QToolButton[type='add']:hover {
 	background-image: url(:/hover/add.png);
 }
 
-QPushButton[type='edit']:hover {
+QToolButton[type='edit']:hover {
 	background-image: url(:/hover/edit.png);
 }
 
-QPushButton[type='remove']:hover {
+QToolButton[type='remove']:hover {
 	background-image: url(:/hover/remove.png);
 }
 
-QPushButton[type='cancel']:hover {
+QToolButton[type='cancel']:hover {
 	background-image: url(:/hover/cancel.png);
 }
 
-QPushButton[type='spyglass']:hover {
+QToolButton[type='spyglass']:hover {
 	background-image: url(:/hover/spyglass.png);
 }
 
 
 /* disabled */
-QPushButton[type='add']:disabled {
+QToolButton[type='add']:disabled {
 	background-image: url(:/disabled/add.png);
 }
 
-QPushButton[type='edit']:disabled {
+QToolButton[type='edit']:disabled {
 	background-image: url(:/disabled/edit.png);
 }
 
-QPushButton[type='remove']:disabled {
+QToolButton[type='remove']:disabled {
 	background-image: url(:/disabled/remove.png);
 }
 
-QPushButton[type='cancel']:disabled {
+QToolButton[type='cancel']:disabled {
 	background-image: url(:/disabled/cancel.png);
 }
 
-QPushButton[type='spyglass']:disabled {
+QToolButton[type='spyglass']:disabled {
 	background-image: url(:/disabled/spyglass.png);
 }
 
 
 /* Pressed */
-QPushButton[type]:pressed {
+QToolButton[type]:pressed {
 	margin-top: 3px;
 	margin-left: 3px;
 }

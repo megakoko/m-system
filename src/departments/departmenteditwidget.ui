@@ -74,7 +74,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QPushButton" name="m_addStaffToDepartment">
+		   <widget class="QToolButton" name="m_addStaffToDepartment">
             <property name="toolTip">
              <string>Добавить сотрудника в отделение</string>
             </property>
@@ -84,7 +84,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="m_editStaffInDepartment">
+		   <widget class="QToolButton" name="m_editStaffInDepartment">
             <property name="toolTip">
              <string>Редактировать информацию о сотруднике в отделении</string>
             </property>
@@ -94,7 +94,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="m_deleteStaffFromDepartment">
+		   <widget class="QToolButton" name="m_deleteStaffFromDepartment">
             <property name="toolTip">
              <string>Удалить сотруднике из отделения</string>
             </property>
