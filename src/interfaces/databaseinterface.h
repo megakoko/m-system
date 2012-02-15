@@ -9,6 +9,10 @@ class QSqlQuery;
 class DatabaseInterface
 {
 public:
+	/// Деструктор.
+	virtual ~DatabaseInterface() {}
+
+
 	/// Возаращет вместимость CHAR-поля \a field таблицы \a table либо -1, если поле
 	/// не имеет тип CHAR/VARCHAR, не имеет максимальной длины.
 	virtual int fieldMaximumLength(QString table, QString field) const = 0;
