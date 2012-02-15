@@ -38,6 +38,9 @@ void TherapeutistPickerDialog::init()
 
 void TherapeutistPickerDialog::initConnections()
 {
+	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
+	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+
 	connect(m_searchLine, SIGNAL(returnPressed()), SLOT(updateTherapeutistList()));
 	connect(m_search, SIGNAL(clicked()), SLOT(updateTherapeutistList()));
 	connect(m_clear, SIGNAL(clicked()), m_searchLine, SLOT(clear()));
