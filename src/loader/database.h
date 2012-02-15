@@ -10,9 +10,6 @@ class Database : public DatabaseInterface
 public:
 	int fieldMaximumLength(QString table, QString field) const;
 
-	int currentUserId() const;
-	static void setCurrentUserId(const int id);
-
 	SqlDriver currentSqlDriver() const;
 	static void setSqlDriver(const QString& driverName);
 
@@ -25,9 +22,6 @@ private:
 	bool fieldIsCiphered(const QString& table, const QString& field) const;
 
 	QMap<QString, QStringList> initializeCipheredTablesMap() const;
-
-	/// Идентификатор текущего пользователя.
-	static int m_currentUserId;
 
 	/// Возвращает элемент перечисления SqlDriver, соответствующий имени драйвера
 	/// \a driverName.

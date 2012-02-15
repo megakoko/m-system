@@ -18,11 +18,13 @@
 #include "macros.h"
 #include "cryptopp/wrapper.h"
 #include "database.h"
+#include "user.h"
 
 
 QList<QPluginLoader*> MainWindow::m_plugins = QList<QPluginLoader*>();
 InterfacesPtr MainWindow::interfaces = InterfacesPtr(new Interfaces(new CryptoppWrapper,
-																	new Database));
+																	new Database,
+																	new User));
 
 
 MainWindow::MainWindow(QWidget *parent)

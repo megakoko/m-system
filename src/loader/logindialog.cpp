@@ -13,6 +13,7 @@
 
 #include "mainwindow.h"
 #include "database.h"
+#include "user.h"
 #include "macros.h"
 
 
@@ -135,12 +136,12 @@ void LoginDialog::tryToLogin()
 	}
 	else
 	{
-		m_userId = Database::InvalidId;
+		m_userId = User::InvalidId;
 		showMessage(QString::fromUtf8("Неправильная пара логин/пароль"));
 		m_ok->setDisabled(true);
 		QTimer::singleShot(1000, this, SLOT(enableOkButton()));
 	}
-	Database::setCurrentUserId(m_userId);
+	User::setCurrentUserId(m_userId);
 }
 
 
