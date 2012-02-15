@@ -12,6 +12,7 @@
         <file alias="remove.png">icons/minus_24x6.png</file>
         <file alias="cancel.png">icons/x_14x14.png</file>
         <file alias="spyglass.png">icons/magnifying_glass_24x24.png</file>
+        <file alias="document.png">icons/document_alt_stroke_18x24.png</file>        
         
         <!-- Иконки, появляющиеся по наведению курсора мыши -->
         <file alias="hover/add.png">icons/hover/plus_24x24.png</file>
@@ -19,6 +20,7 @@
         <file alias="hover/remove.png">icons/hover/minus_24x6.png</file>
         <file alias="hover/cancel.png">icons/hover/x_14x14.png</file>
         <file alias="hover/spyglass.png">icons/hover/magnifying_glass_24x24.png</file>
+        <file alias="hover/document.png">icons/hover/document_alt_stroke_18x24.png</file>
         
         <!-- Неактивные иконки -->
         <file alias="disabled/add.png">icons/disabled/plus_24x24.png</file>
@@ -26,5 +28,6 @@
         <file alias="disabled/remove.png">icons/disabled/minus_24x6.png</file>
         <file alias="disabled/cancel.png">icons/disabled/x_14x14.png</file>
         <file alias="disabled/spyglass.png">icons/disabled/magnifying_glass_24x24.png</file>
+        <file alias="disabled/document.png">icons/disabled/document_alt_stroke_18x24.png</file>
     </qresource>
 </RCC>

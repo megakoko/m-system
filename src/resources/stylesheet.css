@@ -7,6 +7,12 @@ QToolButton[type] {
 	border-style: none;
 }
 
+/* Pressed */
+QToolButton[type]:pressed {
+	margin-top: 3px;
+	margin-left: 3px;
+}
+
 
 /* ---------- */
 QToolButton[type='add'] {
@@ -27,6 +33,10 @@ QToolButton[type='cancel'] {
 
 QToolButton[type='spyglass'] {
 	background: url(:/spyglass.png) no-repeat center;
+}
+
+QToolButton[type='document'] {
+	background: url(:/document.png) no-repeat center;
 }
 
 
@@ -51,6 +61,10 @@ QToolButton[type='spyglass']:hover {
 	background-image: url(:/hover/spyglass.png);
 }
 
+QToolButton[type='document']:hover {
+	background-image: url(:/hover/document.png);
+}
+
 
 /* disabled */
 QToolButton[type='add']:disabled {
@@ -73,9 +87,6 @@ QToolButton[type='spyglass']:disabled {
 	background-image: url(:/disabled/spyglass.png);
 }
 
-
-/* Pressed */
-QToolButton[type]:pressed {
-	margin-top: 3px;
-	margin-left: 3px;
+QToolButton[type='document']:disabled {
+	background-image: url(:/disabled/document.png);
 }
