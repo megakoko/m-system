@@ -33,6 +33,8 @@ void TherapeutistPickerDialog::init()
 	m_view->setColumnHidden(0, true);
 
 	m_ok->setEnabled(false);
+
+	m_searchWidget->setLabelText("Поиск по полному имени");
 }
 
 
@@ -41,10 +43,7 @@ void TherapeutistPickerDialog::initConnections()
 	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
 	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
 
-	connect(m_searchLine, SIGNAL(returnPressed()), SLOT(updateTherapeutistList()));
-	connect(m_search, SIGNAL(clicked()), SLOT(updateTherapeutistList()));
-	connect(m_clear, SIGNAL(clicked()), m_searchLine, SLOT(clear()));
-	connect(m_clear, SIGNAL(clicked()), SLOT(updateTherapeutistList()));
+	connect(m_searchWidget, SIGNAL(searchPressed()), SLOT(updateTherapeutistList()));
 
 	connect(m_view->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
@@ -104,7 +103,7 @@ QString TherapeutistPickerDialog::selectedTherapeutistName() const
 
 void TherapeutistPickerDialog::updateTherapeutistList()
 {
-	m_model->setQuery(query(m_searchLine->text()));
+	m_model->setQuery(query(m_searchWidget->enteredText()));
 	checkQuery(m_model->query());
 }
 

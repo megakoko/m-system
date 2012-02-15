@@ -2,6 +2,7 @@
 
 #include <QWidget>
 
+class QHBoxLayout;
 class QLabel;
 class QLineEdit;
 class QToolButton;
@@ -21,6 +22,8 @@ protected:
 private:
 	void init();
 	void initConnections();
+
+	QHBoxLayout* m_layout;
 
 	QLabel* m_label;
 	QLineEdit* m_lineEdit;
