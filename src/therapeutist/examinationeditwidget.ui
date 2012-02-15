@@ -36,7 +36,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Осмотр проводил:</string>
+        <string>Осмотр проводил врач:</string>
        </property>
       </widget>
      </item>
@@ -61,7 +61,7 @@
       </spacer>
      </item>
      <item>
-	  <widget class="QToolButton" name="m_chooseTherapeutist">
+      <widget class="QToolButton" name="m_chooseTherapeutist">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -111,7 +111,7 @@
       </spacer>
      </item>
      <item>
-	  <widget class="QToolButton" name="m_choosePatient">
+      <widget class="QToolButton" name="m_choosePatient">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -150,7 +150,7 @@
         <x>0</x>
         <y>0</y>
         <width>805</width>
-        <height>336</height>
+        <height>330</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
