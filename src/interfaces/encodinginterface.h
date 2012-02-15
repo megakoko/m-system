@@ -8,6 +8,10 @@ class QDate;
 class EncodingInterface
 {
 public:
+	/// Деструктор.
+	virtual ~EncodingInterface() {}
+
+
 	/// Шифрует строку \a plainText и возвращает результат шифрования.
 	virtual QString encodeStr(const QString& plainText) const = 0;
 	/// Дешифрует строку \a cipherText и возвращает результат дешифрования.

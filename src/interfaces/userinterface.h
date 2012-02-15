@@ -6,6 +6,10 @@ class QString;
 class UserInterface
 {
 public:
+	/// Деструктор.
+	virtual ~UserInterface() {}
+
+
 	static const int InvalidId = 0;
 
 
