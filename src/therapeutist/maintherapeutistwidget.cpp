@@ -49,9 +49,7 @@ void MainTherapeutistWidget::init()
 	m_examinations->horizontalHeader()->setResizeMode(2, QHeaderView::Stretch);
 	m_examinations->setColumnHidden(0, true);
 
-	m_editExam->setEnabled(false);
-	m_deleteExam->setEnabled(false);
-	m_openPreview->setEnabled(false);
+	examSelectionChanged();
 }
 
 
@@ -147,11 +145,15 @@ int MainTherapeutistWidget::selectedExamId() const
 
 void MainTherapeutistWidget::examSelectionChanged()
 {
-	const bool disableButtons = (numberOfSelectedExams() != 1);
+	const bool canChangeExam = Therapeutist::interfaces->usr->currentUserIsAdmin() ||
+							 currentUserIsAssociatedWithTherapeutist();
+	const bool singleExamSelected = (numberOfSelectedExams() == 1);
 
-	m_editExam->setDisabled(disableButtons);
-	m_deleteExam->setDisabled(disableButtons);
-	m_openPreview->setDisabled(disableButtons);
+
+	m_addExam->setEnabled(canChangeExam);
+	m_editExam->setEnabled(canChangeExam && singleExamSelected);
+	m_deleteExam->setEnabled(canChangeExam && singleExamSelected);
+	m_openPreview->setEnabled(singleExamSelected);
 }
 
 
@@ -211,4 +213,22 @@ void MainTherapeutistWidget::openExamPreview()
 	ExaminationPreview* preview = new ExaminationPreview(selectedExamId());
 	emit requestToAddNewWidget(preview,
 							   ExaminationEditWidget::tabName(examIdToPatientId(examId)));
+}
+
+
+bool MainTherapeutistWidget::currentUserIsAssociatedWithTherapeutist()
+{
+	QSqlQuery q;
+	q.prepare(" SELECT '1' "
+			  " FROM MUser u "
+			  " LEFT JOIN Staff s ON u.attachedStaffId = s.id "
+			  " LEFT JOIN DepartmentStaffPosition dsp ON s.id = dsp.staffId "
+			  " LEFT JOIN Position p ON dsp.positionId = p.id "
+			  " WHERE u.id = ? AND p.textid = ?");
+	q.addBindValue(Therapeutist::interfaces->usr->currentUserId());
+	q.addBindValue("therapeutist");
+	q.exec();
+	checkQuery(q);
+
+	return q.first();
 }

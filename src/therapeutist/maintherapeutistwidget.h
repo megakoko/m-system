@@ -25,6 +25,9 @@ private:
 	static int examIdToPatientId(const int examId);
 	static QString examinationListQuery();
 
+	/// Возвращает true, если текущий пользователь связан с терапевтом.
+	static bool currentUserIsAssociatedWithTherapeutist();
+
 	QSqlQueryModel* m_queryModel;
 
 private slots:
