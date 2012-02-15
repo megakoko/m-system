@@ -1,11 +1,10 @@
 
-TEMPLATE = subdirs
-CONFIG += ordered
+TEMPLATE =	subdirs
+CONFIG	+=	ordered
 
 
 SUBDIRS	+= 	cryptopp \
 			components \
-			lotusformparser \
 			loader \
 			users \
 			patients \
