@@ -70,10 +70,7 @@ void MainPatientsWidget::initConnections()
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(selectionChanged()));
 
-	connect(m_searchline, SIGNAL(returnPressed()), SLOT(updatePatientsList()));
-	connect(m_find, SIGNAL(clicked()), SLOT(updatePatientsList()));
-	connect(m_clear, SIGNAL(clicked()), m_searchline, SLOT(clear()));
-	connect(m_clear, SIGNAL(clicked()), SLOT(updatePatientsList()));
+	connect(m_searchWidget, SIGNAL(searchPressed()), SLOT(updatePatientsList()));
 }
 
 
@@ -96,7 +93,7 @@ void MainPatientsWidget::updatePatientsList()
 	while(m_queryModel->canFetchMore())
 		m_queryModel->fetchMore();
 
-	m_sortModel->setFilterWildcard(m_searchline->text());
+	m_sortModel->setFilterWildcard(m_searchWidget->enteredText());
 	m_sortModel->sort(1);	// Колонка с фамилией.
 
 	checkQuery(m_queryModel->query());
@@ -105,7 +102,7 @@ void MainPatientsWidget::updatePatientsList()
 
 void MainPatientsWidget::addPatient()
 {
-	const QString& searchText = m_searchline->text();
+	const QString& searchText = m_searchWidget->enteredText();
 
 	// То, что пользователь ввел в строку, разделенное пробельными символами.
 	// Содержит возможное имя будущего пациента.
