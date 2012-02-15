@@ -6,8 +6,10 @@ include( ../m-system-config.pri )
 
 HEADERS	+=	yosortfilterproxymodel.h \
 			decodingproxymodel.h \
-			columnjoiningproxymodel.h
+			columnjoiningproxymodel.h \
+			searchwidget.h
 
 SOURCES +=	yosortfilterproxymodel.cpp \
 			decodingproxymodel.cpp \
-			columnjoiningproxymodel.cpp
+			columnjoiningproxymodel.cpp \
+			searchwidget.cpp
