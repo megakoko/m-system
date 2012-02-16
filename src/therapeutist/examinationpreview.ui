@@ -19,19 +19,12 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Семейство шрифта:</string>
+        <string>Шрифт:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QComboBox" name="m_fontFamily"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Размер шрифта:</string>
-       </property>
-      </widget>
      </item>
      <item>
       <widget class="QSpinBox" name="m_fontSize">
