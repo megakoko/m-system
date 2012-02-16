@@ -41,8 +41,12 @@ private:
 
 	QDomDocument m_doc;
 
+	QDate m_startDate;
+	QDate m_endDate;
+
 private slots:
 	void createHtmlDocument();
+	void chooseDateRange();
 	void updateStyle();
 	void print();
 

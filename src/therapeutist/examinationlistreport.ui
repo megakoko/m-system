@@ -84,6 +84,16 @@
       <widget class="QComboBox" name="m_grouping"/>
      </item>
      <item>
+      <widget class="QToolButton" name="m_choosePeriod">
+       <property name="toolTip">
+        <string>Выбрать период</string>
+       </property>
+       <property name="type" stdset="0">
+        <string>calendar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
