@@ -43,5 +43,7 @@ private:
 
 private slots:
 	void createHtmlDocument();
+	void updateStyle();
+	void print();
 
 };

@@ -1,5 +1,7 @@
 #include "examinationlistreport.h"
 
+#include <QPrinter>
+#include <QPrintDialog>
 
 #include <QSqlQuery>
 #include <QSqlError>
@@ -46,6 +48,9 @@ void ExaminationListReport::init()
 	m_grouping->addItem("Без группировки", grouping::none);
 	m_grouping->addItem("По врачам", grouping::byTherapeutist);
 
+	m_fontFamily->addItem("С засечками", "'Times New Roman', Times, serif");
+	m_fontFamily->addItem("Без засечек", "Arial, sans-serif");
+	updateStyle();
 
 	populateExamList();
 	createHtmlDocument();
@@ -55,6 +60,30 @@ void ExaminationListReport::init()
 void ExaminationListReport::initConnections()
 {
 	connect(m_grouping, SIGNAL(currentIndexChanged(int)), SLOT(createHtmlDocument()));
+
+	connect(m_fontFamily, SIGNAL(currentIndexChanged(int)), SLOT(updateStyle()));
+	connect(m_fontSize, SIGNAL(valueChanged(int)), SLOT(updateStyle()));
+	connect(m_print, SIGNAL(clicked()), SLOT(print()));
+}
+
+
+void ExaminationListReport::print()
+{
+	QPrinter printer;
+	printer.setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
+	QPrintDialog dialog(&printer, this);
+	if(dialog.exec() == QDialog::Accepted)
+		m_view->print(&printer);
+}
+
+
+void ExaminationListReport::updateStyle()
+{
+	const QVariant& family = m_fontFamily->itemData(m_fontFamily->currentIndex());
+	const int size = m_fontSize->value();
+
+	QFont f(family.toString(), size);
+	m_view->document()->setDefaultFont(f);
 }
 
 
@@ -62,7 +91,6 @@ bool ExaminationListReport::groupedByTherapeutistName() const
 {
 	return m_grouping->itemData(m_grouping->currentIndex()) == grouping::byTherapeutist;
 }
-
 
 
 void ExaminationListReport::createHtmlDocument()
