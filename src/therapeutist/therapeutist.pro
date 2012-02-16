@@ -23,7 +23,9 @@ SOURCES +=	therapeutist.cpp \
 			plaintextedit.cpp \
 			examspinbox.cpp \
 			examinationpreview.cpp \
-			therapeutistpickerdialog.cpp
+			therapeutistpickerdialog.cpp \
+			examinationlistreport.cpp \
+			domhelper.cpp
 
 HEADERS	+=	therapeutist.h \
 			maintherapeutistwidget.h \
@@ -39,10 +41,13 @@ HEADERS	+=	therapeutist.h \
 			plaintextedit.h \
 			examspinbox.h \
 			examinationpreview.h \
-			therapeutistpickerdialog.h
+			therapeutistpickerdialog.h \
+			examinationlistreport.h \
+			domhelper.h
 
 FORMS	+=	maintherapeutistwidget.ui \
 			examinationeditwidget.ui \
 			patientpickerdialog.ui \
 			examinationpreview.ui \
-			therapeutistpickerdialog.ui
+			therapeutistpickerdialog.ui \
+			examinationlistreport.ui
