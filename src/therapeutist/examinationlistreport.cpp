@@ -48,7 +48,7 @@ ExaminationListReport::ExaminationListReport(QWidget *parent)
 
 void ExaminationListReport::init()
 {
-	m_grouping->addItem("Без группировки", grouping::none);
+	m_grouping->addItem("Отсутствует", grouping::none);
 	m_grouping->addItem("По врачам", grouping::byTherapeutist);
 
 	m_fontFamily->addItem("С засечками", "'Times New Roman', Times, serif");

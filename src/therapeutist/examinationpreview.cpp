@@ -44,8 +44,8 @@ ExaminationPreview::ExaminationPreview(const int examinationId, QWidget *parent)
 
 void ExaminationPreview::init()
 {
-	m_fontFamily->addItem("Шрифт с засечками", "'Times New Roman', Times, serif");
-	m_fontFamily->addItem("Шрифт без засечек", "Arial, sans-serif");
+	m_fontFamily->addItem("С засечками", "'Times New Roman', Times, serif");
+	m_fontFamily->addItem("Без засечек", "Arial, sans-serif");
 	updateStyle();
 
 	connect(m_fontFamily, SIGNAL(currentIndexChanged(int)), SLOT(updateStyle()));
