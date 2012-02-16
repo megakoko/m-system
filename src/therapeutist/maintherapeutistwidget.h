@@ -41,4 +41,6 @@ private slots:
 
 	void openExamPreview();
 
+	void openExamListReport();
+
 };

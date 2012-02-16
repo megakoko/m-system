@@ -15,6 +15,7 @@
 #include "therapeutist.h"
 #include "macros.h"
 #include "examinationpreview.h"
+#include "examinationlistreport.h"
 
 
 MainTherapeutistWidget::MainTherapeutistWidget(QWidget* parent)
@@ -66,6 +67,7 @@ void MainTherapeutistWidget::initConnections()
 	connect(m_deleteExam, SIGNAL(clicked()), SLOT(deleteExam()));
 
 	connect(m_openPreview, SIGNAL(clicked()), SLOT(openExamPreview()));
+	connect(m_openExamListReport, SIGNAL(clicked()), SLOT(openExamListReport()));
 }
 
 
@@ -213,6 +215,13 @@ void MainTherapeutistWidget::openExamPreview()
 	ExaminationPreview* preview = new ExaminationPreview(selectedExamId());
 	emit requestToAddNewWidget(preview,
 							   ExaminationEditWidget::tabName(examIdToPatientId(examId)));
+}
+
+
+void MainTherapeutistWidget::openExamListReport()
+{
+	ExaminationListReport* report = new ExaminationListReport(this);
+	emit requestToAddNewWidget(report, "Отчет об осмотрах");
 }
 
 

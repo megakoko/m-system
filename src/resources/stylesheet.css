@@ -39,6 +39,10 @@ QToolButton[type='document'] {
 	background: url(:/document.png) no-repeat center;
 }
 
+QToolButton[type='list'] {
+	background: url(:/list.png) no-repeat center;
+}
+
 
 /* Hover */
 QToolButton[type='add']:hover {
@@ -65,6 +69,10 @@ QToolButton[type='document']:hover {
 	background-image: url(:/hover/document.png);
 }
 
+QToolButton[type='list']:hover {
+	background-image: url(:/hover/list.png);
+}
+
 
 /* disabled */
 QToolButton[type='add']:disabled {
@@ -89,4 +97,8 @@ QToolButton[type='spyglass']:disabled {
 
 QToolButton[type='document']:disabled {
 	background-image: url(:/disabled/document.png);
+}
+
+QToolButton[type='list']:disabled {
+	background-image: url(:/disabled/list.png);
 }
