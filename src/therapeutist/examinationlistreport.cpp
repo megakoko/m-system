@@ -18,6 +18,19 @@
 #include "therapeutist.h"
 
 
+namespace grouping {
+static const QVariant none = 0;
+static const QVariant byTherapeutist = 1;
+}
+
+
+bool sortByTherapeutist(const Examination& left, const Examination& right)
+{
+	return left.therapeutistName < right.therapeutistName;
+}
+
+
+
 ExaminationListReport::ExaminationListReport(QWidget *parent)
 	: PluginWidget(parent)
 {
@@ -30,30 +43,31 @@ ExaminationListReport::ExaminationListReport(QWidget *parent)
 
 void ExaminationListReport::init()
 {
+	m_grouping->addItem("Без группировки", grouping::none);
+	m_grouping->addItem("По врачам", grouping::byTherapeutist);
+
+
 	populateExamList();
 	createHtmlDocument();
-
-
-	m_view->setHtml(m_doc.toByteArray());
-#ifndef QT_NO_DEBUG
-	const QString& tmpLocation = QDesktopServices::storageLocation(
-									 QDesktopServices::TempLocation);
-
-	QFile f(QDir(tmpLocation).filePath("exam_report.html"));
-	if(f.open(QIODevice::WriteOnly))
-		f.write(m_doc.toByteArray(2));
-#endif
 }
 
 
 void ExaminationListReport::initConnections()
 {
-
+	connect(m_grouping, SIGNAL(currentIndexChanged(int)), SLOT(createHtmlDocument()));
 }
+
+
+bool ExaminationListReport::groupedByTherapeutistName() const
+{
+	return m_grouping->itemData(m_grouping->currentIndex()) == grouping::byTherapeutist;
+}
+
 
 
 void ExaminationListReport::createHtmlDocument()
 {
+	m_doc.clear();
 	QDomElement html = m_doc.createElement("html");
 	m_doc.appendChild(html);
 
@@ -73,19 +87,65 @@ void ExaminationListReport::createHtmlDocument()
 
 	QDomElement table = addElement(body, "table");
 	table.setAttribute("width", "100%");
-	addTableHeader(table);
 
-	foreach(const Examination& exam, m_examList)
-		addRow(exam, table);
+
+
+	if(groupedByTherapeutistName())
+	{
+		QList<Examination> examList = m_examList;
+		qSort(examList.begin(), examList.end(), sortByTherapeutist);
+
+
+		int currentTherapeutistId = -1;
+		foreach(const Examination& exam, examList)
+		{
+			if(exam.therapeutistId != currentTherapeutistId)
+			{
+				currentTherapeutistId = exam.therapeutistId;
+				addTherapeutistHeader(exam, table);
+				addTableHeader(table);
+			}
+			addRow(exam, table);
+		}
+	}
+	else
+	{
+		addTableHeader(table);
+		foreach(const Examination& exam, m_examList)
+			addRow(exam, table);
+	}
+
+
+
+
+	m_view->setHtml(m_doc.toByteArray());
+
+#ifndef QT_NO_DEBUG
+	const QString& tmpLocation = QDesktopServices::storageLocation(
+									 QDesktopServices::TempLocation);
+
+	QFile f(QDir(tmpLocation).filePath("exam_report.html"));
+	if(f.open(QIODevice::WriteOnly))
+		f.write(m_doc.toByteArray(2));
+#endif
 }
 
 
 void ExaminationListReport::addTableHeader(QDomElement &table)
 {
 	QDomElement row = addElement(table, "tr");
-	addElement(row, "th", "Время осмотра");
-	addElement(row, "th", "Пациент");
-	addElement(row, "th", "Врач");
+	addElement(row, "th", "Время осмотра").setAttribute("align", "left");
+	addElement(row, "th", "Пациент").setAttribute("align", "left");
+	if(!groupedByTherapeutistName())
+		addElement(row, "th", "Врач").setAttribute("align", "left");
+}
+
+
+void ExaminationListReport::addTherapeutistHeader(const Examination &exam, QDomElement &table)
+{
+	QDomElement row = addElement(table, "tr");
+	row.setAttribute("colspan", 3);
+	addElement(row, "td", exam.therapeutistName).setAttribute("class", "therapeutist");
 }
 
 
@@ -94,13 +154,17 @@ void ExaminationListReport::addRow(const Examination &exam, QDomElement &table)
 	QDomElement row = addElement(table, "tr");
 	addElement(row, "td", exam.time.toString("dd.MM.yyyy HH:mm"));
 	addElement(row, "td", exam.patientName);
-	addElement(row, "td", exam.therapeutistName);
+	if(!groupedByTherapeutistName())
+		addElement(row, "td", exam.therapeutistName);
 }
 
 
 QString ExaminationListReport::css()
 {
-	return QString::null;
+	return	"td.therapeutist {"
+				"font-weight: bold;"
+				"font-size: large;"
+			"}";
 }
 
 
@@ -133,5 +197,4 @@ void ExaminationListReport::populateExamList()
 
 		m_examList << e;
 	}
-
 }
