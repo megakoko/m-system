@@ -43,6 +43,10 @@ QToolButton[type='list'] {
 	background: url(:/list.png) no-repeat center;
 }
 
+QToolButton[type='calendar'] {
+	background: url(:/calendar.png) no-repeat center;
+}
+
 
 /* Hover */
 QToolButton[type='add']:hover {
@@ -71,6 +75,10 @@ QToolButton[type='document']:hover {
 
 QToolButton[type='list']:hover {
 	background-image: url(:/hover/list.png);
+}
+
+QToolButton[type='calendar']:hover {
+	background-image: url(:/hover/calendar.png);
 }
 
 

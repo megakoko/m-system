@@ -18,6 +18,7 @@
 #include "macros.h"
 #include "domhelper.h"
 #include "therapeutist.h"
+#include "daterangedialog.h"
 
 
 namespace grouping {
@@ -35,6 +36,8 @@ bool sortByTherapeutist(const Examination& left, const Examination& right)
 
 ExaminationListReport::ExaminationListReport(QWidget *parent)
 	: PluginWidget(parent)
+	, m_startDate(QDate::currentDate())
+	, m_endDate(QDate::currentDate())
 {
 	setupUi(this);
 
@@ -60,6 +63,7 @@ void ExaminationListReport::init()
 void ExaminationListReport::initConnections()
 {
 	connect(m_grouping, SIGNAL(currentIndexChanged(int)), SLOT(createHtmlDocument()));
+	connect(m_choosePeriod, SIGNAL(clicked()), SLOT(chooseDateRange()));
 
 	connect(m_fontFamily, SIGNAL(currentIndexChanged(int)), SLOT(updateStyle()));
 	connect(m_fontSize, SIGNAL(valueChanged(int)), SLOT(updateStyle()));
@@ -84,6 +88,24 @@ void ExaminationListReport::updateStyle()
 
 	QFont f(family.toString(), size);
 	m_view->document()->setDefaultFont(f);
+}
+
+
+void ExaminationListReport::chooseDateRange()
+{
+	QList<QDate> dates;
+	foreach(const Examination& exam, m_examList)
+		dates << exam.time.date();
+
+
+	DateRangeDialog d(m_startDate, m_endDate, dates, this);
+	if(d.exec() == QDialog::Accepted)
+	{
+		m_startDate = d.startDate();
+		m_endDate = d.endDate();
+
+		createHtmlDocument();
+	}
 }
 
 
@@ -112,6 +134,11 @@ void ExaminationListReport::createHtmlDocument()
 	style.setAttribute("type", "text/css");
 
 
+	QDomElement h2 = addElement(body, "h2", "Список проведенных осмотров");
+	addElement(h2, "h3", QString("(За период с %1 по %2)").
+						 arg(m_startDate.toString("dd.MM.yyyy")).
+						 arg(m_endDate.toString("dd.MM.yyyy")));
+
 
 	QDomElement table = addElement(body, "table");
 	table.setAttribute("width", "100%");
@@ -127,20 +154,34 @@ void ExaminationListReport::createHtmlDocument()
 		int currentTherapeutistId = -1;
 		foreach(const Examination& exam, examList)
 		{
-			if(exam.therapeutistId != currentTherapeutistId)
+			const QDate& date = exam.time.date();
+
+			if(m_startDate <= date && date <= m_endDate)
 			{
-				currentTherapeutistId = exam.therapeutistId;
-				addTherapeutistHeader(exam, table);
-				addTableHeader(table);
+				if(exam.therapeutistId != currentTherapeutistId)
+				{
+					currentTherapeutistId = exam.therapeutistId;
+					addTherapeutistHeader(exam, table);
+					addTableHeader(table);
+				}
+				addRow(exam, table);
 			}
-			addRow(exam, table);
+			else if(date < m_endDate)
+				break;
 		}
 	}
 	else
 	{
 		addTableHeader(table);
 		foreach(const Examination& exam, m_examList)
-			addRow(exam, table);
+		{
+			const QDate& date = exam.time.date();
+
+			if(m_startDate <= date && date <= m_endDate)
+				addRow(exam, table);
+			else if(date < m_endDate)	// Осмотры отсортированы в порядке убывания даты.
+				break;
+		}
 	}
 
 
@@ -225,4 +266,10 @@ void ExaminationListReport::populateExamList()
 
 		m_examList << e;
 	}
+
+
+	if(q.first())
+		m_endDate = q.value(0).toDate();
+	if(q.last())
+		m_startDate = q.value(0).toDate();
 }

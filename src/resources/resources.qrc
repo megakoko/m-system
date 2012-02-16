@@ -14,6 +14,7 @@
         <file alias="spyglass.png">icons/magnifying_glass_24x24.png</file>
         <file alias="document.png">icons/document_alt_stroke_18x24.png</file>  
         <file alias="list.png">icons/list_24x21.png</file>
+        <file alias="calendar.png">icons/calendar_alt_stroke_24x24.png</file>
         
         <!-- Иконки, появляющиеся по наведению курсора мыши -->
         <file alias="hover/add.png">icons/hover/plus_24x24.png</file>
@@ -23,6 +24,7 @@
         <file alias="hover/spyglass.png">icons/hover/magnifying_glass_24x24.png</file>
         <file alias="hover/document.png">icons/hover/document_alt_stroke_18x24.png</file>
         <file alias="hover/list.png">icons/hover/list_24x21.png</file>
+        <file alias="hover/calendar.png">icons/hover/calendar_alt_stroke_24x24.png</file>
         
         <!-- Неактивные иконки -->
         <file alias="disabled/add.png">icons/disabled/plus_24x24.png</file>
