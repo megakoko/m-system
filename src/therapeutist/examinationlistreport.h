@@ -26,8 +26,10 @@ private:
 	void init();
 	void initConnections();
 
-	void createHtmlDocument();
 
+	bool groupedByTherapeutistName() const;
+
+	void addTherapeutistHeader(const Examination& exam, QDomElement& table);
 	void addTableHeader(QDomElement& table);
 	void addRow(const Examination& exam, QDomElement& table);
 
@@ -38,5 +40,8 @@ private:
 	QList<Examination> m_examList;
 
 	QDomDocument m_doc;
+
+private slots:
+	void createHtmlDocument();
 
 };
