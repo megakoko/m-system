@@ -150,7 +150,12 @@ void DummyExaminations::createExaminations(const int count, const int percentage
 				  DummyDatabase::interfaces->db->returningSentence("id"));
 		q.addBindValue(patientId);
 		q.addBindValue(therapeutistId);
-		q.addBindValue(QDateTime::currentDateTime());
+
+
+		static const int secondsInMonth = 30 * 24 * 60 * 60;
+		QDateTime time(QDateTime::currentDateTime());
+		time = time.addSecs(-1 * m_dummyData->randomInt(secondsInMonth));
+		q.addBindValue(time);
 		q.exec();
 		checkQuery(q);
 
