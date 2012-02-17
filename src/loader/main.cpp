@@ -29,6 +29,9 @@ int main(int argc, char *argv[])
 		qCritical() << "Не найден файл с QSS-стилями" << f.fileName();
 
 
+	QLocale::setDefault(QLocale(QLocale::Russian, QLocale::RussianFederation));
+
+
 	MainWindow w;
 	w.show();
 	return app.exec();
