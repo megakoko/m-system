@@ -28,8 +28,10 @@ private:
 
 
 	bool groupedByTherapeutistName() const;
+	bool groupedByDate() const;
 
 	void addTherapeutistHeader(const Examination& exam, QDomElement& table);
+	void addDateHeader(const Examination& exam, QDomElement& table);
 	void addTableHeader(QDomElement& table);
 	void addEmptyRow(QDomElement& table);
 	void addRow(const Examination& exam, QDomElement& table);

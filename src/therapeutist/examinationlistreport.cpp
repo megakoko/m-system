@@ -24,6 +24,7 @@
 namespace grouping {
 static const QVariant none = 0;
 static const QVariant byTherapeutist = 1;
+static const QVariant byDate = 2;
 }
 
 
@@ -49,6 +50,7 @@ ExaminationListReport::ExaminationListReport(QWidget *parent)
 void ExaminationListReport::init()
 {
 	m_grouping->addItem("Отсутствует", grouping::none);
+	m_grouping->addItem("По дате", grouping::byDate);
 	m_grouping->addItem("По врачам", grouping::byTherapeutist);
 
 	m_fontFamily->addItem("С засечками", "'Times New Roman', Times, serif");
@@ -115,6 +117,12 @@ bool ExaminationListReport::groupedByTherapeutistName() const
 }
 
 
+bool ExaminationListReport::groupedByDate() const
+{
+	return m_grouping->itemData(m_grouping->currentIndex()) == grouping::byDate;
+}
+
+
 void ExaminationListReport::createHtmlDocument()
 {
 	m_doc.clear();
@@ -172,6 +180,30 @@ void ExaminationListReport::createHtmlDocument()
 			}
 		}
 	}
+	else if(groupedByDate())
+	{
+		QDate currentDate;
+		foreach(const Examination& exam, m_examList)
+		{
+			const QDate& date = exam.time.date();
+
+			if(m_startDate <= date && date <= m_endDate)
+			{
+				if(date != currentDate)
+				{
+					if(!currentDate.isNull())
+						addEmptyRow(table);
+
+					currentDate = date;
+					addDateHeader(exam, table);
+					addTableHeader(table);
+				}
+				addRow(exam, table);
+			}
+			else if(date < m_endDate)
+				break;
+		}
+	}
 	else
 	{
 		addTableHeader(table);
@@ -205,7 +237,7 @@ void ExaminationListReport::createHtmlDocument()
 void ExaminationListReport::addTableHeader(QDomElement &table)
 {
 	QDomElement row = addElement(table, "tr");
-	addElement(row, "th", "Время осмотра").setAttribute("align", "left");
+	addElement(row, "th", "Время").setAttribute("align", "left");
 	addElement(row, "th", "Пациент").setAttribute("align", "left");
 	if(!groupedByTherapeutistName())
 		addElement(row, "th", "Врач").setAttribute("align", "left");
@@ -215,8 +247,23 @@ void ExaminationListReport::addTableHeader(QDomElement &table)
 void ExaminationListReport::addTherapeutistHeader(const Examination &exam, QDomElement &table)
 {
 	QDomElement row = addElement(table, "tr");
-	row.setAttribute("colspan", 2);
-	addElement(row, "td", exam.therapeutistName).setAttribute("class", "therapeutist");
+	QDomElement col = addElement(row, "td", exam.therapeutistName);
+	col.setAttribute("class", "therapeutist");
+	col.setAttribute("colspan", 2);
+}
+
+
+void ExaminationListReport::addDateHeader(const Examination &exam, QDomElement &table)
+{
+	QDomElement row = addElement(table, "tr");
+
+	QString text = exam.time.date().toString(Qt::DefaultLocaleLongDate);
+	if(!text.isEmpty())
+		text[0] = text[0].toUpper();
+
+	QDomElement col = addElement(row, "td", text);
+	col.setAttribute("class", "date");
+	col.setAttribute("colspan", 3);
 }
 
 
@@ -229,7 +276,12 @@ void ExaminationListReport::addEmptyRow(QDomElement &table)
 void ExaminationListReport::addRow(const Examination &exam, QDomElement &table)
 {
 	QDomElement row = addElement(table, "tr");
-	addElement(row, "td", exam.time.toString("dd.MM.yyyy HH:mm"));
+
+	if(groupedByDate())
+		addElement(row, "td", exam.time.toString("HH:mm"));
+	else
+		addElement(row, "td", exam.time.toString("dd.MM.yyyy HH:mm"));
+
 	addElement(row, "td", exam.patientName);
 	if(!groupedByTherapeutistName())
 		addElement(row, "td", exam.therapeutistName);
@@ -254,7 +306,7 @@ QString ExaminationListReport::css()
 				"height: 20px;"
 			"}"
 
-			"td.therapeutist {"
+			"td.therapeutist, td.date {"
 				"font-weight: bold;"
 				"font-size: large;"
 			"}";
