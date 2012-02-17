@@ -134,14 +134,15 @@ void ExaminationListReport::createHtmlDocument()
 	style.setAttribute("type", "text/css");
 
 
-	QDomElement h2 = addElement(body, "h2", "Список проведенных осмотров");
-	addElement(h2, "h3", QString("(За период с %1 по %2)").
-						 arg(m_startDate.toString("dd.MM.yyyy")).
-						 arg(m_endDate.toString("dd.MM.yyyy")));
+	addElement(body, "h1", "Список проведенных осмотров");
+	addElement(body, "p", QString("(За период с %1 по %2)").
+						  arg(m_startDate.toString("dd.MM.yyyy")).
+						  arg(m_endDate.toString("dd.MM.yyyy")));
 
 
 	QDomElement table = addElement(body, "table");
 	table.setAttribute("width", "100%");
+	table.setAttribute("cellpadding", "2");
 
 
 
@@ -160,6 +161,9 @@ void ExaminationListReport::createHtmlDocument()
 			{
 				if(exam.therapeutistId != currentTherapeutistId)
 				{
+					if(currentTherapeutistId != -1)
+						addEmptyRow(table);
+
 					currentTherapeutistId = exam.therapeutistId;
 					addTherapeutistHeader(exam, table);
 					addTableHeader(table);
@@ -211,8 +215,14 @@ void ExaminationListReport::addTableHeader(QDomElement &table)
 void ExaminationListReport::addTherapeutistHeader(const Examination &exam, QDomElement &table)
 {
 	QDomElement row = addElement(table, "tr");
-	row.setAttribute("colspan", 3);
+	row.setAttribute("colspan", 2);
 	addElement(row, "td", exam.therapeutistName).setAttribute("class", "therapeutist");
+}
+
+
+void ExaminationListReport::addEmptyRow(QDomElement &table)
+{
+	addElement(table, "tr").setAttribute("class", "empty");
 }
 
 
@@ -228,7 +238,23 @@ void ExaminationListReport::addRow(const Examination &exam, QDomElement &table)
 
 QString ExaminationListReport::css()
 {
-	return	"td.therapeutist {"
+	return	"h1, p, table {"
+				"margin: 0 20px 0 10px;"
+			"}"
+
+			"h1 {"
+				"margin-top: 10px;"
+			"}"
+
+			"table {"
+				"margin-top: 10px;"
+			"}"
+
+			"tr.empty {"
+				"height: 20px;"
+			"}"
+
+			"td.therapeutist {"
 				"font-weight: bold;"
 				"font-size: large;"
 			"}";
