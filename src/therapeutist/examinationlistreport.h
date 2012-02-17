@@ -31,6 +31,7 @@ private:
 
 	void addTherapeutistHeader(const Examination& exam, QDomElement& table);
 	void addTableHeader(QDomElement& table);
+	void addEmptyRow(QDomElement& table);
 	void addRow(const Examination& exam, QDomElement& table);
 
 	static QString css();
