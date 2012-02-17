@@ -166,8 +166,6 @@ void ExaminationListReport::createHtmlDocument()
 				}
 				addRow(exam, table);
 			}
-			else if(date < m_endDate)
-				break;
 		}
 	}
 	else
