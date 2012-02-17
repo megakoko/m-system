@@ -283,7 +283,7 @@ SELECT 3060, 'NS_dvp', 'MSSM', NULL, 'textedit', 'Псевдогипертроф
 SELECT 3070, 'NS_dvf', 'MSSM', NULL, 'textedit', 'Фибриллярные и фасцикулярные', NULL UNION
 SELECT 3080, 'NS_dvr', 'MSSM', NULL, 'textedit', 'Ретракции и контрактуры', NULL UNION
 SELECT 3090, 'NS_dvo', 'MSSM', NULL, 'textedit', 'Объем движений в конечностях', NULL UNION
-SELECT 3100, 'NS_dvs', 'MSSM', NULL, 'textedit', 'Сила мышц дистальных и', NULL UNION
+SELECT 3100, 'NS_dvs', 'MSSM', NULL, 'textedit', 'Сила мышц дистальных и проксимальных отделов конечностей', NULL UNION
 SELECT 3110, 'NS_dvt', 'MSSM', NULL, 'textedit', 'Тонус мышц', NULL UNION
 SELECT 3120, 'MSSJ', 'MSSall', NULL, 'container', 'Суставы', NULL UNION
 SELECT 3130, 'MSSJ_1', 'MSSJ', NULL, 'textedit', 'Конфигурация суставов', 'Конфигурация' UNION
@@ -1038,31 +1038,31 @@ SELECT 12240, 'DASTshB', 'DASlog', NULL, 'combobox', 'Симптом Щетки�
 SELECT 12250, 'DAlogo', 'DASlog', NULL, 'textedit', 'Симптомы (дополнительно)', 'дополнительно' UNION
 SELECT 12260, 'DAL', 'DAall', NULL, 'container', 'Печень', NULL UNION
 SELECT 12270, 'DALPer', 'DAL', NULL, 'container', 'перкуторно (размеры по методу Курлова)', NULL UNION
-SELECT 12280, 'DALPer1t', 'DALPer', NULL, 'textedit', 'по l. mediaclavicularis dextra', NULL UNION
-SELECT 12290, 'DALPer2t', 'DALPer', NULL, 'textedit', 'по l. mediasternalis anterior', NULL UNION
-SELECT 12300, 'DALPer3t', 'DALPer', NULL, 'textedit', 'по l. costalis sinistra:', NULL UNION
+SELECT 12280, 'DALPer1t', 'DALPer', NULL, 'textedit', 'Перкуссия печени по l. mediaclavicularis dextra', 'по l. mediaclavicularis dextra'  UNION
+SELECT 12290, 'DALPer2t', 'DALPer', NULL, 'textedit', 'Перкуссия печени по l. mediasternalis anterior', 'по l. mediasternalis anterior' UNION
+SELECT 12300, 'DALPer3t', 'DALPer', NULL, 'textedit', 'Перкуссия печени по l. costalis sinistra', 'по l. costalis sinistra' UNION
 SELECT 12310, 'DALPal', 'DAL', NULL, 'container', 'пальпаторно', NULL UNION
 SELECT 12320, 'DALPalC', 'DALPal', NULL, 'textedit', 'Консистенция', NULL UNION
 SELECT 12330, 'DALPalT', 'DALPal', NULL, 'textedit', 'Поверхность', NULL UNION
 SELECT 12340, 'DALPalP', 'DALPal', NULL, 'textedit', 'Болезненность', NULL UNION
-SELECT 12349, 'DALPalE_', 'DALPal', NULL, 'container', 'край', NULL UNION
-SELECT 12350, 'DALPalE', 'DALPalE_', NULL, 'combobox', NULL, NULL UNION
-SELECT 12360, 'DALPalEd2', 'DALPalE_', NULL, 'combobox', NULL, NULL UNION
-SELECT 12370, 'DALPalEd3', 'DALPalE_', NULL, 'combobox', NULL, NULL UNION
-SELECT 12380, 'DALBBd', 'DALPalE_', NULL, 'combobox', NULL, NULL UNION
+SELECT 12349, 'DALPalE_', 'DALPal', NULL, 'container', 'Край печени', NULL UNION
+SELECT 12350, 'DALPalE', 'DALPalE_', NULL, 'combobox', 'Край печени (форма)', 'форма' UNION
+SELECT 12360, 'DALPalEd2', 'DALPalE_', NULL, 'combobox', 'Край печени (форма 2)', 'форма 2' UNION
+SELECT 12370, 'DALPalEd3', 'DALPalE_', NULL, 'combobox', 'Край печени (плотность)', 'плотность' UNION
+SELECT 12380, 'DALBBd', 'DALPalE_', NULL, 'combobox', 'Край печени (расположение)', 'расположение' UNION
 SELECT 12390, 'DALo', 'DAL', NULL, 'textedit', 'Печень (дополнительно)', 'дополнительно' UNION
 SELECT 12400, 'DAS', 'DAall', NULL, 'container', 'Селезенка', NULL UNION
-SELECT 12410, 'DASPal', 'DAS', NULL, 'textedit', 'пальпаторно', NULL UNION
-SELECT 12420, 'DASPer', 'DAS', NULL, 'textedit', 'перкуторно', NULL UNION
+SELECT 12410, 'DASPal', 'DAS', NULL, 'textedit', 'Селезенка - пальпаторно', 'пальпаторно' UNION
+SELECT 12420, 'DASPer', 'DAS', NULL, 'textedit', 'Селезенка - перкуторно', 'перкуторно' UNION
 SELECT 12430, 'DASo', 'DAS', NULL, 'textedit', 'Селезенка (дополнительно)', 'дополнительно' UNION
 SELECT 12440, 'DAP', 'DAall', NULL, 'combobox', 'Перистальтика', NULL UNION
 SELECT 12450, 'DAF', 'DAall', NULL, 'combobox', 'Газы', NULL UNION
 SELECT 12460, 'DAAR', 'DAall', NULL, 'container', 'Задний проход и прямая кишка', NULL UNION
-SELECT 12470, 'DAARA', 'DAAR', NULL, 'combobox', 'При осмотре заднего прохода', NULL UNION
+SELECT 12470, 'DAARA', 'DAAR', NULL, 'textedit', 'При осмотре заднего прохода', NULL UNION
 SELECT 12480, 'DAARR', 'DAAR', NULL, 'container', 'При ректальном исследовании', NULL UNION
-SELECT 12490, 'DAARRTS', 'DAARR', NULL, 'combobox', 'тонус сфинктера', NULL UNION
-SELECT 12500, 'DAARRAm', 'DAARR', NULL, 'combobox', 'ампула прямой кишки', NULL UNION
-SELECT 12510, 'DAARRE', 'DAARR', NULL, 'combobox', 'на перчатке', NULL UNION
+SELECT 12490, 'DAARRTS', 'DAARR', NULL, 'combobox', 'Тонус сфинктера', NULL UNION
+SELECT 12500, 'DAARRAm', 'DAARR', NULL, 'combobox', 'Ампула прямой кишки', NULL UNION
+SELECT 12510, 'DAARRE', 'DAARR', NULL, 'combobox', 'При ректальном исследовании на перчатке', 'На перчатке' UNION
 SELECT 12520, 'DAd', 'DAall', NULL, 'textedit', 'Дополнительно', NULL;
 
 INSERT INTO UiElementEnums(id, uiElementTextId, value)
@@ -1170,7 +1170,6 @@ SELECT 13010, 'DAP', 'не выслушивается' UNION
 SELECT 13020, 'DAF', 'отходят' UNION
 SELECT 13030, 'DAF', 'отходят плохо' UNION
 SELECT 13040, 'DAF', 'не отходят' UNION
-SELECT 13050, 'DAARA', 'патологии не наблюдается' UNION
 SELECT 13060, 'DAARR', 'наблюдается выраженная болезненность' UNION
 SELECT 13070, 'DAARRTS', 'повышен' UNION
 SELECT 13080, 'DAARRTS', 'сохранен' UNION
@@ -1192,8 +1191,8 @@ SELECT 14010, 'UGSall', 'main', CAST(NULL AS "numeric"), 'container', 'Моче�
 SELECT 14020, 'UGSL', 'UGSall', NULL, 'textedit', 'Осмотр поясницы', NULL UNION
 SELECT 14030, 'UGSPK', 'UGSall', NULL, 'textedit', 'Пальпация почек', NULL UNION
 SELECT 14040, 'UGSSP', 'UGSall', NULL, 'container', 'Cимптом Пастернацкого', NULL UNION
-SELECT 14050, 'UGSSPR', 'UGSSP', NULL, 'combobox', 'Справа', NULL UNION
-SELECT 14060, 'UGSSPL', 'UGSSP', NULL, 'combobox', 'Слева', NULL UNION
+SELECT 14050, 'UGSSPR', 'UGSSP', NULL, 'combobox', 'Cимптом Пастернацкого - справа', 'Справа' UNION
+SELECT 14060, 'UGSSPL', 'UGSSP', NULL, 'combobox', 'Cимптом Пастернацкого - слева', 'Слева' UNION
 SELECT 14070, 'UGSGS', 'UGSall', NULL, 'textedit', 'Гинекологическое исследование', NULL UNION
 SELECT 14080, 'UGSd', 'UGSall', NULL, 'textedit', 'Дополнительно', NULL;
 
