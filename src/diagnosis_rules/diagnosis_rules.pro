@@ -5,6 +5,10 @@ QT		+= sql
 
 include( ../m-system-config.pri )
 
-HEADERS +=	diagnosisrules.h
+HEADERS +=	diagnosisrules.h \
+			maindiagnosiswidget.h
 
-SOURCES	+=	diagnosisrules.cpp
+SOURCES	+=	diagnosisrules.cpp \
+			maindiagnosiswidget.cpp
+
+FORMS	+=	maindiagnosiswidget.ui

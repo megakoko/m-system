@@ -1,6 +1,7 @@
 #include "diagnosisrules.h"
 
 #include <QtPlugin>
+#include "maindiagnosiswidget.h"
 
 
 
@@ -21,7 +22,7 @@ QString DiagnosisRules::textid() const
 
 PluginWidget* DiagnosisRules::widget() const
 {
-	return NULL;
+	return new MainDiagnosisWidget;
 }
 
 
