@@ -241,9 +241,9 @@ CREATE TABLE Operator (
 -- Правила, по которым будет проводиться диагностика.
 CREATE TABLE DsRule (
 	id					SERIAL PRIMARY KEY,
-	deseaseText			VARCHAR(100),
-	deseaseMkbId		INTEGER REFERENCES Mkb10(id),
-	deseaseProbability	REAL NOT NULL
+	diseaseText			VARCHAR(100),
+	diseaseMkbId		INTEGER REFERENCES Mkb10(id),
+	diseaseProbability	REAL NOT NULL
 );
 
 -- Элемент правила DsRule.
