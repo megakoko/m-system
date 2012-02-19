@@ -4,6 +4,9 @@
 -- Порядок должен быть строго обратным порядку, 
 -- в котором таблицы создаются.
 
+DROP TABLE IF EXISTS DsRuleItem;
+DROP TABLE IF EXISTS DsRule;
+DROP TABLE IF EXISTS Operator;
 DROP TABLE IF EXISTS ExaminationData;
 DROP TABLE IF EXISTS UiElementEnums;
 DROP TABLE IF EXISTS UiElement;
@@ -226,6 +229,35 @@ CREATE TABLE ExaminationData (
 	textValue			VARCHAR(100),
 	realValue			REAL,
 	enumValue			INTEGER REFERENCES UiElementEnums(id)
+);
+
+
+-- Операторы, которые могуть быть применены к симптомам (больше, меньше, равно и т.д.).
+CREATE TABLE Operator (
+	id					SERIAL PRIMARY KEY,
+	textid				VARCHAR(40) UNIQUE NOT NULL
+);
+
+-- Правила, по которым будет проводиться диагностика.
+CREATE TABLE DsRule (
+	id					SERIAL PRIMARY KEY,
+	deseaseText			VARCHAR(100),
+	deseaseMkbId		INTEGER REFERENCES Mkb10(id),
+	deseaseProbability	REAL NOT NULL
+);
+
+-- Элемент правила DsRule.
+-- Является комбинацией симптома, оператора и значения.
+CREATE TABLE DsRuleItem (
+	id					SERIAL PRIMARY KEY,
+	ruleId				INTEGER REFERENCES DsRule(id),
+	uiElementId			INTEGER REFERENCES UiElement(id),
+	operatorId			INTEGER REFERENCES Operator(id),
+	textValue			VARCHAR(100),
+	realValue			REAL,
+	enumValue			INTEGER REFERENCES UiElementEnums(id),
+	probabilityWithDesease		REAL NOT NULL,
+	probabilityWithoutDesease	REAL NOT NULL
 );
 
 
