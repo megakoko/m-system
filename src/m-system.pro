@@ -11,5 +11,6 @@ SUBDIRS	+= 	cryptopp \
 			mkb10 \
 			departments \
 			dummy_db \
-			therapeutist
+			therapeutist \
+			diagnosis_rules \
 #			test

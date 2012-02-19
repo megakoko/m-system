@@ -277,6 +277,7 @@ INSERT INTO Plugin(textid, name) VALUES ('departments', 'Медицинское 
 INSERT INTO Plugin(textid, name) VALUES ('test', 'Пример модуля');
 INSERT INTO Plugin(textid, name) VALUES ('therapeutist', 'Терапевт');
 INSERT INTO Plugin(textid, name) VALUES ('dummy_db', 'Создание тестовой БД');
+INSERT INTO Plugin(textid, name) VALUES ('diagnosis_rules', 'Диагностические правила');
 
 
 INSERT INTO Sex(textid, name) VALUES ('male', 'Мужчина');
