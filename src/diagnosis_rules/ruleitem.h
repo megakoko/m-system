@@ -6,9 +6,8 @@
 #include <QVariant>
 
 
-class RuleItem : public QObject
+class RuleItem
 {
-	Q_OBJECT
 public:
 	RuleItem();
 	RuleItem(const QSqlRecord& rec);
