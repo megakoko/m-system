@@ -15,7 +15,7 @@ static const int PAGE_FILTER = 1;
 
 
 const QString MainMkb10Widget::filterText =
-	" SELECT description FROM mkb10 WHERE description ILIKE '%%1%' ";
+	" SELECT label FROM uielement WHERE label ILIKE '%%1%' ";
 
 
 MainMkb10Widget::MainMkb10Widget(QWidget *parent)
@@ -73,7 +73,7 @@ QTreeWidgetItem* MainMkb10Widget::createItem(const QSqlRecord& rec)
 	QTreeWidgetItem* item = new QTreeWidgetItem;
 
 	const QVariant& id = rec.value("id");
-	const QString& description = rec.value("description").toString();
+	const QString& description = rec.value("label").toString();
 
 	item->setData(0, Qt::UserRole, id);
 	item->setText(0, description);
@@ -89,11 +89,11 @@ QList<QTreeWidgetItem*> MainMkb10Widget::createItems(const QVariant& parentId
 	QSqlQuery q;
 	if(parentId.isNull())
 	{
-		q.prepare("SELECT id, description FROM mkb10 WHERE parentId IS NULL");
+		q.prepare("SELECT id, label FROM uielement WHERE parentId = 'main'");
 	}
 	else
 	{
-		q.prepare("SELECT id, description FROM mkb10 WHERE parentId = :id");
+		q.prepare("SELECT id, label FROM uielement WHERE parentId = (SELECT textid FROM UiElement where id = :id)");
 		q.addBindValue(parentId);
 	}
 
