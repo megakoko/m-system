@@ -8,6 +8,7 @@
 
 
 #include "macros.h"
+#include "ruleeditwidget.h"
 
 
 MainDiagnosisWidget::MainDiagnosisWidget(QWidget *parent)
@@ -49,6 +50,8 @@ void MainDiagnosisWidget::initConnections()
 void MainDiagnosisWidget::addRule()
 {
 	// TODO
+	RuleEditWidget* w = new RuleEditWidget(this);
+	requestToAddNewWidget(w, "");
 }
 
 
