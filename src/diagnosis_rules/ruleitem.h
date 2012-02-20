@@ -2,48 +2,58 @@
 
 
 #include <QObject>
+#include <QSqlRecord>
+#include <QVariant>
 
-class QWidget;
-class QLabel;
-class QToolButton;
-class QComboBox;
-class QLineEdit;
-class QDoubleSpinBox;
 
 class RuleItem : public QObject
 {
 	Q_OBJECT
 public:
 	RuleItem();
+	RuleItem(const QSqlRecord& rec);
 
-	QLabel* symptomLabel() const;
-	QToolButton* symptomButton() const;
-	QComboBox* itemOperator() const;
-	QWidget* value() const;
-	QToolButton* removeButton() const;
 
-	bool canSave() const;
-	void save();
+	// Getters.
+	int uiElementId() const
+	{	return m_uiElementId;	}
+
+	QVariant textValue() const
+	{	return m_textValue;	}
+	QVariant realValue() const
+	{	return m_realValue;	}
+	QVariant enumValue() const
+	{	return m_enumValue;	}
+
+	double probabilityWithDisease() const
+	{	return m_probabilityWithDisease;	}
+	double probabilityWithoutDisease() const
+	{	return m_probabilityWithoutDisease;	}
+
+
+	// Setters.
+	void setUiElementId(const int id);
+
+	void setTextValue(const QString& value);
+	void setRealValue(const double& value);
+	void setEnumValue(const int value);
+
+	void setProbabilityWithDisease(const double& probability);
+	void setProbabilityWithoutDisease(const double& probability);
+
+
+	void save(const int ruleId);
+	void deleteRuleItem();
 
 private:
-	void init();
-	void initConnections();
-
 	int m_itemId;
+	int m_uiElementId;
 
-	QLabel* m_symptomLabel;
-	QToolButton* m_symptomButton;
-	QComboBox* m_itemOperator;
-	QWidget* m_value;
-	QLineEdit* m_textValue;
-	QDoubleSpinBox* m_realValue;
-	QComboBox* m_enumValue;
-	QToolButton* m_removeButton;
+	QVariant m_textValue;
+	QVariant m_realValue;
+	QVariant m_enumValue;
 
-private slots:
-
-
-signals:
-	void removeMe();
+	double m_probabilityWithDisease;
+	double m_probabilityWithoutDisease;
 
 };

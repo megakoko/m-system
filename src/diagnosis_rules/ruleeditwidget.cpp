@@ -35,6 +35,7 @@ void RuleEditWidget::initConnections()
 {
 	// TODO
 	connect(m_addRuleItem, SIGNAL(clicked()), SLOT(addRuleItem()));
+	connect(m_removeRuleItem, SIGNAL(clicked()), SLOT(removeRuleItem()));
 }
 
 
@@ -53,33 +54,11 @@ void RuleEditWidget::save()
 
 void RuleEditWidget::addRuleItem()
 {
-	RuleItem* item = new RuleItem;
-
-	const int row = m_ruleItemsLayout->rowCount();
-	m_ruleItemsLayout->addWidget(item->symptomLabel(), row, LayoutColumns::symptomLabel);
-	m_ruleItemsLayout->addWidget(item->symptomButton(), row, LayoutColumns::symptomButton);
-	m_ruleItemsLayout->addWidget(item->itemOperator(), row, LayoutColumns::itemOperator);
-	m_ruleItemsLayout->addWidget(item->value(), row, LayoutColumns::value);
-	m_ruleItemsLayout->addWidget(item->removeButton(), row, LayoutColumns::removeButton);
-
-	connect(item, SIGNAL(removeMe()), SLOT(removeRuleItem()));
-
-	m_ruleItems << item;
+	// TODO
 }
 
 
 void RuleEditWidget::removeRuleItem()
 {
-	RuleItem* item = dynamic_cast<RuleItem*>(sender());
-
-	if(item != NULL && m_ruleItems.removeOne(item))
-	{
-		item->symptomLabel()->hide();
-		item->symptomButton()->hide();
-		item->itemOperator()->hide();
-		item->value()->hide();
-		item->removeButton()->hide();
-
-		m_removedRuleItems << item;
-	}
+	// TODO
 }
