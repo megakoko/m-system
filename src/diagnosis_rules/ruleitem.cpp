@@ -9,83 +9,126 @@
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
 
+
+#include <QSqlQuery>
+#include <QSqlError>
 #include <QDebug>
+
+#include "macros.h"
 
 
 RuleItem::RuleItem()
-	: m_itemId(0)	// TODO
-	, m_symptomLabel(new QLabel)
-	, m_symptomButton(new QToolButton)
-	, m_itemOperator(new QComboBox)
-	, m_value(new QWidget)
-	, m_textValue(new QLineEdit)
-	, m_realValue(new QDoubleSpinBox)
-	, m_enumValue(new QComboBox)
-	, m_removeButton(new QToolButton)
-{
-	init();
-	initConnections();
-}
-
-
-void RuleItem::init()
-{
-	QHBoxLayout* layout = new QHBoxLayout(m_value);
-	layout->setContentsMargins(QMargins());
-	layout->addWidget(m_textValue);
-	layout->addWidget(m_realValue);
-	layout->addWidget(m_enumValue);
-	m_value->setLayout(layout);
-
-
-	m_realValue->hide();
-	m_enumValue->hide();
-
-
-	m_symptomButton->setProperty("type", "edit");
-	m_removeButton->setProperty("type", "remove");
-}
-
-
-void RuleItem::initConnections()
-{
-	connect(m_removeButton, SIGNAL(clicked()), SIGNAL(removeMe()));
-}
-
-
-bool RuleItem::canSave() const
-{
-	return false;
-}
-
-
-void RuleItem::save()
+	: m_itemId(0) // TODO
 {
 
 }
 
 
-QLabel* RuleItem::symptomLabel() const
+RuleItem::RuleItem(const QSqlRecord &rec)
+	: m_itemId(rec.value("id").toInt())
+	, m_uiElementId(rec.value("uiElementId").toInt())
+	, m_textValue(rec.value("textValue"))
+	, m_realValue(rec.value("realValue"))
+	, m_enumValue(rec.value("enumValue"))
+	, m_probabilityWithDisease(rec.value("probabilityWithDisease").toDouble())
+	, m_probabilityWithoutDisease(rec.value("probabilityWithoutDisease").toDouble())
 {
-	return m_symptomLabel;
 }
 
-QToolButton* RuleItem::symptomButton() const
+
+void RuleItem::save(const int ruleId)
 {
-	return m_symptomButton;
+	QSqlQuery q;
+	if(m_itemId == 0)	// TODO
+	{
+		q.prepare(" INSERT INTO DsRuleItem "
+				  " ( ruleId,  uiElementId,  textValue,  realValue,  enumValue, "
+				  "  probabilityWithDisease,  probabilityWithoutDisease) VALUES "
+				  " (:ruleId, :uiElementId, :textValue, :realValue, :enumValue, "
+				  " :probabilityWithDisease, :probabilityWithoutDisease) ");
+	}
+	else
+	{
+		q.prepare(" UPDATE DsRuleItem SET "
+				  " ruleId = :ruleId, "
+				  " uiElementId = :uiElementId, "
+				  " textValue = :textValue, "
+				  " realValue = :realValue, "
+				  " enumValue = :enumValue, "
+				  " probabilityWithDisease = :probabilityWithDisease, "
+				  " probabilityWithoutDisease = :probabilityWithoutDisease "
+				  " WHERE id = :id ");
+		q.bindValue(":id", m_itemId);
+	}
+
+	q.bindValue(":ruleId", ruleId);
+	q.bindValue(":uiElementId", m_uiElementId);
+	q.bindValue(":textValue", m_textValue);
+	q.bindValue(":realValue", m_realValue);
+	q.bindValue(":enumValue", m_enumValue);
+	q.bindValue(":probabilityWithDisease", m_probabilityWithDisease);
+	q.bindValue(":probabilityWithoutDisease", m_probabilityWithoutDisease);
+	q.exec();
+	checkQuery(q);
 }
 
-QComboBox* RuleItem::itemOperator() const
+
+void RuleItem::deleteRuleItem()
 {
-	return m_itemOperator;
+	if(m_itemId != 0)	// TODO
+	{
+		QSqlQuery q;
+		q.prepare("DELETE FROM DsRuleItem WHERE id = ?");
+		q.addBindValue(m_itemId);
+		q.exec();
+		checkQuery(q);
+	}
 }
 
-QWidget* RuleItem::value() const
+
+void RuleItem::setUiElementId(const int id)
 {
-	return m_value;
+	m_uiElementId = id;
 }
 
-QToolButton* RuleItem::removeButton() const
+
+void RuleItem::setTextValue(const QString &value)
 {
-	return m_removeButton;
+	m_textValue = value;
+	m_realValue.clear();
+	m_enumValue.clear();
+}
+
+
+void RuleItem::setRealValue(const double &value)
+{
+	m_textValue.clear();
+	m_realValue = value;
+	m_enumValue.clear();
+}
+
+
+void RuleItem::setEnumValue(const int value)
+{
+	m_textValue.clear();
+	m_realValue.clear();
+	m_enumValue = value;
+}
+
+
+void RuleItem::setProbabilityWithDisease(const double& probability)
+{
+	if(0.0 <= probability && probability <= 1.0)
+		m_probabilityWithDisease = probability;
+	else
+		qWarning() << "Invalid probability in" << __FUNCTION__;
+}
+
+
+void RuleItem::setProbabilityWithoutDisease(const double& probability)
+{
+	if(0.0 <= probability && probability <= 1.0)
+		m_probabilityWithoutDisease = probability;
+	else
+		qWarning() << "Invalid probability in" << __FUNCTION__;
 }
