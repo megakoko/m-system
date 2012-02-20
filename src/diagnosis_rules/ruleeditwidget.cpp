@@ -3,16 +3,18 @@
 #include <QToolButton>
 #include <QComboBox>
 #include <QDebug>
+#include "symptompickerdialog.h"
 
 
 
-namespace LayoutColumns {
-	static const int symptomLabel = 0;
-	static const int symptomButton = 1;
-	static const int itemOperator = 2;
-	static const int value = 3;
-	static const int removeButton = 4;
-}
+enum Columns {
+	symptom,
+	// itemOperator,
+	value,
+	probabilityWithDisease,
+	probabilityWithoutDisease,
+	count
+};
 
 
 RuleEditWidget::RuleEditWidget(QWidget* parent)
