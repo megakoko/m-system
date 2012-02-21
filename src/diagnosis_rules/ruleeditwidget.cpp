@@ -44,6 +44,8 @@ void RuleEditWidget::init()
 	m_itemsTable->setHorizontalHeaderLabels(QStringList()
 				<< "Симптом" << "Значение"
 				<< "Вероятность P(S|D)" << QString("Вероятность P(S|%1D)").arg(notSign));
+
+	ruleItemSelectionChanged();
 }
 
 
@@ -51,7 +53,12 @@ void RuleEditWidget::initConnections()
 {
 	// TODO
 	connect(m_addRuleItem, SIGNAL(clicked()), SLOT(addRuleItem()));
+	connect(m_editRuleItem, SIGNAL(clicked()), SLOT(editRuleItem()));
 	connect(m_removeRuleItem, SIGNAL(clicked()), SLOT(removeRuleItem()));
+
+	connect(m_itemsTable->selectionModel(),
+			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+			SLOT(ruleItemSelectionChanged()));
 }
 
 
@@ -97,7 +104,45 @@ void RuleEditWidget::addRuleItem()
 }
 
 
+void RuleEditWidget::editRuleItem()
+{
+	const int row = m_itemsTable->selectionModel()->selectedRows(0).first().row();
+
+	RuleItemEditDialog d(m_ruleItems.at(row), this);
+	if(d.exec() == QDialog::Accepted)
+	{
+		const RuleItem& ruleItem = d.ruleItem();
+		m_ruleItems[row] = ruleItem;
+
+		QTableWidgetItem* item;
+
+		item = m_itemsTable->item(row, Columns::symptom);
+		item->setText(ruleItem.symptomName());
+
+		item = m_itemsTable->item(row, Columns::value);
+		item->setText(ruleItem.value());
+
+		item = m_itemsTable->item(row, Columns::probabilityWithDisease);
+		item->setText(formatProbability(ruleItem.probabilityWithDisease()));
+
+		item = m_itemsTable->item(row, Columns::probabilityWithoutDisease);
+		item->setText(formatProbability(ruleItem.probabilityWithoutDisease()));
+	}
+}
+
+
 void RuleEditWidget::removeRuleItem()
 {
 	// TODO
+}
+
+
+void RuleEditWidget::ruleItemSelectionChanged()
+{
+	const bool enableButtons =
+			m_itemsTable->selectionModel()->hasSelection() &&
+			m_itemsTable->selectionModel()->selectedRows(0).size() == 1;
+
+	m_editRuleItem->setEnabled(enableButtons);
+	m_removeRuleItem->setEnabled(enableButtons);
 }
