@@ -96,7 +96,6 @@ void ExaminationEditWidget::initConnections()
 {
 	connect(m_choosePatient, SIGNAL(clicked()), SLOT(choosePatient()));
 	connect(m_chooseTherapeutist, SIGNAL(clicked()), SLOT(chooseTherapeutist()));
-	connect(m_save, SIGNAL(clicked()), SIGNAL(requestForSaving()));
 }
 
 

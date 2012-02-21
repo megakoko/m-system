@@ -129,7 +129,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-		 <widget class="QToolButton" name="m_editMailingAddress">
+         <widget class="QToolButton" name="m_editMailingAddress">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -145,7 +145,7 @@
          </widget>
         </item>
         <item row="2" column="1">
-		 <widget class="QToolButton" name="m_editActualAddress">
+         <widget class="QToolButton" name="m_editActualAddress">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -221,7 +221,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-		   <widget class="QToolButton" name="m_addDocument">
+           <widget class="QToolButton" name="m_addDocument">
             <property name="toolTip">
              <string>Добавить документ</string>
             </property>
@@ -231,7 +231,7 @@
            </widget>
           </item>
           <item>
-		   <widget class="QToolButton" name="m_editDocument">
+           <widget class="QToolButton" name="m_editDocument">
             <property name="toolTip">
              <string>Редактировать документ</string>
             </property>
@@ -241,7 +241,7 @@
            </widget>
           </item>
           <item>
-		   <widget class="QToolButton" name="m_deleteDocument">
+           <widget class="QToolButton" name="m_deleteDocument">
             <property name="toolTip">
              <string>Удалить документ</string>
             </property>
@@ -266,30 +266,6 @@
          </layout>
         </item>
        </layout>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="m_save">
-       <property name="text">
-        <string>Сохранить и закрыть</string>
-       </property>
       </widget>
      </item>
     </layout>
