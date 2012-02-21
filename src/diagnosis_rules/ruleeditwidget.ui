@@ -13,113 +13,127 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Болезнь</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="m_diseaseText"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Вероятность болезни</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="m_diseaseProbability">
-       <property name="maximum">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.100000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0">
-    <widget class="QTableWidget" name="m_itemsTable">
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Диагностируемое заболевание</string>
      </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
-     </property>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Название</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="m_diseaseText"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Вероятность</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="m_diseaseProbability">
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>72</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item row="1" column="1">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QToolButton" name="m_addRuleItem">
-       <property name="toolTip">
-        <string>Добавить элемент</string>
-       </property>
-       <property name="type" stdset="0">
-        <string>add</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="m_editRuleItem">
-       <property name="toolTip">
-        <string>Редактировать элемент</string>
-       </property>
-       <property name="type" stdset="0">
-        <string>edit</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="m_removeRuleItem">
-       <property name="toolTip">
-        <string>Удалить элемент</string>
-       </property>
-       <property name="type" stdset="0">
-        <string>remove</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Список элементов правила</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QTableWidget" name="m_itemsTable">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="horizontalHeaderHighlightSections">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QToolButton" name="m_addRuleItem">
+          <property name="toolTip">
+           <string>Добавить элемент</string>
+          </property>
+          <property name="type" stdset="0">
+           <string>add</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="m_editRuleItem">
+          <property name="toolTip">
+           <string>Редактировать элемент</string>
+          </property>
+          <property name="type" stdset="0">
+           <string>edit</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="m_removeRuleItem">
+          <property name="toolTip">
+           <string>Удалить элемент</string>
+          </property>
+          <property name="type" stdset="0">
+           <string>remove</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
