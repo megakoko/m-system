@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include <QSqlQuery>
+#include <QSqlRecord>
 #include <QSqlError>
 
 #include "ruleitemeditdialog.h"
@@ -53,6 +54,37 @@ void RuleEditWidget::init()
 				<< "Вероятность P(S|D)" << QString("Вероятность P(S|%1D)").arg(notSign));
 
 	ruleItemSelectionChanged();
+
+
+	if(m_ruleId != InvalidId)
+	{
+		QSqlQuery q;
+		q.prepare("SELECT diseaseText, diseaseProbability FROM DsRule WHERE id = ?");
+		q.addBindValue(m_ruleId);
+		q.exec();
+		checkQuery(q);
+
+		if(q.first())
+		{
+			m_diseaseText->setText(q.value(0).toString());
+			m_diseaseProbability->setValue(q.value(1).toDouble());
+		}
+
+
+		q.prepare(" SELECT id, uiElementId, textValue, realValue, enumValue, "
+				  " probabilityWithDisease, probabilityWithoutDisease "
+				  " FROM DsRuleItem WHERE ruleId = ? ");
+		q.addBindValue(m_ruleId);
+		q.exec();
+		checkQuery(q);
+
+
+		while(q.next())
+		{
+			m_ruleItems << RuleItem(q.record());
+			addRuleToTable(m_ruleItems.last());
+		}
+	}
 }
 
 
@@ -117,31 +149,35 @@ void RuleEditWidget::save()
 }
 
 
+void RuleEditWidget::addRuleToTable(const RuleItem &ruleItem)
+{
+	const int row = m_itemsTable->rowCount();
+	m_itemsTable->insertRow(row);
+
+	QTableWidgetItem* item;
+
+	item = new QTableWidgetItem(ruleItem.symptomName());
+	m_itemsTable->setItem(row, Columns::symptom, item);
+
+	item = new QTableWidgetItem(ruleItem.value());
+	m_itemsTable->setItem(row, Columns::value, item);
+
+	item = new QTableWidgetItem(formatProbability(ruleItem.probabilityWithDisease()));
+	m_itemsTable->setItem(row, Columns::probabilityWithDisease, item);
+
+	item = new QTableWidgetItem(formatProbability(ruleItem.probabilityWithoutDisease()));
+	m_itemsTable->setItem(row, Columns::probabilityWithoutDisease, item);
+}
+
+
 void RuleEditWidget::addRuleItem()
 {
 	// TODO
 	RuleItemEditDialog d(RuleItem(), this);
 	if(d.exec() == QDialog::Accepted)
 	{
-		RuleItem ruleItem = d.ruleItem();
-		m_ruleItems << ruleItem;
-
-		const int row = m_itemsTable->rowCount();
-		m_itemsTable->insertRow(row);
-
-		QTableWidgetItem* item;
-
-		item = new QTableWidgetItem(ruleItem.symptomName());
-		m_itemsTable->setItem(row, Columns::symptom, item);
-
-		item = new QTableWidgetItem(ruleItem.value());
-		m_itemsTable->setItem(row, Columns::value, item);
-
-		item = new QTableWidgetItem(formatProbability(ruleItem.probabilityWithDisease()));
-		m_itemsTable->setItem(row, Columns::probabilityWithDisease, item);
-
-		item = new QTableWidgetItem(formatProbability(ruleItem.probabilityWithoutDisease()));
-		m_itemsTable->setItem(row, Columns::probabilityWithoutDisease, item);
+		m_ruleItems << d.ruleItem();
+		addRuleToTable(m_ruleItems.last());
 	}
 }
 

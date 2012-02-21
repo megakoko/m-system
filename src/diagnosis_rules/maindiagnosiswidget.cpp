@@ -58,6 +58,11 @@ void MainDiagnosisWidget::addRule()
 void MainDiagnosisWidget::editRule()
 {
 	// TODO
+	const int row = m_view->selectionModel()->selectedRows(0).first().row();
+	const int id = m_model->record(row).value(0).toInt();
+
+	RuleEditWidget* w = new RuleEditWidget(id, this);
+	requestToAddNewWidget(w, "");
 }
 
 
