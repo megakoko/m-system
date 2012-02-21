@@ -63,6 +63,9 @@ void MainWindow::initToolBar()
 	m_toolbar->addAction(QString::fromUtf8("Настройки"),
 						 m_settingsDialog, SLOT(exec()));
 
+	m_saveAndCloseAction = m_toolbar->addAction("Сохранить и закрыть", m_tabWidget,
+												SLOT(closeCurrentTab()));
+
 	// Небольшой хак для того, чтоб пункт "О программе" был выровнян по правому краю.
 	QWidget* spacer = new QWidget(m_toolbar);
 	spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
@@ -76,6 +79,7 @@ void MainWindow::initToolBar()
 void MainWindow::initConnections()
 {
 	connect(m_homePage, SIGNAL(buttonClicked(QString)), SLOT(launchPlugin(QString)));
+	connect(m_tabWidget, SIGNAL(currentWidgetChanged(bool)), SLOT(currentTabChanged(bool)));
 }
 
 
@@ -248,4 +252,10 @@ void MainWindow::showAboutDialog()
 {
 	AboutDialog d(this);
 	d.exec();
+}
+
+
+void MainWindow::currentTabChanged(const bool widgetIsSaveable)
+{
+	m_saveAndCloseAction->setVisible(widgetIsSaveable);
 }
