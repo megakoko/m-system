@@ -13,6 +13,9 @@ public:
 	RuleItem(const QSqlRecord& rec);
 
 
+	QString symptomName() const;
+
+
 	// Getters.
 	int uiElementId() const
 	{	return m_uiElementId;	}
@@ -23,6 +26,8 @@ public:
 	{	return m_realValue;	}
 	QVariant enumValue() const
 	{	return m_enumValue;	}
+
+	QString value() const;
 
 	double probabilityWithDisease() const
 	{	return m_probabilityWithDisease;	}

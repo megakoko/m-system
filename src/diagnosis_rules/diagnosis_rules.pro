@@ -11,14 +11,17 @@ HEADERS +=	diagnosisrules.h \
 			maindiagnosiswidget.h \
 			ruleeditwidget.h \
 			ruleitem.h \
-			symptompickerdialog.h
+			symptompickerdialog.h \
+			ruleitemeditdialog.h
 
 SOURCES	+=	diagnosisrules.cpp \
 			maindiagnosiswidget.cpp \
 			ruleeditwidget.cpp \
 			ruleitem.cpp \
-			symptompickerdialog.cpp
+			symptompickerdialog.cpp \
+			ruleitemeditdialog.cpp
 
 FORMS	+=	maindiagnosiswidget.ui \
 			ruleeditwidget.ui \
-			symptompickerdialog.ui
+			symptompickerdialog.ui \
+			ruleitemeditdialog.ui
