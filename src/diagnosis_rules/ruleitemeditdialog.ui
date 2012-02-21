@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
-    <height>265</height>
+    <width>430</width>
+    <height>324</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Редактирование элемента диагностического правила</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
@@ -136,7 +136,8 @@
    <item>
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>Текст, объясняющий вероятности.</string>
+      <string>P(S|D) -- это вероятность появления симптома при наличии болезни.
+P(S|¬D) -- это вероятность появления симптома при отсутствии болезни.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
