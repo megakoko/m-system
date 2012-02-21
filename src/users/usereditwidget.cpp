@@ -119,8 +119,6 @@ void UserEditWidget::init()
 void UserEditWidget::initConnections()
 {
 	connect(m_isAdmin, SIGNAL(toggled(bool)), SLOT(isAdminToggled(bool)));
-	connect(m_save, SIGNAL(clicked()), SIGNAL(requestToCloseTab()));
-
 	connect(m_login, SIGNAL(editingFinished()), SLOT(loginEdited()));
 }
 
