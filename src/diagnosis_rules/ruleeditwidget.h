@@ -26,6 +26,9 @@ private:
 
 private slots:
 	void addRuleItem();
+	void editRuleItem();
 	void removeRuleItem();
+
+	void ruleItemSelectionChanged();
 
 };
