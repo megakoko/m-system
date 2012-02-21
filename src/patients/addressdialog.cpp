@@ -2,6 +2,8 @@
 #include "macros.h"
 #include "patients.h"
 
+#include <QPushButton>
+
 
 AddressDialog::AddressDialog(const Address& address, QWidget *parent)
 	: QDialog(parent)
@@ -33,8 +35,8 @@ AddressDialog::AddressDialog(const Address& address, QWidget *parent)
 	resize(width(), 0);
 
 
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 
 	connect(m_city, SIGNAL(textChanged(QString)), SLOT(checkFields()));
 	connect(m_street, SIGNAL(textChanged(QString)), SLOT(checkFields()));
@@ -61,5 +63,5 @@ void AddressDialog::checkFields()
 			!m_house->text().simplified().isEmpty();
 
 
-	m_ok->setEnabled(fieldsAreValid);
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(fieldsAreValid);
 }

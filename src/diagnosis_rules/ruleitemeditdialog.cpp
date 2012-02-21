@@ -1,6 +1,6 @@
 #include "ruleitemeditdialog.h"
 
-
+#include <QPushButton>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
@@ -54,8 +54,8 @@ void RuleItemEditDialog::initConnections()
 	connect(m_textValue, SIGNAL(textEdited(QString)), SLOT(checkFields()));
 	connect(m_enumValue, SIGNAL(currentIndexChanged(int)), SLOT(checkFields()));
 
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 }
 
 
@@ -142,7 +142,7 @@ void RuleItemEditDialog::checkFields()
 		}
 	}
 
-	m_ok->setEnabled(buttonShouldBeEnabled);
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(buttonShouldBeEnabled);
 }
 
 

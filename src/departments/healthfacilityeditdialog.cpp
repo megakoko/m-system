@@ -1,6 +1,7 @@
 #include "healthfacilityeditdialog.h"
 
 
+#include <QPushButton>
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlError>
@@ -19,9 +20,9 @@ HealthFacilityEditDialog::HealthFacilityEditDialog(QWidget *parent)
 
 void HealthFacilityEditDialog::init()
 {
-	connect(m_ok, SIGNAL(clicked()), SLOT(save()));
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(save()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 
 
 	m_name->setMaxLength(Departments::interfaces->db->

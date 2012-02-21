@@ -1,5 +1,8 @@
 #include "daterangedialog.h"
 
+#include <QPushButton>
+
+
 DateRangeDialog::DateRangeDialog(const QDate &start, const QDate &end,
 								 const QList<QDate> &dates, QWidget *parent)
 	: QDialog(parent)
@@ -33,8 +36,8 @@ void DateRangeDialog::init(const QDate &start, const QDate &end)
 
 void DateRangeDialog::initConnections()
 {
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 
 	connect(m_startDateEdit, SIGNAL(dateChanged(QDate)), SLOT(dateChanged()));
 	connect(m_endDateEdit, SIGNAL(dateChanged(QDate)), SLOT(dateChanged()));

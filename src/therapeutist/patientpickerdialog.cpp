@@ -1,5 +1,6 @@
 #include "patientpickerdialog.h"
 
+#include <QPushButton>
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -53,7 +54,7 @@ void PatientPickerDialog::init()
 	m_patientTable->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);
 	m_patientTable->setColumnHidden(0, true);
 
-	m_ok->setEnabled(false);
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	m_searchWidget->setLabelText("Поиск по фамилии:");
 }
@@ -61,8 +62,8 @@ void PatientPickerDialog::init()
 
 void PatientPickerDialog::initConnections()
 {
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 
 	connect(m_patientTable, SIGNAL(doubleClicked(QModelIndex)), SLOT(accept()));
 
@@ -103,8 +104,11 @@ QString PatientPickerDialog::patientListQuery() const
 
 void PatientPickerDialog::selectionChanged()
 {
-	m_ok->setEnabled(m_patientTable->selectionModel()->hasSelection() &&
-					 m_patientTable->selectionModel()->selectedRows().count() == 1);
+	const bool patientIsSelected =
+			m_patientTable->selectionModel()->hasSelection() &&
+			m_patientTable->selectionModel()->selectedRows().count() == 1;
+
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(patientIsSelected);
 }
 
 
