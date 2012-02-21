@@ -15,6 +15,7 @@ TabWidget::TabWidget(QWidget *parent)
 	: QTabWidget(parent)
 {
 	connect(this, SIGNAL(tabCloseRequested(int)), SLOT(closeTab(int)));
+	connect(this, SIGNAL(currentChanged(int)), SLOT(onCurrentIndexChanged()));
 }
 
 
@@ -165,7 +166,7 @@ int TabWidget::addWidget(PluginWidget *widget, const QString &caption)
 
 		SaveablePluginWidget* saveable = dynamic_cast<SaveablePluginWidget*>(widget);
 		if(saveable != NULL)
-			connect(saveable, SIGNAL(requestForSaving()), SLOT(saveWidget()));
+			connect(saveable, SIGNAL(requestForSaving()), SLOT(saveSenderWidget()));
 
 	}
 	return index;
@@ -186,29 +187,21 @@ int TabWidget::addWidget(PluginWidget *widget, const QString &caption,
 }
 
 
-bool TabWidget::saveWidget(QWidget *widget)
+bool TabWidget::saveWidget(SaveablePluginWidget *widget)
 {
-	SaveablePluginWidget* saveableWidget;
-
-	if(widget == NULL)
-		saveableWidget = dynamic_cast<SaveablePluginWidget*>(sender());
-	else
-		saveableWidget = dynamic_cast<SaveablePluginWidget*>(widget);
-
-
 	bool savedSuccessfully = false;
-	if(saveableWidget != NULL)
+	if(widget != NULL)
 	{
 		QString errorDescription;
 
-		if(saveableWidget->canSave(errorDescription))
+		if(widget->canSave(errorDescription))
 		{
 			// Убеждаемся, что по-ошибке переменная не была использована.
 			Q_ASSERT(errorDescription.isNull());
 
 			if(userWantsToSaveWidget())
 			{
-				saveableWidget->save();
+				widget->save();
 				savedSuccessfully = true;
 			}
 		}
@@ -221,6 +214,36 @@ bool TabWidget::saveWidget(QWidget *widget)
 	return savedSuccessfully;
 }
 
+
+bool TabWidget::saveSenderWidget()
+{
+	SaveablePluginWidget* w = dynamic_cast<SaveablePluginWidget*>(sender());
+
+	bool savedSuccessfully = false;
+	if(w != NULL)
+		savedSuccessfully = saveWidget(w);
+
+	return savedSuccessfully;
+}
+
+
+bool TabWidget::saveCurrentWidget()
+{
+	SaveablePluginWidget* w = dynamic_cast<SaveablePluginWidget*>(currentWidget());
+
+	bool savedSuccessfully = false;
+	if(w != NULL)
+		savedSuccessfully = saveWidget(w);
+
+	return savedSuccessfully;
+}
+
+
+void TabWidget::closeCurrentTab()
+{
+	const int index = currentIndex();
+	closeTab(index);
+}
 
 
 bool TabWidget::tabIsMain(const int index) const
@@ -282,4 +305,12 @@ bool TabWidget::userWantsToCloseWidgetThatCannotBeSaved(const QString& errorDesc
 										 QMessageBox::Yes | QMessageBox::No);
 
 	return rc == QMessageBox::Yes;
+}
+
+
+void TabWidget::onCurrentIndexChanged()
+{
+	QWidget* widget = currentWidget();
+	const bool currentWidgetIsSaveable = (dynamic_cast<SaveablePluginWidget*>(widget) != NULL);
+	emit currentWidgetChanged(currentWidgetIsSaveable);
 }

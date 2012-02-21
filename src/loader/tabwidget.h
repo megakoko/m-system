@@ -5,6 +5,7 @@
 #include <QTabWidget>
 
 class PluginWidget;
+class SaveablePluginWidget;
 class HomePage;
 
 
@@ -39,9 +40,17 @@ private:
 	bool userWantsToSaveWidget();
 	bool userWantsToCloseWidgetThatCannotBeSaved(const QString& errorDescription);
 
+	/// Сохраняет виджет. Возвращает true, если виджет был сохранен.
+	bool saveWidget(SaveablePluginWidget* widget);
+
 private slots:
-	/// Сохраняет виджет, находящийся во вкладке с индексом index. Возвращает true, если
-	/// виджет был сохранен.
-	bool saveWidget(QWidget* widget = NULL);
+	bool saveSenderWidget();
+	bool saveCurrentWidget();
+	void closeCurrentTab();
+
+	void onCurrentIndexChanged();
+
+signals:
+	void currentWidgetChanged(const bool widgetIsSaveable);
 
 };

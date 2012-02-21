@@ -43,6 +43,7 @@ private:
 	QString pluginName(const QString& textid) const;
 
 	QAction* m_connectionAction;
+	QAction* m_saveAndCloseAction;
 
 	static QList<QPluginLoader*> m_plugins;
 
@@ -51,5 +52,7 @@ private slots:
 	void logOut();
 	void launchPlugin(const QString& textid);
 	void showAboutDialog();
+
+	void currentTabChanged(const bool widgetIsSaveable);
 
 };
