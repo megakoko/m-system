@@ -19,6 +19,8 @@ private:
 	void init();
 	void initConnections();
 
+	void addRuleToTable(const RuleItem& ruleItem);
+
 	static QString formatProbability(const double& probability);
 
 	int m_ruleId;
