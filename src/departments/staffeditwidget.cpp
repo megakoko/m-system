@@ -1,5 +1,6 @@
 #include "staffeditwidget.h"
 
+#include <QPushButton>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
@@ -9,7 +10,7 @@
 
 
 StaffEditWidget::StaffEditWidget(const int staffId, QWidget *parent)
-	: SaveablePluginWidget(parent)
+	: QDialog(parent)
 	, m_staffId(staffId)
 {
     setupUi(this);
@@ -34,7 +35,7 @@ void StaffEditWidget::init()
 								   fieldMaximumLength("Staff", "specialization"));
 
 
-	if(m_staffId != InvalidId)
+	if(m_staffId != 0) // TODO
 	{
 		QSqlQuery q;
 		q.prepare(" SELECT familyName, name, patronymic, birthday, specialization "
@@ -53,56 +54,32 @@ void StaffEditWidget::init()
 		m_birthDay->setDate(q.value(3).toDate());
 		m_specialization->setText(q.value(4).toString());
 	}
+
+	checkFields();
 }
 
 
 void StaffEditWidget::initConnections()
 {
-	connect(m_familyName, SIGNAL(editingFinished()), SLOT(nameChanged()));
-	connect(m_name, SIGNAL(editingFinished()), SLOT(nameChanged()));
-	connect(m_patronymic, SIGNAL(editingFinished()), SLOT(nameChanged()));
+	connect(m_familyName, SIGNAL(textChanged(QString)), SLOT(checkFields()));
+	connect(m_name, SIGNAL(textChanged(QString)), SLOT(checkFields()));
+	connect(m_patronymic, SIGNAL(textChanged(QString)), SLOT(checkFields()));
+	connect(m_specialization, SIGNAL(textChanged(QString)), SLOT(checkFields()));
 
-	connect(m_save, SIGNAL(clicked()), SIGNAL(requestToCloseTab()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(save()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 }
 
 
-QString StaffEditWidget::staffName() const
+void StaffEditWidget::checkFields()
 {
-	QString result = "Работник";
+	const bool fieldsAreValid = !m_familyName->text().simplified().isEmpty() &&
+								!m_name->text().simplified().isEmpty() &&
+								!m_patronymic->text().simplified().isEmpty() &&
+								!m_specialization->text().simplified().isEmpty();
 
-	if(!m_familyName->text().simplified().isEmpty())
-	{
-		result += " " + m_familyName->text();
-
-		if(!m_name->text().trimmed().isEmpty() &&
-		   !m_patronymic->text().trimmed().isEmpty())
-		{
-			result += " " + m_name->text().trimmed().left(1) + "." +
-					  m_patronymic->text().trimmed().left(1) + ".";
-
-		}
-	}
-
-	return result;
-}
-
-
-bool StaffEditWidget::canSave(QString &errorDescription) const
-{
-	if (m_familyName->text().simplified().isEmpty() ||
-		m_name->text().simplified().isEmpty() ||
-		m_patronymic->text().simplified().isEmpty())
-	{
-		errorDescription = QString::fromUtf8("Имя сотрудника не заполнено");
-		return false;
-	}
-	else if(m_specialization->text().simplified().isEmpty())
-	{
-		errorDescription = QString::fromUtf8("Специализация сотрудника не заполнена");
-		return false;
-	}
-
-	return true;
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(fieldsAreValid);
 }
 
 
@@ -110,7 +87,7 @@ void StaffEditWidget::save()
 {
 	QSqlQuery q;
 
-	if(m_staffId == InvalidId)
+	if(m_staffId == 0)	// TODO
 	{
 		q.prepare(" INSERT INTO Staff "
 				  " ( familyName,  name,  patronymic,  birthday,  specialization) VALUES"
@@ -134,12 +111,4 @@ void StaffEditWidget::save()
 	q.bindValue(":specialization", m_specialization->text().simplified());
 	q.exec();
 	checkQuery(q);
-
-	emit saved();
-}
-
-
-void StaffEditWidget::nameChanged()
-{
-	emit requestToSetTabLabel(staffName());
 }
