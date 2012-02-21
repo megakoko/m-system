@@ -22,15 +22,13 @@ void DateRangeDialog::init(const QDate &start, const QDate &end)
 		qSort(m_dates);
 
 		m_startDateEdit->setMinimumDate(m_dates.first());
-		m_startDateEdit->setMaximumDate(end);
 		m_startDateEdit->setDate(start);
 
-		m_endDateEdit->setMinimumDate(start);
 		m_endDateEdit->setMaximumDate(m_dates.last());
 		m_endDateEdit->setDate(end);
 	}
 
-	updateExaminationLabel(m_dates.size());
+	dateChanged();
 }
 
 
