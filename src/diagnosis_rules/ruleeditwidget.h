@@ -10,7 +10,7 @@ class RuleEditWidget : public SaveablePluginWidget, private Ui::RuleEditWidget
 {
 	Q_OBJECT
 public:
-	RuleEditWidget(QWidget *parent = 0);
+	RuleEditWidget(const int ruleId, QWidget *parent = 0);
 
 	bool canSave(QString &errorDescription) const;
 	void save();
@@ -20,6 +20,8 @@ private:
 	void initConnections();
 
 	static QString formatProbability(const double& probability);
+
+	int m_ruleId;
 
 	QList<RuleItem> m_ruleItems;
 	QList<RuleItem> m_removedRuleItems;
