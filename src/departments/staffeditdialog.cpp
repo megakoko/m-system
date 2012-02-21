@@ -1,4 +1,4 @@
-#include "staffeditwidget.h"
+#include "staffeditdialog.h"
 
 #include <QPushButton>
 #include <QSqlQuery>
@@ -9,7 +9,7 @@
 #include "departments.h"
 
 
-StaffEditWidget::StaffEditWidget(const int staffId, QWidget *parent)
+StaffEditDialog::StaffEditDialog(const int staffId, QWidget *parent)
 	: QDialog(parent)
 	, m_staffId(staffId)
 {
@@ -20,7 +20,7 @@ StaffEditWidget::StaffEditWidget(const int staffId, QWidget *parent)
 }
 
 
-void StaffEditWidget::init()
+void StaffEditDialog::init()
 {
 	m_familyName->setMaxLength(Departments::interfaces->db->
 							   fieldMaximumLength("Staff", "familyName"));
@@ -59,7 +59,7 @@ void StaffEditWidget::init()
 }
 
 
-void StaffEditWidget::initConnections()
+void StaffEditDialog::initConnections()
 {
 	connect(m_familyName, SIGNAL(textChanged(QString)), SLOT(checkFields()));
 	connect(m_name, SIGNAL(textChanged(QString)), SLOT(checkFields()));
@@ -72,7 +72,7 @@ void StaffEditWidget::initConnections()
 }
 
 
-void StaffEditWidget::checkFields()
+void StaffEditDialog::checkFields()
 {
 	const bool fieldsAreValid = !m_familyName->text().simplified().isEmpty() &&
 								!m_name->text().simplified().isEmpty() &&
@@ -83,7 +83,7 @@ void StaffEditWidget::checkFields()
 }
 
 
-void StaffEditWidget::save()
+void StaffEditDialog::save()
 {
 	QSqlQuery q;
 

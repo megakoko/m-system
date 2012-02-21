@@ -13,7 +13,7 @@
 #include "departments.h"
 #include "healthfacilityeditdialog.h"
 #include "positionseditdialog.h"
-#include "staffeditwidget.h"
+#include "staffeditdialog.h"
 #include "departmenteditwidget.h"
 
 
@@ -118,7 +118,7 @@ void MainDepartmentsWidget::updateStaffList()
 
 void MainDepartmentsWidget::addStaff()
 {
-	StaffEditWidget w(0, this);	// TODO
+	StaffEditDialog w(0, this);	// TODO
 	if(w.exec() == QDialog::Accepted)
 		updateStaffList();
 }
@@ -126,7 +126,7 @@ void MainDepartmentsWidget::addStaff()
 
 void MainDepartmentsWidget::editStaff()
 {
-	StaffEditWidget w(selectedStaffId(), this);
+	StaffEditDialog w(selectedStaffId(), this);
 	if(w.exec() == QDialog::Accepted)
 		updateStaffList();
 }

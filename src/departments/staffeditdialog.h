@@ -1,13 +1,13 @@
 #pragma once
 
-#include "ui_staffeditwidget.h"
+#include "ui_staffeditdialog.h"
 
-class StaffEditWidget : public QDialog, private Ui::StaffEditWidget
+class StaffEditDialog : public QDialog, private Ui::StaffEditWidget
 {
     Q_OBJECT
 
 public:
-	explicit StaffEditWidget(const int staffId, QWidget *parent = 0);
+	explicit StaffEditDialog(const int staffId, QWidget *parent = 0);
 
 private:
 	void init();

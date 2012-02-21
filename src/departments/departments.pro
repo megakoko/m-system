@@ -7,7 +7,7 @@ include( ../m-system-config.pri )
 
 HEADERS +=	departments.h \
 			maindepartmentswidget.h \
-			staffeditwidget.h \
+			staffeditdialog.h \
 			departmenteditwidget.h \
 			healthfacilityeditdialog.h \
 			positionseditdialog.h \
@@ -16,7 +16,7 @@ HEADERS +=	departments.h \
 
 SOURCES +=	departments.cpp \
 			maindepartmentswidget.cpp \
-			staffeditwidget.cpp \
+			staffeditdialog.cpp \
 			departmenteditwidget.cpp \
 			healthfacilityeditdialog.cpp \
 			positionseditdialog.cpp \
@@ -24,7 +24,7 @@ SOURCES +=	departments.cpp \
 			staffposition.cpp
 
 FORMS	+= 	maindepartmentswidget.ui \
-			staffeditwidget.ui \
+			staffeditdialog.ui \
 			departmenteditwidget.ui \
 			healthfacilityeditdialog.ui \
 			positionseditdialog.ui \
