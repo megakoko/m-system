@@ -34,6 +34,9 @@
        </item>
        <item>
         <widget class="QToolButton" name="m_chooseSymptom">
+         <property name="toolTip">
+          <string>Выбрать симптом</string>
+         </property>
          <property name="type" stdset="0">
           <string>edit</string>
          </property>
