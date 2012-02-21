@@ -118,17 +118,17 @@ void MainDepartmentsWidget::updateStaffList()
 
 void MainDepartmentsWidget::addStaff()
 {
-	StaffEditWidget* w = new StaffEditWidget(StaffEditWidget::InvalidId, this);
-	emit requestToAddNewWidget(w, w->staffName());
-	connect(w, SIGNAL(saved()), SLOT(updateStaffList()));
+	StaffEditWidget w(0, this);	// TODO
+	if(w.exec() == QDialog::Accepted)
+		updateStaffList();
 }
 
 
 void MainDepartmentsWidget::editStaff()
 {
-	StaffEditWidget* w = new StaffEditWidget(selectedStaffId(), this);
-	emit requestToAddNewWidget(w, w->staffName());
-	connect(w, SIGNAL(saved()), SLOT(updateStaffList()));
+	StaffEditWidget w(selectedStaffId(), this);
+	if(w.exec() == QDialog::Accepted)
+		updateStaffList();
 }
 
 
@@ -233,7 +233,7 @@ bool MainDepartmentsWidget::selectedStaffCount() const
 
 int MainDepartmentsWidget::selectedStaffId() const
 {
-	int id = StaffEditWidget::InvalidId;
+	int id = 0;	// TODO
 
 	if(selectedStaffCount() == 1)
 		id = m_staffModel->record(m_staffTable->currentIndex().row()).value(0).toInt();
