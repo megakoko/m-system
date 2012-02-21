@@ -2,6 +2,7 @@
 
 #include <QToolButton>
 #include <QComboBox>
+#include <QMessageBox>
 #include <QDebug>
 
 #include <QSqlQuery>
@@ -98,6 +99,8 @@ void RuleEditWidget::initConnections()
 	connect(m_itemsTable->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 			SLOT(ruleItemSelectionChanged()));
+
+	connect(m_itemsTable, SIGNAL(doubleClicked(QModelIndex)), SLOT(editRuleItem()));
 }
 
 
@@ -146,6 +149,9 @@ void RuleEditWidget::save()
 
 	for(int i = 0; i < m_removedRuleItems.size(); ++i)
 		m_removedRuleItems[i].deleteRuleItem();
+
+
+	emit saved();
 }
 
 
@@ -211,7 +217,16 @@ void RuleEditWidget::editRuleItem()
 
 void RuleEditWidget::removeRuleItem()
 {
-	// TODO
+	const int answer = QMessageBox::question(this, "Удаление элемента",
+											 "Вы действительно хотите удалить элемент?",
+											 QMessageBox::Yes | QMessageBox::No,
+											 QMessageBox::No);
+	if(answer == QMessageBox::Yes)
+	{
+		const int row = m_itemsTable->selectionModel()->selectedRows(0).first().row();
+		m_removedRuleItems << m_ruleItems.takeAt(row);
+		m_itemsTable->removeRow(row);
+	}
 }
 
 
