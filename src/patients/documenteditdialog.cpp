@@ -1,5 +1,6 @@
 #include "documenteditdialog.h"
 
+#include <QPushButton>
 #include <QSqlQuery>
 #include <QSqlError>
 #include "macros.h"
@@ -40,8 +41,8 @@ DocumentEditDialog::DocumentEditDialog(const Document& doc, QWidget *parent)
 	resize(width(), 0);
 
 
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 
 	connect(m_documentType, SIGNAL(currentIndexChanged(int)), SLOT(checkFields()));
 	connect(m_serialNumber, SIGNAL(textChanged(QString)), SLOT(checkFields()));
@@ -68,5 +69,5 @@ void DocumentEditDialog::checkFields()
 			!m_serialNumber->text().simplified().isEmpty() &&
 			!m_givenBy->text().simplified().isEmpty();
 
-	m_ok->setEnabled(fieldsAreValid);
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(fieldsAreValid);
 }

@@ -1,5 +1,6 @@
 #include "staffpositioneditdialog.h"
 
+#include <QPushButton>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
@@ -19,8 +20,8 @@ StaffPositionEditDialog::StaffPositionEditDialog(const StaffPosition& sp, QWidge
 
 void StaffPositionEditDialog::init()
 {
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 	connect(m_staff, SIGNAL(currentIndexChanged(int)), SLOT(checkCombos()));
 	connect(m_position, SIGNAL(currentIndexChanged(int)), SLOT(checkCombos()));
 
@@ -67,7 +68,7 @@ void StaffPositionEditDialog::checkCombos()
 {
 	if(m_position->currentIndex() > -1 && m_staff->currentIndex() > -1)
 	{
-		m_ok->setEnabled(true);
+		m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 		disconnect(m_position, SIGNAL(currentIndexChanged(int)), this, SLOT(checkCombos()));
 		disconnect(m_staff, SIGNAL(currentIndexChanged(int)), this, SLOT(checkCombos()));
 	}

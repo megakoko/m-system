@@ -1,5 +1,6 @@
 #include "positionseditdialog.h"
 
+#include <QPushButton>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QRegExp>
@@ -19,9 +20,9 @@ PositionsEditDialog::PositionsEditDialog(QWidget *parent) :
 
 void PositionsEditDialog::init()
 {
-	connect(m_ok, SIGNAL(clicked()), SLOT(save()));
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(save()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 
 	connect(m_addPosition, SIGNAL(clicked()), SLOT(addPosition()));
 	connect(m_deletePosition, SIGNAL(clicked()), SLOT(deletePosition()));

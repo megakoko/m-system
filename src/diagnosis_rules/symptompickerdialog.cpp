@@ -1,6 +1,6 @@
 #include "symptompickerdialog.h"
 
-
+#include <QPushButton>
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlError>
@@ -60,8 +60,8 @@ void SymptomPickerDialog::initConnections()
 			SLOT(selectionChanged()));
 
 
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 }
 
 
@@ -184,7 +184,7 @@ void SymptomPickerDialog::selectionChanged()
 		}
 	}
 
-	m_ok->setEnabled(enableButton);
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enableButton);
 }
 
 

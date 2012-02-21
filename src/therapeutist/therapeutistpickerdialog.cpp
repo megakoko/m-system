@@ -1,6 +1,6 @@
 #include "therapeutistpickerdialog.h"
 
-
+#include <QPushButton>
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <QSqlRecord>
@@ -32,7 +32,7 @@ void TherapeutistPickerDialog::init()
 	m_view->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 	m_view->setColumnHidden(0, true);
 
-	m_ok->setEnabled(false);
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	m_searchWidget->setLabelText("Поиск по полному имени");
 }
@@ -40,8 +40,8 @@ void TherapeutistPickerDialog::init()
 
 void TherapeutistPickerDialog::initConnections()
 {
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 
 	connect(m_searchWidget, SIGNAL(searchPressed()), SLOT(updateTherapeutistList()));
 
@@ -112,5 +112,5 @@ void TherapeutistPickerDialog::listSelectionChanged()
 {
 	const QModelIndexList& selectedIndexes = m_view->selectionModel()->selectedRows(0);
 
-	m_ok->setEnabled(selectedIndexes.size() == 1);
+	m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(selectedIndexes.size() == 1);
 }

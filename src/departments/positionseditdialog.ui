@@ -26,7 +26,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-		<widget class="QToolButton" name="m_addPosition">
+        <widget class="QToolButton" name="m_addPosition">
          <property name="toolTip">
           <string>Добавить должность</string>
          </property>
@@ -36,7 +36,7 @@
         </widget>
        </item>
        <item>
-		<widget class="QToolButton" name="m_deletePosition">
+        <widget class="QToolButton" name="m_deletePosition">
          <property name="toolTip">
           <string>Удалить должность</string>
          </property>
@@ -63,35 +63,11 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="m_ok">
-       <property name="text">
-        <string>ОК</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="m_cancel">
-       <property name="text">
-        <string>Отмена</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QDialogButtonBox" name="m_buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
