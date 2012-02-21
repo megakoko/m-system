@@ -19,8 +19,10 @@ private:
 	void init();
 	void initConnections();
 
-	QList<RuleItem*> m_ruleItems;
-	QList<RuleItem*> m_removedRuleItems;
+	static QString formatProbability(const double& probability);
+
+	QList<RuleItem> m_ruleItems;
+	QList<RuleItem> m_removedRuleItems;
 
 private slots:
 	void addRuleItem();

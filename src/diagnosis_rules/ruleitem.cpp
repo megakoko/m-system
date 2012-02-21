@@ -19,6 +19,7 @@
 
 RuleItem::RuleItem()
 	: m_itemId(0) // TODO
+	, m_uiElementId(0)
 {
 
 }
@@ -83,6 +84,44 @@ void RuleItem::deleteRuleItem()
 		q.exec();
 		checkQuery(q);
 	}
+}
+
+
+QString RuleItem::symptomName() const
+{
+	QSqlQuery q;
+	q.prepare("SELECT label FROM UiElement WHERE id = ?");
+	q.addBindValue(m_uiElementId);
+	q.exec();
+	checkQuery(q);
+
+	QString name;
+	if(q.first())
+		name = q.value(0).toString();
+
+	return name;
+}
+
+
+QString RuleItem::value() const
+{
+	if(!m_textValue.isNull())
+		return m_textValue.toString();
+	else if(!m_realValue.isNull())
+		return m_realValue.toString();
+	else if(!m_enumValue.isNull())
+	{
+		QSqlQuery q;
+		q.prepare("SELECT value FROM UiElementEnums WHERE id = ?");
+		q.addBindValue(m_enumValue);
+		q.exec();
+		checkQuery(q);
+
+		if(q.first())
+			return q.value(0).toString();
+	}
+
+	return QString();
 }
 
 
