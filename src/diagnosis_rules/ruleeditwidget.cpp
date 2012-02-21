@@ -3,7 +3,13 @@
 #include <QToolButton>
 #include <QComboBox>
 #include <QDebug>
+
+#include <QSqlQuery>
+#include <QSqlError>
+
 #include "ruleitemeditdialog.h"
+#include "macros.h"
+#include "diagnosisrules.h"
 
 
 QString RuleEditWidget::formatProbability(const double &probability)
@@ -24,8 +30,9 @@ namespace Columns {
 }
 
 
-RuleEditWidget::RuleEditWidget(QWidget* parent)
+RuleEditWidget::RuleEditWidget(const int ruleId, QWidget* parent)
 	: SaveablePluginWidget(parent)
+	, m_ruleId(ruleId)
 {
 	setupUi(this);
 
@@ -64,14 +71,49 @@ void RuleEditWidget::initConnections()
 
 bool RuleEditWidget::canSave(QString &errorDescription) const
 {
-	Q_UNUSED(errorDescription);
-	return false;
+	if(m_diseaseText->text().isEmpty())
+	{
+		errorDescription = "Название болезни не заполнено";
+		return false;
+	}
+
+	return true;
 }
 
 
 void RuleEditWidget::save()
 {
+	QSqlQuery q;
+	if(m_ruleId == InvalidId)
+	{
+		q.prepare(" INSERT INTO DsRule "
+				  " ( diseaseText,  diseaseProbability)  VALUES "
+				  " (:diseaseText, :diseaseProbability) "
+				  + DiagnosisRules::interfaces->db->returningSentence("id"));
+	}
+	else
+	{
+		q.prepare(" UPDATE DsRule SET "
+				  " diseaseText = :diseaseText, "
+				  " diseaseProbability = :diseaseProbability "
+				  " WHERE id = :id ");
+		q.bindValue(":id", m_ruleId);
+	}
 
+	q.bindValue(":diseaseText", m_diseaseText->text());
+	q.bindValue(":diseaseProbability", m_diseaseProbability->value());
+
+	q.exec();
+	checkQuery(q);
+
+	if(m_ruleId == InvalidId)
+		m_ruleId = DiagnosisRules::interfaces->db->lastInsertedId(&q).toInt();
+
+	for(int i = 0; i < m_ruleItems.size(); ++i)
+		m_ruleItems[i].save(m_ruleId);
+
+	for(int i = 0; i < m_removedRuleItems.size(); ++i)
+		m_removedRuleItems[i].deleteRuleItem();
 }
 
 

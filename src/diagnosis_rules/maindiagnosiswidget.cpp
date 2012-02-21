@@ -50,7 +50,7 @@ void MainDiagnosisWidget::initConnections()
 void MainDiagnosisWidget::addRule()
 {
 	// TODO
-	RuleEditWidget* w = new RuleEditWidget(this);
+	RuleEditWidget* w = new RuleEditWidget(RuleEditWidget::InvalidId, this);
 	requestToAddNewWidget(w, "");
 }
 
