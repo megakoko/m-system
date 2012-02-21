@@ -78,6 +78,9 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QToolButton" name="m_addRuleItem">
+       <property name="toolTip">
+        <string>Добавить элемент</string>
+       </property>
        <property name="type" stdset="0">
         <string>add</string>
        </property>
@@ -85,6 +88,9 @@
      </item>
      <item>
       <widget class="QToolButton" name="m_editRuleItem">
+       <property name="toolTip">
+        <string>Редактировать элемент</string>
+       </property>
        <property name="type" stdset="0">
         <string>edit</string>
        </property>
@@ -92,6 +98,9 @@
      </item>
      <item>
       <widget class="QToolButton" name="m_removeRuleItem">
+       <property name="toolTip">
+        <string>Удалить элемент</string>
+       </property>
        <property name="type" stdset="0">
         <string>remove</string>
        </property>
