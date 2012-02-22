@@ -29,5 +29,6 @@ contains(TEMPLATE, app) | CONFIG(plugin) {
 	HEADERS		+=	$${ROOTPATH}/src/common/macros.h \
 					$${ROOTPATH}/src/common/pluginwidget.h \
 					$${ROOTPATH}/src/common/plugininterface.h \
-					$${ROOTPATH}/src/common/saveablepluginwidget.h
+					$${ROOTPATH}/src/common/saveablepluginwidget.h \
+					$${ROOTPATH}/src/common/saveableobject.h
 }
