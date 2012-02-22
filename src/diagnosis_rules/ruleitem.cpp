@@ -11,6 +11,7 @@
 
 
 #include <QSqlQuery>
+#include <QSqlRecord>
 #include <QSqlError>
 #include <QDebug>
 
@@ -18,8 +19,9 @@
 
 
 RuleItem::RuleItem()
-	: m_itemId(0) // TODO
-	, m_uiElementId(0)
+	: m_itemId(InvalidId)
+	, m_uiElementId(InvalidId)
+	, m_ruleId(InvalidId)
 {
 
 }
@@ -28,6 +30,7 @@ RuleItem::RuleItem()
 RuleItem::RuleItem(const QSqlRecord &rec)
 	: m_itemId(rec.value("id").toInt())
 	, m_uiElementId(rec.value("uiElementId").toInt())
+	, m_ruleId(rec.value("ruleId").toInt())
 	, m_textValue(rec.value("textValue"))
 	, m_realValue(rec.value("realValue"))
 	, m_enumValue(rec.value("enumValue"))
@@ -37,10 +40,16 @@ RuleItem::RuleItem(const QSqlRecord &rec)
 }
 
 
-void RuleItem::save(const int ruleId)
+void RuleItem::setRuleid(const int ruleId)
+{
+	m_ruleId = ruleId;
+}
+
+
+void RuleItem::save()
 {
 	QSqlQuery q;
-	if(m_itemId == 0)	// TODO
+	if(m_itemId == InvalidId)
 	{
 		q.prepare(" INSERT INTO DsRuleItem "
 				  " ( ruleId,  uiElementId,  textValue,  realValue,  enumValue, "
@@ -62,7 +71,7 @@ void RuleItem::save(const int ruleId)
 		q.bindValue(":id", m_itemId);
 	}
 
-	q.bindValue(":ruleId", ruleId);
+	q.bindValue(":ruleId", m_ruleId);
 	q.bindValue(":uiElementId", m_uiElementId);
 	q.bindValue(":textValue", m_textValue);
 	q.bindValue(":realValue", m_realValue);
@@ -76,7 +85,7 @@ void RuleItem::save(const int ruleId)
 
 void RuleItem::deleteRuleItem()
 {
-	if(m_itemId != 0)	// TODO
+	if(m_itemId != InvalidId)
 	{
 		QSqlQuery q;
 		q.prepare("DELETE FROM DsRuleItem WHERE id = ?");
