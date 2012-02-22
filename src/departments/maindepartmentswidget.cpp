@@ -118,7 +118,7 @@ void MainDepartmentsWidget::updateStaffList()
 
 void MainDepartmentsWidget::addStaff()
 {
-	StaffEditDialog w(0, this);	// TODO
+	StaffEditDialog w(StaffEditDialog::InvalidId, this);
 	if(w.exec() == QDialog::Accepted)
 		updateStaffList();
 }
@@ -233,7 +233,7 @@ bool MainDepartmentsWidget::selectedStaffCount() const
 
 int MainDepartmentsWidget::selectedStaffId() const
 {
-	int id = 0;	// TODO
+	int id = StaffEditDialog::InvalidId;
 
 	if(selectedStaffCount() == 1)
 		id = m_staffModel->record(m_staffTable->currentIndex().row()).value(0).toInt();
