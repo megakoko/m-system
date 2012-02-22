@@ -23,7 +23,7 @@ QString RuleEditWidget::formatProbability(const double &probability)
 namespace Columns {
 	enum {
 		symptom,
-		// itemOperator,
+		itemOperator,
 		value,
 		probabilityWithDisease,
 		probabilityWithoutDisease,
@@ -50,8 +50,8 @@ void RuleEditWidget::init()
 	m_itemsTable->setColumnCount(Columns::count);
 	m_itemsTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 	m_itemsTable->setHorizontalHeaderLabels(QStringList()
-				<< "Симптом" << "Значение"
-				<< "Вероятность P(S|D)" << QString("Вероятность P(S|%1D)").arg(notSign));
+				<< "Симптом" << "Оператор" << "Значение"
+				<< "P(S|D)" << QString("P(S|%1D)").arg(notSign));
 
 	ruleItemSelectionChanged();
 
@@ -71,7 +71,7 @@ void RuleEditWidget::init()
 		}
 
 
-		q.prepare(" SELECT id, ruleId, uiElementId, textValue, realValue, enumValue, "
+		q.prepare(" SELECT id, ruleId, uiElementId, operatorId, textValue, realValue, realValue2, enumValue, "
 				  " probabilityWithDisease, probabilityWithoutDisease "
 				  " FROM DsRuleItem WHERE ruleId = ? ");
 		q.addBindValue(m_ruleId);
@@ -166,6 +166,9 @@ void RuleEditWidget::addRuleToTable(const RuleItem &ruleItem)
 	item = new QTableWidgetItem(ruleItem.symptomName());
 	m_itemsTable->setItem(row, Columns::symptom, item);
 
+	item = new QTableWidgetItem(ruleItem.operatorText());
+	m_itemsTable->setItem(row, Columns::itemOperator, item);
+
 	item = new QTableWidgetItem(ruleItem.value());
 	m_itemsTable->setItem(row, Columns::value, item);
 
@@ -202,6 +205,9 @@ void RuleEditWidget::editRuleItem()
 
 		item = m_itemsTable->item(row, Columns::symptom);
 		item->setText(ruleItem.symptomName());
+
+		item = m_itemsTable->item(row, Columns::itemOperator);
+		item->setText(ruleItem.operatorText());
 
 		item = m_itemsTable->item(row, Columns::value);
 		item->setText(ruleItem.value());
