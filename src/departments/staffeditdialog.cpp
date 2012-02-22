@@ -35,7 +35,7 @@ void StaffEditDialog::init()
 								   fieldMaximumLength("Staff", "specialization"));
 
 
-	if(m_staffId != 0) // TODO
+	if(m_staffId != InvalidId)
 	{
 		QSqlQuery q;
 		q.prepare(" SELECT familyName, name, patronymic, birthday, specialization "
@@ -87,7 +87,7 @@ void StaffEditDialog::save()
 {
 	QSqlQuery q;
 
-	if(m_staffId == 0)	// TODO
+	if(m_staffId == InvalidId)
 	{
 		q.prepare(" INSERT INTO Staff "
 				  " ( familyName,  name,  patronymic,  birthday,  specialization) VALUES"

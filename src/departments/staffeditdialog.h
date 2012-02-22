@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ui_staffeditdialog.h"
+#include "saveableobject.h"
 
-class StaffEditDialog : public QDialog, private Ui::StaffEditWidget
+class StaffEditDialog : public QDialog, public SaveableObject, private Ui::StaffEditWidget
 {
     Q_OBJECT
 
