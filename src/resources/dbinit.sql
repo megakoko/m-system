@@ -235,7 +235,9 @@ CREATE TABLE ExaminationData (
 -- Операторы, которые могуть быть применены к симптомам (больше, меньше, равно и т.д.).
 CREATE TABLE Operator (
 	id					SERIAL PRIMARY KEY,
-	textid				VARCHAR(40) UNIQUE NOT NULL
+	textid				VARCHAR(40) UNIQUE NOT NULL,
+	sign				VARCHAR(5) UNIQUE NOT NULL,
+	description			VARCHAR(40) NOT NULL
 );
 
 -- Правила, по которым будет проводиться диагностика.
@@ -255,6 +257,7 @@ CREATE TABLE DsRuleItem (
 	operatorId			INTEGER REFERENCES Operator(id),
 	textValue			VARCHAR(100),
 	realValue			REAL,
+	realValue2			REAL,
 	enumValue			INTEGER REFERENCES UiElementEnums(id),
 	probabilityWithDisease		REAL NOT NULL,
 	probabilityWithoutDisease	REAL NOT NULL
@@ -303,3 +306,8 @@ INSERT INTO HealthFacility(id, name) VALUES(1, 'Медицинское учре�
 INSERT INTO DepartmentType(textid, name) VALUES ('clinic', 'Амбулаторное отделение');
 INSERT INTO DepartmentType(textid, name) VALUES ('hospital', 'Стационарное отделение');
 
+
+INSERT INTO Operator(textid, sign, description) VALUES ('equal', '=', 'Равняется');
+INSERT INTO Operator(textid, sign, description) VALUES ('less', '<', 'Меньше');
+INSERT INTO Operator(textid, sign, description) VALUES ('more', '>', 'Больше');
+INSERT INTO Operator(textid, sign, description) VALUES ('between', '∈', 'В интервале');

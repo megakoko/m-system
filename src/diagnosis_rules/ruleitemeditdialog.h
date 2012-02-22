@@ -16,11 +16,15 @@ private:
 	void initConnections();
 
 	void updateSymptomNameAndValueWidgets();
+	void populateOperatorList(const QStringList& operatorTextids);
+
+	bool currentOperatorHasTwoValues() const;
 
 	RuleItem m_ruleItem;
 
 private slots:
 	void chooseSymptom();
+	void operatorChanged();
 	void checkFields();
 
 };

@@ -33,24 +33,37 @@ void RuleItemEditDialog::init()
 {
 	updateSymptomNameAndValueWidgets();
 
-	if(!m_ruleItem.textValue().isNull())
+	switch(m_stackedWidget->currentIndex())
+	{
+	case ValuePage::textValuePage:
 		m_textValue->setText(m_ruleItem.textValue().toString());
-	else if(!m_ruleItem.realValue().isNull())
+		break;
+	case ValuePage::realValuePage:
 		m_realValue->setValue(m_ruleItem.realValue().toDouble());
-	else if(!m_ruleItem.enumValue().isNull())
+		if(currentOperatorHasTwoValues())
+			m_realValue2->setValue(m_ruleItem.realValue2().toDouble());
+		break;
+	case ValuePage::enumValuePage:
 		m_enumValue->setCurrentIndex(m_enumValue->findData(m_ruleItem.enumValue()));
+		break;
+	default:
+		Q_ASSERT(false);
+	}
 
 	m_probabilityWithDisease->setValue(m_ruleItem.probabilityWithDisease());
 	m_probabilityWithoutDisease->setValue(m_ruleItem.probabilityWithoutDisease());
 
 	checkFields();
+	operatorChanged();
 }
 
 
 void RuleItemEditDialog::initConnections()
 {
 	connect(m_chooseSymptom, SIGNAL(clicked()), SLOT(chooseSymptom()));
+	connect(m_operator, SIGNAL(currentIndexChanged(int)), SLOT(operatorChanged()));
 
+	connect(m_operator, SIGNAL(currentIndexChanged(int)), SLOT(checkFields()));
 	connect(m_textValue, SIGNAL(textEdited(QString)), SLOT(checkFields()));
 	connect(m_enumValue, SIGNAL(currentIndexChanged(int)), SLOT(checkFields()));
 
@@ -76,6 +89,8 @@ void RuleItemEditDialog::updateSymptomNameAndValueWidgets()
 			const QString& type = q.value(2).toString();
 			if(type == "combobox")
 			{
+				populateOperatorList(QStringList() << "equal");
+
 				const QVariant& textid = q.value(0);
 
 				q.prepare(" SELECT id, value FROM UiElementEnums "
@@ -93,10 +108,14 @@ void RuleItemEditDialog::updateSymptomNameAndValueWidgets()
 			}
 			else if(type == "spinbox")
 			{
+				populateOperatorList(QStringList() << "equal" << "more" << "less" << "between");
+
 				m_stackedWidget->setCurrentIndex(ValuePage::realValuePage);
 			}
 			else
 			{
+				populateOperatorList(QStringList() << "equal");
+
 				m_stackedWidget->setCurrentIndex(ValuePage::textValuePage);
 			}
 		}
@@ -104,6 +123,33 @@ void RuleItemEditDialog::updateSymptomNameAndValueWidgets()
 	else
 	{
 		m_stackedWidget->setCurrentIndex(ValuePage::textValuePage);
+	}
+
+	m_operator->setCurrentIndex(m_operator->findData(m_ruleItem.operatorId()));
+}
+
+
+void RuleItemEditDialog::populateOperatorList(const QStringList &operatorTextids)
+{
+	QSqlQuery q;
+	q.prepare("SELECT description, sign, id FROM Operator WHERE textid = ?");
+
+	m_operator->clear();
+	foreach(const QString& textid, operatorTextids)
+	{
+		q.addBindValue(textid);
+		q.exec();
+		checkQuery(q);
+
+		if(q.first())
+		{
+			const QString& itemName = QString("%1 (%2)").
+									  arg(q.value(0).toString()).
+									  arg(q.value(1).toString());
+			m_operator->addItem(itemName, q.value(2));
+		}
+		else
+			qWarning() << "No operator with textid =" << textid;
 	}
 }
 
@@ -120,10 +166,41 @@ void RuleItemEditDialog::chooseSymptom()
 }
 
 
+int betweenOperatorId()
+{
+	QSqlQuery q;
+	q.prepare("SELECT id FROM Operator WHERE textid = ?");
+	q.addBindValue("between");
+	q.exec();
+	checkQuery(q);
+
+	const bool hasRecord = q.first();
+	Q_ASSERT(hasRecord);
+
+	return q.value(0).toInt();
+}
+
+
+bool RuleItemEditDialog::currentOperatorHasTwoValues() const
+{
+	static const int betweenId = betweenOperatorId();
+	const QVariant& currentOperatorId = m_operator->itemData(m_operator->currentIndex());
+
+	return currentOperatorId.toInt() == betweenId;
+}
+
+
+void RuleItemEditDialog::operatorChanged()
+{
+	if(m_stackedWidget->currentIndex() == ValuePage::realValuePage)
+		m_realValue2->setVisible(currentOperatorHasTwoValues());
+}
+
+
 void RuleItemEditDialog::checkFields()
 {
 	bool buttonShouldBeEnabled = false;
-	if(m_ruleItem.uiElementId() != 0)
+	if(m_ruleItem.uiElementId() != 0 && m_operator->currentIndex() != -1)
 	{
 		switch(m_stackedWidget->currentIndex())
 		{
@@ -150,11 +227,20 @@ RuleItem RuleItemEditDialog::ruleItem()
 	m_ruleItem.setProbabilityWithDisease(m_probabilityWithDisease->value());
 	m_ruleItem.setProbabilityWithoutDisease(m_probabilityWithoutDisease->value());
 
+	m_ruleItem.setOperatorId(m_operator->itemData(m_operator->currentIndex()).toInt());
 
 	switch(m_stackedWidget->currentIndex())
 	{
 	case ValuePage::realValuePage:
-		m_ruleItem.setRealValue(m_realValue->value());
+		if(currentOperatorHasTwoValues())
+		{
+			const double& value1 = m_realValue->value();
+			const double& value2 = m_realValue2->value();
+
+			m_ruleItem.setRealValueRange(qMin(value1, value2), qMax(value1, value2));
+		}
+		else
+			m_ruleItem.setRealValue(m_realValue->value());
 		break;
 	case ValuePage::textValuePage:
 		m_ruleItem.setTextValue(m_textValue->text());
