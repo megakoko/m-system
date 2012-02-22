@@ -256,8 +256,8 @@ CREATE TABLE DsRuleItem (
 	textValue			VARCHAR(100),
 	realValue			REAL,
 	enumValue			INTEGER REFERENCES UiElementEnums(id),
-	probabilityWithDesease		REAL NOT NULL,
-	probabilityWithoutDesease	REAL NOT NULL
+	probabilityWithDisease		REAL NOT NULL,
+	probabilityWithoutDisease	REAL NOT NULL
 );
 
 
