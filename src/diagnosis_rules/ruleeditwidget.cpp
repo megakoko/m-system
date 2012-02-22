@@ -45,7 +45,6 @@ RuleEditWidget::RuleEditWidget(const int ruleId, QWidget* parent)
 
 void RuleEditWidget::init()
 {
-	// TODO
 	static const QChar notSign(0x00AC);	// Знак, обозначающий "не".
 
 	m_itemsTable->setColumnCount(Columns::count);
@@ -91,7 +90,6 @@ void RuleEditWidget::init()
 
 void RuleEditWidget::initConnections()
 {
-	// TODO
 	connect(m_addRuleItem, SIGNAL(clicked()), SLOT(addRuleItem()));
 	connect(m_editRuleItem, SIGNAL(clicked()), SLOT(editRuleItem()));
 	connect(m_removeRuleItem, SIGNAL(clicked()), SLOT(removeRuleItem()));
@@ -181,7 +179,6 @@ void RuleEditWidget::addRuleToTable(const RuleItem &ruleItem)
 
 void RuleEditWidget::addRuleItem()
 {
-	// TODO
 	RuleItemEditDialog d(RuleItem(), this);
 	if(d.exec() == QDialog::Accepted)
 	{

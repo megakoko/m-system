@@ -122,7 +122,6 @@ void RuleItemEditDialog::chooseSymptom()
 
 void RuleItemEditDialog::checkFields()
 {
-	// TODO
 	bool buttonShouldBeEnabled = false;
 	if(m_ruleItem.uiElementId() != 0)
 	{
@@ -132,7 +131,7 @@ void RuleItemEditDialog::checkFields()
 			buttonShouldBeEnabled = m_enumValue->currentIndex() != -1;
 			break;
 		case ValuePage::realValuePage:
-			buttonShouldBeEnabled = true;	// TODO
+			buttonShouldBeEnabled = true;
 			break;
 		case ValuePage::textValuePage:
 			buttonShouldBeEnabled = !m_textValue->text().isEmpty();

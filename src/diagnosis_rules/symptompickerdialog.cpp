@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #include "macros.h"
+#include "saveableobject.h"
 
 
 static const int PAGE_TREE = 0;
@@ -190,7 +191,7 @@ void SymptomPickerDialog::selectionChanged()
 
 int SymptomPickerDialog::selectedSymptom() const
 {
-	int id = 0;	// TODO
+	int id = SaveableObject::InvalidId;
 
 	if(m_stackedWidget->currentIndex() == PAGE_TREE)
 	{
