@@ -1,12 +1,12 @@
 #pragma once
 
-
-#include <QObject>
-#include <QSqlRecord>
+#include "saveableobject.h"
 #include <QVariant>
 
+class QSqlRecord;
 
-class RuleItem
+
+class RuleItem : public SaveableObject
 {
 public:
 	RuleItem();
@@ -45,13 +45,14 @@ public:
 	void setProbabilityWithDisease(const double& probability);
 	void setProbabilityWithoutDisease(const double& probability);
 
-
-	void save(const int ruleId);
+	void setRuleid(const int ruleId);
+	void save();
 	void deleteRuleItem();
 
 private:
 	int m_itemId;
 	int m_uiElementId;
+	int m_ruleId;
 
 	QVariant m_textValue;
 	QVariant m_realValue;

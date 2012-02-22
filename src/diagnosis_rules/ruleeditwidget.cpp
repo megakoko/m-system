@@ -72,7 +72,7 @@ void RuleEditWidget::init()
 		}
 
 
-		q.prepare(" SELECT id, uiElementId, textValue, realValue, enumValue, "
+		q.prepare(" SELECT id, ruleId, uiElementId, textValue, realValue, enumValue, "
 				  " probabilityWithDisease, probabilityWithoutDisease "
 				  " FROM DsRuleItem WHERE ruleId = ? ");
 		q.addBindValue(m_ruleId);
@@ -145,7 +145,10 @@ void RuleEditWidget::save()
 		m_ruleId = DiagnosisRules::interfaces->db->lastInsertedId(&q).toInt();
 
 	for(int i = 0; i < m_ruleItems.size(); ++i)
-		m_ruleItems[i].save(m_ruleId);
+	{
+		m_ruleItems[i].setRuleid(m_ruleId);
+		m_ruleItems[i].save();
+	}
 
 	for(int i = 0; i < m_removedRuleItems.size(); ++i)
 		m_removedRuleItems[i].deleteRuleItem();
