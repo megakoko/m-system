@@ -147,12 +147,16 @@ int MainTherapeutistWidget::selectedExamId() const
 
 void MainTherapeutistWidget::examSelectionChanged()
 {
+	const bool canAddExam =
+			!Therapeutist::interfaces->demo->isDemoVersion() ||
+			(m_queryModel->rowCount() < Therapeutist::interfaces->demo->examinationCountLimit());
+
 	const bool canChangeExam = Therapeutist::interfaces->usr->currentUserIsAdmin() ||
 							 currentUserIsAssociatedWithTherapeutist();
 	const bool singleExamSelected = (numberOfSelectedExams() == 1);
 
 
-	m_addExam->setEnabled(canChangeExam);
+	m_addExam->setEnabled(canChangeExam && canAddExam);
 	m_editExam->setEnabled(canChangeExam && singleExamSelected);
 	m_deleteExam->setEnabled(canChangeExam && singleExamSelected);
 	m_openPreview->setEnabled(singleExamSelected);
@@ -166,6 +170,7 @@ void MainTherapeutistWidget::addExam()
 
 	emit requestToAddNewWidget(exam, exam->tabName(examIdToPatientId(examId)));
 	connect(exam, SIGNAL(saved()), SLOT(updateExaminationList()));
+	connect(exam, SIGNAL(saved()), SLOT(examSelectionChanged()));
 }
 
 
@@ -204,6 +209,7 @@ void MainTherapeutistWidget::deleteExam()
 		checkQuery(q);
 
 		updateExaminationList();
+		examSelectionChanged();
 	}
 }
 
