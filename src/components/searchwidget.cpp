@@ -33,7 +33,7 @@ void SearchWidget::init()
 	// Чтобы строка текста в QLineEdit не наезжала на кнопку сброса.
 	const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
 	const int paddingRight = m_clearButton->sizeHint().width() + frameWidth + 1;
-	m_lineEdit->setStyleSheet(QString("padding-right: %1px;").arg(paddingRight));
+	m_lineEdit->setStyleSheet(QString("QLineEdit { padding: 3px %1px 3px 0;}").arg(paddingRight));
 
 
 	m_layout = new QHBoxLayout(this);
