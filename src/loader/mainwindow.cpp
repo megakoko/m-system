@@ -205,9 +205,9 @@ bool MainWindow::userHaveAccessToPlugin(const QString &textid) const
 	Q_ASSERT(m_userId >= 0);
 
 
-// В релизе модуль test не должен загружаться.
+// В релизе модуль plugin_example не должен загружаться.
 #ifdef QT_NO_DEBUG
-    if(textid == "test")
+	if(textid == "plugin_example")
         return false;
 #endif
 

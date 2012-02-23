@@ -43,7 +43,7 @@ void UserEditWidget::init()
 		const QString& textid = query.value(0).toString();
 
 #ifdef QT_NO_DEBUG
-		if(textid == "test")
+		if(textid == "plugin_example")
 			continue;
 #endif
 
