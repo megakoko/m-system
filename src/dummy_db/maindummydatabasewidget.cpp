@@ -6,6 +6,7 @@
 
 #include "macros.h"
 
+#include "dummydatabase.h"
 #include "dummypatients.h"
 #include "dummydepartments.h"
 #include "dummyexaminations.h"
@@ -30,7 +31,6 @@ void MainDummyDatabaseWidget::init()
 
 void MainDummyDatabaseWidget::initConnections()
 {
-	connect(m_updateInformation, SIGNAL(clicked()), SLOT(updateInformation()));
 	connect(m_createPatients, SIGNAL(clicked()), SLOT(createPatients()));
 	connect(m_createStaff, SIGNAL(clicked()), SLOT(createStaff()));
 	connect(m_createDepartments, SIGNAL(clicked()), SLOT(createDepartments()));
@@ -40,16 +40,36 @@ void MainDummyDatabaseWidget::initConnections()
 
 void MainDummyDatabaseWidget::updateInformation()
 {
+	// Пациенты.
 	QSqlQuery q("SELECT COUNT(*) FROM Patient");
 	checkQuery(q);
 
 	q.first();
-	m_patientsCount->setNum(q.value(0).toInt());
+	const int numberOfPatientsInDatabase = q.value(0).toInt();
+	m_patientsCount->setNum(numberOfPatientsInDatabase);
 
-	q.exec("SELECT COUNT(*) FROM Staff");
-	checkQuery(q);
-	q.first();
-	m_staffCount->setNum(q.value(0).toInt());
+	// Ограничиваем количество создаваемых пациентов.
+	if(DummyDatabase::interfaces->demo->isDemoVersion())
+	{
+		const int max = DummyDatabase::interfaces->demo->patientCountLimit() -
+						numberOfPatientsInDatabase;
+		m_createPatientsCount->setMaximum(qMax(max, 0));
+	}
+
+
+	// Ограничиваем количество создаваемых осмотров.
+	if(DummyDatabase::interfaces->demo->isDemoVersion())
+	{
+		q.exec("SELECT COUNT(*) FROM Examination");
+		checkQuery(q);
+		q.first();
+
+		const int numberOfExaminationsInDatabase = q.value(0).toInt();
+		const int max = DummyDatabase::interfaces->demo->examinationCountLimit() -
+						numberOfExaminationsInDatabase;
+
+		m_createExaminationsCount->setMaximum(qMax(max, 0));
+	}
 }
 
 

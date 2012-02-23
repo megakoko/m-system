@@ -19,12 +19,14 @@
 #include "cryptopp/wrapper.h"
 #include "database.h"
 #include "user.h"
+#include "demo.h"
 
 
 QList<QPluginLoader*> MainWindow::m_plugins = QList<QPluginLoader*>();
 InterfacesPtr MainWindow::interfaces = InterfacesPtr(new Interfaces(new CryptoppWrapper,
 																	new Database,
-																	new User));
+																	new User,
+																	new Demo));
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -40,6 +42,9 @@ MainWindow::MainWindow(QWidget *parent)
 #ifndef QT_NO_DEBUG
 	setWindowTitle(windowTitle() + QString::fromUtf8(" [Отладочная версия]"));
 #endif
+
+	if(interfaces->demo->isDemoVersion())
+		setWindowTitle(windowTitle() + " [Демонстрационная версия]");
 
 	initToolBar();
 	initConnections();

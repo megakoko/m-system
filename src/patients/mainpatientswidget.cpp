@@ -53,8 +53,7 @@ void MainPatientsWidget::init()
 	m_view->horizontalHeader()->setResizeMode(4, QHeaderView::ResizeToContents);
 	m_view->setColumnHidden(0, true);
 
-	m_editPatient->setEnabled(false);
-	m_deletePatient->setEnabled(false);
+	selectionChanged();
 }
 
 
@@ -132,6 +131,7 @@ void MainPatientsWidget::addPatient()
 	if(widget != NULL)
 	{
 		connect(widget, SIGNAL(saved()), SLOT(updatePatientsList()));
+		connect(widget, SIGNAL(saved()), SLOT(selectionChanged()));
 		emit requestToAddNewWidget(widget, widget->fullPatientName());
 	}
 }
@@ -181,21 +181,29 @@ void MainPatientsWidget::deletePatient()
 		q.exec("COMMIT");
 
 		updatePatientsList();
+		selectionChanged();
 	}
 }
 
 
 void MainPatientsWidget::selectionChanged()
 {
-	const bool enableButtons = onePatientSelected();
-	m_editPatient->setEnabled(enableButtons);
-	m_deletePatient->setEnabled(enableButtons);
+	const bool enableAdding =
+			!Patients::interfaces->demo->isDemoVersion() ||
+			(m_queryModel->rowCount() < Patients::interfaces->demo->patientCountLimit());
+	m_addPatient->setEnabled(enableAdding);
+
+
+	const bool enableEditing = onePatientSelected();
+	m_editPatient->setEnabled(enableEditing);
+	m_deletePatient->setEnabled(enableEditing);
 }
 
 
 bool MainPatientsWidget::onePatientSelected() const
 {
-	return 	m_view->selectionModel()->hasSelection() &&
+	return 	m_view->selectionModel() != NULL &&
+			m_view->selectionModel()->hasSelection() &&
 			m_view->selectionModel()->selectedRows().count() == 1;
 }
 

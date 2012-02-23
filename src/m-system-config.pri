@@ -19,7 +19,8 @@ INCLUDEPATH +=	$${ROOTPATH}/src
 HEADERS		+=	$${ROOTPATH}/src/interfaces/interfaces.h \
 				$${ROOTPATH}/src/interfaces/databaseinterface.h \
 				$${ROOTPATH}/src/interfaces/encodinginterface.h \
-				$${ROOTPATH}/src/interfaces/userinterface.h
+				$${ROOTPATH}/src/interfaces/userinterface.h \
+				$${ROOTPATH}/src/interfaces/demointerface.h
 
 
 # Для проектов для плагинов и программы-загрузчика добавляем заголовки:
