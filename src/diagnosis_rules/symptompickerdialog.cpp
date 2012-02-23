@@ -50,6 +50,9 @@ void SymptomPickerDialog::initConnections()
 	connect(m_treeWidget,
 			SIGNAL(itemExpanded(QTreeWidgetItem*)),
 			SLOT(treeWidgetItemExpanded(QTreeWidgetItem*)));
+	connect(m_treeWidget,
+			SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+			SLOT(treeWidgetItemDoubleClicked(QTreeWidgetItem*)));
 	connect(m_searchWidget, SIGNAL(searchPressed()), SLOT(filterSymptoms()));
 
 
@@ -157,6 +160,13 @@ void SymptomPickerDialog::treeWidgetItemExpanded(QTreeWidgetItem *item)
 			child->addChildren(createItems(id));
 		}
 	}
+}
+
+
+void SymptomPickerDialog::treeWidgetItemDoubleClicked(QTreeWidgetItem *item)
+{
+	if(item != NULL && item->data(0, Qt::UserRole+1).toString() != "container")
+		accept();
 }
 
 
