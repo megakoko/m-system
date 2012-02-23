@@ -5,108 +5,114 @@ QToolButton[type] {
 	max-height: 30px;
 
 	border-style: none;
+
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
-/* Pressed */
 QToolButton[type]:pressed {
+	/* Эмулируем эффект нажатия, смещая иконку. */
 	margin-top: 3px;
 	margin-left: 3px;
 }
 
 
-/* ---------- */
+
+/* add */
 QToolButton[type='add'] {
-	background: url(:/add.png) no-repeat center;
+	background-image: url(:/add.png);
 }
-
-QToolButton[type='edit'] {
-	background: url(:/edit.png) no-repeat center;
-}
-
-QToolButton[type='remove'] {
-	background: url(:/remove.png) no-repeat center;
-}
-
-QToolButton[type='cancel'] {
-	background: url(:/cancel.png) no-repeat center;
-}
-
-QToolButton[type='spyglass'] {
-	background: url(:/spyglass.png) no-repeat center;
-}
-
-QToolButton[type='document'] {
-	background: url(:/document.png) no-repeat center;
-}
-
-QToolButton[type='list'] {
-	background: url(:/list.png) no-repeat center;
-}
-
-QToolButton[type='calendar'] {
-	background: url(:/calendar.png) no-repeat center;
-}
-
-
-/* Hover */
 QToolButton[type='add']:hover {
 	background-image: url(:/hover/add.png);
 }
-
-QToolButton[type='edit']:hover {
-	background-image: url(:/hover/edit.png);
-}
-
-QToolButton[type='remove']:hover {
-	background-image: url(:/hover/remove.png);
-}
-
-QToolButton[type='cancel']:hover {
-	background-image: url(:/hover/cancel.png);
-}
-
-QToolButton[type='spyglass']:hover {
-	background-image: url(:/hover/spyglass.png);
-}
-
-QToolButton[type='document']:hover {
-	background-image: url(:/hover/document.png);
-}
-
-QToolButton[type='list']:hover {
-	background-image: url(:/hover/list.png);
-}
-
-QToolButton[type='calendar']:hover {
-	background-image: url(:/hover/calendar.png);
-}
-
-
-/* disabled */
 QToolButton[type='add']:disabled {
 	background-image: url(:/disabled/add.png);
 }
 
+
+
+/* edit */
+QToolButton[type='edit'] {
+	background-image: url(:/edit.png);
+}
+QToolButton[type='edit']:hover {
+	background-image: url(:/hover/edit.png);
+}
 QToolButton[type='edit']:disabled {
 	background-image: url(:/disabled/edit.png);
 }
 
+
+
+/* remove */
+QToolButton[type='remove'] {
+	background-image: url(:/remove.png);
+}
+QToolButton[type='remove']:hover {
+	background-image: url(:/hover/remove.png);
+}
 QToolButton[type='remove']:disabled {
 	background-image: url(:/disabled/remove.png);
 }
 
+
+
+/* cancel */
+QToolButton[type='cancel'] {
+	background-image: url(:/cancel.png);
+}
+QToolButton[type='cancel']:hover {
+	background-image: url(:/hover/cancel.png);
+}
 QToolButton[type='cancel']:disabled {
 	background-image: url(:/disabled/cancel.png);
 }
 
+
+
+/* spyglass */
+QToolButton[type='spyglass'] {
+	background-image: url(:/spyglass.png);
+}
+QToolButton[type='spyglass']:hover {
+	background-image: url(:/hover/spyglass.png);
+}
 QToolButton[type='spyglass']:disabled {
 	background-image: url(:/disabled/spyglass.png);
 }
 
+
+
+/* document */
+QToolButton[type='document'] {
+	background-image: url(:/document.png);
+}
+QToolButton[type='document']:hover {
+	background-image: url(:/hover/document.png);
+}
 QToolButton[type='document']:disabled {
 	background-image: url(:/disabled/document.png);
 }
 
+
+
+/* list */
+QToolButton[type='list'] {
+	background-image: url(:/list.png);
+}
+QToolButton[type='list']:hover {
+	background-image: url(:/hover/list.png);
+}
 QToolButton[type='list']:disabled {
 	background-image: url(:/disabled/list.png);
+}
+
+
+
+/* calendar */
+QToolButton[type='calendar'] {
+	background-image: url(:/calendar.png);
+}
+QToolButton[type='calendar']:hover {
+	background-image: url(:/hover/calendar.png);
 }
