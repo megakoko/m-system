@@ -63,8 +63,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::initToolBar()
 {
-	m_connectionAction = m_toolbar->addAction(QString::fromUtf8("Войти в систему"),
-											  this, SLOT(logIn()));
+	m_loginAction = m_toolbar->addAction("Войти в систему", this, SLOT(logIn()));
+	m_logoutAction = m_toolbar->addAction("Выйти из системы", this, SLOT(logOut()));
+	m_logoutAction->setVisible(false);
+
 	m_toolbar->addAction(QString::fromUtf8("Настройки"),
 						 m_settingsDialog, SLOT(exec()));
 
@@ -100,12 +102,10 @@ void MainWindow::logIn()
 	if(d.exec() == QDialog::Accepted)
 	{
 		m_userId = d.loggedUserId();
-
-		m_connectionAction->setText(QString::fromUtf8("Выйти из системы"));
-		disconnect(m_connectionAction, SIGNAL(triggered()), this, SLOT(logIn()));
-		connect(m_connectionAction, SIGNAL(triggered()), SLOT(logOut()));
-
 		loadPlugins();
+
+		m_loginAction->setVisible(false);
+		m_logoutAction->setVisible(true);
 	}
 	else
 		m_userId = -1;
@@ -122,16 +122,15 @@ void MainWindow::logOut()
 
 	if(answer == QMessageBox::Yes)
 	{
-		m_connectionAction->setText(QString::fromUtf8("Войти в систему"));
-		disconnect(m_connectionAction, SIGNAL(triggered()), this, SLOT(logOut()));
-		connect(m_connectionAction, SIGNAL(triggered()), SLOT(logIn()));
-
 		m_homePage->clearButtons();
 		m_tabWidget->closeAllTabs();
 
 		LoginDialog::disconnectFromDatabase();
 
 		unloadPlugins();
+
+		m_loginAction->setVisible(true);
+		m_logoutAction->setVisible(false);
 	}
 }
 
