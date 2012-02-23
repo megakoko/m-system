@@ -55,7 +55,7 @@ void MainDiagnosisWidget::addRule()
 {
 	RuleEditWidget* w = new RuleEditWidget(RuleEditWidget::InvalidId, this);
 	connect(w, SIGNAL(saved()), SLOT(updateRuleList()));
-	requestToAddNewWidget(w, "");
+	requestToAddNewWidget(w, w->tabName());
 }
 
 
@@ -66,7 +66,7 @@ void MainDiagnosisWidget::editRule()
 
 	RuleEditWidget* w = new RuleEditWidget(id, this);
 	connect(w, SIGNAL(saved()), SLOT(updateRuleList()));
-	requestToAddNewWidget(w, "");
+	requestToAddNewWidget(w, w->tabName());
 }
 
 

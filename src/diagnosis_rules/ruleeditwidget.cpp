@@ -90,6 +90,8 @@ void RuleEditWidget::init()
 
 void RuleEditWidget::initConnections()
 {
+	connect(m_diseaseText, SIGNAL(editingFinished()), SLOT(updateTabName()));
+
 	connect(m_addRuleItem, SIGNAL(clicked()), SLOT(addRuleItem()));
 	connect(m_editRuleItem, SIGNAL(clicked()), SLOT(editRuleItem()));
 	connect(m_removeRuleItem, SIGNAL(clicked()), SLOT(removeRuleItem()));
@@ -99,6 +101,21 @@ void RuleEditWidget::initConnections()
 			SLOT(ruleItemSelectionChanged()));
 
 	connect(m_itemsTable, SIGNAL(doubleClicked(QModelIndex)), SLOT(editRuleItem()));
+}
+
+
+QString RuleEditWidget::tabName() const
+{
+	QString name = "Правило";
+	if(!m_diseaseText->text().isEmpty())
+		name += ": " + m_diseaseText->text();
+	return name;
+}
+
+
+void RuleEditWidget::updateTabName()
+{
+	emit requestToSetTabLabel(tabName());
 }
 
 
