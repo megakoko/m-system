@@ -128,11 +128,9 @@ void TabWidget::addHomeTab(HomePage *homePage)
 
 	if(homePage != NULL)
 	{
-		const QString& caption = "Домашняя страница";
-		const int index = addTab(homePage, caption);
-		setTabToolTip(index, caption);
+		const int index = addTab(homePage, QIcon(":/home.png"), QString::null);
+		setTabToolTip(index, "Домашняя страница");
 		setCurrentIndex(index);
-
 	}
 }
 

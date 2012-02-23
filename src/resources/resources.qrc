@@ -44,5 +44,8 @@
         <!-- calendar.png -->
         <file alias="calendar.png">icons/calendar_alt_stroke_24x24.png</file>
         <file alias="hover/calendar.png">icons/hover/calendar_alt_stroke_24x24.png</file>
+
+        <!-- home.png -->
+        <file alias="home.png">icons/home_16x16.png</file>
     </qresource>
 </RCC>
