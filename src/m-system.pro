@@ -13,4 +13,4 @@ SUBDIRS	+= 	cryptopp \
 			dummy_db \
 			therapeutist \
 			diagnosis_rules \
-#			pluginexample
+#			plugin_example
