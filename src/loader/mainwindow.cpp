@@ -63,15 +63,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::initToolBar()
 {
-	m_loginAction = m_toolbar->addAction("Войти в систему", this, SLOT(logIn()));
-	m_logoutAction = m_toolbar->addAction("Выйти из системы", this, SLOT(logOut()));
+	m_loginAction = m_toolbar->addAction(QIcon(":/login.png"), "Войти в систему",
+										 this, SLOT(logIn()));
+	m_logoutAction = m_toolbar->addAction(QIcon(":/logout.png"), "Выйти из системы",
+										  this, SLOT(logOut()));
+	m_saveAndCloseAction = m_toolbar->addAction(QIcon(":/save.png"), "Сохранить и закрыть",
+												m_tabWidget, SLOT(closeCurrentTab()));
+
 	m_logoutAction->setVisible(false);
 
-	m_toolbar->addAction(QString::fromUtf8("Настройки"),
-						 m_settingsDialog, SLOT(exec()));
-
-	m_saveAndCloseAction = m_toolbar->addAction("Сохранить и закрыть", m_tabWidget,
-												SLOT(closeCurrentTab()));
 
 	// Небольшой хак для того, чтоб пункт "О программе" был выровнян по правому краю.
 	QWidget* spacer = new QWidget(m_toolbar);
@@ -79,7 +79,10 @@ void MainWindow::initToolBar()
 	m_toolbar->addWidget(spacer);
 
 
-	m_toolbar->addAction(QString::fromUtf8("О программе"), this, SLOT(showAboutDialog()));
+	m_toolbar->addAction(QIcon(":/settings.png"), "Настройки",
+						 m_settingsDialog, SLOT(exec()));
+	m_toolbar->addAction(QIcon(":/about.png"), "О программе",
+						 this, SLOT(showAboutDialog()));
 }
 
 

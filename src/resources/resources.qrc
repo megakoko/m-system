@@ -6,6 +6,15 @@
         <file>qt_ru_4.7.3.qm</file>
         <file>stylesheet.css</file>
 
+
+        <!-- Иконки для таб-бара -->
+        <file alias='save.png'>icons/test_small/check_16x13.png</file>
+        <file alias='settings.png'>icons/test_small/cog_16x16.png</file>
+        <file alias='about.png'>icons/test_small/info_8x16.png</file>
+        <file alias='logout.png'>icons/test_small/key_fill_16x16.png</file>
+        <file alias='login.png'>icons/test_small/key_stroke_16x16.png</file>
+
+
         <!-- add.png -->
         <file alias="add.png">icons/plus_24x24.png</file>
         <file alias="hover/add.png">icons/hover/plus_24x24.png</file>
