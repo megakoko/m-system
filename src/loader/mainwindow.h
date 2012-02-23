@@ -42,7 +42,8 @@ private:
 
 	QString pluginName(const QString& textid) const;
 
-	QAction* m_connectionAction;
+	QAction* m_loginAction;
+	QAction* m_logoutAction;
 	QAction* m_saveAndCloseAction;
 
 	static QList<QPluginLoader*> m_plugins;
