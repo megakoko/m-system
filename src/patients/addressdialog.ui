@@ -84,6 +84,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_city</tabstop>
+  <tabstop>m_street</tabstop>
+  <tabstop>m_house</tabstop>
+  <tabstop>m_apartment</tabstop>
+  <tabstop>m_buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

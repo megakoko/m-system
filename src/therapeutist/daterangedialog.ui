@@ -84,6 +84,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_startDateEdit</tabstop>
+  <tabstop>m_endDateEdit</tabstop>
+  <tabstop>m_buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -199,6 +199,14 @@ background-color: transparent;
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_login</tabstop>
+  <tabstop>m_password</tabstop>
+  <tabstop>m_password2</tabstop>
+  <tabstop>m_staffName</tabstop>
+  <tabstop>m_isAdmin</tabstop>
+  <tabstop>scrollArea</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

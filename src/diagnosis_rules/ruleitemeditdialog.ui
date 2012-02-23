@@ -54,7 +54,7 @@
      <item row="2" column="1">
       <widget class="QStackedWidget" name="m_stackedWidget">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="m_textValuePage">
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -179,6 +179,17 @@ P(S|¬D) -- это вероятность появления симптома п
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_chooseSymptom</tabstop>
+  <tabstop>m_operator</tabstop>
+  <tabstop>m_textValue</tabstop>
+  <tabstop>m_realValue</tabstop>
+  <tabstop>m_realValue2</tabstop>
+  <tabstop>m_enumValue</tabstop>
+  <tabstop>m_probabilityWithDisease</tabstop>
+  <tabstop>m_probabilityWithoutDisease</tabstop>
+  <tabstop>m_buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -85,6 +85,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_addRule</tabstop>
+  <tabstop>m_editRule</tabstop>
+  <tabstop>m_deleteRule</tabstop>
+  <tabstop>m_view</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

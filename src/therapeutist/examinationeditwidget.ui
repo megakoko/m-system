@@ -150,7 +150,7 @@
         <x>0</x>
         <y>0</y>
         <width>805</width>
-        <height>330</height>
+        <height>367</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -166,6 +166,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_examDate</tabstop>
+  <tabstop>m_chooseTherapeutist</tabstop>
+  <tabstop>m_choosePatient</tabstop>
+  <tabstop>m_scrollArea</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
