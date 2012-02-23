@@ -1,6 +1,8 @@
 
 #include "settingsdialog.h"
 
+#include <QPushButton>
+
 #include "abstractsettingspage.h"
 #include "databasesettingspage.h"
 
@@ -24,10 +26,10 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 	connect(m_listWidget, SIGNAL(currentRowChanged(int)),
 			m_stackedWidget, SLOT(setCurrentIndex(int)));
 
-	connect(m_ok, SIGNAL(clicked()), SLOT(save()));
-	connect(m_ok, SIGNAL(clicked()), SLOT(accept()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(restore()));
-	connect(m_cancel, SIGNAL(clicked()), SLOT(reject()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(save()));
+	connect(m_buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(accept()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(restore()));
+	connect(m_buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), SLOT(reject()));
 
 
 	m_listWidget->setMinimumWidth(200);
