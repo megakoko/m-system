@@ -42,7 +42,7 @@
       <item row="1" column="1">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-		 <widget class="QToolButton" name="m_addPatient">
+         <widget class="QToolButton" name="m_addPatient">
           <property name="toolTip">
            <string>Добавить пациента</string>
           </property>
@@ -52,7 +52,7 @@
          </widget>
         </item>
         <item>
-		 <widget class="QToolButton" name="m_editPatient">
+         <widget class="QToolButton" name="m_editPatient">
           <property name="toolTip">
            <string>Редактировать информацию о пациенте</string>
           </property>
@@ -62,7 +62,7 @@
          </widget>
         </item>
         <item>
-		 <widget class="QToolButton" name="m_deletePatient">
+         <widget class="QToolButton" name="m_deletePatient">
           <property name="toolTip">
            <string>Удалить информацию о пациенте</string>
           </property>
@@ -99,6 +99,12 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>m_addPatient</tabstop>
+  <tabstop>m_editPatient</tabstop>
+  <tabstop>m_deletePatient</tabstop>
+  <tabstop>m_view</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

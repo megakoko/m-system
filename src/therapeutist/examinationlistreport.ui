@@ -89,6 +89,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_choosePeriod</tabstop>
+  <tabstop>m_grouping</tabstop>
+  <tabstop>m_fontFamily</tabstop>
+  <tabstop>m_fontSize</tabstop>
+  <tabstop>m_print</tabstop>
+  <tabstop>m_view</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

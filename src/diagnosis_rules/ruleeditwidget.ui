@@ -137,6 +137,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_diseaseText</tabstop>
+  <tabstop>m_diseaseProbability</tabstop>
+  <tabstop>m_addRuleItem</tabstop>
+  <tabstop>m_editRuleItem</tabstop>
+  <tabstop>m_removeRuleItem</tabstop>
+  <tabstop>m_itemsTable</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -276,10 +276,16 @@
   <tabstop>m_familyName</tabstop>
   <tabstop>m_name</tabstop>
   <tabstop>m_patronymic</tabstop>
-  <tabstop>m_documentTable</tabstop>
+  <tabstop>m_birthDay</tabstop>
+  <tabstop>m_editMailingAddress</tabstop>
+  <tabstop>m_mailingAddressIsActual</tabstop>
+  <tabstop>m_editActualAddress</tabstop>
+  <tabstop>m_male</tabstop>
+  <tabstop>m_female</tabstop>
   <tabstop>m_addDocument</tabstop>
   <tabstop>m_editDocument</tabstop>
   <tabstop>m_deleteDocument</tabstop>
+  <tabstop>m_documentTable</tabstop>
  </tabstops>
  <resources/>
  <connections/>

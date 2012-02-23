@@ -230,6 +230,18 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_editHealthFacility</tabstop>
+  <tabstop>m_editPositions</tabstop>
+  <tabstop>m_addDepartment</tabstop>
+  <tabstop>m_editDepartmnet</tabstop>
+  <tabstop>m_deleteDepartment</tabstop>
+  <tabstop>m_departmentTable</tabstop>
+  <tabstop>m_addStaff</tabstop>
+  <tabstop>m_editStaff</tabstop>
+  <tabstop>m_deleteStaff</tabstop>
+  <tabstop>m_staffTable</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -114,6 +114,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_addExam</tabstop>
+  <tabstop>m_editExam</tabstop>
+  <tabstop>m_openPreview</tabstop>
+  <tabstop>m_deleteExam</tabstop>
+  <tabstop>m_openExamListReport</tabstop>
+  <tabstop>m_examinations</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

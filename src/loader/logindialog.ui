@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>412</width>
-    <height>209</height>
+    <height>150</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,7 +93,7 @@
      <item>
       <widget class="QPushButton" name="m_quit">
        <property name="text">
-        <string>Выход</string>
+        <string>Отмена</string>
        </property>
       </widget>
      </item>
@@ -101,6 +101,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_login</tabstop>
+  <tabstop>m_password</tabstop>
+  <tabstop>m_ok</tabstop>
+  <tabstop>m_quit</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

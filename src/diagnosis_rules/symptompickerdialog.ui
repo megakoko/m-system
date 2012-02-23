@@ -89,6 +89,11 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>m_treeWidget</tabstop>
+  <tabstop>m_buttonBox</tabstop>
+  <tabstop>m_tableView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

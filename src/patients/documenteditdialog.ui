@@ -106,6 +106,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>m_documentType</tabstop>
+  <tabstop>m_serialNumber</tabstop>
+  <tabstop>m_date</tabstop>
+  <tabstop>m_givenBy</tabstop>
+  <tabstop>m_buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
