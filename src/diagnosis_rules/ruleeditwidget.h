@@ -12,6 +12,8 @@ class RuleEditWidget : public SaveablePluginWidget, private Ui::RuleEditWidget
 public:
 	RuleEditWidget(const int ruleId, QWidget *parent = 0);
 
+	QString tabName() const;
+
 	bool canSave(QString &errorDescription) const;
 	void save();
 
@@ -29,6 +31,8 @@ private:
 	QList<RuleItem> m_removedRuleItems;
 
 private slots:
+	void updateTabName();
+
 	void addRuleItem();
 	void editRuleItem();
 	void removeRuleItem();
