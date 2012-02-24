@@ -139,9 +139,6 @@ void PatientEditWidget::init()
 		m_mailingAddressIsActual->setChecked(!hasActualAddress);
 		toggleMailingAddressIsActual(!hasActualAddress);
 
-		m_mailingAddressLabel->setText(m_mailingAddress.toString());
-		m_actualAddressLabel->setText(m_actualAddress.toString());
-
 
 		q.prepare(" SELECT id, documentTypeId, serialNumber, date, givenBy "
 				  " FROM Document "
@@ -157,6 +154,10 @@ void PatientEditWidget::init()
 			addDocumentToTable(m_documents.last());
 		}
 	}
+
+	// Адреса.
+	m_mailingAddressLabel->setText(m_mailingAddress.toString());
+	m_actualAddressLabel->setText(m_actualAddress.toString());
 }
 
 
