@@ -153,8 +153,9 @@ void MainPatientsWidget::deletePatient()
 	const int patientId = selectedPatientId();
 	Q_ASSERT(patientId > 0);
 
-	const QString& title = QString::fromUtf8("Удаление пациента");
-	const QString& descr = QString::fromUtf8("Вы действительно хотите удалить пациента?");
+	const QString& title = "Удаление пациента";
+	const QString& descr = "Вы действительно хотите удалить пациента?\n"
+						   "Будут также удалены все осмотры данного пациента.";
 	const int rc = QMessageBox::question(this, title, descr,
 										 QMessageBox::Yes | QMessageBox::No);
 	if(rc == QMessageBox::Yes)
@@ -169,6 +170,17 @@ void MainPatientsWidget::deletePatient()
 		checkQuery(q);
 
 		q.prepare("DELETE FROM Document WHERE patientId = :id");
+		q.addBindValue(patientId);
+		q.exec();
+		checkQuery(q);
+
+		q.prepare(" DELETE FROM ExaminationData WHERE examinationId IN "
+				  " (SELECT id FROM Examination WHERE patientId = ?) ");
+		q.addBindValue(patientId);
+		q.exec();
+		checkQuery(q);
+
+		q.prepare("DELETE FROM Examination WHERE patientId = ?");
 		q.addBindValue(patientId);
 		q.exec();
 		checkQuery(q);
