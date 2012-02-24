@@ -234,7 +234,7 @@ bool TabWidget::userWantsToCloseMainPluginTab()
 int TabWidget::askUserAboutSaving()
 {
 	const QString& title = "Закрытие вкладки";
-	const QString& descr = "Хотите сохранить содержимое вкладки и закрыть ее?";
+	const QString& descr = "Хотите сохранить содержимое вкладки?";
 
 	return QMessageBox::question(this, title, descr,
 								 QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
