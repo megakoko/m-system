@@ -182,11 +182,85 @@ void ExaminationEditWidget::save()
 	if(m_examinationId == InvalidId)
 		m_examinationId = Therapeutist::interfaces->db->lastInsertedId(&q).toInt();
 
-
+	// Сохраняем введенные симптомы.
 	m_mainContainer->save(m_examinationId);
+	// Сохраняем возраст.
+	savePatientAge();
 
 	q.exec("COMMIT");
 	emit saved();
+}
+
+
+int yearsBetween(const QDate& date1, const QDate& date2)
+{
+	int years = -1;
+
+	if(date2 > date1)
+	{
+		years = date2.year() - date1.year();
+
+		if(date2.month() < date1.month() ||
+		   (date2.month() == date1.month() && date2.day() <= date1.day()))
+		{
+			years = years - 1;
+		}
+	}
+
+	return years;
+}
+
+
+void ExaminationEditWidget::savePatientAge()
+{
+	// Сначала узнаем день рождения пациента.
+	QSqlQuery q;
+	q.prepare(" SELECT birthday FROM Patient "
+			  " WHERE id = (SELECT patientId FROM Examination WHERE id = ?) ");
+	q.addBindValue(m_examinationId);
+	q.exec();
+	checkQuery(q);
+
+	if(q.first())
+	{
+		const QDate& birthday = Therapeutist::interfaces->enc->decodeDate(q.value(0).toString());
+		const QDate& examDate = m_examDate->date();
+
+		const int age = yearsBetween(birthday, examDate);
+		if(age < 0)
+			return;
+
+
+		q.prepare(" SELECT id "
+				  " FROM ExaminationData "
+				  " WHERE uiElementId = (SELECT id FROM UiElement WHERE textid = ?)");
+		q.addBindValue("age");
+		q.exec();
+		checkQuery(q);
+
+		QVariant ageId;
+		if(q.first())
+			ageId = q.value(0);
+
+
+		if(ageId.isValid())
+		{
+			q.prepare(" UPDATE ExaminationData SET "
+					  " realValue = :age "
+					  " WHERE id = :id AND examinationId = :examId ");
+			q.bindValue(":id", ageId);
+		}
+		else
+		{
+			q.prepare(" INSERT INTO ExaminationData "
+					  " ( examinationId,  uiElementId,  realValue) VALUES "
+					  " (:examId, (SELECT id FROM UiElement WHERE textid = 'age'), :age)");
+		}
+		q.bindValue(":age", age);
+		q.bindValue(":examId", m_examinationId);
+		q.exec();
+		checkQuery(q);
+	}
 }
 
 
