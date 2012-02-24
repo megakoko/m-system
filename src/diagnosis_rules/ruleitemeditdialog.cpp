@@ -106,7 +106,7 @@ void RuleItemEditDialog::updateSymptomNameAndValueWidgets()
 
 				m_stackedWidget->setCurrentIndex(ValuePage::enumValuePage);
 			}
-			else if(type == "spinbox")
+			else if(type == "spinbox" || type == "age")
 			{
 				populateOperatorList(QStringList() << "equal" << "more" << "less" << "between");
 

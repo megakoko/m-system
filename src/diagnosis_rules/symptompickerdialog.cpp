@@ -127,7 +127,7 @@ QList<QTreeWidgetItem*> SymptomPickerDialog::createItems(const QVariant& parentI
 	if(parentId.isNull())
 	{
 		q.prepare(" SELECT id, label, typeid FROM uielement "
-				  " WHERE parentId = 'main' AND typeid = 'container' "
+				  " WHERE parentId = 'main' "
 				  " ORDER BY id ");
 	}
 	else

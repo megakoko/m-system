@@ -21,6 +21,8 @@ private:
 	void init();
 	void initConnections();
 
+	void savePatientAge();
+
 	static QStringList patientName(const int patientId);
 
 	int m_examinationId;
