@@ -175,7 +175,7 @@ int betweenOperatorId()
 	checkQuery(q);
 
 	const bool hasRecord = q.first();
-	Q_ASSERT(hasRecord);
+	Q_ASSERT(hasRecord); Q_UNUSED(hasRecord);
 
 	return q.value(0).toInt();
 }
