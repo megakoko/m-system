@@ -22,7 +22,4 @@ signals:
 	/// Позволяет поменять название вкладки, в которой находится виджет, на \a caption.
 	void requestToSetTabLabel(const QString& caption);
 
-	/// Сообщает программе, что надо закрыть вкладку с данным виджетом.
-	void requestToCloseTab();
-
 };
