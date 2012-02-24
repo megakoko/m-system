@@ -128,7 +128,7 @@ QString RuleItem::operatorText() const
 	checkQuery(q);
 
 	const bool operatorIdIsValid = q.first();
-	Q_ASSERT(operatorIdIsValid);
+	Q_ASSERT(operatorIdIsValid); Q_UNUSED(operatorIdIsValid);
 
 	return QString("%1 (%2)").arg(q.value(0).toString()).arg(q.value(1).toString());
 }

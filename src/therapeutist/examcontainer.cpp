@@ -304,7 +304,7 @@ QStringList ExamContainer::containerValueFromDatabase(const QString& containerTe
 					recordHasValue = true;
 					break;
 				}
-			Q_ASSERT(recordHasValue);
+			Q_ASSERT(recordHasValue); Q_UNUSED(recordHasValue);
 
 
 			values << val;

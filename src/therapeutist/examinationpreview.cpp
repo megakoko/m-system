@@ -226,7 +226,7 @@ void ExaminationPreview::addExaminationData(QDomElement &body)
 QString ExaminationPreview::examDataFromSqlRecord(const QSqlRecord &record)
 {
 	const QString& type = record.value(4).toString();
-	Q_ASSERT(!type.isNull() && type != "container");
+	Q_ASSERT(!type.isNull() && type != "container"); Q_UNUSED(type);
 
 
 	QString data = record.value(0).toString();
@@ -239,7 +239,7 @@ QString ExaminationPreview::examDataFromSqlRecord(const QSqlRecord &record)
 			recordHasValue = true;
 			break;
 		}
-	Q_ASSERT(recordHasValue);
+	Q_ASSERT(recordHasValue); Q_UNUSED(recordHasValue);
 
 	return data;
 }
