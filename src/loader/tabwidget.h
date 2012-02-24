@@ -37,15 +37,10 @@ private:
 
 	bool userWantsToCloseMainPluginTab();
 
-	bool userWantsToSaveWidget();
+	int askUserAboutSaving();
 	bool userWantsToCloseWidgetThatCannotBeSaved(const QString& errorDescription);
 
-	/// Сохраняет виджет. Возвращает true, если виджет был сохранен.
-	bool saveWidget(SaveablePluginWidget* widget);
-
 private slots:
-	bool saveSenderWidget();
-	bool saveCurrentWidget();
 	void closeCurrentTab();
 
 	void onCurrentIndexChanged();
