@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QMap>
 #include "examwidgetfactory.h"
 
 class QWidget;
@@ -42,6 +43,9 @@ public:
 
 	// Возвращает виджет, с которым будет взаимодействовать пользователь.
 	virtual QWidget* widget() const = 0;
+
+	// Возвращает карту с ключами uiElementId и данными виджета в качестве значений.
+	virtual QMap<int, QVariant> data() const = 0;
 
 	// Возвращает название виджета.
 	QString labelText() const;

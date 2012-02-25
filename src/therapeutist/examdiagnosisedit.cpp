@@ -6,10 +6,13 @@
 #include <QHBoxLayout>
 #include <QDebug>
 
+#include "examcontainer.h"
+
 
 ExamDiagnosisEdit::ExamDiagnosisEdit(const int examId, const QString &textid)
 	: ExamLineEdit(examId, textid)
 	, m_widget(new QWidget())
+	, m_mainContainer(NULL)
 {
 	QToolButton* diagnosisHelpButton = new QToolButton;
 	diagnosisHelpButton->setProperty("type", "star");
@@ -31,7 +34,16 @@ QWidget* ExamDiagnosisEdit::widget() const
 }
 
 
+void ExamDiagnosisEdit::setMainContainer(ExamContainer* container)
+{
+	m_mainContainer = container;
+}
+
+
 void ExamDiagnosisEdit::openDiagnosisHelp()
 {
-	qDebug() << __FUNCTION__;
+	if(m_mainContainer != NULL)
+		qDebug() << m_mainContainer->data();
+	else
+		qDebug() << "null container";
 }

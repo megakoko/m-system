@@ -72,3 +72,12 @@ bool ExamSpinBox::save(const int examId)
 {
 	return saveHelper("realValue", examId, m_spinBox->value());
 }
+
+
+QMap<int, QVariant> ExamSpinBox::data() const
+{
+	QMap<int, QVariant> result;
+	if(!valueIsNull())
+		result[m_uielementId] = m_spinBox->value();
+	return result;
+}

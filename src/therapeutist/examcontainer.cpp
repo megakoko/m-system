@@ -11,6 +11,7 @@
 #include <QDebug>
 
 #include "therapeutist.h"
+#include "examdiagnosisedit.h"
 #include "macros.h"
 
 
@@ -139,6 +140,19 @@ QWidget* ExamContainer::widget() const
 }
 
 
+QMap<int, QVariant> ExamContainer::data() const
+{
+	QMap<int, QVariant> result;
+
+	if(m_items.isEmpty())
+		result = containerDataFromDatabase(m_textid);
+	else foreach(const ExamWidget* widget, m_items)
+		result.unite(widget->data());
+
+	return result;
+}
+
+
 void ExamContainer::updateHeader()
 {
 	if(!m_topLevel)
@@ -147,7 +161,8 @@ void ExamContainer::updateHeader()
 		const bool containerIsExpanded = m_container->isVisible();
 
 		const QString& link	=
-				QString("<a style='font-weight: %1; color: black; text-decoration: none' href='ref'>%2</a>")
+				QString("<a style='font-weight: %1; color: black; text-decoration: none' "
+						"href='ref'>%2</a>")
 				.arg(childrenValuesAreNull ? "normal" : "bold")
 				.arg(labelText());
 
@@ -227,6 +242,14 @@ void ExamContainer::expandContainer(const bool expanded)
 						connect(widget, SIGNAL(valueChanged(bool)),
 								resetButton, SLOT(setDisabled(bool)));
 					}
+				}
+
+
+				if(uiElementTextId == "diagnosis" && m_textid == "main")
+				{
+					ExamDiagnosisEdit* diagnosis = dynamic_cast<ExamDiagnosisEdit*>(widget);
+					if(diagnosis != NULL)
+						diagnosis->setMainContainer(this);
 				}
 			}
 		}
@@ -317,6 +340,50 @@ QStringList ExamContainer::containerValueFromDatabase(const QString& containerTe
 	}
 
 	return values;
+}
+
+
+QMap<int, QVariant>
+ExamContainer::containerDataFromDatabase(const QString &containerTextId) const
+{
+	QMap<int, QVariant> result;
+
+	QSqlQuery q;
+	q.prepare(" SELECT ui.id, d.textValue, d.realValue, d.enumValue, ui.typeid, ui.textId "
+			  " FROM ExaminationData d "
+			  " LEFT JOIN UiElement ui ON d.uielementId = ui.id "
+			  " WHERE d.examinationId = ? AND ui.parentId = ? "
+			  " ORDER BY ui.id ");
+
+	q.addBindValue(m_examId);
+	q.addBindValue(containerTextId);
+	q.exec();
+	checkQuery(q);
+
+
+	while(q.next())
+	{
+		if(q.value(4).toString() == "container")
+		{
+			result.unite(containerDataFromDatabase(q.value(5).toString()));
+		}
+		else
+		{
+			const int id = q.value(0).toInt();
+			QVariant datum;
+			for(int recordColumn = 1; recordColumn <= 3; ++recordColumn)
+				if(!q.value(recordColumn).isNull())
+				{
+					datum = q.value(recordColumn);
+					break;
+				}
+
+			if(!datum.isNull())
+				result[id] = datum;
+		}
+	}
+
+	return result;
 }
 
 

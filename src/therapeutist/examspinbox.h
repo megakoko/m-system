@@ -15,6 +15,7 @@ public:
 	QString value() const;
 	void init();
 	bool save(const int examId);
+	QMap<int, QVariant> data() const;
 
 	QWidget* widget() const;
 

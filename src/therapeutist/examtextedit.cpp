@@ -73,3 +73,12 @@ bool ExamTextEdit::save(const int examId)
 {
 	return saveHelper("textValue", examId, m_textEdit->toPlainText());
 }
+
+
+QMap<int, QVariant> ExamTextEdit::data() const
+{
+	QMap<int, QVariant> result;
+	if(!valueIsNull())
+		result[m_uielementId] = m_textEdit->toPlainText();
+	return result;
+}
