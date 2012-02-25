@@ -31,6 +31,7 @@ void ExaminationEditWidget::init()
 {
 	m_mainContainer = new ExamContainer(m_examinationId, "main", true);
 	m_widgetsLayout->addWidget(m_mainContainer->widget(), 0, Qt::AlignTop);
+	m_mainContainer->setParent(this);
 
 
 	// Если текущий пользователь не администратор, то отключаем возможность
