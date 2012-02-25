@@ -49,6 +49,8 @@ public:
 	//
 	QString shortLabelText() const;
 
+	void setUiElementId(const int id);
+
 public slots:
 	// Сбрасывает значение, которое хранит виджет.
 	virtual void resetValue();
@@ -62,8 +64,10 @@ protected:
 	// Поле таблицы ExaminationData::id.
 	int m_examDataId;
 
+	// Поле таблицы UiElement::id.
+	int m_uielementId;
 
-	// Идентификатор виджета (берется из базы данных).
+	// Текстовый идентификатор виджета (берется из базы данных).
 	const QString m_textid;
 
 	virtual void setLabelText(const QString& labelText, const QString &shortLabelText);

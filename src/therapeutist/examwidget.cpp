@@ -7,6 +7,7 @@ ExamWidgetFactory ExamWidget::m_factory;
 ExamWidget::ExamWidget(const int examId, const QString &textid)
 	: m_examId(examId)
 	, m_examDataId(InvalidId)
+	, m_uielementId(InvalidId)
 	, m_textid(textid)
 {
 }
@@ -46,4 +47,10 @@ void ExamWidget::setLabelText(const QString &labelText, const QString& shortLabe
 void ExamWidget::resetValue()
 {
 	// Ничего не делаем.
+}
+
+
+void ExamWidget::setUiElementId(const int id)
+{
+	m_uielementId = id;
 }

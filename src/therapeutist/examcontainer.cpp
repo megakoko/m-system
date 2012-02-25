@@ -172,16 +172,21 @@ void ExamContainer::expandContainer(const bool expanded)
 	if(m_items.isEmpty())
 	{
 		QSqlQuery q;
-		q.prepare("SELECT textid FROM UiElement WHERE parentId = ? ORDER BY id");
+		q.prepare("SELECT id, textid FROM UiElement WHERE parentId = ? ORDER BY id");
 		q.addBindValue(m_textid);
 		q.exec();
 
 		while(q.next())
 		{
-			ExamWidget* widget = m_factory.createWidget(m_examId, q.value(0).toString());
+			const int uiElementId = q.value(0).toInt();
+			const QString& uiElementTextId = q.value(1).toString();
+			ExamWidget* widget = m_factory.createWidget(m_examId, uiElementTextId);
 
 			if(widget != NULL && widget->widget() != NULL)
 			{
+				widget->setParent(this);
+				widget->setUiElementId(uiElementId);
+
 				connect(widget, SIGNAL(valueChanged(bool)), SLOT(updateHeader()));
 				connect(widget, SIGNAL(valueChanged(bool)), SIGNAL(valueChanged(bool)));
 
