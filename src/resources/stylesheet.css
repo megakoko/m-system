@@ -116,3 +116,14 @@ QToolButton[type='calendar'] {
 QToolButton[type='calendar']:hover {
 	background-image: url(:/hover/calendar.png);
 }
+
+
+
+/* star */
+QToolButton[type='star'] {
+	background-image: url(:/star.png);
+}
+QToolButton[type='star']:hover {
+	background-image: url(:/hover/star.png);
+}
+

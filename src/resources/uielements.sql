@@ -5,7 +5,8 @@ UNION SELECT 'combobox'
 UNION SELECT 'lineedit'
 UNION SELECT 'textedit'
 UNION SELECT 'spinbox'
-UNION SELECT 'age';
+UNION SELECT 'age'
+UNION SELECT 'diagnosis';
 
 
 -- Элементы нулевого уровня и элементы первого уровня без дочерних элементов.
@@ -18,7 +19,7 @@ SELECT 05, 'AA_FT', 'main', NULL, 'textedit', 'Анамнез болезни', N
 SELECT 06, 'age', 'main', NULL, 'age', 'Возраст', NULL UNION
 SELECT 16000, 'StatusLocalis', 'main', NULL, 'textedit', 'Status localis', NULL UNION
 SELECT 16010, 'Extra', 'main', NULL, 'textedit', 'Дополнительно', NULL UNION
-SELECT 16020, 'EntranceDiagnosis', 'main', NULL, 'textedit', 'Ds.', NULL;
+SELECT 16020, 'EntranceDiagnosis', 'main', NULL, 'diagnosis', 'Диагноз', NULL;
 
 INSERT INTO UiElementEnums(id, uiElementTextId, value)
 SELECT 1, 'HospAim', 'обследование' UNION
