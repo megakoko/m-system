@@ -21,9 +21,10 @@ public:
 public slots:
 	void resetValue();
 
-private:
+protected:
 	QLineEdit* m_lineEdit;
 
+private:
 	bool m_textIsNull;
 
 private slots:

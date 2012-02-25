@@ -56,5 +56,9 @@
 
         <!-- home.png -->
         <file alias="home.png">icons/home_16x16.png</file>
+        
+        <!-- star.png -->
+        <file alias="star.png">icons/star_16x16.png</file>
+        <file alias="hover/star.png">icons/hover/star_16x16.png</file>
     </qresource>
 </RCC>
