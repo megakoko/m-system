@@ -14,6 +14,7 @@ ExamComboBox::ExamComboBox(const int examId, const QString &textId)
 	: ExamInputWidget(examId, textId)
 	, m_comboBox(new QComboBox())
 {
+	m_comboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
 	connect(m_comboBox, SIGNAL(currentIndexChanged(int)), SLOT(comboBoxIndexChanged()));
 
 
@@ -79,4 +80,13 @@ bool ExamComboBox::save(const int examId)
 {
 	const QVariant& value = m_comboBox->itemData(m_comboBox->currentIndex());
 	return saveHelper("enumValue", examId, value);
+}
+
+
+QMap<int, QVariant> ExamComboBox::data() const
+{
+	QMap<int, QVariant> result;
+	if(!valueIsNull())
+		result[m_uielementId] = m_comboBox->itemData(m_comboBox->currentIndex());
+	return result;
 }

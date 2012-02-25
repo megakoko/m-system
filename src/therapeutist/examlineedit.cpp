@@ -73,3 +73,12 @@ bool ExamLineEdit::save(const int examId)
 {
 	return saveHelper("textValue", examId, m_lineEdit->text());
 }
+
+
+QMap<int, QVariant> ExamLineEdit::data() const
+{
+	QMap<int, QVariant> result;
+	if(!valueIsNull())
+		result[m_uielementId] = m_lineEdit->text();
+	return result;
+}

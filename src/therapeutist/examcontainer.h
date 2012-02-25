@@ -21,6 +21,7 @@ public:
 	QString value() const;
 	void init();
 	bool save(const int examId);
+	QMap<int, QVariant> data() const;
 
 	QLabel* label() const;
 	QWidget* widget() const;
@@ -32,6 +33,9 @@ private:
 	// Возвращает значение всех элементов, содержащихся в контейнере
 	// с textid = containerTextId.
 	QStringList containerValueFromDatabase(const QString& containerTextId) const;
+	// То же самое, что и containerValueFromDatabase, только возвращает данные в виде
+	// карты QMap.
+	QMap<int, QVariant> containerDataFromDatabase(const QString& containerTextId) const;
 
 	void expandContainer(const bool expanded);
 

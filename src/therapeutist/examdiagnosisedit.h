@@ -1,7 +1,7 @@
 #pragma once
 
 #include "examlineedit.h"
-
+class ExamContainer;
 
 class ExamDiagnosisEdit : public ExamLineEdit
 {
@@ -11,8 +11,12 @@ public:
 
 	QWidget* widget() const;
 
+	void setMainContainer(ExamContainer *container);
+
 private:
 	QWidget* m_widget;
+
+	ExamContainer* m_mainContainer;
 
 private slots:
 	void openDiagnosisHelp();
