@@ -52,8 +52,8 @@ SELECT 110, 'PA_UI', 'PA', NULL, 'combobox', 'Привычные интокси�
 SELECT 120, 'PA_AH', 'PA', NULL, 'textedit', 'Наследственность', NULL UNION
 SELECT 130, 'PA_FS', 'PA', NULL, 'textedit', 'Семейное положение', NULL UNION
 SELECT 140, 'PA_UP', 'PA', NULL, 'combobox', 'Условия проживания', NULL UNION
-SELECT 150, 'PA_OGA', 'PA', NULL, 'textedit', 'Акушерско-гинекологический анамнез', NULL UNION
-SELECT 160, 'PA_M', 'PA', NULL, 'textedit', 'Menses', NULL UNION
+--SELECT 150, 'PA_OGA', 'PA', NULL, 'textedit', 'Акушерско-гинекологический анамнез', NULL UNION
+--SELECT 160, 'PA_M', 'PA', NULL, 'textedit', 'Menses', NULL UNION
 --SELECT 170, 'PA_exp', 'PA', NULL, 'combobox', 'Страховой анамнез', NULL UNION
 SELECT 180, 'PAd', 'PA', NULL, 'textedit', 'Дополнительно', NULL;
 
@@ -1196,7 +1196,7 @@ SELECT 14030, 'UGSPK', 'UGSall', NULL, 'textedit', 'Пальпация поче�
 SELECT 14040, 'UGSSP', 'UGSall', NULL, 'container', 'Cимптом Пастернацкого', NULL UNION
 SELECT 14050, 'UGSSPR', 'UGSSP', NULL, 'combobox', 'Cимптом Пастернацкого - справа', 'Справа' UNION
 SELECT 14060, 'UGSSPL', 'UGSSP', NULL, 'combobox', 'Cимптом Пастернацкого - слева', 'Слева' UNION
-SELECT 14070, 'UGSGS', 'UGSall', NULL, 'textedit', 'Гинекологическое исследование', NULL UNION
+--SELECT 14070, 'UGSGS', 'UGSall', NULL, 'textedit', 'Гинекологическое исследование', NULL UNION
 SELECT 14080, 'UGSd', 'UGSall', NULL, 'textedit', 'Дополнительно', NULL;
 
 INSERT INTO UiElementEnums(id, uiElementTextId, value)
