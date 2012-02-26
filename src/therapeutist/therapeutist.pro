@@ -27,7 +27,10 @@ SOURCES +=	therapeutist.cpp \
 			examinationlistreport.cpp \
 			domhelper.cpp \
 			daterangedialog.cpp \
-			examdiagnosisedit.cpp
+			examdiagnosisedit.cpp \
+			dsruleitem.cpp \
+			dsrule.cpp \
+			diagnosishelpdialog.cpp
 
 HEADERS	+=	therapeutist.h \
 			maintherapeutistwidget.h \
@@ -47,7 +50,10 @@ HEADERS	+=	therapeutist.h \
 			examinationlistreport.h \
 			domhelper.h \
 			daterangedialog.h \
-			examdiagnosisedit.h
+			examdiagnosisedit.h \
+			dsruleitem.h \
+			dsrule.h \
+			diagnosishelpdialog.h
 
 FORMS	+=	maintherapeutistwidget.ui \
 			examinationeditwidget.ui \
@@ -55,4 +61,5 @@ FORMS	+=	maintherapeutistwidget.ui \
 			examinationpreview.ui \
 			therapeutistpickerdialog.ui \
 			examinationlistreport.ui \
-			daterangedialog.ui
+			daterangedialog.ui \
+			diagnosishelpdialog.ui
