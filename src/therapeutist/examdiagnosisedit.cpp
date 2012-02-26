@@ -7,6 +7,7 @@
 #include <QDebug>
 
 #include "examcontainer.h"
+#include "diagnosishelpdialog.h"
 
 
 ExamDiagnosisEdit::ExamDiagnosisEdit(const int examId, const QString &textid)
@@ -43,7 +44,11 @@ void ExamDiagnosisEdit::setMainContainer(ExamContainer* container)
 void ExamDiagnosisEdit::openDiagnosisHelp()
 {
 	if(m_mainContainer != NULL)
-		qDebug() << m_mainContainer->data();
+	{
+		DiagnosisHelpDialog dialog(m_mainContainer->data());
+		if(dialog.exec() == QDialog::Accepted)
+			m_lineEdit->setText(dialog.selectedDiagnosis());
+	}
 	else
 		qDebug() << "null container";
 }
