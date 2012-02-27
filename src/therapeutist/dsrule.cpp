@@ -17,22 +17,18 @@ DsRule::DsRule(const QMap<int, QVariant> data, const QSqlRecord& record)
 
 
 	QSqlQuery q;
-	q.prepare(" SELECT uiElementId, op.textid, textValue, realValue, realValue2, "
-			  " enumValue, probabilityWithDisease, probabilityWithoutDisease "
+	q.prepare(" SELECT uiElementId, label, op.textid, op.sign, textValue, realValue, realValue2, "
+			  " enumValue, enums.value, probabilityWithDisease, probabilityWithoutDisease "
 			  " FROM DsRuleItem item LEFT JOIN Operator op ON item.operatorId = op.id "
+			  " LEFT JOIN UiElement ui ON item.uiElementId = ui.id "
+			  " LEFT JOIN UiElementEnums enums ON item.enumValue = enums.id "
 			  " WHERE ruleId = ? ");
 	q.addBindValue(record.value("id"));
 	q.exec();
 	checkQuery(q);
 
-
-	QList<DsRuleItem> ruleItems;
 	while(q.next())
-	{
-		DsRuleItem item(data, q.record());
-		if(item.hasSymptom())
-			ruleItems << item;
-	}
+		m_ruleItems << DsRuleItem(data, q.record());
 
 
 	/*
@@ -58,10 +54,13 @@ DsRule::DsRule(const QMap<int, QVariant> data, const QSqlRecord& record)
 	double product1 = diseaseProbability;
 	double product2 = 1.0 - diseaseProbability;
 
-	foreach(const DsRuleItem& item, ruleItems)
+	foreach(const DsRuleItem& item, m_ruleItems)
 	{
-		product1 *= item.probabilityWithDisease();
-		product2 *= item.probabilityWithoutDisease();
+		if(item.hasSymptom())
+		{
+			product1 *= item.probabilityWithDisease();
+			product2 *= item.probabilityWithoutDisease();
+		}
 	}
 
 	m_probability = product1 / (product1 + product2);

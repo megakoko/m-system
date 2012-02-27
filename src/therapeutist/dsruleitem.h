@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QString>
+
 template <class Key, class T> class QMap;
 class QVariant;
 class QSqlRecord;
@@ -14,10 +16,17 @@ public:
 	double probabilityWithDisease() const;
 	double probabilityWithoutDisease() const;
 
+	QString fullDescription() const
+	{return m_fullDescription;}
+
 private:
+
+
 	bool m_hasSymptom;
 
 	double m_probabilityWithDisease;
 	double m_probabilityWithoutDisease;
+
+	QString m_fullDescription;
 
 };

@@ -13,17 +13,17 @@ DsRuleItem::DsRuleItem(const QMap<int, QVariant> &data, const QSqlRecord &rec)
 {
 	const int uiElementId = rec.value("uiElementId").toInt();
 
+	// values.
+	const QVariant& value = data.value(uiElementId);
+
+	const QVariant& ruleTextValue = rec.value("textValue");
+	const QVariant& ruleRealValue = rec.value("realValue");
+	const QVariant& ruleRealValue2= rec.value("realValue2");
+	const QVariant& ruleEnumValue = rec.value("enumValue");
+
+
 	if(data.contains(uiElementId))
 	{
-		// values.
-		const QVariant& value = data.value(uiElementId);
-
-		const QVariant& ruleTextValue = rec.value("textValue");
-		const QVariant& ruleRealValue = rec.value("realValue");
-		const QVariant& ruleRealValue2= rec.value("realValue2");
-		const QVariant& ruleEnumValue = rec.value("enumValue");
-
-
 		bool operatorWasAppliedSuccessfully = true;
 
 		const QString& operatorTextid = rec.value("textid").toString();
@@ -80,6 +80,30 @@ DsRuleItem::DsRuleItem(const QMap<int, QVariant> &data, const QSqlRecord &rec)
 						  ", enum -" << ruleEnumValue;
 		}
 	}
+
+
+	const QString& label = rec.value("label").toString();
+	const QVariant& enumText = rec.value("value");
+	const QString& sign = rec.value("sign").toString().simplified();
+
+
+	QString val;
+	if(!ruleTextValue.isNull())
+		val = ruleTextValue.toString();
+	else if(!ruleRealValue.isNull())
+	{
+		if(ruleRealValue2.isNull())
+			val = QString::number(ruleRealValue.toDouble());
+		else
+			val = QString("[%1;%2]").arg(ruleRealValue.toDouble()).arg(ruleRealValue2.toDouble());
+	}
+	else if(!ruleEnumValue.isNull())
+		val = enumText.toString();
+
+
+	m_fullDescription = label + " " + sign + " " + val;
+	m_fullDescription.replace("<", "&lt;");
+	m_fullDescription.replace(">", "&gt;");
 }
 
 
