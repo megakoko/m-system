@@ -73,23 +73,29 @@ void DiagnosisHelpDialog::addDiagnosisToTable(const DsRule &rule)
 	const int row = m_diagnosisTable->rowCount();
 	m_diagnosisTable->insertRow(row);
 
+
+	static const QChar V(0x2713);
+	static const QChar X(0x2717);
+
+	QStringList toolTipParts;
+	foreach(const DsRuleItem& ruleItem, rule.ruleItems())
+		toolTipParts << QString("<span style='color: %1'>%2</span> %3").
+						arg(ruleItem.hasSymptom() ? "green" : "red").
+						arg(ruleItem.hasSymptom() ? V : X).
+						arg(ruleItem.fullDescription());
+
+	const QString& toolTip = toolTipParts.join("<br/>");
+
+
 	QTableWidgetItem* item;
 
 	item = new QTableWidgetItem(rule.diseaseText());
+	item->setToolTip(toolTip);
 	m_diagnosisTable->setItem(row, TableColumns::Diagnosis, item);
 
 	item = new QTableWidgetItem(formatProbability(rule.probabilityOfDiseaseGivenSymptoms()));
+	item->setToolTip(toolTip);
 	m_diagnosisTable->setItem(row, TableColumns::Probability, item);
-
-	QStringList toolTip;
-	{
-		foreach(const DsRuleItem& ruleItem, rule.ruleItems())
-			toolTip << QString("<span style='color: %1'>%2</span> %3").
-					   arg(ruleItem.hasSymptom() ? "green" : "red").
-					   arg(ruleItem.hasSymptom() ? "V" : "X").
-					   arg(ruleItem.fullDescription());
-	}
-	item->setToolTip(toolTip.join("<br/>"));
 }
 
 

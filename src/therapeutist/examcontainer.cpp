@@ -162,10 +162,13 @@ QMap<int, QVariant> ExamContainer::data() const
 		QSqlQuery q("SELECT id FROM UiElement WHERE textid = 'age'");
 		checkQuery(q);
 
-		const int uiElementId = q.value(0).toInt();
-		const double age = m_examinationEditWidget->patientAge();
 		if(q.first())
+		{
+			const int uiElementId = q.value(0).toInt();
+			const double age = m_examinationEditWidget->patientAge();
+
 			result[uiElementId] = age;
+		}
 	}
 
 	return result;
