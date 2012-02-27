@@ -30,6 +30,7 @@ ExaminationEditWidget::ExaminationEditWidget(const int examinationId, QWidget *p
 void ExaminationEditWidget::init()
 {
 	m_mainContainer = new ExamContainer(m_examinationId, "main", true);
+	m_mainContainer->setExaminationEditWidget(this);
 	m_widgetsLayout->addWidget(m_mainContainer->widget(), 0, Qt::AlignTop);
 	m_mainContainer->setParent(this);
 
@@ -212,8 +213,10 @@ int yearsBetween(const QDate& date1, const QDate& date2)
 }
 
 
-void ExaminationEditWidget::savePatientAge()
+int ExaminationEditWidget::patientAge() const
 {
+	int age = 0;
+
 	// Сначала узнаем день рождения пациента.
 	QSqlQuery q;
 	q.prepare(" SELECT birthday FROM Patient "
@@ -227,41 +230,47 @@ void ExaminationEditWidget::savePatientAge()
 		const QDate& birthday = Therapeutist::interfaces->enc->decodeDate(q.value(0).toString());
 		const QDate& examDate = m_examDate->date();
 
-		const int age = yearsBetween(birthday, examDate);
-		if(age < 0)
-			return;
-
-
-		q.prepare(" SELECT id "
-				  " FROM ExaminationData "
-				  " WHERE uiElementId = (SELECT id FROM UiElement WHERE textid = ?)");
-		q.addBindValue("age");
-		q.exec();
-		checkQuery(q);
-
-		QVariant ageId;
-		if(q.first())
-			ageId = q.value(0);
-
-
-		if(ageId.isValid())
-		{
-			q.prepare(" UPDATE ExaminationData SET "
-					  " realValue = :age "
-					  " WHERE id = :id AND examinationId = :examId ");
-			q.bindValue(":id", ageId);
-		}
-		else
-		{
-			q.prepare(" INSERT INTO ExaminationData "
-					  " ( examinationId,  uiElementId,  realValue) VALUES "
-					  " (:examId, (SELECT id FROM UiElement WHERE textid = 'age'), :age)");
-		}
-		q.bindValue(":age", age);
-		q.bindValue(":examId", m_examinationId);
-		q.exec();
-		checkQuery(q);
+		age = yearsBetween(birthday, examDate);
 	}
+
+	return age;
+}
+
+
+void ExaminationEditWidget::savePatientAge()
+{
+	const int age = patientAge();
+
+	QSqlQuery q;
+	q.prepare(" SELECT id "
+			  " FROM ExaminationData "
+			  " WHERE uiElementId = (SELECT id FROM UiElement WHERE textid = ?)");
+	q.addBindValue("age");
+	q.exec();
+	checkQuery(q);
+
+	QVariant ageId;
+	if(q.first())
+		ageId = q.value(0);
+
+
+	if(ageId.isValid())
+	{
+		q.prepare(" UPDATE ExaminationData SET "
+				  " realValue = :age "
+				  " WHERE id = :id AND examinationId = :examId ");
+		q.bindValue(":id", ageId);
+	}
+	else
+	{
+		q.prepare(" INSERT INTO ExaminationData "
+				  " ( examinationId,  uiElementId,  realValue) VALUES "
+				  " (:examId, (SELECT id FROM UiElement WHERE textid = 'age'), :age)");
+	}
+	q.bindValue(":age", age);
+	q.bindValue(":examId", m_examinationId);
+	q.exec();
+	checkQuery(q);
 }
 
 
