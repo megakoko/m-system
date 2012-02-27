@@ -80,6 +80,16 @@ void DiagnosisHelpDialog::addDiagnosisToTable(const DsRule &rule)
 
 	item = new QTableWidgetItem(formatProbability(rule.probabilityOfDiseaseGivenSymptoms()));
 	m_diagnosisTable->setItem(row, TableColumns::Probability, item);
+
+	QStringList toolTip;
+	{
+		foreach(const DsRuleItem& ruleItem, rule.ruleItems())
+			toolTip << QString("<span style='color: %1'>%2</span> %3").
+					   arg(ruleItem.hasSymptom() ? "green" : "red").
+					   arg(ruleItem.hasSymptom() ? "V" : "X").
+					   arg(ruleItem.fullDescription());
+	}
+	item->setToolTip(toolTip.join("<br/>"));
 }
 
 
