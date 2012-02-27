@@ -50,7 +50,7 @@ ExamWidget* ExamWidgetFactory::createWidget(const int examId,
 			widget = new ExamSpinBox(examId, textid);
 		else if(type == "diagnosis")
 			widget = new ExamDiagnosisEdit(examId, textid);
-		else
+		else if(type != "age")
 			qWarning() << "Unknown type for widget factory:" << type;
 
 		if(widget != NULL)
