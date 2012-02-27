@@ -5,6 +5,7 @@
 
 class QLabel;
 class QGridLayout;
+class ExaminationEditWidget;
 
 
 /*
@@ -15,6 +16,8 @@ class ExamContainer : public ExamWidget
 	Q_OBJECT
 public:
 	ExamContainer(const int examId, const QString& textid, const bool topLevel = false);
+
+	void setExaminationEditWidget(ExaminationEditWidget* widget);
 
 	// Определенные чисто виртуальные функции.
 	bool valueIsNull() const;
@@ -62,6 +65,9 @@ private:
 
 	// Список виджетов, которых содержит контейнер.
 	QList<ExamWidget*> m_items;
+
+	// Указатель на главный виджет осмотра. Его мы спросим о возрасте пациента.
+	ExaminationEditWidget* m_examinationEditWidget;
 
 private slots:
 	void updateHeader();

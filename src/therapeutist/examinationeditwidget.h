@@ -17,6 +17,8 @@ public:
 	bool canSave(QString &errorDescription) const;
 	void save();
 
+	int patientAge() const;
+
 private:
 	void init();
 	void initConnections();

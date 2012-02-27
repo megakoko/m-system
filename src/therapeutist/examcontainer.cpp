@@ -13,6 +13,7 @@
 #include "therapeutist.h"
 #include "examdiagnosisedit.h"
 #include "macros.h"
+#include "examinationeditwidget.h"
 
 
 static const int spacerColumn = 0;
@@ -33,6 +34,7 @@ ExamContainer::ExamContainer(const int examId, const QString &textid,
 	, m_headerIndicator(NULL)
 	, m_headerText(NULL)
 	, m_container(new QWidget())
+	, m_examinationEditWidget(NULL)
 {
 	QHBoxLayout* header = NULL;
 
@@ -121,6 +123,12 @@ void ExamContainer::init()
 }
 
 
+void ExamContainer::setExaminationEditWidget(ExaminationEditWidget *widget)
+{
+	m_examinationEditWidget = widget;
+}
+
+
 void ExamContainer::setLabelText(const QString &labelText, const QString &shortLabelText)
 {
 	ExamWidget::setLabelText(labelText, shortLabelText);
@@ -148,6 +156,17 @@ QMap<int, QVariant> ExamContainer::data() const
 		result = containerDataFromDatabase(m_textid);
 	else foreach(const ExamWidget* widget, m_items)
 		result.unite(widget->data());
+
+	if(m_textid == "main" && m_examinationEditWidget != NULL)
+	{
+		QSqlQuery q("SELECT id FROM UiElement WHERE textid = 'age'");
+		checkQuery(q);
+
+		const int uiElementId = q.value(0).toInt();
+		const double age = m_examinationEditWidget->patientAge();
+		if(q.first())
+			result[uiElementId] = age;
+	}
 
 	return result;
 }
