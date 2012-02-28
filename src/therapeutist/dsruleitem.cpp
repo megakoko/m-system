@@ -27,7 +27,7 @@ DsRuleItem::DsRuleItem(const QMap<int, QVariant> &data, const QSqlRecord &rec)
 		bool operatorWasAppliedSuccessfully = true;
 
 		const QString& operatorTextid = rec.value("textid").toString();
-		if(operatorTextid == "equal")
+		if(operatorTextid == "equal" || operatorTextid == "notEqual")
 		{
 			// text
 			if(value.type() == QVariant::String && !ruleTextValue.isNull())
@@ -40,6 +40,9 @@ DsRuleItem::DsRuleItem(const QMap<int, QVariant> &data, const QSqlRecord &rec)
 				m_hasSymptom = qFuzzyCompare(value.toDouble(), ruleRealValue.toDouble());
 			else
 				operatorWasAppliedSuccessfully = false;
+
+			if(operatorTextid == "notEqual")
+				m_hasSymptom = !m_hasSymptom;
 		}
 		else if(operatorTextid == "less")
 		{
