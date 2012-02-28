@@ -16,7 +16,8 @@
 
 QString RuleEditWidget::formatProbability(const double &probability)
 {
-	return QString::number(probability, 'f', 2);
+	// Вероятность переводим в промилле.
+	return QString::number(probability * 1000.0, 'f', 2);
 }
 
 
@@ -46,12 +47,14 @@ RuleEditWidget::RuleEditWidget(const int ruleId, QWidget* parent)
 void RuleEditWidget::init()
 {
 	static const QChar notSign(0x00AC);	// Знак, обозначающий "не".
+	static const QChar promille(0x2030);
 
 	m_itemsTable->setColumnCount(Columns::count);
 	m_itemsTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 	m_itemsTable->setHorizontalHeaderLabels(QStringList()
 				<< "Симптом" << "Оператор" << "Значение"
-				<< "P(S|D)" << QString("P(S|%1D)").arg(notSign));
+				<< QString("P(S|D), %1").arg(promille)
+				<< QString("P(S|%1D), %2").arg(notSign).arg(promille));
 
 	ruleItemSelectionChanged();
 
@@ -66,8 +69,9 @@ void RuleEditWidget::init()
 
 		if(q.first())
 		{
+			// Вероятность [0;1] переводим в промилле.
 			m_diseaseText->setText(q.value(0).toString());
-			m_diseaseProbability->setValue(q.value(1).toDouble());
+			m_diseaseProbability->setValue(q.value(1).toDouble() * 1000.0);
 		}
 
 
@@ -151,7 +155,8 @@ void RuleEditWidget::save()
 	}
 
 	q.bindValue(":diseaseText", m_diseaseText->text());
-	q.bindValue(":diseaseProbability", m_diseaseProbability->value());
+	// Промилле переводим обратно в вероятность [0;1].
+	q.bindValue(":diseaseProbability", m_diseaseProbability->value() / 1000.0);
 
 	q.exec();
 	checkQuery(q);

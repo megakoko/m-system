@@ -50,8 +50,10 @@ void RuleItemEditDialog::init()
 		Q_ASSERT(false);
 	}
 
-	m_probabilityWithDisease->setValue(m_ruleItem.probabilityWithDisease());
-	m_probabilityWithoutDisease->setValue(m_ruleItem.probabilityWithoutDisease());
+
+	// Переводим из вероятности [0;1] в промилле.
+	m_probabilityWithDisease->setValue(1000.0 * m_ruleItem.probabilityWithDisease());
+	m_probabilityWithoutDisease->setValue(1000.0 * m_ruleItem.probabilityWithoutDisease());
 
 	checkFields();
 	operatorChanged();
@@ -94,7 +96,7 @@ void RuleItemEditDialog::updateSymptomNameAndValueWidgets()
 				const QVariant& textid = q.value(0);
 
 				q.prepare(" SELECT id, value FROM UiElementEnums "
-						  " WHERE uiElementTextId = ? ");
+						  " WHERE uiElementTextId = ? ORDER BY id");
 				q.addBindValue(textid);
 				q.exec();
 				checkQuery(q);
@@ -224,8 +226,9 @@ void RuleItemEditDialog::checkFields()
 
 RuleItem RuleItemEditDialog::ruleItem()
 {
-	m_ruleItem.setProbabilityWithDisease(m_probabilityWithDisease->value());
-	m_ruleItem.setProbabilityWithoutDisease(m_probabilityWithoutDisease->value());
+	// Переводим из промилле в вероятность [0;1].
+	m_ruleItem.setProbabilityWithDisease(m_probabilityWithDisease->value() / 1000.0);
+	m_ruleItem.setProbabilityWithoutDisease(m_probabilityWithoutDisease->value() / 1000.0);
 
 	m_ruleItem.setOperatorId(m_operator->itemData(m_operator->currentIndex()).toInt());
 
