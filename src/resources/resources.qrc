@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>dbinit.sql</file>
         <file>uielements.sql</file>
+        <file>diagnosis_rules.sql</file>
         <file>mkb10.sql</file>
         <file>qt_ru_4.7.3.qm</file>
         <file>stylesheet.css</file>
