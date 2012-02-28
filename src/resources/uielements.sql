@@ -378,19 +378,25 @@ SELECT 5170, 'US_OVCS', 'гиперемия склер';
 --------------------
 INSERT INTO UiElement(id, textId, parentId, availableForSexId, typeId, label, shortLabel)
 SELECT 6010, 'RAall', 'main', CAST(NULL AS "numeric"), 'container', 'Органы дыхания', NULL UNION
+SELECT 6015, 'US_COUGH', 'RAall', NULL, 'combobox', 'Кашель', NULL UNION
 SELECT 6020, 'US_RAFT', 'RAall', NULL, 'combobox', 'Форма грудной клетки', NULL UNION
 SELECT 6030, 'US_RAFRM', 'RAall', NULL, 'textedit', 'Частота дыхательных движений', NULL UNION
 SELECT 6040, 'US_RACB', 'RAall', NULL, 'combobox', 'Одышка', NULL UNION
 SELECT 6050, 'US_RAPR', 'RAall', NULL, 'combobox', 'Патологическое дыхание', NULL UNION
 SELECT 6060, 'US_RAP', 'RAall', NULL, 'textedit', 'Пальпация грудной клетки', NULL UNION
-SELECT 6070, 'US_RAPS', 'RAall', NULL, 'textedit', 'Перкуторный звук', NULL UNION
-SELECT 6080, 'US_RAA', 'RAall', NULL, 'combobox', 'Аускультативно', NULL UNION
-SELECT 6090, 'US_RAW', 'RAall', NULL, 'textedit', 'Хрипы', NULL UNION
+SELECT 6070, 'US_RAPS', 'RAall', NULL, 'combobox', 'Перкуторный звук', NULL UNION
+SELECT 6080, 'US_RAA', 'RAall', NULL, 'combobox', 'Дыхание (аускультативно)', NULL UNION
+SELECT 6090, 'US_RAW', 'RAall', NULL, 'combobox', 'Хрипы', NULL UNION
 SELECT 6100, 'US_RAPFR', 'RAall', NULL, 'combobox', 'Шум трения плевры', NULL UNION
 SELECT 6110, 'US_RAVT', 'RAall', NULL, 'combobox', 'Голосовое дрожание', NULL UNION
+SELECT 6115, 'US_RAVY', 'RAall', NULL, 'combobox', 'Боль за грудиной', NULL UNION
 SELECT 6120, 'US_RAd', 'RAall', NULL, 'textedit', 'Дополнительно', NULL;
 
 INSERT INTO UiElementEnums(id, uiElementTextId, value)
+SELECT 6001, 'US_COUGH', 'нет' UNION
+SELECT 6002, 'US_COUGH', 'приступообразный' UNION
+SELECT 6003, 'US_COUGH', 'грубый' UNION
+SELECT 6004, 'US_COUGH', 'сухой' UNION
 SELECT 6010, 'US_RAFT', 'нормостеническая' UNION
 SELECT 6020, 'US_RAFT', 'астеническая' UNION
 SELECT 6030, 'US_RAFT', 'гиперстеническая' UNION
@@ -405,10 +411,17 @@ SELECT 6110, 'US_RACB', 'смешанного характера' UNION
 SELECT 6120, 'US_RAPR', 'Чейн-Стокса' UNION
 SELECT 6130, 'US_RAPR', 'Кусмауля' UNION
 SELECT 6140, 'US_RAPR', 'Биота' UNION
-SELECT 6150, 'US_RAA', 'дыхание везикулярное, проводится по всем полям' UNION
-SELECT 6160, 'US_RAA', 'дыхание бронхиальное' UNION
-SELECT 6170, 'US_RAA', 'дыхание жёсткое' UNION
-SELECT 6180, 'US_RAA', 'дыхание амфорическое' UNION
+SELECT 6145, 'US_RAPS', 'ясный звук' UNION
+SELECT 6146, 'US_RAPS', 'коробочный звук' UNION
+SELECT 6147, 'US_RAPS', 'притупленный звук' UNION
+SELECT 6150, 'US_RAA', 'везикулярное, проводится по всем полям' UNION
+SELECT 6160, 'US_RAA', 'бронхиальное' UNION
+SELECT 6170, 'US_RAA', 'жёсткое' UNION
+SELECT 6180, 'US_RAA', 'амфорическое' UNION
+SELECT 6181, 'US_RAA', 'ясное' UNION
+SELECT 6182, 'US_RAA', 'ослабленное' UNION
+SELECT 6185, 'US_RAW', 'нет' UNION
+SELECT 6186, 'US_RAW', 'сухие и свистящие' UNION
 SELECT 6190, 'US_RAPFR', 'не выслушивается' UNION
 SELECT 6200, 'US_RAPFR', 'выслушивается справа' UNION
 SELECT 6210, 'US_RAPFR', 'выслушивается слева' UNION
@@ -419,7 +432,9 @@ SELECT 6250, 'US_RAVT', 'ослаблено справа' UNION
 SELECT 6260, 'US_RAVT', 'усилено слева' UNION
 SELECT 6270, 'US_RAVT', 'ослаблено слева' UNION
 SELECT 6280, 'US_RAVT', 'усилено с обех сторон' UNION
-SELECT 6290, 'US_RAVT', 'ослаблено с обех сторон';
+SELECT 6290, 'US_RAVT', 'ослаблено с обех сторон' UNION
+SELECT 6300, 'US_RAVY', 'нет' UNION
+SELECT 6301, 'US_RAVY', 'есть';
 
 
 ---------------------------------
