@@ -308,6 +308,7 @@ INSERT INTO DepartmentType(textid, name) VALUES ('hospital', 'Стационар
 
 
 INSERT INTO Operator(textid, sign, description) VALUES ('equal', '=', 'Равняется');
+INSERT INTO Operator(textid, sign, description) VALUES ('notEqual', '≠', 'Не равняется');
 INSERT INTO Operator(textid, sign, description) VALUES ('less', '<', 'Меньше');
 INSERT INTO Operator(textid, sign, description) VALUES ('more', '>', 'Больше');
 INSERT INTO Operator(textid, sign, description) VALUES ('between', '∈', 'В интервале');

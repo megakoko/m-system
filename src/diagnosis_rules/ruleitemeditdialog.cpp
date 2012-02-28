@@ -89,7 +89,7 @@ void RuleItemEditDialog::updateSymptomNameAndValueWidgets()
 			const QString& type = q.value(2).toString();
 			if(type == "combobox")
 			{
-				populateOperatorList(QStringList() << "equal");
+				populateOperatorList(QStringList() << "equal" << "notEqual");
 
 				const QVariant& textid = q.value(0);
 
@@ -108,7 +108,7 @@ void RuleItemEditDialog::updateSymptomNameAndValueWidgets()
 			}
 			else if(type == "spinbox" || type == "age")
 			{
-				populateOperatorList(QStringList() << "equal" << "more" << "less" << "between");
+				populateOperatorList(QStringList() << "equal" << "notEqual" << "more" << "less" << "between");
 
 				m_stackedWidget->setCurrentIndex(ValuePage::realValuePage);
 			}
