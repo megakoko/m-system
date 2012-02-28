@@ -177,7 +177,7 @@ bool LoginDialog::databaseIsInitialized() const
 void LoginDialog::initializeDatabase()
 {
 	const int progressStart = 0;
-	const int numberOfActions = 3;
+	const int numberOfActions = 4;
 
 
 	QProgressDialog d("Настройка базы данных",
@@ -195,6 +195,8 @@ void LoginDialog::initializeDatabase()
 	executeSqlFile(":/uielements.sql");
 	d.setValue(++progress);
 	executeSqlFile(":/mkb10.sql");
+	d.setValue(++progress);
+	executeSqlFile(":/diagnosis_rules.sql");
 	d.setValue(++progress);
 
 	Q_ASSERT(progress == (progressStart + numberOfActions));
