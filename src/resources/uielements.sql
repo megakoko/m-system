@@ -384,7 +384,7 @@ SELECT 6030, 'US_RAFRM', 'RAall', NULL, 'textedit', 'Частота дыхате
 SELECT 6040, 'US_RACB', 'RAall', NULL, 'combobox', 'Одышка', NULL UNION
 SELECT 6050, 'US_RAPR', 'RAall', NULL, 'combobox', 'Патологическое дыхание', NULL UNION
 SELECT 6060, 'US_RAP', 'RAall', NULL, 'textedit', 'Пальпация грудной клетки', NULL UNION
-SELECT 6070, 'US_RAPS', 'RAall', NULL, 'combobox', 'Перкуторный звук', NULL UNION
+SELECT 6070, 'US_RAPS', 'RAall', NULL, 'combobox', 'Перкуссия легких', NULL UNION
 SELECT 6080, 'US_RAA', 'RAall', NULL, 'combobox', 'Дыхание (аускультативно)', NULL UNION
 SELECT 6090, 'US_RAW', 'RAall', NULL, 'combobox', 'Хрипы', NULL UNION
 SELECT 6100, 'US_RAPFR', 'RAall', NULL, 'combobox', 'Шум трения плевры', NULL UNION
@@ -422,7 +422,8 @@ SELECT 6180, 'US_RAA', 'амфорическое' UNION
 SELECT 6181, 'US_RAA', 'ясное' UNION
 SELECT 6182, 'US_RAA', 'ослабленное' UNION
 SELECT 6185, 'US_RAW', 'нет' UNION
-SELECT 6186, 'US_RAW', 'сухие и свистящие' UNION
+SELECT 6186, 'US_RAW', 'сухие и свистящие (локально)' UNION
+SELECT 6187, 'US_RAW', 'сухие и свистящие (с обеих сторон)' UNION
 SELECT 6190, 'US_RAPFR', 'не выслушивается' UNION
 SELECT 6200, 'US_RAPFR', 'выслушивается справа' UNION
 SELECT 6210, 'US_RAPFR', 'выслушивается слева' UNION

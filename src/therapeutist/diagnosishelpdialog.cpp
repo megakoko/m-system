@@ -23,7 +23,8 @@ namespace TableColumns
 
 QString formatProbability(const double &probability)
 {
-	return QString::number(probability, 'f', 2);
+	// Вероятность [0;1] переводим в проценты.
+	return QString::number(probability * 100.0, 'f', 2);
 }
 
 
@@ -42,7 +43,7 @@ void DiagnosisHelpDialog::init(const QMap<int, QVariant> &data)
 			setResizeMode(TableColumns::Diagnosis, QHeaderView::Stretch);
 	m_diagnosisTable->horizontalHeader()->
 			setResizeMode(TableColumns::Probability, QHeaderView::ResizeToContents);
-	m_diagnosisTable->setHorizontalHeaderLabels(QStringList() << "Диагноз" << "Вероятность");
+	m_diagnosisTable->setHorizontalHeaderLabels(QStringList() << "Диагноз" << "Вероятность, %");
 
 	changeButtonsAccessibility();
 

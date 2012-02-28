@@ -39,11 +39,14 @@
       </item>
       <item>
        <widget class="QDoubleSpinBox" name="m_diseaseProbability">
+        <property name="suffix">
+         <string> ‰</string>
+        </property>
         <property name="maximum">
-         <double>1.000000000000000</double>
+         <double>1000.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>1.000000000000000</double>
         </property>
        </widget>
       </item>
