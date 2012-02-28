@@ -32,6 +32,7 @@ private:
 private slots:
 	void treeWidgetItemExpanded(QTreeWidgetItem* item);
 	void treeWidgetItemDoubleClicked(QTreeWidgetItem* item);
+	void tableViewDoubleClicked();
 	void filterSymptoms();
 	void selectionChanged();
 

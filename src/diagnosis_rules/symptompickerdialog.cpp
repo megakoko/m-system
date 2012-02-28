@@ -54,6 +54,7 @@ void SymptomPickerDialog::initConnections()
 			SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
 			SLOT(treeWidgetItemDoubleClicked(QTreeWidgetItem*)));
 	connect(m_searchWidget, SIGNAL(searchPressed()), SLOT(filterSymptoms()));
+	connect(m_tableView, SIGNAL(doubleClicked(QModelIndex)), SLOT(tableViewDoubleClicked()));
 
 
 	connect(m_treeWidget->selectionModel(),
@@ -167,6 +168,18 @@ void SymptomPickerDialog::treeWidgetItemDoubleClicked(QTreeWidgetItem *item)
 {
 	if(item != NULL && item->data(0, Qt::UserRole+1).toString() != "container")
 		accept();
+}
+
+
+void SymptomPickerDialog::tableViewDoubleClicked()
+{
+	QModelIndexList selectedIndexes = m_tableView->selectionModel()->selectedRows(0);
+	if(selectedIndexes.size() == 1)
+	{
+		const int row = selectedIndexes.first().row();
+		if(m_filterModel->record(row).value("typeid") != "container")
+			accept();
+	}
 }
 
 
