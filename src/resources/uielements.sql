@@ -390,6 +390,7 @@ SELECT 6090, 'US_RAW', 'RAall', NULL, 'combobox', 'Хрипы', NULL UNION
 SELECT 6100, 'US_RAPFR', 'RAall', NULL, 'combobox', 'Шум трения плевры', NULL UNION
 SELECT 6110, 'US_RAVT', 'RAall', NULL, 'combobox', 'Голосовое дрожание', NULL UNION
 SELECT 6115, 'US_RAVY', 'RAall', NULL, 'combobox', 'Боль за грудиной', NULL UNION
+SELECT 6116, 'US_RAVG', 'RAall', NULL, 'combobox', 'Боль в горле', NULL UNION
 SELECT 6120, 'US_RAd', 'RAall', NULL, 'textedit', 'Дополнительно', NULL;
 
 INSERT INTO UiElementEnums(id, uiElementTextId, value)
@@ -434,7 +435,9 @@ SELECT 6270, 'US_RAVT', 'ослаблено слева' UNION
 SELECT 6280, 'US_RAVT', 'усилено с обех сторон' UNION
 SELECT 6290, 'US_RAVT', 'ослаблено с обех сторон' UNION
 SELECT 6300, 'US_RAVY', 'нет' UNION
-SELECT 6301, 'US_RAVY', 'есть';
+SELECT 6301, 'US_RAVY', 'есть' UNION
+SELECT 6310, 'US_RAVG', 'нет' UNION
+SELECT 6311, 'US_RAVG', 'есть';
 
 
 ---------------------------------
