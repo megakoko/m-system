@@ -31,6 +31,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="m_showAllDiagnosis">
+     <property name="text">
+      <string>Показывать все диагнозы</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QDialogButtonBox" name="m_buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

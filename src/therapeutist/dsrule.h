@@ -22,10 +22,15 @@ public:
 		return m_ruleItems;
 	}
 
+	bool hasAllSymptoms() const
+	{	return m_hasAllSymptoms;	}
+
 private:
 	double m_probability;
 	QString m_diseaseText;
 	QList<DsRuleItem> m_ruleItems;
+
+	bool m_hasAllSymptoms;
 
 };
 

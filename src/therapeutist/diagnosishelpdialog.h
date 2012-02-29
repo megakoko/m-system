@@ -1,10 +1,10 @@
 #pragma once
 
 #include "ui_diagnosishelpdialog.h"
+#include "dsrule.h"
 
 template <class K, class V> class QMap;
 class QVariant;
-class DsRule;
 
 
 class DiagnosisHelpDialog : public QDialog, private Ui::DiagnosisHelpDialog
@@ -21,7 +21,10 @@ private:
 
 	void addDiagnosisToTable(const DsRule& rule);
 
+	QList<DsRule> m_rules;
+
 private slots:
 	void changeButtonsAccessibility();
+	void toggleHiddenDiagnoses(const bool showDiagnoses);
 
 };
