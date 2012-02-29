@@ -51,6 +51,12 @@ void RuleEditWidget::init()
 
 	m_itemsTable->setColumnCount(Columns::count);
 	m_itemsTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+	m_itemsTable->horizontalHeader()->setResizeMode(Columns::itemOperator,
+													QHeaderView::ResizeToContents);
+	m_itemsTable->horizontalHeader()->setResizeMode(Columns::probabilityWithDisease,
+													QHeaderView::ResizeToContents);
+	m_itemsTable->horizontalHeader()->setResizeMode(Columns::probabilityWithoutDisease,
+													QHeaderView::ResizeToContents);
 	m_itemsTable->setHorizontalHeaderLabels(QStringList()
 				<< "Симптом" << "Оператор" << "Значение"
 				<< QString("P(S|D), %1").arg(promille)

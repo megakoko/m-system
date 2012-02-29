@@ -8,7 +8,6 @@
 #include <QDebug>
 
 #include "macros.h"
-#include "dsrule.h"
 
 
 namespace TableColumns
@@ -49,19 +48,20 @@ void DiagnosisHelpDialog::init(const QMap<int, QVariant> &data)
 
 
 	QSqlQuery q("SELECT id, diseaseText, diseaseProbability FROM DsRule");
-	QList<DsRule> rules;
 	while(q.next())
-		rules << DsRule(data, q.record());
+		m_rules << DsRule(data, q.record());
 
-	qSort(rules.begin(), rules.end(), qGreater<DsRule>());
+	qSort(m_rules.begin(), m_rules.end(), qGreater<DsRule>());
 
-	foreach(const DsRule& rule, rules)
+	foreach(const DsRule& rule, m_rules)
 		addDiagnosisToTable(rule);
 }
 
 
 void DiagnosisHelpDialog::initConnections()
 {
+	connect(m_showAllDiagnosis, SIGNAL(toggled(bool)), SLOT(toggleHiddenDiagnoses(bool)));
+
 	connect(m_diagnosisTable, SIGNAL(doubleClicked(QModelIndex)), SLOT(accept()));
 	connect(m_diagnosisTable->selectionModel(),
 			SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
@@ -73,6 +73,8 @@ void DiagnosisHelpDialog::addDiagnosisToTable(const DsRule &rule)
 {
 	const int row = m_diagnosisTable->rowCount();
 	m_diagnosisTable->insertRow(row);
+	if(!rule.hasAllSymptoms())
+		m_diagnosisTable->hideRow(row);
 
 
 	static const QChar V(0x2713);
@@ -94,7 +96,9 @@ void DiagnosisHelpDialog::addDiagnosisToTable(const DsRule &rule)
 	item->setToolTip(toolTip);
 	m_diagnosisTable->setItem(row, TableColumns::Diagnosis, item);
 
-	item = new QTableWidgetItem(formatProbability(rule.probabilityOfDiseaseGivenSymptoms()));
+	item = new QTableWidgetItem;
+	if(rule.hasAllSymptoms())
+		item->setText(formatProbability(rule.probabilityOfDiseaseGivenSymptoms()));
 	item->setToolTip(toolTip);
 	m_diagnosisTable->setItem(row, TableColumns::Probability, item);
 }
@@ -127,4 +131,12 @@ QString DiagnosisHelpDialog::selectedDiagnosis() const
 	}
 
 	return diagnosis;
+}
+
+
+void DiagnosisHelpDialog::toggleHiddenDiagnoses(const bool showDiagnoses)
+{
+	for(int row = 0; row < m_diagnosisTable->rowCount(); ++row)
+		if(!m_rules.at(row).hasAllSymptoms())
+			m_diagnosisTable->setRowHidden(row, !showDiagnoses);
 }

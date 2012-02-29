@@ -12,6 +12,7 @@
 
 
 DsRule::DsRule(const QMap<int, QVariant> data, const QSqlRecord& record)
+	: m_hasAllSymptoms(true)
 {
 	m_diseaseText = record.value("diseaseText").toString();
 
@@ -61,6 +62,8 @@ DsRule::DsRule(const QMap<int, QVariant> data, const QSqlRecord& record)
 			product1 *= item.probabilityWithDisease();
 			product2 *= item.probabilityWithoutDisease();
 		}
+		else
+			m_hasAllSymptoms = false;
 	}
 
 	m_probability = product1 / (product1 + product2);
