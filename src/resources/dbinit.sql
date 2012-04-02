@@ -82,6 +82,7 @@ CREATE TABLE Address (
 	id 					SERIAL PRIMARY KEY,
 	patientId 			INTEGER REFERENCES Patient (id),
 	typeId				INTEGER REFERENCES AddressType (id),
+	region				VARCHAR (408) NOT NULL,
 	city 				VARCHAR (408) NOT NULL,
 	street 				VARCHAR (408) NOT NULL,
 	house 				VARCHAR (408) NOT NULL,

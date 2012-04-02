@@ -16,6 +16,7 @@ public:
 	void save(const int patientId) const;
 	void deleteAddress() const;
 
+	QString region;
 	QString city;
 	QString street;
 	QString house;

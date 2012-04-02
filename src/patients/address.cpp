@@ -22,7 +22,8 @@ Address::Address(const QString& type)
 
 
 Address::Address(const QSqlRecord &rec)
-	: city(Patients::interfaces->enc->decodeStr(rec.value("city").toString()))
+	: region(Patients::interfaces->enc->decodeStr(rec.value("region").toString()))
+	, city(Patients::interfaces->enc->decodeStr(rec.value("city").toString()))
 	, street(Patients::interfaces->enc->decodeStr(rec.value("street").toString()))
 	, house(Patients::interfaces->enc->decodeStr(rec.value("house").toString()))
 	, apartment(Patients::interfaces->enc->decodeStr(rec.value("apartment").toString()))
@@ -37,6 +38,8 @@ QString Address::toString() const
 {
 	QStringList result;
 
+	if(!region.isNull())
+		result << region;
 
 	if(!city.isNull())
 		result << city;
@@ -68,6 +71,7 @@ void Address::save(const int patientId) const
 		if(m_id > 0)
 		{
 			q.prepare(" UPDATE Address SET "
+					  " region = :region, "
 					  " city = :city, "
 					  " street = :street, "
 					  " house = :house, "
@@ -78,16 +82,17 @@ void Address::save(const int patientId) const
 		else
 		{
 			q.prepare(" INSERT INTO Address "
-					  " (patientId,  typeId,  city,  street,  house,  apartment) "
+					  " (patientId,  typeId,  region,  city,  street,  house,  apartment) "
 					  " VALUES "
 					  " (:patientId, "
 						" (SELECT id FROM AddressType WHERE textid = :textid), "
-						" :city, :street, :house, :apartment) " +
+						" :region, :city, :street, :house, :apartment) " +
 					  Patients::interfaces->db->returningSentence("id"));
 			q.bindValue(":patientId", patientId);
 			q.bindValue(":textid", m_adressTypeTextid);
 		}
 
+		q.bindValue(":region", nullIfEmpty(Patients::interfaces->enc->encodeStr(region)));
 		q.bindValue(":city", nullIfEmpty(Patients::interfaces->enc->encodeStr(city)));
 		q.bindValue(":street", nullIfEmpty(Patients::interfaces->enc->encodeStr(street)));
 		q.bindValue(":house", nullIfEmpty(Patients::interfaces->enc->encodeStr(house)));
@@ -120,5 +125,9 @@ void Address::deleteAddress() const
 
 bool Address::isNull() const
 {
-	return city.isNull() && street.isNull() && house.isNull() && apartment.isNull();
+	return	region.isNull() &&
+			city.isNull() &&
+			street.isNull() &&
+			house.isNull() &&
+			apartment.isNull();
 }

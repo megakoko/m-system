@@ -11,6 +11,8 @@ AddressDialog::AddressDialog(const Address& address, QWidget *parent)
 {
 	setupUi(this);
 
+	m_region->setMaxLength(Patients::interfaces->db->
+						   fieldMaximumLength("Address", "region"));
 
 	m_city->setMaxLength(Patients::interfaces->db->
 						 fieldMaximumLength("Address", "city"));
@@ -25,6 +27,7 @@ AddressDialog::AddressDialog(const Address& address, QWidget *parent)
 							  fieldMaximumLength("Address", "apartment"));
 
 
+	m_region->setText(m_address.region);
 	m_city->setText(m_address.city);
 	m_street->setText(m_address.street);
 	m_house->setText(m_address.house);
@@ -46,6 +49,7 @@ AddressDialog::AddressDialog(const Address& address, QWidget *parent)
 
 Address AddressDialog::address()
 {
+	m_address.region	= nullIfEmpty(m_region->text().simplified());
 	m_address.city		= nullIfEmpty(m_city->text().simplified());
 	m_address.street	= nullIfEmpty(m_street->text().simplified());
 	m_address.house		= nullIfEmpty(m_house->text().simplified());
@@ -58,6 +62,7 @@ Address AddressDialog::address()
 void AddressDialog::checkFields()
 {
 	const bool fieldsAreValid =
+			!m_region->text().simplified().isEmpty() &&
 			!m_city->text().simplified().isEmpty() &&
 			!m_street->text().simplified().isEmpty() &&
 			!m_house->text().simplified().isEmpty();

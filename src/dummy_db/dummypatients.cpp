@@ -134,11 +134,12 @@ void DummyPatients::createAddressRecord(const int patientId,
 {
 	QSqlQuery q;
 	q.prepare(" INSERT INTO Address "
-			  " (patientId, city, street, house, apartment, typeId) VALUES"
-			  " (:patientId, :city, :street, :house, :apartment, "
+			  " (patientId, region, city, street, house, apartment, typeId) VALUES"
+			  " (:patientId, :region, :city, :street, :house, :apartment, "
 				" (SELECT id FROM AddressType WHERE textid = :textid))");
 	q.bindValue(":patientId", patientId);
 	q.bindValue(":textid", addressType);
+	q.bindValue(":region", encode("Удмуртия"));
 	q.bindValue(":city", encode("Ижевск"));
 	q.bindValue(":street", encode(m_dummyData->randomStreetname()));
 	q.bindValue(":house", encode(QString::number(m_dummyData->randomInt(250))));

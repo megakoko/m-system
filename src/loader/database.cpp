@@ -99,7 +99,7 @@ QMap<QString, QStringList> Database::initializeCipheredTablesMap() const
 
 	map.insert("patient", QStringList() << "familyname" << "name" << "patronymic" << "birthday");
 	map.insert("document", QStringList() << "serialnumber" << "givenby" << "date");
-	map.insert("address", QStringList() << "city" << "street" << "house" << "apartment");
+	map.insert("address", QStringList() << "region" << "city" << "street" << "house" << "apartment");
 
 	return map;
 }
