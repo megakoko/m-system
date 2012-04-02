@@ -106,7 +106,7 @@ void MainPatientsWidget::addPatient()
 	// То, что пользователь ввел в строку, разделенное пробельными символами.
 	// Содержит возможное имя будущего пациента.
 	QStringList patientName;
-	if(!searchText.isEmpty() && m_queryModel->rowCount() == 0)
+	if(!searchText.isEmpty() && m_sortModel->rowCount() == 0)
 		patientName = searchText.split(QRegExp("\\s+"));
 
 
