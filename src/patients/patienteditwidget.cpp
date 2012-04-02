@@ -106,7 +106,7 @@ void PatientEditWidget::init()
 			Q_ASSERT(!"Unknown option");
 
 
-		q.prepare(" SELECT a.id, at.textid, city, street, house, apartment "
+		q.prepare(" SELECT a.id, at.textid, region, city, street, house, apartment "
 				  " FROM Address a "
 				  " LEFT JOIN AddressType at ON a.typeId = at.id"
 				  " WHERE patientId = :patientId ");
