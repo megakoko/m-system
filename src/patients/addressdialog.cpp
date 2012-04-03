@@ -154,6 +154,14 @@ QString AddressDialog::getCode(const QString& name,
 
 QString AddressDialog::getRegionCode() const
 {
+	const QSet<QString> udmurtia = QSet<QString>() << "удмуртия"
+												   << "удмуртская республика"
+												   << "республика удмуртия";
+
+	// Небольшой хак для случая, когда введено не то, что КЛАДР подсказывает.
+	if(udmurtia.contains(m_region->text().toLower()))
+		return "1800000000000";
+
 	return getCode(m_region->text(), 1, "kladr", QString::null);
 }
 
