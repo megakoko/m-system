@@ -215,7 +215,6 @@ void AddressDialog::updateCityCompletition()
 						" ORDER BY name ").arg(regionCode.left(2));
 	}
 
-	qDebug() << __FUNCTION__;
 	m_cityModel->setQuery(query);
 }
 

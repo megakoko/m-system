@@ -4,6 +4,10 @@
         <file>uielements.sql</file>
         <file>diagnosis_rules.sql</file>
         <file>mkb10.sql</file>
+        <file>kladr.sql</file>
+        <file>street.sql</file>
+        <file>socrbase.sql</file>
+        <file>doma.sql</file>
         <file>qt_ru_4.7.3.qm</file>
         <file>stylesheet.css</file>
 

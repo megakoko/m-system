@@ -176,30 +176,29 @@ bool LoginDialog::databaseIsInitialized() const
 
 void LoginDialog::initializeDatabase()
 {
-	const int progressStart = 0;
-	const int numberOfActions = 4;
+	const QStringList sqlFiles = QStringList() << ":/dbinit.sql"
+											   << ":/uielements.sql"
+											   << ":/mkb10.sql"
+											   << ":/diagnosis_rules.sql"
+											   << ":/kladr.sql"
+											   << ":/street.sql"
+											   << ":/doma.sql"
+											   << ":/socrbase.sql";
 
 
 	QProgressDialog d("Настройка базы данных",
 					  "Пожалуйста, подождите. Выполняется настройка базы данных",
-					  progressStart, progressStart + numberOfActions, this);
+					  0, sqlFiles.count(), this);
 	d.setWindowModality(Qt::WindowModal);
 	d.setCancelButton(NULL);
 	d.show();
 
 
-	int progress = progressStart;
-
-	executeSqlFile(":/dbinit.sql");
-	d.setValue(++progress);
-	executeSqlFile(":/uielements.sql");
-	d.setValue(++progress);
-	executeSqlFile(":/mkb10.sql");
-	d.setValue(++progress);
-	executeSqlFile(":/diagnosis_rules.sql");
-	d.setValue(++progress);
-
-	Q_ASSERT(progress == (progressStart + numberOfActions));
+	for(int i = 0; i < sqlFiles.count(); ++i)
+	{
+		executeSqlFile(sqlFiles[i]);
+		d.setValue(i);
+	}
 }
 
 
