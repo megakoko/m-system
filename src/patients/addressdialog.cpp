@@ -212,6 +212,8 @@ void AddressDialog::updateCityCompletition()
 		query = QString(" SELECT name || ', ' || socr "
 						" FROM kladr "
 						" WHERE code LIKE '%1_________00' "
+						" AND socr IN ('г', 'рп', 'с/п', 'аул', 'д', 'нп', 'остров', "
+						" 'п', 'пгт', 'с', 'высел') "
 						" ORDER BY name ").arg(regionCode.left(2));
 	}
 
@@ -233,6 +235,8 @@ void AddressDialog::updateStreetCompletition()
 		query = QString(" SELECT name || ', ' || socr "
 						" FROM street "
 						" WHERE code LIKE '%1%' "
+						" AND socr IN ('аллея', 'б-р', 'кв-л', 'кольцо', 'мкр', "
+						" 'парк', 'пер', 'пл', 'проулок', 'ул') "
 						" ORDER BY name ").arg(cityCode.left(cityCode.size()-2));
 		// Из кода населенного пункта убираем 2 последних цифры -- признак актуальности.
 	}
