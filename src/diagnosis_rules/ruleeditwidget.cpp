@@ -17,7 +17,7 @@
 QString RuleEditWidget::formatProbability(const double &probability)
 {
 	// Вероятность переводим в промилле.
-	return QString::number(probability * 1000.0, 'f', 2);
+	return QLocale().toString(probability * 1000.0, 'f', 2);
 }
 
 

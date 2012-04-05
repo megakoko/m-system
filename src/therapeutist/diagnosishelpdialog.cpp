@@ -23,7 +23,7 @@ namespace TableColumns
 QString formatProbability(const double &probability)
 {
 	// Вероятность [0;1] переводим в проценты.
-	return QString::number(probability * 100.0, 'f', 2);
+	return QLocale().toString(probability * 100.0, 'f', 2);
 }
 
 
