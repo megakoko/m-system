@@ -17,7 +17,7 @@
 QString RuleEditWidget::formatProbability(const double &probability)
 {
 	// Вероятность переводим в промилле.
-	return QLocale().toString(probability * 1000.0, 'f', 2);
+	return QLocale().toString(probability * 100.0, 'f', 2);
 }
 
 
@@ -47,7 +47,6 @@ RuleEditWidget::RuleEditWidget(const int ruleId, QWidget* parent)
 void RuleEditWidget::init()
 {
 	static const QChar notSign(0x00AC);	// Знак, обозначающий "не".
-	static const QChar promille(0x2030);
 
 	m_itemsTable->setColumnCount(Columns::count);
 	m_itemsTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
@@ -59,8 +58,8 @@ void RuleEditWidget::init()
 													QHeaderView::ResizeToContents);
 	m_itemsTable->setHorizontalHeaderLabels(QStringList()
 				<< "Симптом" << "Оператор" << "Значение"
-				<< QString("P(S|D), %1").arg(promille)
-				<< QString("P(S|%1D), %2").arg(notSign).arg(promille));
+				<< QString("P(S|D), %1").arg("%")
+				<< QString("P(S|%1D), %2").arg(notSign).arg("%"));
 
 	ruleItemSelectionChanged();
 
