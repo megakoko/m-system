@@ -107,7 +107,7 @@
      <item row="3" column="1">
       <widget class="QDoubleSpinBox" name="m_probabilityWithDisease">
        <property name="suffix">
-        <string> ‰</string>
+        <string> %</string>
        </property>
        <property name="maximum">
         <double>1000.000000000000000</double>
@@ -130,7 +130,7 @@
      <item row="4" column="1">
       <widget class="QDoubleSpinBox" name="m_probabilityWithoutDisease">
        <property name="suffix">
-        <string> ‰</string>
+        <string> %</string>
        </property>
        <property name="maximum">
         <double>1000.000000000000000</double>
