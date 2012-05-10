@@ -57,7 +57,7 @@ void RuleEditWidget::init()
 	m_itemsTable->horizontalHeader()->setResizeMode(Columns::probabilityWithoutDisease,
 													QHeaderView::ResizeToContents);
 	m_itemsTable->setHorizontalHeaderLabels(QStringList()
-				<< "Симптом" << "Оператор" << "Значение"
+				<< "Элемент" << "Оператор" << "Значение"
 				<< QString("P(S|D), %1").arg("%")
 				<< QString("P(S|%1D), %2").arg(notSign).arg("%"));
 
