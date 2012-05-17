@@ -20,7 +20,7 @@ private:
 
 	void initTreeWidget();
 
-	static const QString filterText;
+	static QString filterText();
 	QSqlQueryModel* m_filterModel;
 
 

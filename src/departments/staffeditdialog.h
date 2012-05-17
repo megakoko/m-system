@@ -20,6 +20,4 @@ private slots:
 	void checkFields();
 	void save();
 
-	void nameChanged();
-
 };

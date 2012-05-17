@@ -9,16 +9,21 @@
 
 #include "macros.h"
 #include "saveableobject.h"
+#include "diagnosisrules.h"
 
 
 static const int PAGE_TREE = 0;
 static const int PAGE_FILTER = 1;
 
 
-const QString SymptomPickerDialog::filterText =
-	" SELECT id, typeid, label "
-	" FROM uielement "
-	" WHERE label ILIKE '%%1%' AND typeid <> 'container'";
+QString SymptomPickerDialog::filterText()
+{
+	const QString& LIKE = DiagnosisRules::interfaces->db->caseInsensitiveLike();
+
+	return	" SELECT id, typeid, label "
+			" FROM uielement "
+			" WHERE label " + LIKE + " '%%1%' AND typeid <> 'container'";
+}
 
 
 SymptomPickerDialog::SymptomPickerDialog(QWidget *parent)
@@ -93,7 +98,7 @@ void SymptomPickerDialog::filterSymptoms()
 	else
 	{
 		m_stackedWidget->setCurrentIndex(PAGE_FILTER);
-		m_filterModel->setQuery(filterText.arg(filter));
+		m_filterModel->setQuery(filterText().arg(filter));
 		checkQuery(m_filterModel->query());
 
 		m_tableView->setColumnHidden(0, true);

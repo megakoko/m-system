@@ -8,14 +8,20 @@
 #include <QDebug>
 
 #include "macros.h"
+#include "mkb10.h"
 
 
 static const int PAGE_TREE = 0;
 static const int PAGE_FILTER = 1;
 
 
-const QString MainMkb10Widget::filterText =
-	" SELECT description FROM mkb10 WHERE description ILIKE '%%1%' ";
+QString MainMkb10Widget::filterText()
+{
+	const QString& LIKE = Mkb10::interfaces->db->caseInsensitiveLike();
+	return	" SELECT description "
+			" FROM mkb10 "
+			" WHERE description " + LIKE + " '%%1%' ";
+}
 
 
 MainMkb10Widget::MainMkb10Widget(QWidget *parent)
@@ -61,7 +67,7 @@ void MainMkb10Widget::filterDeseases()
 	else
 	{
 		m_stackedWidget->setCurrentIndex(PAGE_FILTER);
-		m_filterModel->setQuery(filterText.arg(filter));
+		m_filterModel->setQuery(filterText().arg(filter));
 		checkQuery(m_filterModel->query());
 	}
 }

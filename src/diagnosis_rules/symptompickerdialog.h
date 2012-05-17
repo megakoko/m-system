@@ -25,7 +25,7 @@ private:
 	static QList<QTreeWidgetItem*> createItems(const QVariant& parentId = QVariant());
 
 
-	static const QString filterText;
+	static QString filterText();
 	QSqlQueryModel* m_filterModel;
 
 

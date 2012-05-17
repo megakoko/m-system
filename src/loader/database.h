@@ -16,6 +16,7 @@ public:
 	QString returningSentence(const QString &field) const;
 	QVariant lastInsertedId(QSqlQuery *const query) const;
 
+	QString caseInsensitiveLike() const;
 
 private:
 	/// Возвращает true, если поле хранит зашифрованные значения.

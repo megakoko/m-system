@@ -10,6 +10,7 @@
 
 #include "macros.h"
 #include "saveablepluginwidget.h"
+#include "therapeutist.h"
 
 
 TherapeutistPickerDialog::TherapeutistPickerDialog(QWidget *parent)
@@ -65,9 +66,11 @@ QString TherapeutistPickerDialog::query(QString searchText)
 	if(!searchText.isEmpty())
 		searchText.remove("'");
 
+	const QString LIKE = Therapeutist::interfaces->db->caseInsensitiveLike();
+
 	return searchText.isEmpty() ?
 			q.arg("") :
-			q.arg(" AND s.familyName LIKE '%" + searchText + "%' ");
+			q.arg(" AND s.familyName " + LIKE + " '%" + searchText + "%' ");
 }
 
 
