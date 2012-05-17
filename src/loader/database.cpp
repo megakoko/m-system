@@ -146,6 +146,21 @@ QVariant Database::lastInsertedId(QSqlQuery *const query) const
 }
 
 
+QString Database::caseInsensitiveLike() const
+{
+	switch(currentSqlDriver())
+	{
+	case DatabaseInterface::SQLITE:
+		return "LIKE";
+	case DatabaseInterface::PSQL:
+		return "ILIKE";
+	default:
+		qFatal("Unknown sql driver");
+	}
+	return QString::null;
+}
+
+
 DatabaseInterface::SqlDriver Database::currentSqlDriver() const
 {
 	if(!m_currentDriverValueWasInitialized)

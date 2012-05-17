@@ -32,4 +32,9 @@ public:
 
 	virtual QVariant lastInsertedId(QSqlQuery* const query) const = 0;
 
+	/// Возвращает ключевое слово для регистро-независимого поиска подстроки.
+	/// Для SQLite это LIKE.
+	/// Для PostgreSQL это ILIKE.
+	virtual QString caseInsensitiveLike() const = 0;
+
 };

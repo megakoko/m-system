@@ -1,10 +1,7 @@
 #pragma once
 
-#include <QtPlugin>
 #include <QObject>
 #include "plugininterface.h"
-
-class PluginWidget;
 
 class Mkb10 : public QObject, public PluginInterface
 {
@@ -15,5 +12,8 @@ public:
 
 	QString textid() const;
 	PluginWidget* widget() const;
+
+	void setInterfaces(const InterfacesPtr &interfaces);
+	static InterfacesPtr interfaces;
 
 };

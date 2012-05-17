@@ -23,6 +23,8 @@ RuleItem::RuleItem()
 	, m_uiElementId(InvalidId)
 	, m_ruleId(InvalidId)
 	, m_operatorId(InvalidId)
+	, m_probabilityWithDisease(0.0)
+	, m_probabilityWithoutDisease(0.0)
 {
 
 }
