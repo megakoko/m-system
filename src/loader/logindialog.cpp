@@ -81,6 +81,7 @@ int LoginDialog::loggedUserId() const
 bool LoginDialog::connectToDatabase()
 {
 	const QString& dbdriver = QSettings().value("dbdriver").toString();
+	qDebug() << __FUNCTION__ << dbdriver;
 
 	QSqlDatabase db = QSqlDatabase::addDatabase(dbdriver);
 
