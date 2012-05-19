@@ -12,20 +12,16 @@ DatabaseSettingsPage::DatabaseSettingsPage(QWidget *parent)
 	setupUi(this);
 
 
-	m_databaseType->addItem("SQLite", "QSQLITE");
-	if(QSqlDatabase::drivers().contains("QPSQL"))
-	{
-		m_databaseType->addItem("PostgreSQL", "QPSQL");
-		connect(m_databaseType,
-				SIGNAL(currentIndexChanged(int)),
-				SLOT(databaseDriverChanged()));
-	}
-	else
-	{
-		m_databaseTypeLabel->setVisible(false);
-		m_databaseType->setVisible(false);
-	}
+	if(QSqlDatabase::drivers().contains("QSQLITE"))
+		m_databaseType->addItem("SQLite", "QSQLITE");
 
+	if(QSqlDatabase::drivers().contains("QPSQL"))
+		m_databaseType->addItem("PostgreSQL", "QPSQL");
+
+
+	connect(m_databaseType,
+			SIGNAL(currentIndexChanged(int)),
+			SLOT(databaseDriverChanged()));
 
 	databaseDriverChanged();
 }
