@@ -23,10 +23,12 @@ AboutDialog::AboutDialog(QWidget *parent)
 	about->setOpenExternalLinks(true);
 	tabwidget->addTab(about, QString::fromUtf8("О программе"));
 
+/*
 	QTextEdit* licence = new QTextEdit(tabwidget);
 	licence->setPlainText(licenceText());
 	licence->setReadOnly(true);
 	tabwidget->addTab(licence, QString::fromUtf8("Лицензия"));
+*/
 
 	layout->addWidget(tabwidget);
 
