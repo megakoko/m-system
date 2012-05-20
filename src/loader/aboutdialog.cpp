@@ -14,6 +14,7 @@ AboutDialog::AboutDialog(QWidget *parent)
 	: QDialog(parent)
 {
 	setWindowTitle(QString::fromUtf8("О программе"));
+	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 	QVBoxLayout* layout = new QVBoxLayout;
 	QTabWidget* tabwidget = new QTabWidget();

@@ -13,6 +13,8 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 {
 	setupUi(this);
 
+	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
 	m_pages << new DatabaseSettingsPage(this)
 			<< new LogSettingsPage(this);
 
