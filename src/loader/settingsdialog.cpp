@@ -5,6 +5,7 @@
 
 #include "abstractsettingspage.h"
 #include "databasesettingspage.h"
+#include "logsettingspage.h"
 
 
 SettingsDialog::SettingsDialog(QWidget *parent)
@@ -12,7 +13,8 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 {
 	setupUi(this);
 
-	m_pages << new DatabaseSettingsPage(this);
+	m_pages << new DatabaseSettingsPage(this)
+			<< new LogSettingsPage(this);
 
 
 	foreach(AbstractSettingsPage* page, m_pages)

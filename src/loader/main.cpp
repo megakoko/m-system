@@ -3,7 +3,10 @@
 #include <QTranslator>
 #include <QFile>
 #include <QDebug>
+#include <QSettings>
+
 #include "mainwindow.h"
+#include "debuglog.h"
 
 
 int main(int argc, char *argv[])
@@ -12,6 +15,10 @@ int main(int argc, char *argv[])
 
 	app.setOrganizationName("Andrew_Chukavin");
 	app.setApplicationName("M-System");
+
+	if(QSettings().value("debugLog").toBool() == true)
+		qInstallMsgHandler(DebugLog::messageHandler);
+
 
 	QTextCodec* codec = QTextCodec::codecForName("UTF-8");
 	QTextCodec::setCodecForCStrings(codec);
