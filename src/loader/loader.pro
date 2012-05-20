@@ -17,7 +17,9 @@ SOURCES		+=	main.cpp\
 				aboutdialog.cpp \
 				database.cpp \
 				user.cpp \
-				demo.cpp
+				demo.cpp \
+				logsettingspage.cpp \
+				debuglog.cpp
 
 HEADERS		+=	mainwindow.h \
 				logindialog.h \
@@ -29,11 +31,14 @@ HEADERS		+=	mainwindow.h \
 				aboutdialog.h \
 				database.h \
 				user.h \
-				demo.h
+				demo.h \
+				logsettingspage.h \
+				debuglog.h
 
 FORMS		+=	mainwindow.ui \
 				logindialog.ui \
 				settingsdialog.ui \
-				databasesettingspage.ui
+				databasesettingspage.ui \
+				logsettingspage.ui
 
 RESOURCES	+=	$${ROOTPATH}/src/resources/resources.qrc
