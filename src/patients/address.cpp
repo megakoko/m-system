@@ -27,7 +27,7 @@ Address::Address(const QSqlRecord &rec)
 	, street(Patients::interfaces->enc->decodeStr(rec.value("street").toString()))
 	, house(Patients::interfaces->enc->decodeStr(rec.value("house").toString()))
 	, apartment(Patients::interfaces->enc->decodeStr(rec.value("apartment").toString()))
-	, m_adressTypeTextid(rec.value("textid").toBool())
+	, m_adressTypeTextid(rec.value("textid").toString())
 	, m_id(rec.value("id").toInt())
 {
 
