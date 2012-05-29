@@ -27,7 +27,8 @@ QString formatProbability(const double &probability)
 }
 
 
-DiagnosisHelpDialog::DiagnosisHelpDialog(const QMap<int, QVariant> &data)
+DiagnosisHelpDialog::DiagnosisHelpDialog(const QMap<int, QVariant> &data, QWidget *parent)
+	: QDialog(parent)
 {
 	setupUi(this);
 	init(data);

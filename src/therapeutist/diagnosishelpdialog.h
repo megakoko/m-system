@@ -11,7 +11,7 @@ class DiagnosisHelpDialog : public QDialog, private Ui::DiagnosisHelpDialog
 {
 	Q_OBJECT	
 public:
-	explicit DiagnosisHelpDialog(const QMap<int, QVariant>& data);
+	explicit DiagnosisHelpDialog(const QMap<int, QVariant>& data, QWidget* parent = 0);
 
 	QString selectedDiagnosis() const;
 

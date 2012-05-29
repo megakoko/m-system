@@ -18,14 +18,14 @@
 
 
 const QString staffQuery =
-	" SELECT id, familyName || ' ' || name || ' ' || patronymic "
+	" SELECT id, familyName || ' ' || name || ' ' || patronymic AS name "
 	" FROM Staff"
-	" ORDER BY id";
+	" ORDER BY name ";
 
 const QString departmentQuery = QString::fromUtf8(
-	" SELECT id, name AS \"Имя отделения\""
+	" SELECT id, name "
 	" FROM Department "
-	" ORDER BY id");
+	" ORDER BY name");
 
 
 MainDepartmentsWidget::MainDepartmentsWidget(QWidget *parent)

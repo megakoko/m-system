@@ -20,7 +20,8 @@ QString MainMkb10Widget::filterText()
 	const QString& LIKE = Mkb10::interfaces->db->caseInsensitiveLike();
 	return	" SELECT description "
 			" FROM mkb10 "
-			" WHERE description " + LIKE + " '%%1%' ";
+			" WHERE description " + LIKE + " '%%1%' "
+			" ORDER BY id ";
 }
 
 
@@ -95,11 +96,11 @@ QList<QTreeWidgetItem*> MainMkb10Widget::createItems(const QVariant& parentId
 	QSqlQuery q;
 	if(parentId.isNull())
 	{
-		q.prepare("SELECT id, description FROM mkb10 WHERE parentId IS NULL");
+		q.prepare("SELECT id, description FROM mkb10 WHERE parentId IS NULL ORDER BY id");
 	}
 	else
 	{
-		q.prepare("SELECT id, description FROM mkb10 WHERE parentId = :id");
+		q.prepare("SELECT id, description FROM mkb10 WHERE parentId = :id ORDER BY id");
 		q.addBindValue(parentId);
 	}
 
