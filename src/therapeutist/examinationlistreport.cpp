@@ -53,8 +53,8 @@ void ExaminationListReport::init()
 	m_grouping->addItem("По дате", grouping::byDate);
 	m_grouping->addItem("По врачам", grouping::byTherapeutist);
 
-	m_fontFamily->addItem("С засечками", "'Times New Roman', Times, serif");
-	m_fontFamily->addItem("Без засечек", "Arial, sans-serif");
+	m_fontFamily->addItem("Times New Roman", "'Times New Roman', Times, serif");
+	m_fontFamily->addItem("Arial", "Arial, sans-serif");
 	updateStyle();
 
 	populateExamList();

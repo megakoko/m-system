@@ -45,7 +45,7 @@ void ExamDiagnosisEdit::openDiagnosisHelp()
 {
 	if(m_mainContainer != NULL)
 	{
-		DiagnosisHelpDialog dialog(m_mainContainer->data());
+		DiagnosisHelpDialog dialog(m_mainContainer->data(), m_widget);
 		if(dialog.exec() == QDialog::Accepted)
 			m_lineEdit->setText(dialog.selectedDiagnosis());
 	}
