@@ -33,7 +33,7 @@ DsRuleItem::DsRuleItem(const QMap<int, QVariant> &data, const QSqlRecord &rec)
 			if(value.type() == QVariant::String && !ruleTextValue.isNull())
 				m_hasSymptom = (value.toString() == ruleTextValue.toString());
 			// enum
-			else if(value.type() == QVariant::Int && !ruleEnumValue.isNull())
+			else if((value.type() == QVariant::Int || value.type() == QVariant::LongLong) && !ruleEnumValue.isNull())
 				m_hasSymptom = (value.toInt() == ruleEnumValue.toInt());
 			// real
 			else if(value.type() == QVariant::Double && !ruleRealValue.isNull())
