@@ -74,7 +74,9 @@ void DiagnosisHelpDialog::addDiagnosisToTable(const DsRule &rule)
 {
 	const int row = m_diagnosisTable->rowCount();
 	m_diagnosisTable->insertRow(row);
-	if(!rule.hasAllSymptoms())
+
+	// Show only first row.
+	if(row > 0)
 		m_diagnosisTable->hideRow(row);
 
 
@@ -98,8 +100,7 @@ void DiagnosisHelpDialog::addDiagnosisToTable(const DsRule &rule)
 	m_diagnosisTable->setItem(row, TableColumns::Diagnosis, item);
 
 	item = new QTableWidgetItem;
-	if(rule.hasAllSymptoms())
-		item->setText(formatProbability(rule.probabilityOfDiseaseGivenSymptoms()));
+	item->setText(formatProbability(rule.probabilityOfDiseaseGivenSymptoms()));
 	item->setToolTip(toolTip);
 	m_diagnosisTable->setItem(row, TableColumns::Probability, item);
 }
@@ -137,7 +138,6 @@ QString DiagnosisHelpDialog::selectedDiagnosis() const
 
 void DiagnosisHelpDialog::toggleHiddenDiagnoses(const bool showDiagnoses)
 {
-	for(int row = 0; row < m_diagnosisTable->rowCount(); ++row)
-		if(!m_rules.at(row).hasAllSymptoms())
-			m_diagnosisTable->setRowHidden(row, !showDiagnoses);
+	for(int row = 1; row < m_diagnosisTable->rowCount(); ++row)
+		m_diagnosisTable->setRowHidden(row, !showDiagnoses);
 }

@@ -12,7 +12,6 @@
 
 
 DsRule::DsRule(const QMap<int, QVariant> data, const QSqlRecord& record)
-	: m_hasAllSymptoms(true)
 {
 	m_diseaseText = record.value("diseaseText").toString();
 
@@ -33,40 +32,46 @@ DsRule::DsRule(const QMap<int, QVariant> data, const QSqlRecord& record)
 
 
 	/*
-		Вычисляем вероятность по следующей формуле:
+		Последовательно вычисляем вероятность по следующей формуле для i-го симптома,
+		затем присваем полученное значение вероятности P(D) и вычисляем для следующего симптома.
 
-											P(D) * П[P(Si|D)]
-		P(D|S1 & S2 & ... & S3) = --------------------------------------
-								  P(D) * П[P(Si|D)] + P(^D) * П[P(Si|^D)]
+
+							P(D) * P(Si|D)
+		P(D|Si) = --------------------------------- * Ky
+				  P(D) * P(Si|D) + P(^D) * P(Si|^D)
 
 		где:
-		D - событие, выражающееся в наличии болезни.
-		^D - событие, выражающееся в отсутствии болезни.
-		Si - событие, выражающееся в проявлении i-го симптома.
-		P(D) - вероятность болезни.
-		P(Si|D) - вероятность проявления i-го симптома при наличии болезни.
-		P(Si|^D) - вероятность проявления i-го симптома при отсутствии болезни.
+		D 			- событие, выражающееся в наличии болезни.
+		^D			- событие, выражающееся в отсутствии болезни.
+		Si			- событие, выражающееся в проявлении i-го симптома.
 
-		Далее будут вычислены произведения П[P(Si|D)] и П[P(Si|^D)].
+		P(D)		- вероятность болезни.
+		P(Si|D)		- вероятность проявления i-го симптома при наличии болезни.
+		P(Si|^D)	- вероятность проявления i-го симптома при отсутствии болезни.
+
+		Ky			- коэффициент уверенности. Если симптом есть у пациента, равен 1.0,
+					  иначе какому-то малому значению (например, 0.01).
 	*/
 
-	const double diseaseProbability = record.value("diseaseProbability").toDouble();
 
-	double product1 = diseaseProbability;
-	double product2 = 1.0 - diseaseProbability;
+	m_probability = record.value("diseaseProbability").toDouble();
 
+
+	qDebug() << m_diseaseText;
+	qDebug() << m_probability;
 	foreach(const DsRuleItem& item, m_ruleItems)
 	{
-		if(item.hasSymptom())
-		{
-			product1 *= item.probabilityWithDisease();
-			product2 *= item.probabilityWithoutDisease();
-		}
-		else
-			m_hasAllSymptoms = false;
-	}
+		if(!item.hasSymptom())
+			continue;
 
-	m_probability = product1 / (product1 + product2);
+//		const double ky = item.hasSymptom() ? 1.0 : 0.1;
+
+		const double product1 = m_probability			* item.probabilityWithDisease();
+		const double product2 = (1.0 - m_probability)	* item.probabilityWithoutDisease();
+
+		m_probability = /*ky * */ product1 / (product1 + product2);
+		qDebug() << m_probability;
+	}
 }
 
 
