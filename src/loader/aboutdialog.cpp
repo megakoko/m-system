@@ -8,6 +8,7 @@
 #include <QTextEdit>
 #include <QFile>
 #include <QTextStream>
+#include <QTextBrowser>
 
 
 AboutDialog::AboutDialog(QWidget *parent)
@@ -30,6 +31,16 @@ AboutDialog::AboutDialog(QWidget *parent)
 	licence->setReadOnly(true);
 	tabwidget->addTab(licence, QString::fromUtf8("Лицензия"));
 */
+
+	QFile help("doc/help.html");
+	if(help.open(QIODevice::ReadOnly))
+	{
+		QTextBrowser* helpBrowser = new QTextBrowser(tabwidget);
+		helpBrowser->setHtml(help.readAll());
+		tabwidget->addTab(helpBrowser, "Справка");
+	}
+
+
 
 	layout->addWidget(tabwidget);
 
