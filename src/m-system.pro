@@ -14,3 +14,5 @@ SUBDIRS	+= 	cryptopp \
 			therapeutist \
 			diagnosis_rules \
 #			plugin_example
+
+
